@@ -16,43 +16,43 @@ public abstract class User {
         this.id = index++;
     }
 
-    public setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public setId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public setLogin(String login) {
+    public void setLogin(String login) {
         this.login = login;
     }
 
-    public setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public getName() {
+    public String getName() {
         return this.name;
     }
 
-    public getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public getLogin() {
+    public String getLogin() {
         return this.login;
     }
 
-    public getEmail() {
+    public String getEmail() {
         return this.email;
     }
 
-    public getPassword() {
+    public String getPassword() {
         return this.password;
     }
 }
