@@ -8,16 +8,16 @@ public class ManagerController {
     public void startController(User user, School school) {
     }
 
-    public void addMentor() {
+    private void addMentor() {
     }
 
-    public void createClass() {
+    private void createClass() {
     }
 
-    public void editMentor() {
+    private void editMentor() {
     }
 
-    public void showMentorsClass() {
+    private void showMentorsClass() {
     }
 
 }
