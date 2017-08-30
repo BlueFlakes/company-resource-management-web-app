@@ -48,6 +48,9 @@ public class MentorController {
             case "6":
                 runMentorStoreController();
 
+            case "0":
+                break;
+
             default:
                 handleNoSuchCommand();
 
