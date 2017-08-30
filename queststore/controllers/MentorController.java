@@ -70,7 +70,7 @@ public class MentorController {
     }
 
     private void updateQuest() {
-
+        userInterface.print("Here you will change quest details");
     }
 
     private void markBoughtArtifactsAsUsed() {
