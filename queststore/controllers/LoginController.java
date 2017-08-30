@@ -38,7 +38,7 @@ public class LoginController {
             String correctPassword = user.getPassword();
 
             if (correctLogin.equals(login) && correctPassword.equals(password)) {
-                return User;
+                return user;
             }
         }
 
@@ -47,13 +47,13 @@ public class LoginController {
 
     private void runUserController(User user) {
         if (user instanceof Manager) {
-            new ManagerController.startController();
+            new ManagerController().startController();
         }
         else if (user instanceof Mentor) {
-            new MentorController.startController();
+            new MentorController().startController();
         }
         else if (user instanceof Student) {
-            new StudentController.startController();
+            new StudentController().startController();
         }
     }
 }
