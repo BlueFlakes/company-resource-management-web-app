@@ -35,6 +35,9 @@ public class LoginController {
                 throw new WrongPasswordException();
             }
         }
+        else{
+            throw new WrongPasswordException();
+        }
 
     }
 

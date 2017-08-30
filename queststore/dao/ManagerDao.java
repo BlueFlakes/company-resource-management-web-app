@@ -8,7 +8,13 @@ public class ManagerDao{
         return new Manager("Jan Kowalski","jkowal","kowal","jkowal@buziaczek.pl");
     }
     public Manager getManager(String login){
-        return new Manager("Jan Kowalski","jkowal","kowal","jkowal@buziaczek.pl");
+        if (login.equals("jkowal")){
+            return new Manager("Jan Kowalski","jkowal","kowal","jkowal@buziaczek.pl");
+        }
+        else {
+            return null;
+        }
+        
     }
 
     public void save(){
