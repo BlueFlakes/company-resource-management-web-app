@@ -48,9 +48,11 @@ public class StudentController {
     }
 
     private void showWallet() {
+        userInterface.print("Here you will see your CC balance and yours artifacts");
     }
 
     private void showLevel() {
+        userInterface.print("Here will be see your level");
     }
 
     private void startStoreController(){

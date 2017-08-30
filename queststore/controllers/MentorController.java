@@ -58,23 +58,23 @@ public class MentorController {
     }
 
     private void addStudent() {
-
+        userInterface.print("Here you will create new students");
     }
 
     private void addQuest() {
-
+        userInterface.print("Here you will create new quests");
     }
 
     private void addQuestCategory() {
-
+        userInterface.print("Here you will create new quest category");
     }
 
     private void updateQuest() {
-
+        userInterface.print("Here you will change quest details");
     }
 
     private void markBoughtArtifactsAsUsed() {
-
+        userInterface.print("Here you will mark students artifacts as used");
     }
 
     private void runMentorStoreController(){
