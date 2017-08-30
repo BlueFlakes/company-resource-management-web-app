@@ -16,15 +16,15 @@ public class School{
 
     public School(String name){
         this.name = name;
+        this.classDao = new ClassDao();
         this.managerDao = new ManagerDao();
         this.mentorDao = new MentorDao();
         this.studentDao = new StudentDao();
-        this.classDao = new ClassDao();
     }
 
     public User getUser(String login){
         User foundUser = null;
-        
+
         foundUser = managerDao.getManager(login);
         if (foundUser != null) return foundUser;
         foundUser = mentorDao.getMentor(login);
