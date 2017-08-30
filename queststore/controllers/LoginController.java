@@ -1,4 +1,4 @@
-package questore.controllers;
+package queststore.controllers;
 
 import java.util.ArrayList;
 
@@ -20,43 +20,33 @@ public class LoginController {
         this.school = school;
     }
 
-    public void start() {
-        String login = view.getInput("Please provide your login: ");
-        String password = view.getInput("Please provide your password: ");
+    public void start() throws WrongPasswordException {
+        String login = view.getInput("Please provide your login");
+        String givenPassword = view.getInput("Please provide your password");
 
-        try {
-            User user = findUser(login, password);
-            runUserController(user);
-        } catch (WrongPasswordException e) {
-            view.print(e.getMessage());
-        }
-
-    }
-
-    private User findUser(String login, String password) throws WrongPasswordException {
-        ArrayList<User> users = school.getAllUsers();
-
-        for (User user : users) {
-            String correctLogin = user.getLogin();
-            String correctPassword = user.getPassword();
-
-            if (correctLogin.equals(login) && correctPassword.equals(password)) {
-                return user;
+        User user = this.school.getUser(login);
+        if (user != null) {
+            String expectedPassword = user.getPassword();
+            if (expectedPassword.equals(givenPassword)) {
+                runUserController(user);
+            }
+            
+            else {
+                throw new WrongPasswordException();
             }
         }
 
-        throw new WrongPasswordException();
     }
 
     private void runUserController(User user) {
         if (user instanceof Manager) {
-            new ManagerController().startController();
+            new ManagerController().startController(user, this.school);
         }
         else if (user instanceof Mentor) {
-            new MentorController().startController();
+            new MentorController().startController(user, this.school);
         }
         else if (user instanceof Student) {
-            new StudentController().startController();
+            new StudentController().startController(user, this.school);
         }
     }
 }
