@@ -50,4 +50,12 @@ public class Class {
         return this.mentorsList;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
 }
