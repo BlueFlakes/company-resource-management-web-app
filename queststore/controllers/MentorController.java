@@ -62,7 +62,7 @@ public class MentorController {
     }
 
     private void addQuest() {
-
+        userInterface.print("Here you will create new quests");
     }
 
     private void addQuestCategory() {
