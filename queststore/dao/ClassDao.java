@@ -47,11 +47,11 @@ public class ClassDao{
         return null;
     }
 
-    public Class getClass(String login){
+    public Class getClass(String name){
 
         for(Class clas : this.classes) {
 
-                if(clas.getName().equals(login)) {
+                if(clas.getName().equals(name)) {
                     return clas;
                 }
         }
