@@ -54,6 +54,6 @@ public class StudentController {
     }
 
     private void startStoreController(){
-
+        new StudentStoreController().startController(this.user, this.school);
     }
 }
