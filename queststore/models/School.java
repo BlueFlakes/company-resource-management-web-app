@@ -1,6 +1,7 @@
 package queststore.models;
 
 import java.util.ArrayList;
+import queststore.models.User;
 import queststore.dao.ClassDao;
 import queststore.dao.ManagerDao;
 import queststore.dao.MentorDao;
@@ -15,10 +16,10 @@ public class School{
 
     public School(String name){
         this.name = name;
-        this.managerDao = new managerDao();
-        this.mentorDao = new mentorDao();
-        this.studentDao = new mentorDao();
+        this.managerDao = new ManagerDao();
+        this.mentorDao = new MentorDao();
+        this.studentDao = new StudentDao();
+        this.classDao = new ClassDao();
     }
-
 
 }
