@@ -6,6 +6,7 @@ public class Class {
     private String name;
     private ArrayList<Student> studentsList;
     private ArrayList<Mentor> mentorsList;
+    private Integer id;
     private static Integer index = 0;
 
     public Class(String name) {
