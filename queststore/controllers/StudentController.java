@@ -9,7 +9,7 @@ public class StudentController {
     User user;
     School school;
     UserInterface userInterface = new UserInterface();
-
+    
     public void startController(User user, School school) {
         this.user = user;
         this.school = school;
@@ -51,5 +51,9 @@ public class StudentController {
     }
 
     private void showLevel() {
+    }
+
+    private void startStoreController(){
+
     }
 }
