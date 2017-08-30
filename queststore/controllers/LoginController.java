@@ -46,5 +46,14 @@ public class LoginController {
     }
 
     private void runUserController(User user) {
+        if (user instanceof Manager) {
+            new ManagerController.startController();
+        }
+        else if (user instanceof Mentor) {
+            new MentorController.startController();
+        }
+        else if (user instanceof Student) {
+            new StudentController.startController();
+        }
     }
 }
