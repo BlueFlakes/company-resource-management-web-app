@@ -2,12 +2,13 @@ package questore.controllers;
 
 import java.util.ArrayList;
 
-import views.View;
-import models.School;
-import models.User;
-import models.Student;
-import models.Mentor;
-import models.Manager;
+import queststore.views.View;
+import queststore.models.School;
+import queststore.models.User;
+import queststore.models.Student;
+import queststore.models.Mentor;
+import queststore.models.Manager;
+import queststore.exceptions.WrongPasswordException;
 
 
 public class LoginController {
@@ -44,7 +45,7 @@ public class LoginController {
             }
         }
 
-        throw WrongPasswordException();
+        throw new WrongPasswordException();
     }
 
     private void runUserController(User user) {
