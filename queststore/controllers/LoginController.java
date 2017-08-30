@@ -1,5 +1,7 @@
 package questore.controllers;
 
+import java.util.ArrayList;
+
 import views.View;
 import models.School;
 import models.User;
