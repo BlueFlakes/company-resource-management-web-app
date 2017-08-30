@@ -18,11 +18,11 @@ public class LoginController {
     }
 
     public void start() {
-        String username = view.getInput("Please provide your username: ");
+        String login = view.getInput("Please provide your login: ");
         String password = view.getInput("Please provide your password: ");
 
         try {
-            User user = login(username, password);
+            User user = findUser(login, password);
             runUserController(user);
         } catch (WrongPasswordException e) {
             view.print(e.getMessage());
@@ -30,7 +30,7 @@ public class LoginController {
 
     }
 
-    private User login(String login, String password) throws WrongPasswordException {
+    private User findUser(String login, String password) throws WrongPasswordException {
         ArrayList<User> users = school.getAllUsers();
 
         for (User user : users) {
@@ -42,7 +42,7 @@ public class LoginController {
             }
         }
 
-        throw WrongPasswordException("Invalid login or password!");
+        throw WrongPasswordException();
     }
 
     private void runUserController(User user) {
