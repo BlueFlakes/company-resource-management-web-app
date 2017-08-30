@@ -58,7 +58,7 @@ public class MentorController {
     }
 
     private void addStudent() {
-
+        userInterface.print("Here you will create new students");
     }
 
     private void addQuest() {
