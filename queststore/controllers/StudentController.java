@@ -24,6 +24,29 @@ public class StudentController {
         }
     }
 
+    private void handleUserRequest(String choice){
+        switch(choice){
+            case "1":
+                startStoreController();
+            break;
+
+            case "2":
+                showLevel();
+            break;
+            
+            case "3":
+                showWallet();
+            break;
+
+            case "0":
+            break;
+
+            default:
+                userInterface.print("No such option.");
+            break;
+        }
+    }
+
     private void showWallet() {
     }
 
