@@ -1,19 +1,26 @@
 package queststore.views;
 
+import java.util.Scanner;
 import java.util.List;
-import queststore.models.Window;
 import queststore.dao.FileLoader;
 
-class MenuPrinter {
+public class UserInterface{
+    private Scanner in = new Scanner(System.in);
     private FileLoader dataLoader = new FileLoader();
-    private Window window = new Window();
 
-    public static void main(String[] args) {
-        System.out.println("run\n");
+    public String getInput(String question){
+        System.out.print(question + ": ");
+        return in.nextLine().trim();
+    }
 
-        MenuPrinter menuPrinter = new MenuPrinter();
-        menuPrinter.printMentorMenu();
+    public void print(String text){
+        System.out.println(text);
+    }
 
+    public void clearWindow() {
+        for(int i = 0; i < 50; i ++) {
+            System.out.println();
+        }
     }
 
     public void printMentorMenu() {
@@ -38,7 +45,7 @@ class MenuPrinter {
     }
 
     private void printMenu(List<String> data) {
-        window.clearWindow();
+        clearWindow();
         printAllRecordsInMenuStyle(data);
     }
 
@@ -56,4 +63,6 @@ class MenuPrinter {
 
         System.out.println();
     }
+
+
 }
