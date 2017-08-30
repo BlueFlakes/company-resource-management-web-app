@@ -9,7 +9,7 @@ public class StudentStoreController implements UserController {
     User user;
     School school;
     UserInterface userInterface = new UserInterface();
-
+    
     public void startController(User user, School school) {
         this.user = user;
         this.school = school;
@@ -26,7 +26,25 @@ public class StudentStoreController implements UserController {
         }
     }
 
-    }
+     private void handleUserRequest(String choice){
+        switch(choice){
+            case "1":
+                showAvailableArtifacts();
+            break;
+
+            case "2":
+                buyArtifact();
+            break;
+
+            case "0":
+            break;
+
+            default:
+                userInterface.print("No such option.");
+            break;
+
+        }
+     }
 
     private void buyArtifact() {
     }
