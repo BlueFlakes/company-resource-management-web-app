@@ -74,7 +74,7 @@ public class MentorController {
     }
 
     private void markBoughtArtifactsAsUsed() {
-
+        userInterface.print("Here you will mark students artifacts as used");
     }
 
     private void runMentorStoreController(){
