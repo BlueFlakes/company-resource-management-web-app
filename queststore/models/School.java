@@ -22,4 +22,15 @@ public class School{
         this.classDao = new ClassDao();
     }
 
+    public User getUser(String login){
+        User foundUser = null;
+        
+        foundUser = managerDao.getManager(login);
+        if (foundUser != null) return foundUser;
+        foundUser = mentorDao.getMentor(login);
+        if (foundUser != null) return foundUser;
+        foundUser = studentDao.getStudent(login);
+
+        return foundUser;
+    }
 }
