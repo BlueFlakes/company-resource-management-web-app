@@ -66,7 +66,7 @@ public class MentorController {
     }
 
     private void addQuestCategory() {
-
+        userInterface.print("Here you will create new quest category");
     }
 
     private void updateQuest() {
