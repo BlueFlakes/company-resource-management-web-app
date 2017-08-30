@@ -52,6 +52,7 @@ public class StudentController {
     }
 
     private void showLevel() {
+        userInterface.print("Here will be see your level");
     }
 
     private void startStoreController(){
