@@ -42,6 +42,13 @@ public class UserInterface{
         printMenu(loadedMenu);
     }
 
+    public void printStudentStoreMenu() {
+        String fileName = "queststore/csv/studentStoreMenu.csv";
+        List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
+
+        printMenu(loadedMenu);
+    }
+
     public void printManagerMenu() {
         String fileName = "queststore/csv/managerMenu.csv";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
