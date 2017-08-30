@@ -16,6 +16,17 @@ public abstract class User {
         this.id = index++;
     }
 
+    public User(String name, String login, String password, String email, Integer id) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.id = id;
+        if(id > index) {
+            index = id++;
+        }
+    }
+
     public void setName(String name) {
         this.name = name;
     }
