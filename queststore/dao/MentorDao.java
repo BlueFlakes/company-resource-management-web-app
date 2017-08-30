@@ -8,7 +8,12 @@ public class MentorDao{
         return new Mentor("","","","");
     }
     public Mentor getMentor(String login){
-        return new Mentor("","","","");
+        if (login.equals("skubi")){
+            return new Mentor("","subi","doo","");
+        }
+        else {
+            return null;
+        }
     }
 
     public void save(){
