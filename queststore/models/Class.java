@@ -42,7 +42,7 @@ public class Class {
     }
 
     public void removeMentor(Mentor mentor) {
-        this.studentsList.remove(student);
+        this.studentsList.remove(mentor);
     }
 
     public ArrayList<Mentor> getAllMentors() {
