@@ -5,8 +5,36 @@ import queststore.models.School;
 
 
 public class MentorController {
+    private void handleUserRequest(String userChoice) {
+        switch(userChoice) {
+            case "1":
+                addStudent();
+                break;
 
-    public void startController(User user, School school) {}
+            case "2":
+                addQuest();
+                break;
+
+            case "3":
+                addQuestCategory();
+                break;
+
+            case "4":
+                updateQuest();
+                break;
+
+            case "5":
+                markBoughtArtifactsAsUsed();
+                break;
+
+            case "6":
+                runMentorStoreController();
+
+            default:
+                handleNoSuchCommand();
+
+        }
+    }
 
     private void addStudent() {
     }
