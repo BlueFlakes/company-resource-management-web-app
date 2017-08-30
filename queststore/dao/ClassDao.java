@@ -1,11 +1,16 @@
+package queststore.dao;
+
+import queststore.models.Class;
+
 public class ClassDao{
-    public Object getClass(Integer id){
+    public Class getClass(Integer id){
         
-        return new Object();
+        return new Class("");
     }
-    public Object getClass(String login){
-        return new Object();
+    public Class getClass(String login){
+        return new Class("");
     }
+
     public void save(){
         
     }
