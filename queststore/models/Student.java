@@ -8,6 +8,14 @@ public class Student extends User{
 	private ArrayList<BoughtArtifact> ownedArtifacts;
 	private ArrayList<Quest> achievedQuests;
 
+    public Student(String name, String login, String password, String email) {
+        super(name, login, password, email);
+		this.earnedCoins = 0;
+		this.possesedCoins = 0;
+		this.ownedArtifacts = new ArrayList<>();
+		this.achievedQuests = new ArrayList<>();
+    }
+
 	public Integer getEarnedCoins(){
 		return this.earnedCoins;
 	}
