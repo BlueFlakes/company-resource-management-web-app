@@ -23,6 +23,11 @@ public class UserInterface{
         }
     }
 
+    public void lockActualState() {
+        System.out.print("Press enter to continue...");
+        in.nextLine();
+    }
+
     public void printMentorMenu() {
         String fileName = "queststore/csv/mentorMenu.csv";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
