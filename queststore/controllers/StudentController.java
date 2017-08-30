@@ -19,7 +19,9 @@ public class StudentController {
             this.userInterface.printStudentMenu();
             userChoice = this.userInterface.getInput("Provide options");
             handleUserRequest(userChoice);
-            this.userInterface.getInput("Press enter to continue...");
+            if(!userChoice.equals("0")){
+                this.userInterface.getInput("Press enter to continue...");
+            }
             school.save();
         }
     }
