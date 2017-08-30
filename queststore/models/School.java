@@ -33,4 +33,11 @@ public class School{
 
         return foundUser;
     }
+
+    public void save(){
+        this.managerDao.save();
+        this.mentorDao.save();
+        this.studentDao.save();
+        this.classDao.save();
+    }
 }
