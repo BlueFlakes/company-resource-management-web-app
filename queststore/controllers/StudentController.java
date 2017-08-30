@@ -5,7 +5,7 @@ import queststore.models.School;
 
 public class StudentController {
 
-    public startController(User user, School school) {
+    public void startController(User user, School school) {
     }
 
     private void showWallet() {
