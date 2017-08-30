@@ -4,7 +4,7 @@ import queststore.models.User;
 import queststore.models.School;
 
 
-public class ManagerController {
+public class MentorController {
 
     public void startController(User user, School school) {}
 

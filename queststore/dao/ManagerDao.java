@@ -1,10 +1,14 @@
+package queststore.dao;
+
+import queststore.models.Manager;
+
 public class ManagerDao{
-    public Object getManager(Integer id){
+    public Manager getManager(Integer id){
         
-        return new Object();
+        return new Manager("Jan Kowalski","jkowal","kowal","jkowal@buziaczek.pl");
     }
-    public Object getManager(String login){
-        return new Object();
+    public Manager getManager(String login){
+        return new Manager("Jan Kowalski","jkowal","kowal","jkowal@buziaczek.pl");
     }
 
     public void save(){

@@ -1,11 +1,16 @@
+package queststore.dao;
+
+import queststore.models.Student;
+
 public class StudentDao{
-    public Object getStudent(Integer id){
+    public Student getStudent(Integer id){
         
-        return new Object();
+        return new Student("","","","");
     }
-    public Object getStudent(String login){
-        return new Object();
+    public Student getStudent(String login){
+        return new Student("","","","");
     }
+
     public void save(){
         
     }

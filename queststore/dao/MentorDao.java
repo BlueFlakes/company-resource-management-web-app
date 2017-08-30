@@ -1,11 +1,16 @@
+package queststore.dao;
+
+import queststore.models.Mentor;
+
 public class MentorDao{
-    public Object getMentor(Integer id){
+    public Mentor getMentor(Integer id){
         
-        return new Object();
+        return new Mentor("","","","");
     }
-    public Object getMentor(String login){
-        return new Object();
+    public Mentor getMentor(String login){
+        return new Mentor("","","","");
     }
+
     public void save(){
         
     }
