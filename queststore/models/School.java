@@ -31,12 +31,12 @@ public class School {
 
         foundUser = managerDao.getManager(login);
         if (foundUser != null) {
-            return foundUser
+            return foundUser;
         }
 
         foundUser = mentorDao.getMentor(login);
         if (foundUser != null) {
-            return foundUser
+            return foundUser;
         }
 
         foundUser = studentDao.getStudent(login);
