@@ -60,6 +60,10 @@ public class Class {
         return this.id;
     }
 
+    public String getClassSaveString() {
+        return String.format("%d|%s%n", this.getId(), this.getName());
+    }
+
     public String toString() {
         return this.name;
     }
