@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.File;
+import java.util.Formatter;
 
 import queststore.models.Mentor;
 import queststore.models.Class;
@@ -73,6 +74,16 @@ public class MentorDao {
     }
 
     public void save() {
+        try (Formatter writer = new Formatter("queststore/csv/mentor_try.csv")) {
+
+            for(Mentor mentor: this.mentors) {
+                String lineToSave = mentor.getMentorSaveString();
+                writer.format(lineToSave);
+            }
+
+        } catch (Exception e) {
+            System.out.println("File not found");
+        }
     }
 
     public static void main(String[] args) {
