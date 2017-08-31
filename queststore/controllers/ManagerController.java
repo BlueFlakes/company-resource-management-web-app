@@ -9,6 +9,7 @@ import queststore.models.Mentor;
 import queststore.views.UserInterface;
 import queststore.models.Class;
 import queststore.models.Manager;
+import queststore.exceptions.LoginInUseException;
 
 
 public class ManagerController implements UserController {
@@ -76,7 +77,11 @@ public class ManagerController implements UserController {
         String email = basicUserData.get(3);
         Class choosenClass = chooseProperClass();
 
-        this.school.addUser(new Mentor(name, login, password, email, choosenClass));
+        try {
+            this.school.addUser(new Mentor(name, login, password, email, choosenClass));
+        } catch (LoginInUseException e) {
+            userInterface.print(e.getMessage());
+        }
     }
 
     private Class chooseProperClass() {
