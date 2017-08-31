@@ -6,7 +6,6 @@ import queststore.models.School;
 import queststore.views.UserInterface;
 
 public class MentorController {
-
     private UserInterface userInterface = new UserInterface();
     private User user;
     private School school;
@@ -81,6 +80,7 @@ public class MentorController {
     }
 
     private void runMentorStoreController() {
+        new MentorStoreController().startController(this.user, this.school);
     }
 
     private void handleNoSuchCommand() {
