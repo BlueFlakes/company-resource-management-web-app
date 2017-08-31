@@ -20,4 +20,16 @@ public class Mentor extends User {
     public String getMentorSaveString() {
         return String.format("%d|%s|%s|%s|%s|%d%n", this.getId(), this.getName(), this.getLogin(), this.getPassword(), this.getEmail(), this.getClas().getId());
     }
+
+    public String getMentorData() {
+        return String.format("id: %d. %s %s class name: %s%n",
+                             this.getId(),
+                             this.getName(),
+                             this.getEmail(),
+                             this.getClas().getName());
+    }
+
+    public String toString() {
+        return String.format("id: %d. %s%n", this.getId(), this.getName());
+    }
 }

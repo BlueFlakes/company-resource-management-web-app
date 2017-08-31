@@ -45,6 +45,10 @@ public class School {
         return foundUser;
     }
 
+    public Mentor getMentor(Integer id) {
+        return this.mentorDao.getMentor(id);
+    }
+
     public void addUser(User user) throws LoginInUseException {
         String login = user.getLogin();
 
@@ -70,6 +74,10 @@ public class School {
 
     public ArrayList<Class> getAllClasses() {
         return this.classDao.getAllClasses();
+    }
+
+    public ArrayList<Mentor> getAllMentors() {
+        return this.mentorDao.getAllMentors();
     }
 
 }
