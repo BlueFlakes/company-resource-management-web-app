@@ -3,11 +3,13 @@ package queststore.controllers;
 import java.util.ArrayList;
 
 import queststore.views.UserInterface;
+
 import queststore.models.School;
 import queststore.models.User;
 import queststore.models.Student;
 import queststore.models.Mentor;
 import queststore.models.Manager;
+
 import queststore.exceptions.WrongPasswordException;
 
 
@@ -29,26 +31,21 @@ public class LoginController {
             String expectedPassword = user.getPassword();
             if (expectedPassword.equals(givenPassword)) {
                 runUserController(user);
-            }
-            
-            else {
+            } else {
                 throw new WrongPasswordException();
             }
-        }
-        else{
+
+        } else {
             throw new WrongPasswordException();
         }
-
     }
 
     private void runUserController(User user) {
         if (user instanceof Manager) {
             new ManagerController().startController(user, this.school);
-        }
-        else if (user instanceof Mentor) {
+        } else if (user instanceof Mentor) {
             new MentorController().startController(user, this.school);
-        }
-        else if (user instanceof Student) {
+        } else if (user instanceof Student) {
             new StudentController().startController(user, this.school);
         }
     }

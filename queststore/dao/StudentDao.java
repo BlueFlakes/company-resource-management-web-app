@@ -4,10 +4,12 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.File;
+
 import queststore.models.Student;
 import queststore.models.Class;
 
 public class StudentDao {
+
     private ArrayList<Student> students;
 
     public StudentDao(ClassDao classDao) {
@@ -48,23 +50,21 @@ public class StudentDao {
 
     public Student getStudent(Integer id) {
 
-        for(Student student : this.students) {
-
-                if(student.getId() == id) {
-                    return student;
-                }
+        for (Student student : this.students) {
+            if (student.getId() == id) {
+                return student;
+            }
         }
 
         return null;
     }
 
-    public Student getStudent(String login){
+    public Student getStudent(String login) {
 
-        for(Student student : this.students) {
-
-                if(student.getLogin().equals(login)) {
-                    return student;
-                }
+        for (Student student : this.students) {
+            if (student.getLogin().equals(login)) {
+                return student;
+            }
         }
 
         return null;
@@ -76,8 +76,7 @@ public class StudentDao {
         clas.addStudent(student);
     }
 
-    public void save(){
-
+    public void save() {
     }
 
     public static void main(String[] args) {

@@ -4,10 +4,12 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.File;
+
 import queststore.models.Mentor;
 import queststore.models.Class;
 
 public class MentorDao {
+
     private ArrayList<Mentor> mentors;
 
     public MentorDao(ClassDao classDao) {
@@ -46,23 +48,21 @@ public class MentorDao {
 
     public Mentor getMentor(Integer id) {
 
-        for(Mentor mentor : this.mentors) {
-
-                if(mentor.getId() == id) {
-                    return mentor;
-                }
+        for (Mentor mentor : this.mentors) {
+            if (mentor.getId() == id) {
+                return mentor;
+            }
         }
 
         return null;
     }
 
-    public Mentor getMentor(String login){
+    public Mentor getMentor(String login) {
 
         for(Mentor mentor : this.mentors) {
-
-                if(mentor.getLogin().equals(login)) {
-                    return mentor;
-                }
+            if (mentor.getLogin().equals(login)) {
+                return mentor;
+            }
         }
 
         return null;
@@ -74,8 +74,7 @@ public class MentorDao {
         clas.addMentor(mentor);
     }
 
-    public void save(){
-
+    public void save() {
     }
 
     public static void main(String[] args) {

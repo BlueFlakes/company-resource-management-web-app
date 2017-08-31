@@ -6,7 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.File;
 import queststore.models.Class;
 
-public class ClassDao{
+public class ClassDao {
+
     private ArrayList<Class> classes;
 
     public ClassDao() {
@@ -37,36 +38,30 @@ public class ClassDao{
 
     public Class getClass(Integer id) {
 
-        for(Class clas : this.classes) {
-
-                if(clas.getId() == id) {
-                    return clas;
-                }
+        for (Class clas : this.classes) {
+            if(clas.getId() == id) {
+                return clas;
+            }
         }
 
         return null;
     }
 
-    public Class getClass(String name){
+    public Class getClass(String name) {
 
-        for(Class clas : this.classes) {
-
-                if(clas.getName().equals(name)) {
-                    return clas;
-                }
+        for (Class clas : this.classes) {
+            if (clas.getName().equals(name)) {
+                return clas;
+            }
         }
 
         return null;
     }
 
-    public void save(){
-
+    public ArrayList<Class> getAllClasses() {
+        return this.classes;
     }
 
-    public static void main(String[] args) {
-        ClassDao classDao = new ClassDao();
-        Class clas = classDao.getClass("klasa druga");
-        System.out.println(clas.getName());
-        //System.out.println(classDao.classes.get(1).getId());
+    public void save() {
     }
 }

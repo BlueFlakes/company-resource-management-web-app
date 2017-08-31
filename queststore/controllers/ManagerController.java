@@ -1,63 +1,68 @@
 package queststore.controllers;
 
 import queststore.interfaces.UserController;
+
 import queststore.models.User;
 import queststore.models.School;
+
 import queststore.views.UserInterface;
 
 public class ManagerController implements UserController {
-    User user;
-    School school;
-    UserInterface userInterface = new UserInterface();
-    
+
+    private User user;
+    private School school;
+    private UserInterface userInterface = new UserInterface();
+
     public void startController(User user, School school) {
+
         this.user = user;
         this.school = school;
 
         String userChoice = "";
-        while(!userChoice.equals("0")){
+        while (!userChoice.equals("0")) {
             this.userInterface.printManagerMenu();
             userChoice = this.userInterface.getInput("Provide options");
             handleUserRequest(userChoice);
+
             this.userInterface.getInput("Press enter to continue...");
             school.save();
         }
     }
 
-    private void handleUserRequest(String choice){
-        switch(choice){
+    private void handleUserRequest(String choice) {
+
+        switch(choice) {
             case "1":
                 addMentor();
-            break;
+                break;
 
             case "2":
                 createClass();
-            break;
+                break;
 
             case "3":
                 editMentor();
-            break;
+                break;
 
             case "4":
                 showMentorsClass();
-            break;
-            
+                break;
+
             case "5":
                 startExperienceLevelController();
-            break;
-                
+                break;
+
             case "0":
-            break;
+                break;
 
             default:
                 userInterface.print("No such option.");
-            break;
+                break;
         }
     }
 
     private void addMentor() {
         userInterface.print("Here will be adding mentor");
-        
     }
 
     private void createClass() {
@@ -74,7 +79,5 @@ public class ManagerController implements UserController {
 
     private void startExperienceLevelController(){
         new ExperienceLevelsController().startController(this.user, this.school);
-
     }
-
 }

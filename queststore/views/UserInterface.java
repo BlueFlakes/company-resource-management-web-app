@@ -3,12 +3,13 @@ package queststore.views;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
+
 import queststore.dao.FileLoader;
 
 public class UserInterface extends Inputs {
     private FileLoader dataLoader = new FileLoader();
 
-    public void print(String text){
+    public void print(String text) {
         System.out.println(text);
     }
 
@@ -77,6 +78,4 @@ public class UserInterface extends Inputs {
 
         System.out.println();
     }
-
-
 }

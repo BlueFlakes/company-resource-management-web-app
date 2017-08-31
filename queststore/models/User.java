@@ -1,6 +1,7 @@
 package queststore.models;
 
 public abstract class User {
+
     private String name;
     private Integer id;
     private String login;
@@ -22,6 +23,7 @@ public abstract class User {
         this.password = password;
         this.email = email;
         this.id = id;
+
         if(id > index) {
             index = id++;
         }
