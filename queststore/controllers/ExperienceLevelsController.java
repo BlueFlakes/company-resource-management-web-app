@@ -9,7 +9,7 @@ public class ExperienceLevelsController implements UserController {
     User user;
     School school;
     UserInterface userInterface = new UserInterface();
-    
+
     public void startController(User user, School school) {
         this.user = user;
         this.school = school;
@@ -17,10 +17,10 @@ public class ExperienceLevelsController implements UserController {
         String userChoice = "";
         while(!userChoice.equals("0")) {
             this.userInterface.printExperienceLevelsMenu();
-            userChoice = this.userInterface.getInput("Provide options");
+            userChoice = this.userInterface.inputs.getInput("Provide options");
             handleUserRequest(userChoice);
             if(!userChoice.equals("0")) {
-                this.userInterface.getInput("Press enter to continue...");
+                this.userInterface.inputs.getInput("Press enter to continue...");
             }
             school.save();
         }
@@ -35,7 +35,7 @@ public class ExperienceLevelsController implements UserController {
             case "2":
                 updateLevel();
             break;
-                
+
             case "0":
             break;
 
