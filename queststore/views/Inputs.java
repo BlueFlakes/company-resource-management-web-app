@@ -6,17 +6,8 @@ import java.util.Scanner;
 import queststore.exceptions.NotEqualElementsException;
 import queststore.exceptions.InvalidArgumentException;
 
-public class Inputs {
-    private Scanner in = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        Inputs inputs = new Inputs();
-        String[] questions = {"Name", "Surname", "age"};
-        String[] expectedTypes = {"String", "String", "Integer"};
-
-        inputs.getValidatedInputs(questions, expectedTypes);
-
-    }
+public abstract class Inputs {
+    public Scanner in = new Scanner(System.in);
 
     public String getInput(String question){
         System.out.print(question + ": ");
