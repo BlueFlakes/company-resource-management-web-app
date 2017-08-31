@@ -8,6 +8,7 @@ import queststore.dao.ClassDao;
 import queststore.dao.ManagerDao;
 import queststore.dao.MentorDao;
 import queststore.dao.StudentDao;
+import queststore.exceptions.LoginInUseException;
 
 public class School {
 
@@ -44,7 +45,13 @@ public class School {
         return foundUser;
     }
 
-    public void addUser(User user) {
+    public void addUser(User user) throws LoginInUseException {
+        String login = user.getLogin();
+
+        if (this.getUser(login) != null) {
+            throw new LoginInUseException();
+        }
+
         if (user instanceof Manager) {
             this.managerDao.addManager((Manager) user);
         } else if (user instanceof Mentor) {
