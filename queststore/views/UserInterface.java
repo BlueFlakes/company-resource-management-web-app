@@ -6,8 +6,10 @@ import java.util.List;
 
 import queststore.dao.FileLoader;
 
-public class UserInterface extends Inputs {
+public class UserInterface {
+    private Scanner in = new Scanner(System.in);
     private FileLoader dataLoader = new FileLoader();
+    public Inputs inputs = new Inputs();
 
     public void print(String text) {
         System.out.println(text);
