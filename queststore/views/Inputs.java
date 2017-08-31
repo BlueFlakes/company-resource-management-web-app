@@ -70,3 +70,20 @@
             throw new NotEqualElementsException();
         }
     }
+
+    private void areDeliveredTypesCorrect(String[] deliveredTypes) throws InvalidArgumentException {
+        ArrayList<String> correctTypes = new ArrayList<String>() {{
+            add("integer");
+            add("string");
+            add("float");
+            add("double");
+        }};
+
+        for(String type : deliveredTypes) {
+            type = type.toLowerCase();
+
+            if (!correctTypes.contains(type)) {
+                throw new InvalidArgumentException();
+            }
+        }
+    }
