@@ -29,7 +29,6 @@ public class ManagerController implements UserController {
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
-            this.userInterface.inputs.getInput("Press enter to continue...");
             school.save();
         }
     }
@@ -82,6 +81,8 @@ public class ManagerController implements UserController {
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
+
+        this.userInterface.lockActualState();
     }
 
     private Class chooseProperClass() {
@@ -98,7 +99,7 @@ public class ManagerController implements UserController {
     }
 
     private Integer getUserChoice() {
-        String[] questions = {"Please choose class"};
+        String[] questions = {"Please choose class: "};
         String[] expectedTypes = {"integer"};
         ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
 
@@ -118,6 +119,8 @@ public class ManagerController implements UserController {
 
     private void createClass() {
         userInterface.println("Here will be creating class");
+
+        this.userInterface.lockActualState();
     }
 
     private void editMentor() {
@@ -126,6 +129,8 @@ public class ManagerController implements UserController {
 
     private void showMentorsClass() {
         userInterface.println("Here will be showing mentors class");
+
+        this.userInterface.lockActualState();
     }
 
     private void startExperienceLevelController(){
