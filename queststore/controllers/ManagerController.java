@@ -8,17 +8,18 @@ import queststore.models.School;
 import queststore.models.Mentor;
 import queststore.views.UserInterface;
 import queststore.models.Class;
+import queststore.models.Manager;
 
 
 public class ManagerController implements UserController {
 
-    private User user;
+    private Manager user;
     private School school;
     private UserInterface userInterface = new UserInterface();
 
     public void startController(User user, School school) {
 
-        this.user = user;
+        this.user = (Manager) user;
         this.school = school;
 
         String userChoice = "";
