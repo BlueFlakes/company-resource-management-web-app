@@ -60,4 +60,7 @@ public class Class {
         return this.id;
     }
 
+    public String toString() {
+        return this.name;
+    }
 }
