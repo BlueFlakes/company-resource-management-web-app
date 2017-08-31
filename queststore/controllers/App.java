@@ -6,8 +6,9 @@ import queststore.exceptions.WrongPasswordException;
 public class App {
 
     public static void main(String[] args) {
+
         School school = new School("Codecool");
-        try{
+        try {
             new LoginController(school).start();
         } catch (WrongPasswordException e) {
             System.out.println(e.getMessage());
