@@ -26,7 +26,23 @@ public class ExperienceLevelsController implements UserController {
         }
     }
 
-    public void startController() {
+    private void handleUserRequest(String choice) {
+        switch(choice) {
+            case "1":
+                createNewLevel();
+            break;
+
+            case "2":
+                updateLevel();
+            break;
+                
+            case "0":
+            break;
+
+            default:
+                userInterface.print("No such option.");
+            break;
+        }
     }
 
     private void createNewLevel() {
