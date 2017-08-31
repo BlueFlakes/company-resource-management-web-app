@@ -1,21 +1,25 @@
 package queststore.controllers;
 
 import queststore.interfaces.UserController;
+
 import queststore.models.User;
 import queststore.models.School;
+
 import queststore.views.UserInterface;
 
 public class ManagerController implements UserController {
+
     User user;
     School school;
     UserInterface userInterface = new UserInterface();
-    
+
     public void startController(User user, School school) {
+
         this.user = user;
         this.school = school;
 
         String userChoice = "";
-        while(!userChoice.equals("0")){
+        while (!userChoice.equals("0")) {
             this.userInterface.printManagerMenu();
             userChoice = this.userInterface.getInput("Provide options");
             handleUserRequest(userChoice);
@@ -24,8 +28,9 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void handleUserRequest(String choice){
-        switch(choice){
+    private void handleUserRequest(String choice) {
+
+        switch(choice) {
             case "1":
                 addMentor();
             break;
@@ -41,11 +46,11 @@ public class ManagerController implements UserController {
             case "4":
                 showMentorsClass();
             break;
-            
+
             case "5":
                 startExperienceLevelController();
             break;
-                
+
             case "0":
             break;
 
@@ -57,7 +62,6 @@ public class ManagerController implements UserController {
 
     private void addMentor() {
         userInterface.print("Here will be adding mentor");
-        
     }
 
     private void createClass() {
@@ -72,9 +76,7 @@ public class ManagerController implements UserController {
         userInterface.print("Here will be showing mentors class");
     }
 
-    private void startExperienceLevelController(){
+    private void startExperienceLevelController() {
         userInterface.print("Here you will change and create experience levels");
-
     }
-
 }
