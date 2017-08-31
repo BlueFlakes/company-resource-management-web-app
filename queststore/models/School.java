@@ -18,8 +18,8 @@ public class School{
         this.name = name;
         this.classDao = new ClassDao();
         this.managerDao = new ManagerDao();
-        this.mentorDao = new MentorDao();
-        this.studentDao = new StudentDao();
+        this.mentorDao = new MentorDao(this.classDao);
+        this.studentDao = new StudentDao(this.classDao);
     }
 
     public User getUser(String login){

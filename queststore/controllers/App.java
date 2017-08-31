@@ -5,12 +5,12 @@ import queststore.exceptions.WrongPasswordException;
 
 public class App{
     public static void main(String[] args){
-        School school = new School("Kołdkul");
+        School school = new School("Codecool");
         try{
             new LoginController(school).start();
         } catch (WrongPasswordException e){
             System.out.println("No such user");
         }
-        
+
     }
 }
