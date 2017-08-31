@@ -25,10 +25,6 @@ public class StudentController implements UserController {
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
-            if (!userChoice.equals("0")) {
-                this.userInterface.inputs.getInput("Press enter to continue...");
-            }
-
             school.save();
         }
     }
@@ -51,7 +47,7 @@ public class StudentController implements UserController {
                 break;
 
             default:
-                userInterface.println("No such option.");
+                handleNoSuchCommand();
                 break;
         }
     }
@@ -60,11 +56,18 @@ public class StudentController implements UserController {
         String accountBalance = Integer.toString(this.user.getPossesedCoins());
         userInterface.println("Your actual balance present itself like this: " + accountBalance);
 
+        this.userInterface.lockActualState();
     }
 
     private void showLevel() {
         userInterface.println("Here will be see your level");
         System.out.println(this.user.getPossesedCoins());
+
+        this.userInterface.lockActualState();
+    }
+
+    private void handleNoSuchCommand() {
+        userInterface.println("No such option.");
     }
 
     private void startStoreController() {
