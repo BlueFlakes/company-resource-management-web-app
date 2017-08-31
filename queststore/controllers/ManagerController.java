@@ -21,10 +21,10 @@ public class ManagerController implements UserController {
         String userChoice = "";
         while (!userChoice.equals("0")) {
             this.userInterface.printManagerMenu();
-            userChoice = this.userInterface.getInput("Provide options");
+            userChoice = this.userInterface.inputs.getInput("Provide options");
             handleUserRequest(userChoice);
 
-            this.userInterface.getInput("Press enter to continue...");
+            this.userInterface.inputs.getInput("Press enter to continue...");
             school.save();
         }
     }

@@ -18,7 +18,7 @@ public class MentorController {
 
         while (!userChoice.equals("0")) {
             this.userInterface.printMentorMenu();
-            userChoice = userInterface.getInput("What do you want to do");
+            userChoice = userInterface.inputs.getInput("What do you want to do");
             handleUserRequest(userChoice);
             userInterface.lockActualState();
             school.save();
