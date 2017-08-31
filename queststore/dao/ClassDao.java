@@ -58,6 +58,10 @@ public class ClassDao {
         return null;
     }
 
+    public ArrayList<Class> getAllClasses() {
+        return this.classes;
+    }
+
     public void save() {
     }
 }
