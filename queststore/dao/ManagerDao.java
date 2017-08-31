@@ -63,6 +63,10 @@ public class ManagerDao{
         return null;
     }
 
+    public void addManager(Manager manager) {
+        this.managers.add(manager);
+    }
+
     public void save(){
 
     }

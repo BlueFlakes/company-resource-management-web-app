@@ -70,6 +70,12 @@ public class StudentDao {
         return null;
     }
 
+    public void addStudent(Student student) {
+        this.students.add(student);
+        Class clas = student.getClas();
+        clas.addStudent(student);
+    }
+
     public void save(){
 
     }
