@@ -67,6 +67,10 @@ public class MentorDao {
         return null;
     }
 
+    public ArrayList<Mentor> getAllMentors() {
+        return this.mentors;
+    }
+
     public void addMentor(Mentor mentor) {
         this.mentors.add(mentor);
         Class clas = mentor.getClas();

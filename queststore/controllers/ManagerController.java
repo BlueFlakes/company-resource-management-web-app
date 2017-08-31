@@ -8,6 +8,7 @@ import queststore.models.School;
 import queststore.models.Mentor;
 import queststore.views.UserInterface;
 import queststore.models.Class;
+import queststore.models.Student;
 import queststore.models.Manager;
 import queststore.exceptions.LoginInUseException;
 
@@ -106,6 +107,14 @@ public class ManagerController implements UserController {
         return Integer.parseInt(userInput.get(0));
     }
 
+    private Integer getUserChoiceOfMentor() {
+        String[] questions = {"Please choose mentor: "};
+        String[] expectedTypes = {"integer"};
+        ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+
+        return Integer.parseInt(userInput.get(0));
+    }
+
     private void showAvailableClasses(ArrayList<Class> allClasses) {
         userInterface.println("");
 
@@ -128,9 +137,33 @@ public class ManagerController implements UserController {
     }
 
     private void showMentorsClass() {
-        userInterface.println("Here will be showing mentors class");
+        userInterface.println("List of existing mentors: ");
 
-        this.userInterface.lockActualState();
+        ArrayList<Mentor> mentors = this.school.getAllMentors();
+        for (Mentor mentor: mentors) {
+            userInterface.println(mentor.toString());
+        }
+
+        Integer mentorId = this.getUserChoiceOfMentor();
+        Mentor mentor = school.getMentor(mentorId);
+        if (mentor == null) {
+            userInterface.println("There is no user of such id!");
+        } else {
+            this.printMentorInfo(mentor);
+        }
+    }
+
+    private void printMentorInfo(Mentor mentor) {
+        Class clas = mentor.getClas();
+        ArrayList<Student> students = clas.getAllStudents();
+
+        userInterface.println("Chosen mentor info: ");
+        userInterface.println(mentor.getMentorData());
+        userInterface.println("\nList of this mentor students: ");
+
+        for (Student student: students) {
+            userInterface.println(student.toString());
+        }
     }
 
     private void startExperienceLevelController(){

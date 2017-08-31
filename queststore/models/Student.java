@@ -57,6 +57,10 @@ public class Student extends User {
         return String.format("%d|%s|%s|%s|%s|%d%n", this.getId(), this.getName(), this.getLogin(), this.getPassword(), this.getEmail(), this.getClas().getId());
     }
 
+	public String toString() {
+        return String.format("id: %d. %s%n", this.getId(), this.getName());
+    }
+
 	public void addCoins(Integer ammount) {
 		this.earnedCoins += ammount;
 		this.possesedCoins += ammount;
