@@ -32,7 +32,7 @@ public class MentorDao {
                 Integer classId = Integer.parseInt(mentorData[5]);
                 Class clas = classDao.getClass(classId);
 
-                Mentor mentor = new Mentor(name, login, password, email, id, clas);
+                Mentor mentor = new Mentor(name, login, password, email, clas, id);
                 loadedMentors.add(mentor);
                 clas.addMentor(mentor);
             }
