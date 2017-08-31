@@ -32,6 +32,7 @@ public class StudentStoreController implements UserController {
     }
 
      private void handleUserRequest(String choice) {
+
         switch(choice){
             case "1":
                 showAvailableArtifacts();

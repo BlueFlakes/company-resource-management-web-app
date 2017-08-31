@@ -9,9 +9,9 @@ import queststore.views.UserInterface;
 
 public class ManagerController implements UserController {
 
-    User user;
-    School school;
-    UserInterface userInterface = new UserInterface();
+    private User user;
+    private School school;
+    private UserInterface userInterface = new UserInterface();
 
     public void startController(User user, School school) {
 
@@ -23,6 +23,7 @@ public class ManagerController implements UserController {
             this.userInterface.printManagerMenu();
             userChoice = this.userInterface.getInput("Provide options");
             handleUserRequest(userChoice);
+
             this.userInterface.getInput("Press enter to continue...");
             school.save();
         }
@@ -33,30 +34,30 @@ public class ManagerController implements UserController {
         switch(choice) {
             case "1":
                 addMentor();
-            break;
+                break;
 
             case "2":
                 createClass();
-            break;
+                break;
 
             case "3":
                 editMentor();
-            break;
+                break;
 
             case "4":
                 showMentorsClass();
-            break;
+                break;
 
             case "5":
                 startExperienceLevelController();
-            break;
+                break;
 
             case "0":
-            break;
+                break;
 
             default:
                 userInterface.print("No such option.");
-            break;
+                break;
         }
     }
 
