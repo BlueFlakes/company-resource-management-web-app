@@ -68,6 +68,12 @@ public class MentorDao {
         return null;
     }
 
+    public void addMentor(mentor mentor) {
+        this.mentors.add(mentor);
+        Class clas = mentor.getClas();
+        clas.addMentor(mentor);
+    }
+
     public void save(){
 
     }
