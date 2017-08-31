@@ -66,7 +66,7 @@ public class MentorController {
     }
 
     private void addStudent() {
-        String[] questions = {"Name", "Login", "Password", "Email"};
+        String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
 
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
