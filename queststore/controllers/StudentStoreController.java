@@ -44,7 +44,7 @@ public class StudentStoreController implements UserController {
                 break;
 
             default:
-                userInterface.println("No such option.");
+                handleNoSuchCommand();
                 break;
 
         }
@@ -58,5 +58,9 @@ public class StudentStoreController implements UserController {
     private void showAvailableArtifacts() {
 
         this.userInterface.lockActualState();
+    }
+
+    private void handleNoSuchCommand() {
+        userInterface.println("No such option.");
     }
 }

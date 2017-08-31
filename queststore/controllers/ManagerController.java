@@ -60,7 +60,7 @@ public class ManagerController implements UserController {
                 break;
 
             default:
-                userInterface.println("No such option.");
+                handleNoSuchCommand();
                 break;
         }
     }
@@ -135,5 +135,9 @@ public class ManagerController implements UserController {
 
     private void startExperienceLevelController(){
         new ExperienceLevelsController().startController(this.user, this.school);
+    }
+
+    private void handleNoSuchCommand() {
+        userInterface.println("No such option.");
     }
 }
