@@ -64,3 +64,9 @@
             Double.parseDouble(userInput);
         }
     }
+
+    private void areEqualByLength(String[] deliveredQuestions, String[] expectedTypes) throws NotEqualElementsException {
+        if (deliveredQuestions.length != expectedTypes.length) {
+            throw new NotEqualElementsException();
+        }
+    }
