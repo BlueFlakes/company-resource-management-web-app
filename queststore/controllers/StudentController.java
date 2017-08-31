@@ -4,18 +4,19 @@ import queststore.interfaces.UserController;
 
 import queststore.models.User;
 import queststore.models.School;
-
+import queststore.models.Student;
 import queststore.views.UserInterface;
+import queststore.interfaces.UserController;
 
-public class StudentController {
+public class StudentController implements UserController {
 
-    private User user;
+    private Student user;
     School school;
     UserInterface userInterface = new UserInterface();
 
     public void startController(User user, School school) {
 
-        this.user = user;
+        this.user = (Student) user;
         this.school = school;
 
         String userChoice = "";
@@ -61,6 +62,7 @@ public class StudentController {
 
     private void showLevel() {
         userInterface.print("Here will be see your level");
+        System.out.println(this.user.getPossesedCoins());
     }
 
     private void startStoreController() {
