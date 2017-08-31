@@ -23,6 +23,15 @@ public class ExperienceLevels{
         }
         return level;
     }
+
+    private Integer findLevelInMap(Integer coins){
+        Integer level = null;
+        for (Integer minimalCoinAmmount : levels.keySet()){
+            if(minimalCoinAmmount <= coins) level = this.levels.get(minimalCoinAmmount);
+        }
+
+        return level;
+    }
     public void addLevel(Integer coins, Integer level) {
         this.levels.put(coins, level);
     }
