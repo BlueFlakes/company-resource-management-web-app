@@ -50,3 +50,17 @@
 
         return collectedData;
     }
+
+    private void validateUserInput(String userInput, String expectedType) {
+        if (expectedType.equalsIgnoreCase("String")) {
+            if (userInput.isEmpty()) {
+                throw new IllegalArgumentException("Error: expected at least one sign.\n");
+            }
+        } else if (expectedType.equalsIgnoreCase("Integer")) {
+            Integer.parseInt(userInput);
+        } else if (expectedType.equalsIgnoreCase("Float")) {
+            Float.parseFloat(userInput);
+        } else if (expectedType.equalsIgnoreCase("Double")) {
+            Double.parseDouble(userInput);
+        }
+    }
