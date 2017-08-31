@@ -19,10 +19,8 @@ public class StudentDao {
     private ArrayList<Student> readStudentsData(ClassDao classDao) {
         ArrayList<Student> loadedStudents= new ArrayList<>();
         String[] studentData;
-        Scanner fileScan;
 
-        try {
-            fileScan = new Scanner(new File("queststore/csv/student.csv"));
+        try (Scanner fileScan = new Scanner(new File("queststore/csv/student.csv"))) {
 
             while(fileScan.hasNextLine()) {
                 studentData = fileScan.nextLine().split("\\|");

@@ -19,10 +19,8 @@ public class MentorDao {
     private ArrayList<Mentor> readMentorsData(ClassDao classDao) {
         ArrayList<Mentor> loadedMentors= new ArrayList<>();
         String[] mentorData;
-        Scanner fileScan;
 
-        try {
-            fileScan = new Scanner(new File("queststore/csv/mentor.csv"));
+        try (Scanner fileScan = new Scanner(new File("queststore/csv/mentor.csv"))) {
 
             while(fileScan.hasNextLine()) {
                 mentorData = fileScan.nextLine().split("\\|");

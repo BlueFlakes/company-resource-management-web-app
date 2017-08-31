@@ -19,10 +19,8 @@ public class ManagerDao {
 
         ArrayList<Manager> loadedManagers= new ArrayList<>();
         String[] managerData;
-        Scanner fileScan;
 
-        try {
-            fileScan = new Scanner(new File("queststore/csv/manager.csv"));
+        try (Scanner fileScan = new Scanner(new File("queststore/csv/manager.csv"))) {
 
             while(fileScan.hasNextLine()) {
                 managerData = fileScan.nextLine().split("\\|");

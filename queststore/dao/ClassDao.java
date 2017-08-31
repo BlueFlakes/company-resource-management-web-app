@@ -17,10 +17,8 @@ public class ClassDao {
     private ArrayList<Class> readClassesData() {
         ArrayList<Class> loadedClasses= new ArrayList<>();
         String[] classData;
-        Scanner fileScan;
 
-        try {
-            fileScan = new Scanner(new File("queststore/csv/class.csv"));
+        try (Scanner fileScan = new Scanner(new File("queststore/csv/class.csv"))) {
 
             while(fileScan.hasNextLine()) {
                 classData = fileScan.nextLine().split("\\|");
