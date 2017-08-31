@@ -20,7 +20,7 @@ public class MentorStoreController implements UserController {
 
         while (!userChoice.equals("0")) {
             this.userInterface.printMentorMenu();
-            userChoice = userInterface.inputs.getInput("What do you want to do");
+            userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
             userInterface.lockActualState();
             school.save();
@@ -71,6 +71,6 @@ public class MentorStoreController implements UserController {
     }
 
     private void handleNoSuchCommand() {
-        userInterface.print("Wrong command!");
+        userInterface.println("Wrong command!");
     }
 }

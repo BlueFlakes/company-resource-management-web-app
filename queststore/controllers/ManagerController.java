@@ -25,7 +25,7 @@ public class ManagerController implements UserController {
         String userChoice = "";
         while (!userChoice.equals("0")) {
             this.userInterface.printManagerMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options");
+            userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
             this.userInterface.inputs.getInput("Press enter to continue...");
@@ -60,7 +60,7 @@ public class ManagerController implements UserController {
                 break;
 
             default:
-                userInterface.print("No such option.");
+                userInterface.println("No such option.");
                 break;
         }
     }
@@ -101,26 +101,26 @@ public class ManagerController implements UserController {
     }
 
     private void showAvailableClasses(ArrayList<Class> allClasses) {
-        userInterface.print("");
+        userInterface.println("");
 
         for (int i = 0; i < allClasses.size(); i++) {
             String index = Integer.toString(i+1);
             System.out.println(index + ". " + allClasses.get(i));
         }
 
-        userInterface.print("");
+        userInterface.println("");
     }
 
     private void createClass() {
-        userInterface.print("Here will be creating class");
+        userInterface.println("Here will be creating class");
     }
 
     private void editMentor() {
-        userInterface.print("Here will be editing mentor");
+        userInterface.println("Here will be editing mentor");
     }
 
     private void showMentorsClass() {
-        userInterface.print("Here will be showing mentors class");
+        userInterface.println("Here will be showing mentors class");
     }
 
     private void startExperienceLevelController(){

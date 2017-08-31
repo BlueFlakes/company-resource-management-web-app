@@ -11,7 +11,7 @@ public class UserInterface {
     private FileLoader dataLoader = new FileLoader();
     public Inputs inputs = new Inputs();
 
-    public void print(String text) {
+    public void println(String text) {
         System.out.println(text);
     }
 
@@ -22,7 +22,7 @@ public class UserInterface {
     }
 
     public void lockActualState() {
-        System.out.print("\nPress enter to continue...");
+        System.out.println("Press enter to continue...");
         in.nextLine();
     }
 
