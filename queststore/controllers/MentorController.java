@@ -23,7 +23,7 @@ public class MentorController {
 
         while (!userChoice.equals("0")) {
             this.userInterface.printMentorMenu();
-            userChoice = userInterface.inputs.getInput("What do you want to do");
+            userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
             userInterface.lockActualState();
             school.save();
@@ -100,30 +100,30 @@ public class MentorController {
     }
 
     private void showAvailableClasses(ArrayList<Class> allClasses) {
-        userInterface.print("");
+        userInterface.println("");
 
         for (int i = 0; i < allClasses.size(); i++) {
             String index = Integer.toString(i+1);
             System.out.println(index + ". " + allClasses.get(i));
         }
 
-        userInterface.print("");
+        userInterface.println("");
     }
 
     private void addQuest() {
-        userInterface.print("Here you will create new quests");
+        userInterface.println("Here you will create new quests");
     }
 
     private void addQuestCategory() {
-        userInterface.print("Here you will create new quest category");
+        userInterface.println("Here you will create new quest category");
     }
 
     private void updateQuest() {
-        userInterface.print("Here you will change quest details");
+        userInterface.println("Here you will change quest details");
     }
 
     private void markBoughtArtifactsAsUsed() {
-        userInterface.print("Here you will mark students artifacts as used");
+        userInterface.println("Here you will mark students artifacts as used");
     }
 
     private void runMentorStoreController() {
@@ -131,7 +131,7 @@ public class MentorController {
     }
 
     private void handleNoSuchCommand() {
-        userInterface.print("Wrong command!");
+        userInterface.println("Wrong command!");
     }
 
 }

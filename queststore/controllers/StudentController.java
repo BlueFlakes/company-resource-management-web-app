@@ -22,7 +22,7 @@ public class StudentController implements UserController {
         String userChoice = "";
         while (!userChoice.equals("0")) {
             this.userInterface.printStudentMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options");
+            userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
             if (!userChoice.equals("0")) {
@@ -51,17 +51,19 @@ public class StudentController implements UserController {
                 break;
 
             default:
-                userInterface.print("No such option.");
+                userInterface.println("No such option.");
                 break;
         }
     }
 
     private void showWallet() {
-        userInterface.print("Here you will see your CC balance and yours artifacts");
+        String accountBalance = Integer.toString(this.user.getPossesedCoins());
+        userInterface.println("Your actual balance present itself like this: " + accountBalance);
+
     }
 
     private void showLevel() {
-        userInterface.print("Here will be see your level");
+        userInterface.println("Here will be see your level");
         System.out.println(this.user.getPossesedCoins());
     }
 

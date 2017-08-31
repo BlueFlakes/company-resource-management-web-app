@@ -22,7 +22,7 @@ public class StudentStoreController implements UserController {
         String userChoice = "";
         while(!userChoice.equals("0")) {
             this.userInterface.printStudentStoreMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options");
+            userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
             if (!userChoice.equals("0")) {
@@ -47,7 +47,7 @@ public class StudentStoreController implements UserController {
                 break;
 
             default:
-                userInterface.print("No such option.");
+                userInterface.println("No such option.");
                 break;
 
         }

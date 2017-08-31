@@ -10,7 +10,7 @@ public class Inputs {
     public Scanner in = new Scanner(System.in);
 
     public String getInput(String question){
-        System.out.print(question + ": ");
+        System.out.print(question);
         return in.nextLine().trim();
     }
 
