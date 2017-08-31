@@ -1,9 +1,9 @@
 package queststore.models;
 
-import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
 public class ExperienceLevels{
-    private LinkedHashMap<Integer, Integer> levels;
+    private TreeMap<Integer, Integer> levels;
 
     public Integer computeStudentLevel(Integer coins){
         return (Integer) coins/100;
