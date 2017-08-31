@@ -19,7 +19,7 @@ public class MentorStoreController implements UserController {
         String userChoice = "";
 
         while (!userChoice.equals("0")) {
-            this.userInterface.printMentorMenu();
+            this.userInterface.printMentorStoreMenu();
             userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
             userInterface.lockActualState();
