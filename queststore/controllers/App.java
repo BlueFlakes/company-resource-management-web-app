@@ -10,7 +10,7 @@ public class App {
         try{
             new LoginController(school).start();
         } catch (WrongPasswordException e) {
-            System.out.println("No such user");
+            System.out.println(e.getMessage());
         }
     }
 }
