@@ -14,6 +14,9 @@ public class ExperienceLevels{
     }
 
     public Integer computeStudentLevel(Integer coins){
-        return (Integer) coins/100;
+    public void addLevel(Integer coins, Integer level) {
+        this.levels.put(coins, level);
+    }
+
     }
 }
