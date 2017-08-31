@@ -14,6 +14,15 @@ public class ExperienceLevels{
     }
 
     public Integer computeStudentLevel(Integer coins){
+        Integer level;
+        if(!this.levels.isEmpty()) {
+            level = findLevelInMap(coins);
+            level = (level != null) ? level : 0;
+        } else {
+            level = coins;
+        }
+        return level;
+    }
     public void addLevel(Integer coins, Integer level) {
         this.levels.put(coins, level);
     }
