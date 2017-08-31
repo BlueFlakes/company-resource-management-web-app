@@ -1,51 +1,57 @@
 package queststore.controllers;
 
 import queststore.interfaces.UserController;
+
 import queststore.models.User;
 import queststore.models.School;
+
 import queststore.views.UserInterface;
 
 public class StudentController {
-    User user;
+
+    private User user;
     School school;
     UserInterface userInterface = new UserInterface();
-    
+
     public void startController(User user, School school) {
+
         this.user = user;
         this.school = school;
 
         String userChoice = "";
-        while(!userChoice.equals("0")){
+        while (!userChoice.equals("0")) {
             this.userInterface.printStudentMenu();
             userChoice = this.userInterface.getInput("Provide options");
             handleUserRequest(userChoice);
-            if(!userChoice.equals("0")){
+
+            if (!userChoice.equals("0")) {
                 this.userInterface.getInput("Press enter to continue...");
             }
+
             school.save();
         }
     }
 
-    private void handleUserRequest(String choice){
-        switch(choice){
+    private void handleUserRequest(String choice) {
+        switch (choice) {
             case "1":
                 startStoreController();
-            break;
+                break;
 
             case "2":
                 showLevel();
-            break;
-            
+                break;
+
             case "3":
                 showWallet();
-            break;
+                break;
 
             case "0":
-            break;
+                break;
 
             default:
                 userInterface.print("No such option.");
-            break;
+                break;
         }
     }
 
@@ -57,7 +63,7 @@ public class StudentController {
         userInterface.print("Here will be see your level");
     }
 
-    private void startStoreController(){
+    private void startStoreController() {
         new StudentStoreController().startController(this.user, this.school);
     }
 }
