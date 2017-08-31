@@ -6,6 +6,7 @@ import queststore.models.User;
 import queststore.models.School;
 
 import queststore.views.UserInterface;
+import queststore.models.Student;
 
 public class StudentStoreController implements UserController {
 
@@ -15,7 +16,7 @@ public class StudentStoreController implements UserController {
 
     public void startController(User user, School school) {
 
-        this.user = user;
+        this.user = (Student) user;
         this.school = school;
 
         String userChoice = "";
