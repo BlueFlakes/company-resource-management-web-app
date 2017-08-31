@@ -80,7 +80,7 @@ public class ManagerController implements UserController {
         try {
             this.school.addUser(new Mentor(name, login, password, email, choosenClass));
         } catch (LoginInUseException e) {
-            userInterface.print(e.getMessage());
+            userInterface.println(e.getMessage());
         }
     }
 

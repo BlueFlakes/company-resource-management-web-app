@@ -79,7 +79,7 @@ public class MentorController {
         try {
             this.school.addUser(new Student(name, login, password, email, choosenClass));
         } catch (LoginInUseException e) {
-            userInterface.print(e.getMessage());
+            userInterface.println(e.getMessage());
         }
     }
 
