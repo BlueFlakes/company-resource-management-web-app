@@ -36,5 +36,4 @@ public class ExperienceLevels{
         this.levels.put(coins, level);
     }
 
-    }
 }
