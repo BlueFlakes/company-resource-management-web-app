@@ -24,8 +24,8 @@ public abstract class User {
         this.email = email;
         this.id = id;
 
-        if(id > index) {
-            index = id++;
+        if(id >= index) {
+            index = ++id;
         }
     }
 
