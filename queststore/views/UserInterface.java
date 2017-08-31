@@ -88,4 +88,11 @@ public class UserInterface {
 
         System.out.println();
     }
+
+    public void printStoreArtifacts() {
+        String fileName = "bin/queststore/csv/artifactList.csv";
+        List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
+
+        printMenu(loadedMenu);
+    }
 }
