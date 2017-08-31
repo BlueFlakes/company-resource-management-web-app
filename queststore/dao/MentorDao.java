@@ -29,13 +29,12 @@ public class MentorDao {
                 String login = mentorData[2];
                 String password = mentorData[3];
                 String email = mentorData[4];
-                Mentor mentor = new Mentor(name, login, password, email, id);
-                loadedMentors.add(mentor);
-
                 Integer classId = Integer.parseInt(mentorData[5]);
                 Class clas = classDao.getClass(classId);
-                clas.addMentor(mentor);
 
+                Mentor mentor = new Mentor(name, login, password, email, id, clas);
+                loadedMentors.add(mentor);
+                clas.addMentor(mentor);
             }
 
         } catch (FileNotFoundException e) {
@@ -83,6 +82,7 @@ public class MentorDao {
         System.out.println(clas.getAllMentors());
         Class clas1 = classDao.getClass("klasa pierwsza");
         System.out.println(clas1.getAllMentors().get(1).getName());
+
         //System.out.println(classDao.classes.get(1).getId());
     }
 }
