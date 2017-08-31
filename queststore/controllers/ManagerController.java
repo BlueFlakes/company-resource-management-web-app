@@ -1,11 +1,14 @@
 package queststore.controllers;
 
-import queststore.interfaces.UserController;
+import java.util.ArrayList;
 
+import queststore.interfaces.UserController;
 import queststore.models.User;
 import queststore.models.School;
-
+import queststore.models.Mentor;
 import queststore.views.UserInterface;
+import queststore.models.Class;
+
 
 public class ManagerController implements UserController {
 
@@ -62,7 +65,49 @@ public class ManagerController implements UserController {
     }
 
     private void addMentor() {
-        userInterface.print("Here will be adding mentor");
+        String[] questions = {"Name", "Login", "Password", "Email"};
+        String[] expectedTypes = {"String", "String", "String", "String"};
+
+        ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+        String name = basicUserData.get(0);
+        String login = basicUserData.get(1);
+        String password = basicUserData.get(2);
+        String email = basicUserData.get(3);
+        Class choosenClass = chooseProperClass();
+
+        this.school.addUser(new Mentor(name, login, password, email, choosenClass));
+    }
+
+    private Class chooseProperClass() {
+        ArrayList<Class> allClasses = this.school.getAllClasses();
+        int userChoice;
+
+        do {
+            showAvailableClasses(allClasses);
+            userChoice = getUserChoice() - 1;
+
+        } while (userChoice > (allClasses.size() - 1) || userChoice < 0);
+
+        return allClasses.get(userChoice);
+    }
+
+    private Integer getUserChoice() {
+        String[] questions = {"Please choose class"};
+        String[] expectedTypes = {"integer"};
+        ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+
+        return Integer.parseInt(userInput.get(0));
+    }
+
+    private void showAvailableClasses(ArrayList<Class> allClasses) {
+        userInterface.print("");
+
+        for (int i = 0; i < allClasses.size(); i++) {
+            String index = Integer.toString(i+1);
+            System.out.println(index + ". " + allClasses.get(i));
+        }
+
+        userInterface.print("");
     }
 
     private void createClass() {
