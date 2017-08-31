@@ -30,7 +30,6 @@ public class ManagerController implements UserController {
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
-            this.userInterface.inputs.getInput("Press enter to continue...");
             school.save();
         }
     }
@@ -62,13 +61,13 @@ public class ManagerController implements UserController {
                 break;
 
             default:
-                userInterface.println("No such option.");
+                handleNoSuchCommand();
                 break;
         }
     }
 
     private void addMentor() {
-        String[] questions = {"Name", "Login", "Password", "Email"};
+        String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
 
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
@@ -83,6 +82,8 @@ public class ManagerController implements UserController {
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
+
+        this.userInterface.lockActualState();
     }
 
     private Class chooseProperClass() {
@@ -99,7 +100,7 @@ public class ManagerController implements UserController {
     }
 
     private Integer getUserChoice() {
-        String[] questions = {"Please choose class"};
+        String[] questions = {"Please choose class: "};
         String[] expectedTypes = {"integer"};
         ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
 
@@ -127,6 +128,8 @@ public class ManagerController implements UserController {
 
     private void createClass() {
         userInterface.println("Here will be creating class");
+
+        this.userInterface.lockActualState();
     }
 
     private void editMentor() {
@@ -165,5 +168,9 @@ public class ManagerController implements UserController {
 
     private void startExperienceLevelController(){
         new ExperienceLevelsController().startController(this.user, this.school);
+    }
+
+    private void handleNoSuchCommand() {
+        userInterface.println("No such option.");
     }
 }

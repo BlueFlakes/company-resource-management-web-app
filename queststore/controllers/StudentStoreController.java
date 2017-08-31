@@ -25,9 +25,6 @@ public class StudentStoreController implements UserController {
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
-            if (!userChoice.equals("0")) {
-                this.userInterface.inputs.getInput("Press enter to continue...");
-            }
             school.save();
         }
     }
@@ -47,15 +44,23 @@ public class StudentStoreController implements UserController {
                 break;
 
             default:
-                userInterface.println("No such option.");
+                handleNoSuchCommand();
                 break;
 
         }
      }
 
     private void buyArtifact() {
+
+        this.userInterface.lockActualState();
     }
 
     private void showAvailableArtifacts() {
+
+        this.userInterface.lockActualState();
+    }
+
+    private void handleNoSuchCommand() {
+        userInterface.println("No such option.");
     }
 }

@@ -19,10 +19,10 @@ public class MentorStoreController implements UserController {
         String userChoice = "";
 
         while (!userChoice.equals("0")) {
-            this.userInterface.printMentorMenu();
+            this.userInterface.printMentorStoreMenu();
             userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
-            userInterface.lockActualState();
+
             school.save();
         }
     }
@@ -56,21 +56,31 @@ public class MentorStoreController implements UserController {
 
     private void showAvailableArtifacts() {
         System.out.println("Available Artifacts.");
+
+        this.userInterface.lockActualState();
     }
 
     private void addArtifact() {
         System.out.println("Add artifact.");
+
+        this.userInterface.lockActualState();
     }
 
     private void updateArtifact() {
         System.out.println("update artifact");
+
+        this.userInterface.lockActualState();
     }
 
     private void addArtifactCategory() {
         System.out.println("Add artifact category");
+
+        this.userInterface.lockActualState();
     }
 
     private void handleNoSuchCommand() {
         userInterface.println("Wrong command!");
+
+        this.userInterface.lockActualState();
     }
 }

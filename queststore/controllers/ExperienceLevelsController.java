@@ -19,9 +19,7 @@ public class ExperienceLevelsController implements UserController {
             this.userInterface.printExperienceLevelsMenu();
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
-            if(!userChoice.equals("0")) {
-                this.userInterface.inputs.getInput("Press enter to continue...");
-            }
+
             school.save();
         }
     }
@@ -46,8 +44,12 @@ public class ExperienceLevelsController implements UserController {
     }
 
     private void createNewLevel() {
+
+        this.userInterface.lockActualState();
     }
 
     private void updateLevel() {
+
+        this.userInterface.lockActualState();
     }
 }

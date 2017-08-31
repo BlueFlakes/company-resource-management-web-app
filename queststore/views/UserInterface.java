@@ -22,12 +22,20 @@ public class UserInterface {
     }
 
     public void lockActualState() {
-        System.out.println("Press enter to continue...");
+        System.out.println();
+        System.out.print("Press enter to continue...");
         in.nextLine();
     }
 
     public void printMentorMenu() {
         String fileName = "queststore/csv/mentorMenu.csv";
+        List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
+
+        printMenu(loadedMenu);
+    }
+
+    public void printMentorStoreMenu() {
+        String fileName = "queststore/csv/mentorStoreMenu.csv";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
 
         printMenu(loadedMenu);

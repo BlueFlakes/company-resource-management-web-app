@@ -26,7 +26,7 @@ public class MentorController {
             this.userInterface.printMentorMenu();
             userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
-            userInterface.lockActualState();
+
             school.save();
         }
     }
@@ -66,7 +66,7 @@ public class MentorController {
     }
 
     private void addStudent() {
-        String[] questions = {"Name", "Login", "Password", "Email"};
+        String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
 
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
@@ -81,6 +81,8 @@ public class MentorController {
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
+
+        this.userInterface.lockActualState();
     }
 
     private Class chooseProperClass() {
@@ -97,7 +99,7 @@ public class MentorController {
     }
 
     private Integer getUserChoice() {
-        String[] questions = {"Please choose class"};
+        String[] questions = {"Please choose class: "};
         String[] expectedTypes = {"integer"};
         ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
 
@@ -117,18 +119,26 @@ public class MentorController {
 
     private void addQuest() {
         userInterface.println("Here you will create new quests");
+
+        this.userInterface.lockActualState();
     }
 
     private void addQuestCategory() {
         userInterface.println("Here you will create new quest category");
+
+        this.userInterface.lockActualState();
     }
 
     private void updateQuest() {
         userInterface.println("Here you will change quest details");
+
+        this.userInterface.lockActualState();
     }
 
     private void markBoughtArtifactsAsUsed() {
         userInterface.println("Here you will mark students artifacts as used");
+
+        this.userInterface.lockActualState();
     }
 
     private void runMentorStoreController() {
@@ -137,6 +147,8 @@ public class MentorController {
 
     private void handleNoSuchCommand() {
         userInterface.println("Wrong command!");
+
+        this.userInterface.lockActualState();
     }
 
 }
