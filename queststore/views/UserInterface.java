@@ -1,19 +1,13 @@
 package queststore.views;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
 import queststore.dao.FileLoader;
 
-public class UserInterface {
-
-    private Scanner in = new Scanner(System.in);
+public class UserInterface extends Inputs {
     private FileLoader dataLoader = new FileLoader();
-
-    public String getInput(String question) {
-        System.out.print(question + ": ");
-        return in.nextLine().trim();
-    }
 
     public void print(String text) {
         System.out.println(text);
