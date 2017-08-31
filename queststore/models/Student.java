@@ -47,6 +47,10 @@ public class Student extends User{
 		return experienceLevels.computeStudentLevel(this.earnedCoins);
 	}
 
+	public Class getClas() {
+        return this.class_;
+    }
+
 	public void addCoins(Integer ammount){
 		this.earnedCoins += ammount;
 		this.possesedCoins += ammount;

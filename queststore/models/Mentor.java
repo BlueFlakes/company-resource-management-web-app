@@ -12,4 +12,8 @@ public class Mentor extends User {
         super(name, login, password, email, id);
         this.class_ = class_;
     }
+
+    public Class getClas() {
+        return this.class_;
+    }
 }
