@@ -53,6 +53,10 @@ public class Student extends User {
         return this.class_;
     }
 
+	public String getStudentSaveString() {
+        return String.format("%d|%s|%s|%s|%s|%d%n", this.getId(), this.getName(), this.getLogin(), this.getPassword(), this.getEmail(), this.getClas().getId());
+    }
+
 	public void addCoins(Integer ammount) {
 		this.earnedCoins += ammount;
 		this.possesedCoins += ammount;

@@ -16,4 +16,8 @@ public class Mentor extends User {
     public Class getClas() {
         return this.class_;
     }
+
+    public String getMentorSaveString() {
+        return String.format("%d|%s|%s|%s|%s|%d%n", this.getId(), this.getName(), this.getLogin(), this.getPassword(), this.getEmail(), this.getClas().getId());
+    }
 }
