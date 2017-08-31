@@ -76,7 +76,7 @@ public class StudentDao {
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("queststore/csv/student_try.csv")) {
+        try (Formatter writer = new Formatter("queststore/csv/student.csv")) {
 
             for(Student student: this.students) {
                 String lineToSave = student.getStudentSaveString();

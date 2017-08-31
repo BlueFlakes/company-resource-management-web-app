@@ -74,7 +74,7 @@ public class MentorDao {
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("queststore/csv/mentor_try.csv")) {
+        try (Formatter writer = new Formatter("queststore/csv/mentor.csv")) {
 
             for(Mentor mentor: this.mentors) {
                 String lineToSave = mentor.getMentorSaveString();

@@ -68,7 +68,7 @@ public class ManagerDao {
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("queststore/csv/manager_try.csv")) {
+        try (Formatter writer = new Formatter("queststore/csv/manager.csv")) {
 
             for(Manager manager: this.managers) {
                 String lineToSave = manager.getManagerSaveString();

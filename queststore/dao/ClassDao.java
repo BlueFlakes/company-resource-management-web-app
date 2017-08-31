@@ -64,7 +64,7 @@ public class ClassDao {
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("queststore/csv/class_try.csv")) {
+        try (Formatter writer = new Formatter("queststore/csv/class.csv")) {
 
             for(Class clas: this.classes) {
                 String lineToSave = clas.getClassSaveString();
