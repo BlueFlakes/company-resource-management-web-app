@@ -29,13 +29,14 @@ public class StudentDao {
                 String login = studentData[2];
                 String password = studentData[3];
                 String email = studentData[4];
-                Student student = new Student(name, login, password, email, id);
-                loadedStudents.add(student);
 
                 Integer classId = Integer.parseInt(studentData[5]);
                 Class clas = classDao.getClass(classId);
-                clas.addStudent(student);
 
+                Student student = new Student(name, login, password, email, clas, id);
+                loadedStudents.add(student);
+
+                clas.addStudent(student);
             }
 
         } catch (FileNotFoundException e) {
