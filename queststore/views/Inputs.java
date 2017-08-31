@@ -6,7 +6,7 @@ import java.util.Scanner;
 import queststore.exceptions.NotEqualElementsException;
 import queststore.exceptions.InvalidArgumentException;
 
-public abstract class Inputs {
+public class Inputs {
     public Scanner in = new Scanner(System.in);
 
     public String getInput(String question){
