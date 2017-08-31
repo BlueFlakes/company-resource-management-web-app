@@ -3,6 +3,7 @@ package queststore.models;
 import java.util.ArrayList;
 
 public class Class {
+
     private String name;
     private ArrayList<Student> studentsList;
     private ArrayList<Mentor> mentorsList;
@@ -21,7 +22,8 @@ public class Class {
         this.studentsList = new ArrayList<>();
         this.mentorsList = new ArrayList<>();
         this.id = id;
-        if(id > index) {
+
+        if (id > index) {
             index = id++;
         }
     }
