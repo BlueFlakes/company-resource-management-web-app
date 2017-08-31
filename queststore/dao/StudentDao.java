@@ -31,13 +31,14 @@ public class StudentDao {
                 String login = studentData[2];
                 String password = studentData[3];
                 String email = studentData[4];
-                Student student = new Student(name, login, password, email, id);
-                loadedStudents.add(student);
 
                 Integer classId = Integer.parseInt(studentData[5]);
                 Class clas = classDao.getClass(classId);
-                clas.addStudent(student);
 
+                Student student = new Student(name, login, password, email, clas, id);
+                loadedStudents.add(student);
+
+                clas.addStudent(student);
             }
 
         } catch (FileNotFoundException e) {
@@ -69,6 +70,25 @@ public class StudentDao {
         return null;
     }
 
+    public void addStudent(Student student) {
+        this.students.add(student);
+        Class clas = student.getClas();
+        clas.addStudent(student);
+    }
+
     public void save() {
+    }
+
+    public static void main(String[] args) {
+        ClassDao classDao = new ClassDao();
+        StudentDao studentDao = new StudentDao(classDao);
+        Student student = studentDao.getStudent("mcnowak");
+        System.out.println(student.getName());
+        Class clas = classDao.getClass("klasa druga");
+        System.out.println(clas.getAllStudents().get(1).getName());
+        System.out.println(clas.getAllStudents());
+        Class clas1 = classDao.getClass("klasa pierwsza");
+        System.out.println(clas1.getAllStudents().get(0).getName());
+        //System.out.println(classDao.classes.get(1).getId());
     }
 }

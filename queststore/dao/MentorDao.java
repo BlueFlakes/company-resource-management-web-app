@@ -31,13 +31,12 @@ public class MentorDao {
                 String login = mentorData[2];
                 String password = mentorData[3];
                 String email = mentorData[4];
-                Mentor mentor = new Mentor(name, login, password, email, id);
-                loadedMentors.add(mentor);
-
                 Integer classId = Integer.parseInt(mentorData[5]);
                 Class clas = classDao.getClass(classId);
-                clas.addMentor(mentor);
 
+                Mentor mentor = new Mentor(name, login, password, email, clas, id);
+                loadedMentors.add(mentor);
+                clas.addMentor(mentor);
             }
 
         } catch (FileNotFoundException e) {
@@ -69,7 +68,26 @@ public class MentorDao {
         return null;
     }
 
-    public void save(){
+    public void addMentor(Mentor mentor) {
+        this.mentors.add(mentor);
+        Class clas = mentor.getClas();
+        clas.addMentor(mentor);
+    }
 
+    public void save() {
+    }
+
+    public static void main(String[] args) {
+        ClassDao classDao = new ClassDao();
+        MentorDao mentorDao = new MentorDao(classDao);
+        Mentor mentor = mentorDao.getMentor("sharp");
+        System.out.println(mentor.getName());
+        Class clas = classDao.getClass("klasa druga");
+        System.out.println(clas.getAllMentors().get(2).getName());
+        System.out.println(clas.getAllMentors());
+        Class clas1 = classDao.getClass("klasa pierwsza");
+        System.out.println(clas1.getAllMentors().get(1).getName());
+
+        //System.out.println(classDao.classes.get(1).getId());
     }
 }

@@ -58,6 +58,13 @@ public class UserInterface {
         printMenu(loadedMenu);
     }
 
+    public void printExperienceLevelsMenu() {
+        String fileName = "queststore/csv/experienceLevelsMenu.csv";
+        List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
+
+        printMenu(loadedMenu);
+    }
+
     private void printMenu(List<String> data) {
         clearWindow();
         printAllRecordsInMenuStyle(data);

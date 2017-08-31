@@ -64,6 +64,17 @@ public class ManagerDao {
         return null;
     }
 
+    public void addManager(Manager manager) {
+        this.managers.add(manager);
+    }
+
     public void save() {
+    }
+
+    public static void main(String[] args) {
+        ManagerDao managerDao = new ManagerDao();
+        Manager manager = managerDao.getManager(2);
+        System.out.println(manager.getName());
+        //System.out.println(classDao.classes.get(1).getId());
     }
 }

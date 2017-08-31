@@ -77,7 +77,7 @@ public class ManagerController implements UserController {
         userInterface.print("Here will be showing mentors class");
     }
 
-    private void startExperienceLevelController() {
-        userInterface.print("Here you will change and create experience levels");
+    private void startExperienceLevelController(){
+        new ExperienceLevelsController().startController(this.user, this.school);
     }
 }
