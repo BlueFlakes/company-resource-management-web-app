@@ -36,11 +36,11 @@ public class School{
 
     public void addUser(User user){
         if (user instanceof Manager) {
-            this.managerDao.addManager(user);
+            this.managerDao.addManager((Manager) user);
         } else if (user instanceof Mentor) {
-            this.mentorDao.addMentor(user);
+            this.mentorDao.addMentor((Mentor) user);
         } else if (user instanceof Student) {
-            this.studentDao.addStudent(user);
+            this.studentDao.addStudent((Student) user);
         }
     }
 
