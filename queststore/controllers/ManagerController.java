@@ -73,7 +73,7 @@ public class ManagerController implements UserController {
     }
 
     private void startExperienceLevelController(){
-        userInterface.print("Here you will change and create experience levels");
+        new ExperienceLevelsController().startController(this.user, this.school);
 
     }
 
