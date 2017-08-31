@@ -60,4 +60,9 @@ public class School {
         this.studentDao.save();
         this.classDao.save();
     }
+
+    public ArrayList<Class> getAllClasses() {
+        return this.classDao.getAllClasses();
+    }
+
 }
