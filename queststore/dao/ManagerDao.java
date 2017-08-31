@@ -4,9 +4,11 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.File;
+
 import queststore.models.Manager;
 
-public class ManagerDao{
+public class ManagerDao {
+
     private ArrayList<Manager> managers;
 
     public ManagerDao() {
@@ -14,6 +16,7 @@ public class ManagerDao{
     }
 
     private ArrayList<Manager> readManagersData() {
+
         ArrayList<Manager> loadedManagers= new ArrayList<>();
         String[] managerData;
         Scanner fileScan;
@@ -42,22 +45,20 @@ public class ManagerDao{
     public Manager getManager(Integer id) {
 
         for(Manager manager : this.managers) {
-
-                if(manager.getId() == id) {
-                    return manager;
-                }
+            if (manager.getId() == id) {
+                return manager;
+            }
         }
 
         return null;
     }
 
-    public Manager getManager(String login){
+    public Manager getManager(String login) {
 
         for(Manager manager : this.managers) {
-
-                if(manager.getLogin().equals(login)) {
-                    return manager;
-                }
+            if(manager.getLogin().equals(login)) {
+                return manager;
+            }
         }
 
         return null;
@@ -67,8 +68,7 @@ public class ManagerDao{
         this.managers.add(manager);
     }
 
-    public void save(){
-
+    public void save() {
     }
 
     public static void main(String[] args) {

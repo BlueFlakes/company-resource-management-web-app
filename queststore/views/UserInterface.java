@@ -2,18 +2,20 @@ package queststore.views;
 
 import java.util.Scanner;
 import java.util.List;
+
 import queststore.dao.FileLoader;
 
-public class UserInterface{
+public class UserInterface {
+
     private Scanner in = new Scanner(System.in);
     private FileLoader dataLoader = new FileLoader();
 
-    public String getInput(String question){
+    public String getInput(String question) {
         System.out.print(question + ": ");
         return in.nextLine().trim();
     }
 
-    public void print(String text){
+    public void print(String text) {
         System.out.println(text);
     }
 
@@ -82,6 +84,4 @@ public class UserInterface{
 
         System.out.println();
     }
-
-
 }

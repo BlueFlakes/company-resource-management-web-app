@@ -2,14 +2,17 @@ package queststore.controllers;
 
 import queststore.models.User;
 import queststore.models.School;
+
 import queststore.views.UserInterface;
 
 public class MentorController {
+
     private UserInterface userInterface = new UserInterface();
     private User user;
     private School school;
 
     public void startController(User user, School school) {
+
         this.user = user;
         this.school = school;
         String userChoice = "";
@@ -24,6 +27,7 @@ public class MentorController {
     }
 
     private void handleUserRequest(String userChoice) {
+
         switch(userChoice) {
             case "1":
                 addStudent();
@@ -53,7 +57,6 @@ public class MentorController {
 
             default:
                 handleNoSuchCommand();
-
         }
     }
 
@@ -77,8 +80,7 @@ public class MentorController {
         userInterface.print("Here you will mark students artifacts as used");
     }
 
-    private void runMentorStoreController(){
-
+    private void runMentorStoreController() {
     }
 
     private void handleNoSuchCommand() {
