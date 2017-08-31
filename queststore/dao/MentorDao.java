@@ -21,7 +21,7 @@ public class MentorDao {
         ArrayList<Mentor> loadedMentors= new ArrayList<>();
         String[] mentorData;
 
-        try (Scanner fileScan = new Scanner(new File("queststore/csv/mentor.csv"))) {
+        try (Scanner fileScan = new Scanner(new File("bin/queststore/csv/mentor.csv"))) {
 
             while(fileScan.hasNextLine()) {
                 mentorData = fileScan.nextLine().split("\\|");
@@ -74,7 +74,7 @@ public class MentorDao {
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("queststore/csv/mentor.csv")) {
+        try (Formatter writer = new Formatter("bin/queststore/csv/mentor.csv")) {
 
             for(Mentor mentor: this.mentors) {
                 String lineToSave = mentor.getMentorSaveString();

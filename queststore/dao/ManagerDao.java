@@ -21,7 +21,7 @@ public class ManagerDao {
         ArrayList<Manager> loadedManagers= new ArrayList<>();
         String[] managerData;
 
-        try (Scanner fileScan = new Scanner(new File("queststore/csv/manager.csv"))) {
+        try (Scanner fileScan = new Scanner(new File("bin/queststore/csv/manager.csv"))) {
 
             while(fileScan.hasNextLine()) {
                 managerData = fileScan.nextLine().split("\\|");
@@ -68,7 +68,7 @@ public class ManagerDao {
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("queststore/csv/manager.csv")) {
+        try (Formatter writer = new Formatter("bin/queststore/csv/manager.csv")) {
 
             for(Manager manager: this.managers) {
                 String lineToSave = manager.getManagerSaveString();

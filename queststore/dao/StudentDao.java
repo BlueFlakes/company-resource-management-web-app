@@ -21,7 +21,7 @@ public class StudentDao {
         ArrayList<Student> loadedStudents= new ArrayList<>();
         String[] studentData;
 
-        try (Scanner fileScan = new Scanner(new File("queststore/csv/student.csv"))) {
+        try (Scanner fileScan = new Scanner(new File("bin/queststore/csv/student.csv"))) {
 
             while(fileScan.hasNextLine()) {
                 studentData = fileScan.nextLine().split("\\|");
@@ -76,7 +76,7 @@ public class StudentDao {
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("queststore/csv/student.csv")) {
+        try (Formatter writer = new Formatter("bin/queststore/csv/student.csv")) {
 
             for(Student student: this.students) {
                 String lineToSave = student.getStudentSaveString();

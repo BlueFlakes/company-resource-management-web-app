@@ -21,7 +21,7 @@ public class ClassDao {
         ArrayList<Class> loadedClasses= new ArrayList<>();
         String[] classData;
 
-        try (Scanner fileScan = new Scanner(new File("queststore/csv/class.csv"))) {
+        try (Scanner fileScan = new Scanner(new File("bin/queststore/csv/class.csv"))) {
 
             while(fileScan.hasNextLine()) {
                 classData = fileScan.nextLine().split("\\|");
@@ -64,7 +64,7 @@ public class ClassDao {
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("queststore/csv/class.csv")) {
+        try (Formatter writer = new Formatter("bin/queststore/csv/class.csv")) {
 
             for(Class clas: this.classes) {
                 String lineToSave = clas.getClassSaveString();
