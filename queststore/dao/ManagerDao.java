@@ -79,11 +79,4 @@ public class ManagerDao {
             System.out.println("File not found");
         }
     }
-
-    public static void main(String[] args) {
-        ManagerDao managerDao = new ManagerDao();
-        Manager manager = managerDao.getManager(2);
-        System.out.println(manager.getName());
-        //System.out.println(classDao.classes.get(1).getId());
-    }
 }

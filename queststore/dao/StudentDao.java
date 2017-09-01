@@ -87,17 +87,4 @@ public class StudentDao {
             System.out.println("File not found");
         }
     }
-
-    public static void main(String[] args) {
-        ClassDao classDao = new ClassDao();
-        StudentDao studentDao = new StudentDao(classDao);
-        Student student = studentDao.getStudent("mcnowak");
-        System.out.println(student.getName());
-        Class clas = classDao.getClass("klasa druga");
-        System.out.println(clas.getAllStudents().get(1).getName());
-        System.out.println(clas.getAllStudents());
-        Class clas1 = classDao.getClass("klasa pierwsza");
-        System.out.println(clas1.getAllStudents().get(0).getName());
-        //System.out.println(classDao.classes.get(1).getId());
-    }
 }
