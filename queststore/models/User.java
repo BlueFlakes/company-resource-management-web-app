@@ -1,6 +1,7 @@
 package queststore.models;
 
 public abstract class User {
+
     private String name;
     private Integer id;
     private String login;
@@ -14,6 +15,18 @@ public abstract class User {
         this.password = password;
         this.email = email;
         this.id = index++;
+    }
+
+    public User(String name, String login, String password, String email, Integer id) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.id = id;
+
+        if(id >= index) {
+            index = ++id;
+        }
     }
 
     public void setName(String name) {
