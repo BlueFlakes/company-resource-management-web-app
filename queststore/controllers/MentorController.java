@@ -7,11 +7,14 @@ import queststore.models.School;
 import queststore.models.Class;
 import queststore.models.Student;
 import queststore.models.Mentor;
+
 import queststore.views.UserInterface;
+
 import queststore.exceptions.LoginInUseException;
 
 
 public class MentorController {
+
     private UserInterface userInterface = new UserInterface();
     private Mentor user;
     private School school;

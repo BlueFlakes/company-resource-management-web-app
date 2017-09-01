@@ -1,16 +1,20 @@
 package queststore.controllers;
 
 import queststore.interfaces.UserController;
+
 import queststore.models.User;
 import queststore.models.School;
+
 import queststore.views.UserInterface;
 
 public class ExperienceLevelsController implements UserController {
+
     User user;
     School school;
     UserInterface userInterface = new UserInterface();
 
     public void startController(User user, School school) {
+
         this.user = user;
         this.school = school;
 
@@ -25,31 +29,30 @@ public class ExperienceLevelsController implements UserController {
     }
 
     private void handleUserRequest(String choice) {
+
         switch(choice) {
             case "1":
                 createNewLevel();
-            break;
+                break;
 
             case "2":
                 updateLevel();
-            break;
+                break;
 
             case "0":
-            break;
+                break;
 
             default:
                 userInterface.println("No such option.");
-            break;
+                break;
         }
     }
 
     private void createNewLevel() {
-
         this.userInterface.lockActualState();
     }
 
     private void updateLevel() {
-
         this.userInterface.lockActualState();
     }
 }
