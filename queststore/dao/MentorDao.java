@@ -89,18 +89,4 @@ public class MentorDao {
             System.out.println("File not found");
         }
     }
-
-    public static void main(String[] args) {
-        ClassDao classDao = new ClassDao();
-        MentorDao mentorDao = new MentorDao(classDao);
-        Mentor mentor = mentorDao.getMentor("sharp");
-        System.out.println(mentor.getName());
-        Class clas = classDao.getClass("klasa druga");
-        System.out.println(clas.getAllMentors().get(2).getName());
-        System.out.println(clas.getAllMentors());
-        Class clas1 = classDao.getClass("klasa pierwsza");
-        System.out.println(clas1.getAllMentors().get(1).getName());
-
-        //System.out.println(classDao.classes.get(1).getId());
-    }
 }

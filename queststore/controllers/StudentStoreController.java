@@ -4,9 +4,9 @@ import queststore.interfaces.UserController;
 
 import queststore.models.User;
 import queststore.models.School;
+import queststore.models.Student;
 
 import queststore.views.UserInterface;
-import queststore.models.Student;
 
 public class StudentStoreController implements UserController {
 

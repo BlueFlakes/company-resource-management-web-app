@@ -3,13 +3,17 @@ package queststore.controllers;
 import java.util.ArrayList;
 
 import queststore.interfaces.UserController;
+
 import queststore.models.User;
 import queststore.models.School;
 import queststore.models.Mentor;
+
 import queststore.views.UserInterface;
+
 import queststore.models.Class;
 import queststore.models.Student;
 import queststore.models.Manager;
+
 import queststore.exceptions.LoginInUseException;
 
 
@@ -67,6 +71,7 @@ public class ManagerController implements UserController {
     }
 
     private void addMentor() {
+
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
 

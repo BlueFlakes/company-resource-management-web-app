@@ -1,6 +1,7 @@
 package queststore.controllers;
 
 import queststore.interfaces.UserController;
+
 import queststore.views.UserInterface;
 
 import queststore.models.School;
@@ -8,6 +9,7 @@ import queststore.models.User;
 import queststore.models.Mentor;
 
 public class MentorStoreController implements UserController {
+
     private UserInterface userInterface = new UserInterface();
     private User user;
     private School school;
