@@ -56,7 +56,7 @@ public class StudentStoreController implements UserController {
     }
 
     private void showAvailableArtifacts() {
-
+        this.userInterface.printStoreArtifacts();
         this.userInterface.lockActualState();
     }
 

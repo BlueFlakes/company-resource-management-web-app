@@ -146,11 +146,14 @@ public class ManagerController implements UserController {
 
         Integer mentorId = this.getUserChoiceOfMentor();
         Mentor mentor = school.getMentor(mentorId);
+
         if (mentor == null) {
             userInterface.println("There is no user of such id!");
         } else {
             this.printMentorInfo(mentor);
         }
+
+        userInterface.lockActualState();
     }
 
     private void printMentorInfo(Mentor mentor) {
