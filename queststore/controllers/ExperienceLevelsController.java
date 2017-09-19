@@ -2,10 +2,13 @@ package queststore.controllers;
 
 import queststore.interfaces.UserController;
 
+import queststore.models.ExperienceLevels;
 import queststore.models.User;
 import queststore.models.School;
 
 import queststore.views.UserInterface;
+
+import java.util.ArrayList;
 
 public class ExperienceLevelsController implements UserController {
 
@@ -49,6 +52,11 @@ public class ExperienceLevelsController implements UserController {
     }
 
     private void createNewLevel() {
+        String[] questions = {"level", "needed coins"};
+        String[] types = {"integer", "integer"};
+        ArrayList<String> answers = this.userInterface.inputs.getValidatedInputs(questions, types);
+
+        this.userInterface.println("Level added.");
         this.userInterface.lockActualState();
     }
 
