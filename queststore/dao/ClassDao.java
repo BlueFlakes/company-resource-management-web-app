@@ -6,19 +6,19 @@ import java.io.FileNotFoundException;
 import java.io.File;
 import java.util.Formatter;
 
-import queststore.models.Class;
+import queststore.models.SchoolClass;
 
 
 public class ClassDao {
 
-    private ArrayList<Class> classes;
+    private ArrayList<SchoolClass> classes;
 
     public ClassDao() {
         this.classes = readClassesData();
     }
 
-    private ArrayList<Class> readClassesData() {
-        ArrayList<Class> loadedClasses= new ArrayList<>();
+    private ArrayList<SchoolClass> readClassesData() {
+        ArrayList<SchoolClass> loadedClasses= new ArrayList<>();
         String[] classData;
 
         try (Scanner fileScan = new Scanner(new File("bin/queststore/csv/class.csv"))) {
@@ -27,7 +27,7 @@ public class ClassDao {
                 classData = fileScan.nextLine().split("\\|");
                 String name = classData[1];
                 Integer id = Integer.parseInt(classData[0]);
-                loadedClasses.add(new Class(name, id));
+                loadedClasses.add(new SchoolClass(name, id));
             }
 
         } catch (FileNotFoundException e) {
@@ -37,9 +37,9 @@ public class ClassDao {
         return loadedClasses;
     }
 
-    public Class getClass(Integer id) {
+    public SchoolClass getSchoolClass(Integer id) {
 
-        for (Class clas : this.classes) {
+        for (SchoolClass clas : this.classes) {
             if(clas.getId() == id) {
                 return clas;
             }
@@ -48,9 +48,9 @@ public class ClassDao {
         return null;
     }
 
-    public Class getClass(String name) {
+    public SchoolClass getSchoolClass(String name) {
 
-        for (Class clas : this.classes) {
+        for (SchoolClass clas : this.classes) {
             if (clas.getName().equals(name)) {
                 return clas;
             }
@@ -59,14 +59,14 @@ public class ClassDao {
         return null;
     }
 
-    public ArrayList<Class> getAllClasses() {
+    public ArrayList<SchoolClass> getAllClasses() {
         return this.classes;
     }
 
     public void save() {
         try (Formatter writer = new Formatter("bin/queststore/csv/class.csv")) {
 
-            for(Class clas: this.classes) {
+            for(SchoolClass clas: this.classes) {
                 String lineToSave = clas.getClassSaveString();
                 writer.format(lineToSave);
             }

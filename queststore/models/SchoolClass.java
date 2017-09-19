@@ -2,7 +2,7 @@ package queststore.models;
 
 import java.util.ArrayList;
 
-public class Class {
+public class SchoolClass {
 
     private String name;
     private ArrayList<Student> studentsList;
@@ -10,14 +10,14 @@ public class Class {
     private Integer id;
     private static Integer index = 0;
 
-    public Class(String name) {
+    public SchoolClass(String name) {
         this.name = name;
         this.studentsList = new ArrayList<>();
         this.mentorsList = new ArrayList<>();
         this.id = index++;
     }
 
-    public Class(String name, Integer id) {
+    public SchoolClass(String name, Integer id) {
         this.name = name;
         this.studentsList = new ArrayList<>();
         this.mentorsList = new ArrayList<>();

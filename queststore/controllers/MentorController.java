@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import queststore.models.User;
 import queststore.models.School;
-import queststore.models.Class;
+import queststore.models.SchoolClass;
 import queststore.models.Student;
 import queststore.models.Mentor;
 
@@ -77,7 +77,7 @@ public class MentorController {
         String login = basicUserData.get(1);
         String password = basicUserData.get(2);
         String email = basicUserData.get(3);
-        Class choosenClass = chooseProperClass();
+        SchoolClass choosenClass = chooseProperClass();
 
         try {
             this.school.addUser(new Student(name, login, password, email, choosenClass));
@@ -88,8 +88,8 @@ public class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private Class chooseProperClass() {
-        ArrayList<Class> allClasses = this.school.getAllClasses();
+    private SchoolClass chooseProperClass() {
+        ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
 
         do {
@@ -109,7 +109,7 @@ public class MentorController {
         return Integer.parseInt(userInput.get(0));
     }
 
-    private void showAvailableClasses(ArrayList<Class> allClasses) {
+    private void showAvailableClasses(ArrayList<SchoolClass> allClasses) {
         userInterface.println("");
 
         for (int i = 0; i < allClasses.size(); i++) {

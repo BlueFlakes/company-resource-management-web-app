@@ -7,10 +7,9 @@ import java.io.File;
 import java.util.Formatter;
 
 import queststore.models.Mentor;
-import queststore.models.Class;
+import queststore.models.SchoolClass;
 
 public class MentorDao {
-
     private ArrayList<Mentor> mentors;
 
     public MentorDao(ClassDao classDao) {
@@ -31,7 +30,7 @@ public class MentorDao {
                 String password = mentorData[3];
                 String email = mentorData[4];
                 Integer classId = Integer.parseInt(mentorData[5]);
-                Class clas = classDao.getClass(classId);
+                SchoolClass clas = classDao.getSchoolClass(classId);
 
                 Mentor mentor = new Mentor(name, login, password, email, clas, id);
                 loadedMentors.add(mentor);
@@ -73,7 +72,7 @@ public class MentorDao {
 
     public void addMentor(Mentor mentor) {
         this.mentors.add(mentor);
-        Class clas = mentor.getClas();
+        SchoolClass clas = mentor.getClas();
         clas.addMentor(mentor);
     }
 
