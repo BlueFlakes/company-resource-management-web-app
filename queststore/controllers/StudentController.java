@@ -66,7 +66,6 @@ public class StudentController implements UserController {
 
     private void showLevel() {
         userInterface.println("Your level: 0");
-        System.out.println(this.user.getPossesedCoins());
 
         this.userInterface.lockActualState();
     }
