@@ -10,7 +10,6 @@ import queststore.models.Mentor;
 import queststore.models.SchoolClass;
 
 public class MentorDao {
-
     private ArrayList<Mentor> mentors;
 
     public MentorDao(ClassDao classDao) {

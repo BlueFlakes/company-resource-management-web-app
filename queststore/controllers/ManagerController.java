@@ -10,7 +10,7 @@ import queststore.models.Mentor;
 
 import queststore.views.UserInterface;
 
-import queststore.models.Class;
+import queststore.models.SchoolClass;
 import queststore.models.Student;
 import queststore.models.Manager;
 
@@ -80,7 +80,7 @@ public class ManagerController implements UserController {
         String login = basicUserData.get(1);
         String password = basicUserData.get(2);
         String email = basicUserData.get(3);
-        Class choosenClass = chooseProperClass();
+        SchoolClass choosenClass = chooseProperClass();
 
         try {
             this.school.addUser(new Mentor(name, login, password, email, choosenClass));
@@ -91,8 +91,8 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private Class chooseProperClass() {
-        ArrayList<Class> allClasses = this.school.getAllClasses();
+    private SchoolClass chooseProperClass() {
+        ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
 
         do {
@@ -120,7 +120,7 @@ public class ManagerController implements UserController {
         return Integer.parseInt(userInput.get(0));
     }
 
-    private void showAvailableClasses(ArrayList<Class> allClasses) {
+    private void showAvailableClasses(ArrayList<SchoolClass> allClasses) {
         userInterface.println("");
 
         for (int i = 0; i < allClasses.size(); i++) {
@@ -162,8 +162,8 @@ public class ManagerController implements UserController {
     }
 
     private void printMentorInfo(Mentor mentor) {
-        Class clas = mentor.getClas();
-        ArrayList<Student> students = clas.getAllStudents();
+        SchoolClass schoolClass = mentor.getClas();
+        ArrayList<Student> students = schoolClass.getAllStudents();
 
         userInterface.println("Chosen mentor info: ");
         userInterface.println(mentor.getMentorData());
