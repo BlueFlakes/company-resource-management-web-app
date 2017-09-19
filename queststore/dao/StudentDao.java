@@ -71,7 +71,7 @@ public class StudentDao {
 
     public void addStudent(Student student) {
         this.students.add(student);
-        Class clas = student.getClas();
+        SchoolClass clas = student.getClas();
         clas.addStudent(student);
     }
 
