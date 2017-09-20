@@ -121,25 +121,52 @@ public class MentorController {
     }
 
     private void addQuest() {
-        userInterface.println("Here you will create new quests");
+        String[] questions = {"Name: ", "Quest category: ", "Description: ", "Value: "};
+        String[] types = {"string", "string", "string", "integer"};
+        this.userInterface.inputs.getValidatedInputs(questions, types);
 
         this.userInterface.lockActualState();
     }
 
     private void addQuestCategory() {
-        userInterface.println("Here you will create new quest category");
+        String[] questions = {"Name: "};
+        String[] types = {"string"};
+        this.userInterface.inputs.getValidatedInputs(questions, types);
+
 
         this.userInterface.lockActualState();
     }
 
     private void updateQuest() {
-        userInterface.println("Here you will change quest details");
+        Integer id = this.getQuestId();
+        String[] questions = {"new name: ", "new quest category: ", "new description: ", "new value: "};
+        String[] types = {"string", "string", "string", "integer"};
+        this.userInterface.inputs.getValidatedInputs(questions, types);
 
         this.userInterface.lockActualState();
     }
 
+    private Integer getQuestId() {
+        String[] question = {"Provide quest id: "};
+        String[] type = {"integer"};
+
+        Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
+        return id;
+    }
+
     private void markBoughtArtifactsAsUsed() {
-        userInterface.println("Here you will mark students artifacts as used");
+        String mockArtifactsList = "id - owner - name - status\n" +
+                "1 - Maciej Nowak - Sanctuary - used\n" +
+                "2 - Paweł Polakiewicz - Teleport - not used";
+        this.userInterface.println(mockArtifactsList);
+        String[] question = {"id: "};
+        String[] type = {"integer"};
+        if(this.userInterface.inputs.getValidatedInputs(question, type).get(0).equals("1")) {
+            this.userInterface.println("Artifact mark as used!");
+        } else {
+            this.userInterface.println("Artifact already used!");
+        }
+
 
         this.userInterface.lockActualState();
     }
