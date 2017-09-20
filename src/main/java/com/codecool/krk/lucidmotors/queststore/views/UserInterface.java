@@ -96,9 +96,8 @@ public class UserInterface {
     }
 
     public void printStoreArtifacts() {
-        for(ShopArtifact shopArtifact : new ShopArtifactDao().getAllArtifacts())
-        {
-            System.out.printf("id: %d, name: %s, price: %d, artifact category: %s.%n", shopArtifact.getId(), shopArtifact.getName(), shopArtifact.getPrice(), shopArtifact.getArtifactCategory().getName());
+        for(ShopArtifact shopArtifact : new ShopArtifactDao().getAllArtifacts()) {
+            System.out.println(shopArtifact);
         }
 
     }
@@ -106,13 +105,7 @@ public class UserInterface {
     public void printBoughtArtifacts(Student student) {
         this.println("Owned artifacts:");
         for(BoughtArtifact boughtArtifact : new ArtifactOwnersDao().getArtifacts(student)) {
-            String isUsed;
-            if(boughtArtifact.isUsed()) {
-                isUsed = "is used";
-            } else {
-                isUsed = "isn't used";
-            }
-            System.out.printf("name: %s,  date: %s, %s %n", boughtArtifact.getName(), boughtArtifact.getDate().toString(), isUsed);
+            System.out.println(boughtArtifact);
         }
     }
 

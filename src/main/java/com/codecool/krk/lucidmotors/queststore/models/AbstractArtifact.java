@@ -55,4 +55,9 @@ public abstract class AbstractArtifact {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return String.format("id: %d, name: %s, price: %d, artifact category: %s.%n", this.id, this.name, this.price, this.artifactCategory.getName());
+    }
 }
