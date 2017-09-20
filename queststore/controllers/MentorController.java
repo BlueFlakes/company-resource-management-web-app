@@ -155,7 +155,18 @@ public class MentorController {
     }
 
     private void markBoughtArtifactsAsUsed() {
-        userInterface.println("Here you will mark students artifacts as used");
+        String mockArtifactsList = "id - owner - name - status\n" +
+                "1 - Maciej Nowak - Sanctuary - used\n" +
+                "2 - Paweł Polakiewicz - Teleport - not used";
+        this.userInterface.println(mockArtifactsList);
+        String[] question = {"id: "};
+        String[] type = {"integer"};
+        if(this.userInterface.inputs.getValidatedInputs(question, type).get(0).equals("1")) {
+            this.userInterface.println("Artifact mark as used!");
+        } else {
+            this.userInterface.println("Artifact already used!");
+        }
+
 
         this.userInterface.lockActualState();
     }
