@@ -21,9 +21,8 @@ public class BoughtArtifact extends AbstractArtifact {
     }
 
     public void markAsUsed() {
-        if (!this.isUsed) {
-            this.isUsed = true;
-        }
+        this.isUsed = true;
+    }
 
     public boolean isUsed() {
         return this.isUsed;
