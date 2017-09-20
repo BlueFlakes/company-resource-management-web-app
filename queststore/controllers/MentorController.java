@@ -121,7 +121,9 @@ public class MentorController {
     }
 
     private void addQuest() {
-        userInterface.println("Here you will create new quests");
+        String[] questions = {"Name: ", "Quest category: ", "Description: ", "Price: "};
+        String[] types = {"string", "string", "string", "integer"};
+        this.userInterface.inputs.getValidatedInputs(questions, types);
 
         this.userInterface.lockActualState();
     }
