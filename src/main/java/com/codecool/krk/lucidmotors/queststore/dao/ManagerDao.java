@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import java.sql.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
@@ -9,74 +10,64 @@ import java.util.Formatter;
 import com.codecool.krk.lucidmotors.queststore.models.Manager;
 
 public class ManagerDao {
-
-    private ArrayList<Manager> managers;
+    private Connection connection;
+    Statement stmt = null;
 
     public ManagerDao() {
-        this.managers = readManagersData();
-    }
-
-    private ArrayList<Manager> readManagersData() {
-
-        ArrayList<Manager> loadedManagers= new ArrayList<>();
-        String[] managerData;
-
-        try (Scanner fileScan = new Scanner(new File("data/manager.csv"))) {
-
-            while(fileScan.hasNextLine()) {
-                managerData = fileScan.nextLine().split("\\|");
-                String name = managerData[1];
-                Integer id = Integer.parseInt(managerData[0]);
-                String login = managerData[2];
-                String password = managerData[3];
-                String email = managerData[4];
-
-                loadedManagers.add(new Manager(name, login, password, email, id));
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File manager.csv not found!");
-        }
-
-        return loadedManagers;
+        this.connection = DatabaseConnection.getConnection();
     }
 
     public Manager getManager(Integer id) {
 
-        for(Manager manager : this.managers) {
-            if (manager.getId() == id) {
-                return manager;
-            }
+        return null;
+    }
+
+    private ResultSet executeSqlQuery(String sqlQuery) {
+        ResultSet result = null;
+
+        try {
+            stmt = connection.createStatement();
+            result = stmt.executeQuery(sqlQuery);
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return null;
+        return result;
     }
 
     public Manager getManager(String login) {
+        Manager manager = null;
 
-        for(Manager manager : this.managers) {
-            if(manager.getLogin().equals(login)) {
-                return manager;
+        try {
+            String sqlQuery = "SELECT * FROM managers "
+                   + "WHERE login = '" + login + "';";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                String name = result.getString("name");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                Integer id = result.getInt("id");
+                manager = new Manager(name, login, password, email, id);
             }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return null;
+        return manager;
     }
 
     public void addManager(Manager manager) {
-        this.managers.add(manager);
+
     }
 
     public void save() {
-        try (Formatter writer = new Formatter("data/manager.csv")) {
 
-            for(Manager manager: this.managers) {
-                String lineToSave = manager.getManagerSaveString();
-                writer.format(lineToSave);
-            }
-
-        } catch (Exception e) {
-            System.out.println("File not found");
-        }
     }
 }

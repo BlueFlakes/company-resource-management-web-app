@@ -134,7 +134,7 @@ public class ManagerController implements UserController {
     private void createClass() {
         userInterface.println("Provide name for new class:");
         String name = userInterface.inputs.getInput("name: ");
-
+        new SchoolClass(name);
         userInterface.println(String.format("Class %s created.", name));
 
         this.userInterface.lockActualState();
