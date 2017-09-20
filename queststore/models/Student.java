@@ -8,9 +8,9 @@ public class Student extends User {
 	private Integer possesedCoins;
 	private ArrayList<BoughtArtifact> ownedArtifacts;
 	private ArrayList<Quest> achievedQuests;
-	private SchoolClass class_;
+	private Class class_;
 
-    public Student(String name, String login, String password, String email, SchoolClass class_) {
+    public Student(String name, String login, String password, String email, Class class_) {
         super(name, login, password, email);
 		this.earnedCoins = 0;
 		this.possesedCoins = 0;
@@ -19,7 +19,7 @@ public class Student extends User {
 		this.class_ = class_;
     }
 
-	public Student(String name, String login, String password, String email, SchoolClass class_, Integer id) {
+	public Student(String name, String login, String password, String email, Class class_, Integer id) {
       super(name, login, password, email, id);
 	    this.earnedCoins = 0;
 		  this.possesedCoins = 0;
@@ -49,7 +49,7 @@ public class Student extends User {
 	}
 
 
-	public SchoolClass getClas() {
+	public Class getClas() {
         return this.class_;
     }
 

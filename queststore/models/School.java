@@ -72,7 +72,7 @@ public class School {
         this.classDao.save();
     }
 
-    public ArrayList<SchoolClass> getAllClasses() {
+    public ArrayList<Class> getAllClasses() {
         return this.classDao.getAllClasses();
     }
 
