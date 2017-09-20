@@ -90,7 +90,7 @@ public class MentorStoreController implements UserController {
 
     private void addArtifactCategory() {
         String[] question = {"Provide new artifact category name: "};
-        String[] type = {"string"};
+        String[] type = {"integer"};
 
         Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
 
