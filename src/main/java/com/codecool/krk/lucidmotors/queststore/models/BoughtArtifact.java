@@ -24,5 +24,17 @@ public class BoughtArtifact extends AbstractArtifact {
         if (!this.isUsed) {
             this.isUsed = true;
         }
+
+    public boolean isUsed() {
+        return this.isUsed;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }
