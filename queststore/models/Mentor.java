@@ -1,19 +1,19 @@
 package queststore.models;
 
 public class Mentor extends User {
-    private SchoolClass class_;
+    private Class class_;
 
-    public Mentor(String name, String login, String password, String email, SchoolClass class_) {
+    public Mentor(String name, String login, String password, String email, Class class_) {
         super(name, login, password, email);
         this.class_ = class_;
     }
 
-    public Mentor(String name, String login, String password, String email,SchoolClass class_, Integer id) {
+    public Mentor(String name, String login, String password, String email,Class class_, Integer id) {
         super(name, login, password, email, id);
         this.class_ = class_;
     }
 
-    public SchoolClass getClas() {
+    public Class getClas() {
         return this.class_;
     }
 

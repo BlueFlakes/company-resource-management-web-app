@@ -1,6 +1,5 @@
 package queststore.controllers;
 
-import queststore.exceptions.InvalidArgumentException;
 import queststore.interfaces.UserController;
 
 import queststore.models.User;
@@ -52,14 +51,6 @@ public class StudentStoreController implements UserController {
      }
 
     private void buyArtifact() {
-        this.userInterface.println("Provide artifact id");
-        String input = this.userInterface.inputs.getInput("artifact id:");
-        try {
-            Integer artifact_id = Integer.parseInt(input);
-            this.userInterface.println("Artifact bought");
-        } catch (NumberFormatException e) {
-            this.userInterface.println("Wrong artifact id.");
-        }
 
         this.userInterface.lockActualState();
     }

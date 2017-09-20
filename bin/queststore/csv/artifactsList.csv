@@ -1,16 +1,14 @@
-
-
 Basic items:
-id - name - description - price
-1 - Combat training - Private mentoring - 50 cc
-2 - Sanctuary - You can spend a day in home office - 300 cc
-3 - Time Travel -  extend SI week assignment deadline by one day - 500 cc
+
+Combat training - Private mentoring - 50 cc
+Sanctuary - You can spend a day in home office - 300 cc
+Time Travel -  extend SI week assignment deadline by one day - 500 cc
 
 
-Magic items:
-id - name - description - price
-4 - Circle of Sorcery - 60 min workshop by a mentor(s) of the chosen topic - 1000 cc
-5 - Summon Code Elemental - mentor joins a students' team for a one hour - 1000 cc
-6 - Tome of knowledge - Extra material for the current topic - 500 cc
-7 - Transform mentors - All mentors should dress up as pirates (or just funny) for the day - 5000 cc
-8 - Teleport - The whole course goes to an off-school program instead for a day - 30000 cc
+Magic items
+
+Circle of Sorcery - 60 min workshop by a mentor(s) of the chosen topic - 1000 cc
+Summon Code Elemental - mentor joins a students' team for a one hour - 1000 cc
+Tome of knowledge - Extra material for the current topic - 500 cc
+Transform mentors - All mentors should dress up as pirates (or just funny) for the day - 5000 cc
+Teleport - The whole course goes to an off-school program instead for a day - 30000 cc

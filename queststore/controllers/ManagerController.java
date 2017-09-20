@@ -10,7 +10,7 @@ import queststore.models.Mentor;
 
 import queststore.views.UserInterface;
 
-import queststore.models.SchoolClass;
+import queststore.models.Class;
 import queststore.models.Student;
 import queststore.models.Manager;
 
@@ -80,7 +80,7 @@ public class ManagerController implements UserController {
         String login = basicUserData.get(1);
         String password = basicUserData.get(2);
         String email = basicUserData.get(3);
-        SchoolClass choosenClass = chooseProperClass();
+        Class choosenClass = chooseProperClass();
 
         try {
             this.school.addUser(new Mentor(name, login, password, email, choosenClass));
@@ -91,8 +91,8 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass() {
-        ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
+    private Class chooseProperClass() {
+        ArrayList<Class> allClasses = this.school.getAllClasses();
         int userChoice;
 
         do {
@@ -120,7 +120,7 @@ public class ManagerController implements UserController {
         return Integer.parseInt(userInput.get(0));
     }
 
-    private void showAvailableClasses(ArrayList<SchoolClass> allClasses) {
+    private void showAvailableClasses(ArrayList<Class> allClasses) {
         userInterface.println("");
 
         for (int i = 0; i < allClasses.size(); i++) {
@@ -132,28 +132,22 @@ public class ManagerController implements UserController {
     }
 
     private void createClass() {
-        userInterface.println("Provide name for new class:");
-        String name = userInterface.inputs.getInput("name: ");
-
-        userInterface.println(String.format("Class %s created.", name));
+        userInterface.println("Here will be creating class");
 
         this.userInterface.lockActualState();
     }
 
     private void editMentor() {
-        this.printAllMentors();
-        Integer mentorId = getUserChoiceOfMentor();
-
-        String[] questions = {"New name: ", "New login: ", "New password: ", "New email: "};
-        String[] expectedTypes = {"String", "String", "String", "String"};
-
-        ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
-
+        userInterface.println("Here will be editing mentor");
     }
 
-
     private void showMentorsClass() {
-        this.printAllMentors();
+        userInterface.println("List of existing mentors: ");
+
+        ArrayList<Mentor> mentors = this.school.getAllMentors();
+        for (Mentor mentor: mentors) {
+            userInterface.println(mentor.toString());
+        }
 
         Integer mentorId = this.getUserChoiceOfMentor();
         Mentor mentor = school.getMentor(mentorId);
@@ -167,18 +161,9 @@ public class ManagerController implements UserController {
         userInterface.lockActualState();
     }
 
-    public void printAllMentors() {
-        userInterface.println("List of existing mentors: ");
-
-        ArrayList<Mentor> mentors = this.school.getAllMentors();
-        for (Mentor mentor: mentors) {
-            userInterface.println(mentor.toString());
-        }
-    }
-
     private void printMentorInfo(Mentor mentor) {
-        SchoolClass schoolClass = mentor.getClas();
-        ArrayList<Student> students = schoolClass.getAllStudents();
+        Class clas = mentor.getClas();
+        ArrayList<Student> students = clas.getAllStudents();
 
         userInterface.println("Chosen mentor info: ");
         userInterface.println(mentor.getMentorData());

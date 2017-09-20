@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import queststore.models.User;
 import queststore.models.School;
-import queststore.models.SchoolClass;
+import queststore.models.Class;
 import queststore.models.Student;
 import queststore.models.Mentor;
 
@@ -77,7 +77,7 @@ public class MentorController {
         String login = basicUserData.get(1);
         String password = basicUserData.get(2);
         String email = basicUserData.get(3);
-        SchoolClass choosenClass = chooseProperClass();
+        Class choosenClass = chooseProperClass();
 
         try {
             this.school.addUser(new Student(name, login, password, email, choosenClass));
@@ -88,8 +88,8 @@ public class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass() {
-        ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
+    private Class chooseProperClass() {
+        ArrayList<Class> allClasses = this.school.getAllClasses();
         int userChoice;
 
         do {
@@ -109,7 +109,7 @@ public class MentorController {
         return Integer.parseInt(userInput.get(0));
     }
 
-    private void showAvailableClasses(ArrayList<SchoolClass> allClasses) {
+    private void showAvailableClasses(ArrayList<Class> allClasses) {
         userInterface.println("");
 
         for (int i = 0; i < allClasses.size(); i++) {
@@ -121,52 +121,25 @@ public class MentorController {
     }
 
     private void addQuest() {
-        String[] questions = {"Name: ", "Quest category: ", "Description: ", "Value: "};
-        String[] types = {"string", "string", "string", "integer"};
-        this.userInterface.inputs.getValidatedInputs(questions, types);
+        userInterface.println("Here you will create new quests");
 
         this.userInterface.lockActualState();
     }
 
     private void addQuestCategory() {
-        String[] questions = {"Name: "};
-        String[] types = {"string"};
-        this.userInterface.inputs.getValidatedInputs(questions, types);
-
+        userInterface.println("Here you will create new quest category");
 
         this.userInterface.lockActualState();
     }
 
     private void updateQuest() {
-        Integer id = this.getQuestId();
-        String[] questions = {"new name: ", "new quest category: ", "new description: ", "new value: "};
-        String[] types = {"string", "string", "string", "integer"};
-        this.userInterface.inputs.getValidatedInputs(questions, types);
+        userInterface.println("Here you will change quest details");
 
         this.userInterface.lockActualState();
     }
 
-    private Integer getQuestId() {
-        String[] question = {"Provide quest id: "};
-        String[] type = {"integer"};
-
-        Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
-        return id;
-    }
-
     private void markBoughtArtifactsAsUsed() {
-        String mockArtifactsList = "id - owner - name - status\n" +
-                "1 - Maciej Nowak - Sanctuary - used\n" +
-                "2 - Paweł Polakiewicz - Teleport - not used";
-        this.userInterface.println(mockArtifactsList);
-        String[] question = {"id: "};
-        String[] type = {"integer"};
-        if(this.userInterface.inputs.getValidatedInputs(question, type).get(0).equals("1")) {
-            this.userInterface.println("Artifact mark as used!");
-        } else {
-            this.userInterface.println("Artifact already used!");
-        }
-
+        userInterface.println("Here you will mark students artifacts as used");
 
         this.userInterface.lockActualState();
     }

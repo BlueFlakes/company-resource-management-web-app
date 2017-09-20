@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.Formatter;
 
 import queststore.models.Student;
-import queststore.models.SchoolClass;
+import queststore.models.Class;
 
 public class StudentDao {
 
@@ -32,7 +32,7 @@ public class StudentDao {
                 String email = studentData[4];
 
                 Integer classId = Integer.parseInt(studentData[5]);
-                SchoolClass clas = classDao.getSchoolClass(classId);
+                Class clas = classDao.getClass(classId);
 
                 Student student = new Student(name, login, password, email, clas, id);
                 loadedStudents.add(student);
@@ -71,7 +71,7 @@ public class StudentDao {
 
     public void addStudent(Student student) {
         this.students.add(student);
-        SchoolClass clas = student.getClas();
+        Class clas = student.getClas();
         clas.addStudent(student);
     }
 
