@@ -141,7 +141,7 @@ public class ManagerController implements UserController {
     }
 
     private void editMentor() {
-        
+        this.printAllMentors();
         Integer mentorId = getUserChoiceOfMentor();
 
         String[] questions = {"New name: ", "New login: ", "New password: ", "New email: "};
