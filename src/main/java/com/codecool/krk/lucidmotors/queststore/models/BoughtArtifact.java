@@ -1,8 +1,9 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import java.util.Date;
 import java.util.ArrayList;
 
-public class BoughtArtifact extends Artifact {
+public class BoughtArtifact extends AbstractArtifact {
 
     private ArrayList<Student> ownersList;
     private boolean isUsed;
