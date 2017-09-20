@@ -57,13 +57,15 @@ public class MentorStoreController implements UserController {
     }
 
     private void showAvailableArtifacts() {
-        System.out.println("Available Artifacts.");
+        this.userInterface.printStoreArtifacts();
 
         this.userInterface.lockActualState();
     }
 
     private void addArtifact() {
-        System.out.println("Add artifact.");
+        String[] questions = {"Name: ", "Price: ", "Artifact category: "};
+        String[] types = {"string", "string", "string"};
+        this.userInterface.inputs.getValidatedInputs(questions, types);
 
         this.userInterface.lockActualState();
     }
