@@ -141,7 +141,8 @@ public class ManagerController implements UserController {
     }
 
     private void editMentor() {
-        Integer mentorId = getMentorId();
+        
+        Integer mentorId = getUserChoiceOfMentor();
 
         String[] questions = {"New name: ", "New login: ", "New password: ", "New email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -150,21 +151,9 @@ public class ManagerController implements UserController {
 
     }
 
-    private Integer getMentorId() {
-        String[] question = {"Provide mentor id: "};
-        String[] type = {"integer"};
-
-        Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
-        return id;
-    }
 
     private void showMentorsClass() {
-        userInterface.println("List of existing mentors: ");
-
-        ArrayList<Mentor> mentors = this.school.getAllMentors();
-        for (Mentor mentor: mentors) {
-            userInterface.println(mentor.toString());
-        }
+        this.printAllMentors();
 
         Integer mentorId = this.getUserChoiceOfMentor();
         Mentor mentor = school.getMentor(mentorId);
@@ -176,6 +165,15 @@ public class ManagerController implements UserController {
         }
 
         userInterface.lockActualState();
+    }
+
+    public void printAllMentors() {
+        userInterface.println("List of existing mentors: ");
+
+        ArrayList<Mentor> mentors = this.school.getAllMentors();
+        for (Mentor mentor: mentors) {
+            userInterface.println(mentor.toString());
+        }
     }
 
     private void printMentorInfo(Mentor mentor) {
