@@ -103,5 +103,18 @@ public class UserInterface {
 
         }
 
+    public void printBoughtArtifacts(Student student) {
+        this.println("Owned artifacts:");
+        for(BoughtArtifact boughtArtifact : new ArtifactOwnersDao().getArtifacts(student)) {
+            String isUsed;
+            if(boughtArtifact.isUsed()) {
+                isUsed = "is used";
+            } else {
+                isUsed = "isn't used";
+            }
+            System.out.printf("name: %s,  date: %s, %s %n", boughtArtifact.getName(), boughtArtifact.getDate().toString(), isUsed);
+        }
     }
+
+
 }
