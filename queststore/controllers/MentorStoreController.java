@@ -64,16 +64,28 @@ public class MentorStoreController implements UserController {
 
     private void addArtifact() {
         String[] questions = {"Name: ", "Price: ", "Artifact category: "};
-        String[] types = {"string", "string", "string"};
+        String[] types = {"string", "integer", "string"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
 
         this.userInterface.lockActualState();
     }
 
     private void updateArtifact() {
-        System.out.println("update artifact");
+        this.getArtifactId();
+        String[] questions = {"New name: ", "New price: ", "New artifact category: "};
+        String[] types = {"string", "integer", "string"};
+        this.userInterface.inputs.getValidatedInputs(questions, types);
+
 
         this.userInterface.lockActualState();
+    }
+
+    private Integer getArtifactId() {
+        String[] question = {"Provide artifact id: "};
+        String[] type = {"integer"};
+
+        Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
+        return id;
     }
 
     private void addArtifactCategory() {
