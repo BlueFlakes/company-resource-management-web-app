@@ -101,7 +101,7 @@ public class UserInterface {
             System.out.printf("id: %d, name: %s, price: %d, artifact category: %s.%n", shopArtifact.getId(), shopArtifact.getName(), shopArtifact.getPrice(), shopArtifact.getArtifactCategory().getName());
         }
 
-        }
+    }
 
     public void printBoughtArtifacts(Student student) {
         this.println("Owned artifacts:");
