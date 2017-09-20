@@ -57,10 +57,7 @@ public class StudentController implements UserController {
     private void showWallet() {
         String accountBalance = Integer.toString(this.user.getPossesedCoins());
         userInterface.println("Balance: " + accountBalance);
-        String boughtArtifacts = "\nBought artifacts:\n" +
-                "Combat training\n" +
-                "Circle of Sorcery";
-        System.out.println(boughtArtifacts);
+        userInterface.printBoughtArtifacts(this.user);
         this.userInterface.lockActualState();
     }
 

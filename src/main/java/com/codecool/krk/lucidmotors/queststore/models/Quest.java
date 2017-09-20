@@ -1,5 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import com.codecool.krk.lucidmotors.queststore.interfaces.QuestInterface;
+
 public class Quest implements QuestInterface {
 
     private String name;

@@ -1,17 +1,20 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import java.util.Date;
+
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.InvalidArgumentException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 
-import com.codecool.krk.lucidmotors.queststore.models.User;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.Student;
+import com.codecool.krk.lucidmotors.queststore.models.*;
 
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 public class StudentStoreController implements UserController {
 
-    private User user;
+    private Student user;
     private School school;
     private UserInterface userInterface = new UserInterface();
 
@@ -52,16 +55,44 @@ public class StudentStoreController implements UserController {
      }
 
     private void buyArtifact() {
-        this.userInterface.println("Provide artifact id");
-        String input = this.userInterface.inputs.getInput("artifact id:");
+        /* #TODO refactor */
+        this.userInterface.printStoreArtifacts();
+
         try {
-            Integer artifact_id = Integer.parseInt(input);
-            this.userInterface.println("Artifact bought");
+            // # TODO check is student have enough cc
+
+            ShopArtifact shopArtifact = this.getShopArtifact();
+            Integer studentBalance = this.user.getPossesedCoins();
+
+            if(shopArtifact == null) {
+                this.userInterface.println("No such artifact");
+            } else if( studentBalance < shopArtifact.getPrice()) {
+                this.userInterface.println("Not enough money");
+            } else {
+                this.makePurchase(shopArtifact);
+            }
+
         } catch (NumberFormatException e) {
             this.userInterface.println("Wrong artifact id.");
         }
 
         this.userInterface.lockActualState();
+    }
+
+    private ShopArtifact getShopArtifact() throws NumberFormatException {
+        this.userInterface.println("Provide artifact id");
+        String input = this.userInterface.inputs.getInput("artifact id:");
+        Integer artifact_id = Integer.parseInt(input);
+        ShopArtifact shopArtifact = new ShopArtifactDao().getArtifact(artifact_id);
+        return shopArtifact;
+    }
+
+    private void makePurchase(ShopArtifact shopArtifact) {
+        BoughtArtifact boughtArtifact = new BoughtArtifact(shopArtifact);
+        new BoughtArtifactDao().updateArtifact(boughtArtifact);
+        this.user.substractCoins(boughtArtifact.getPrice());
+        this.userInterface.println(String.format("Bought artifact: %s", boughtArtifact.getName()));
+        new ArtifactOwnersDao().update(this.user, boughtArtifact);
     }
 
     private void showAvailableArtifacts() {
