@@ -141,7 +141,21 @@ public class ManagerController implements UserController {
     }
 
     private void editMentor() {
-        userInterface.println("Here will be editing mentor");
+        Integer mentorId = getMentorId();
+
+        String[] questions = {"New name: ", "New login: ", "New password: ", "New email: "};
+        String[] expectedTypes = {"String", "String", "String", "String"};
+
+        ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+
+    }
+
+    private Integer getMentorId() {
+        String[] question = {"Provide mentor id: "};
+        String[] type = {"integer"};
+
+        Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
+        return id;
     }
 
     private void showMentorsClass() {
