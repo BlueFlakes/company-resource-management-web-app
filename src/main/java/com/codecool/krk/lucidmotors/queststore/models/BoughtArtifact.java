@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class BoughtArtifact extends AbstractArtifact {
 
-    private ArrayList<Student> ownersList;
+    private Date date;
     private boolean isUsed;
 
     public ArrayList<Student> getOwnersList() {
