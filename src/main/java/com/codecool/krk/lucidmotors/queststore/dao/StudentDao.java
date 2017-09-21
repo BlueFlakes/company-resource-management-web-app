@@ -11,130 +11,95 @@ public class StudentDao {
     private Statement stmt = null;
     private ClassDao classDao;
 
-    public StudentDao(ClassDao classDao) {
+    public StudentDao(ClassDao classDao) throws SQLException {
 
         this.connection = DatabaseConnection.getConnection();
         this.classDao = classDao;
     }
 
-    private ResultSet executeSqlQuery(String sqlQuery) {
+    private ResultSet executeSqlQuery(String sqlQuery) throws SQLException {
 
-        ResultSet result = null;
-
-        try {
-            stmt = connection.createStatement();
-            result = stmt.executeQuery(sqlQuery);
-
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
+        stmt = connection.createStatement();
+        ResultSet result = stmt.executeQuery(sqlQuery);
 
         return result;
     }
 
-    private void executeSqlUpdate(String sqlQuery) {
+    private void executeSqlUpdate(String sqlQuery) throws SQLException {
 
-        try {
             stmt = connection.createStatement();
             stmt.executeUpdate(sqlQuery);
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-
     }
 
-    public Student getStudent(Integer id) {
+    public Student getStudent(Integer id) throws SQLException {
 
         Student student = null;
 
-        try {
-            String sqlQuery = "SELECT * FROM students "
-                   + "WHERE id = " + id + ";";
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+        String sqlQuery = "SELECT * FROM students "
+               + "WHERE id = " + id + ";";
+        ResultSet result = this.executeSqlQuery(sqlQuery);
 
-            if (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                String login = result.getString("login");
-                Integer classId = result.getInt("class_id");
-                Integer earnedCoins = result.getInt("earned_coins");
-                Integer possessedCoins = result.getInt("possesed_coins");
-                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
-            }
-
-            result.close();
-            stmt.close();
-
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+        if (result.next()) {
+            String name = result.getString("name");
+            String password = result.getString("password");
+            String email = result.getString("email");
+            String login = result.getString("login");
+            Integer classId = result.getInt("class_id");
+            Integer earnedCoins = result.getInt("earned_coins");
+            Integer possessedCoins = result.getInt("possesed_coins");
+            SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+            student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
         }
+
+        result.close();
+        stmt.close();
 
         return student;
     }
 
-    public Student getStudent(String login) {
+    public Student getStudent(String login) throws SQLException {
 
         Student student = null;
 
-        try {
-            String sqlQuery = "SELECT * FROM students "
-                   + "WHERE login = '" + login + "';";
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+        String sqlQuery = "SELECT * FROM students "
+               + "WHERE login = '" + login + "';";
+        ResultSet result = this.executeSqlQuery(sqlQuery);
 
-            if (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                Integer id = result.getInt("id");
-                Integer classId = result.getInt("class_id");
-                Integer earnedCoins = result.getInt("earned_coins");
-                Integer possessedCoins = result.getInt("possesed_coins");
-                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
-            }
-
-            result.close();
-            stmt.close();
-
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+        if (result.next()) {
+            String name = result.getString("name");
+            String password = result.getString("password");
+            String email = result.getString("email");
+            Integer id = result.getInt("id");
+            Integer classId = result.getInt("class_id");
+            Integer earnedCoins = result.getInt("earned_coins");
+            Integer possessedCoins = result.getInt("possesed_coins");
+            SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+            student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
         }
+
+        result.close();
+        stmt.close();
 
         return student;
     }
 
-    public void addStudent(Student student) {
+    public void save(Student student) throws SQLException {
 
-    }
+        String name = student.getName();
+        String login = student.getLogin();
+        String password = student.getPassword();
+        String email = student.getEmail();
+        Integer classId = student.getClas().getId();
+        Integer earnedCoins = student.getEarnedCoins();
+        Integer possessedCoins = student.getPossesedCoins();
 
-    public void save(Student student) {
+        String sqlQuery = "INSERT INTO students "
+                + "(name, login, password, email, class_id, earned_coins, possesed_coins) "
+                + "VALUES ('" + name + "', '" + login + "', '" + password + "', '" + email + "', " + classId
+                + ", " + earnedCoins + ", " + possessedCoins + ");";
+        this.executeSqlUpdate(sqlQuery);
 
-        try {
-            String name = student.getName();
-            String login = student.getLogin();
-            String password = student.getPassword();
-            String email = student.getEmail();
-            Integer classId = student.getClas().getId();
-            Integer earnedCoins = student.getEarnedCoins();
-            Integer possessedCoins = student.getPossesedCoins();
-
-            String sqlQuery = "INSERT INTO students "
-                    + "(name, login, password, email, class_id, earned_coins, possesed_coins) "
-                    + "VALUES ('" + name + "', '" + login + "', '" + password + "', '" + email + "', " + classId
-                    + ", " + earnedCoins + ", " + possessedCoins + ");";
-            this.executeSqlUpdate(sqlQuery);
-
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
     }
 }

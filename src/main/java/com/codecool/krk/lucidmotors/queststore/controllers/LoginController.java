@@ -4,6 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
+import java.sql.SQLException;
 
 public class LoginController {
 
@@ -14,7 +15,7 @@ public class LoginController {
         this.school = school;
     }
 
-    public void start() throws WrongPasswordException {
+    public void start() throws WrongPasswordException, SQLException {
 
         String login = userInterface.inputs.getInput("Please provide your login: ");
         String givenPassword = userInterface.inputs.getInput("Please provide your password: ");
@@ -36,7 +37,7 @@ public class LoginController {
         }
     }
 
-    private void runUserController(User user) {
+    private void runUserController(User user) throws SQLException {
 
         if (user instanceof Manager) {
             new ManagerController().startController(user, this.school);

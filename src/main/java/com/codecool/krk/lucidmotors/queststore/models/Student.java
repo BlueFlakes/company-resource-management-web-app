@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
@@ -14,7 +15,7 @@ public class Student extends User {
 	private SchoolClass class_;
 	private StudentDao studentDao = new StudentDao(new ClassDao());
 
-    public Student(String name, String login, String password, String email, SchoolClass class_) {
+    public Student(String name, String login, String password, String email, SchoolClass class_) throws SQLException {
         super(name, login, password, email);
 		this.earnedCoins = 0;
 		this.possesedCoins = 0;
@@ -24,13 +25,13 @@ public class Student extends User {
 		studentDao.save(this);
     }
 
-	public Student(String name, String login, String password, String email, SchoolClass class_, Integer id, Integer earnedCoins, Integer possesedCoins) {
+	public Student(String name, String login, String password, String email, SchoolClass class_, Integer id, Integer earnedCoins, Integer possesedCoins) throws SQLException {
       	super(name, login, password, email, id);
-	    	this.earnedCoins = earnedCoins;
-		  	this.possesedCoins = possesedCoins;
-		  	this.ownedArtifacts = new ArrayList<>();
-		  	this.achievedQuests = new ArrayList<>();
-		  	this.class_ = class_;
+    	this.earnedCoins = earnedCoins;
+	  	this.possesedCoins = possesedCoins;
+	  	this.ownedArtifacts = new ArrayList<>();
+	  	this.achievedQuests = new ArrayList<>();
+	  	this.class_ = class_;
     }
 
 	public Integer getEarnedCoins() {

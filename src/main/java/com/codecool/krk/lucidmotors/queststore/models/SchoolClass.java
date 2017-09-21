@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 
@@ -12,7 +13,7 @@ public class SchoolClass {
     private Integer id;
     private ClassDao classDao = new ClassDao();
 
-    public SchoolClass(String name) {
+    public SchoolClass(String name) throws SQLException {
         this.name = name;
         this.studentsList = new ArrayList<>();
         this.mentorsList = new ArrayList<>();
@@ -20,7 +21,7 @@ public class SchoolClass {
         classDao.save(this);
     }
 
-    public SchoolClass(String name, Integer id) {
+    public SchoolClass(String name, Integer id) throws SQLException {
         this.name = name;
         this.studentsList = new ArrayList<>();
         this.mentorsList = new ArrayList<>();
@@ -32,10 +33,10 @@ public class SchoolClass {
     }
 
     public void removeStudent(Student student) {
-        
+
     }
 
-    public ArrayList<Student> getAllStudents() {
+    public ArrayList<Student> getAllStudents() throws SQLException {
         return classDao.getAllStudentsFromClass(this);
     }
 
@@ -47,7 +48,7 @@ public class SchoolClass {
 
     }
 
-    public ArrayList<Mentor> getAllMentors() {
+    public ArrayList<Mentor> getAllMentors() throws SQLException {
         return classDao.getAllMentorsFromClass(this);
     }
 

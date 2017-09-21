@@ -1,5 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import java.sql.SQLException;
+
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 
@@ -7,13 +9,13 @@ public class Mentor extends User {
     private SchoolClass class_;
     private MentorDao mentorDao = new MentorDao(new ClassDao());
 
-    public Mentor(String name, String login, String password, String email, SchoolClass class_) {
+    public Mentor(String name, String login, String password, String email, SchoolClass class_) throws SQLException {
         super(name, login, password, email);
         this.class_ = class_;
         mentorDao.save(this);
     }
 
-    public Mentor(String name, String login, String password, String email,SchoolClass class_, Integer id) {
+    public Mentor(String name, String login, String password, String email,SchoolClass class_, Integer id) throws SQLException {
         super(name, login, password, email, id);
         this.class_ = class_;
     }

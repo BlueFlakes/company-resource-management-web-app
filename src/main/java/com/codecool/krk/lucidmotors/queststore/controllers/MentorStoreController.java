@@ -26,7 +26,6 @@ public class MentorStoreController implements UserController {
             userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
 
-            school.save();
         }
     }
 

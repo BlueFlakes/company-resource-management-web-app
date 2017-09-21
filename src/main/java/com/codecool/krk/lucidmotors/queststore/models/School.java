@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 import com.codecool.krk.lucidmotors.queststore.models.User;
 
@@ -18,7 +19,7 @@ public class School {
     private MentorDao mentorDao;
     private StudentDao studentDao;
 
-    public School(String name) {
+    public School(String name) throws SQLException {
         this.name = name;
         this.classDao = new ClassDao();
         this.managerDao = new ManagerDao();
@@ -26,7 +27,7 @@ public class School {
         this.studentDao = new StudentDao(this.classDao);
     }
 
-    public User getUser(String login) {
+    public User getUser(String login) throws SQLException {
 
         User foundUser = null;
 
@@ -45,25 +46,21 @@ public class School {
         return foundUser;
     }
 
-    public Mentor getMentor(Integer id) {
+    public Mentor getMentor(Integer id) throws SQLException {
         return this.mentorDao.getMentor(id);
     }
 
-    public void isLoginAvailable(String login) throws LoginInUseException {
+    public void isLoginAvailable(String login) throws LoginInUseException, SQLException {
         if (this.getUser(login) != null) {
             throw new LoginInUseException();
         }
     }
 
-    public void save() {
-        
-    }
-
-    public ArrayList<SchoolClass> getAllClasses() {
+    public ArrayList<SchoolClass> getAllClasses() throws SQLException {
         return this.classDao.getAllClasses();
     }
 
-    public ArrayList<Mentor> getAllMentors() {
+    public ArrayList<Mentor> getAllMentors() throws SQLException {
         return this.mentorDao.getAllMentors();
     }
 
