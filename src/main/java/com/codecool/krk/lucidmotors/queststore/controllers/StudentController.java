@@ -55,7 +55,7 @@ public class StudentController implements UserController {
         }
     }
 
-    private void showWallet( ) {
+    private void showWallet() {
 
         String accountBalance = Integer.toString(this.user.getPossesedCoins());
         userInterface.println("Balance: " + accountBalance);
@@ -64,18 +64,18 @@ public class StudentController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void showLevel( ) {
+    private void showLevel() {
 
         userInterface.println("Your level: 0");
         this.userInterface.lockActualState();
     }
 
-    private void handleNoSuchCommand( ) {
+    private void handleNoSuchCommand() {
 
         userInterface.println("No such option.");
     }
 
-    private void startStoreController( ) {
+    private void startStoreController() {
 
         new StudentStoreController().startController(this.user, this.school);
     }

@@ -51,7 +51,7 @@ public class ExperienceLevelsController implements UserController {
         }
     }
 
-    private void createNewLevel( ) {
+    private void createNewLevel() {
 
         String[] questions = {"level: ", "needed coins: "};
         String[] types = {"integer", "integer"};
@@ -61,7 +61,7 @@ public class ExperienceLevelsController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void updateLevel( ) {
+    private void updateLevel() {
 
         String[] questions = {"level: ", "needed coins: "};
         String[] types = {"integer", "integer"};
