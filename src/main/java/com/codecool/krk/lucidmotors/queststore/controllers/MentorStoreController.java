@@ -1,17 +1,16 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-
-import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
-
+import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
+import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.User;
-import com.codecool.krk.lucidmotors.queststore.models.Mentor;
+
 
 public class MentorStoreController implements UserController {
 
-    private ShopArtifactController shopArtifactController = new ShopArtifactController();
-    private UserInterface userInterface = new UserInterface();
+    private final ShopArtifactController shopArtifactController = new ShopArtifactController();
+    private final UserInterface userInterface = new UserInterface();
     private User user;
     private School school;
 
@@ -22,6 +21,7 @@ public class MentorStoreController implements UserController {
         String userChoice = "";
 
         while (!userChoice.equals("0")) {
+
             this.userInterface.printMentorStoreMenu();
             userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
@@ -32,7 +32,8 @@ public class MentorStoreController implements UserController {
 
     private void handleUserRequest(String userChoice) {
 
-        switch(userChoice) {
+        switch (userChoice) {
+
             case "1":
                 shopArtifactController.showAvailableArtifacts();
                 break;
@@ -58,6 +59,7 @@ public class MentorStoreController implements UserController {
     }
 
     private void addArtifact() {
+
         String[] questions = {"Name: ", "Price: ", "Artifact category: "};
         String[] types = {"string", "integer", "string"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
@@ -66,16 +68,18 @@ public class MentorStoreController implements UserController {
     }
 
     private void updateArtifact() {
+
         this.getArtifactId();
         String[] questions = {"New name: ", "New price: ", "New artifact category: "};
         String[] types = {"string", "integer", "string"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
 
-
         this.userInterface.lockActualState();
     }
 
+
     private Integer getArtifactId() {
+
         String[] question = {"Provide artifact id: "};
         String[] type = {"integer"};
 
@@ -83,17 +87,17 @@ public class MentorStoreController implements UserController {
     }
 
     private void addArtifactCategory() {
+
         String[] question = {"Provide new artifact category name: "};
         String[] type = {"integer"};
-
         Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
 
         this.userInterface.lockActualState();
     }
 
     private void handleNoSuchCommand() {
-        userInterface.println("Wrong command!");
 
+        userInterface.println("Wrong command!");
         this.userInterface.lockActualState();
     }
 }

@@ -4,25 +4,24 @@ import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
-
 import com.codecool.krk.lucidmotors.queststore.models.*;
-
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 public class StudentStoreController implements UserController {
 
-    private ShopArtifactController shopArtifactController = new ShopArtifactController();
+    private final ShopArtifactController shopArtifactController = new ShopArtifactController();
+    private final UserInterface userInterface = new UserInterface();
     private Student user;
     private School school;
-    private UserInterface userInterface = new UserInterface();
 
     public void startController(User user, School school) {
 
         this.user = (Student) user;
         this.school = school;
-
         String userChoice = "";
-        while(!userChoice.equals("0")) {
+
+        while (!userChoice.equals("0")) {
+
             this.userInterface.printStudentStoreMenu();
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
@@ -31,9 +30,10 @@ public class StudentStoreController implements UserController {
         }
     }
 
-     private void handleUserRequest(String choice) {
+    private void handleUserRequest(String choice) {
 
-        switch(choice){
+        switch (choice) {
+
             case "1":
                 shopArtifactController.showAvailableArtifacts();
                 break;
@@ -48,9 +48,8 @@ public class StudentStoreController implements UserController {
             default:
                 handleNoSuchCommand();
                 break;
-
         }
-     }
+    }
 
     private void buyArtifact() {
         /* #TODO refactor */
@@ -62,10 +61,12 @@ public class StudentStoreController implements UserController {
             ShopArtifact shopArtifact = this.getShopArtifact();
             Integer studentBalance = this.user.getPossesedCoins();
 
-            if(shopArtifact == null) {
+            if (shopArtifact == null) {
                 this.userInterface.println("No such artifact");
-            } else if( studentBalance < shopArtifact.getPrice()) {
+
+            } else if (studentBalance < shopArtifact.getPrice()) {
                 this.userInterface.println("Not enough money");
+
             } else {
                 this.makePurchase(shopArtifact);
             }
@@ -78,6 +79,7 @@ public class StudentStoreController implements UserController {
     }
 
     private ShopArtifact getShopArtifact() throws NumberFormatException {
+
         this.userInterface.println("Provide artifact id");
         String input = this.userInterface.inputs.getInput("artifact id:");
         Integer artifact_id = Integer.parseInt(input);
@@ -86,14 +88,18 @@ public class StudentStoreController implements UserController {
     }
 
     private void makePurchase(ShopArtifact shopArtifact) {
+
         BoughtArtifact boughtArtifact = new BoughtArtifact(shopArtifact);
         new BoughtArtifactDao().updateArtifact(boughtArtifact);
+
         this.user.substractCoins(boughtArtifact.getPrice());
         this.userInterface.println(String.format("Bought artifact: %s", boughtArtifact.getName()));
+
         new ArtifactOwnersDao().update(this.user, boughtArtifact);
     }
 
     private void handleNoSuchCommand() {
+
         userInterface.println("No such option.");
     }
 }
