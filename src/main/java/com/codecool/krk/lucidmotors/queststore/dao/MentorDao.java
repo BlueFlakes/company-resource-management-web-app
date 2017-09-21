@@ -109,7 +109,7 @@ public class MentorDao {
         return mentor;
     }
 
-    public ArrayList<Mentor> getAllMentors( ) {
+    public ArrayList<Mentor> getAllMentors() {
 
         ArrayList<Mentor> foundMentors = new ArrayList<>();
 

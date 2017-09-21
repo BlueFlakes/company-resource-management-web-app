@@ -51,7 +51,7 @@ public class StudentStoreController implements UserController {
         }
     }
 
-    private void buyArtifact( ) {
+    private void buyArtifact() {
         /* #TODO refactor */
         this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
 
@@ -78,7 +78,7 @@ public class StudentStoreController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private ShopArtifact getShopArtifact( ) throws NumberFormatException {
+    private ShopArtifact getShopArtifact() throws NumberFormatException {
 
         this.userInterface.println("Provide artifact id");
         String input = this.userInterface.inputs.getInput("artifact id:");
@@ -98,7 +98,7 @@ public class StudentStoreController implements UserController {
         new ArtifactOwnersDao().update(this.user, boughtArtifact);
     }
 
-    private void handleNoSuchCommand( ) {
+    private void handleNoSuchCommand() {
 
         userInterface.println("No such option.");
     }

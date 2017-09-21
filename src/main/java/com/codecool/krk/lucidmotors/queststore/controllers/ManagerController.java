@@ -63,7 +63,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void addMentor( ) {
+    private void addMentor() {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -86,7 +86,7 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass( ) {
+    private SchoolClass chooseProperClass() {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
@@ -100,7 +100,7 @@ public class ManagerController implements UserController {
         return allClasses.get(userChoice);
     }
 
-    private Integer getUserChoice( ) {
+    private Integer getUserChoice() {
         String[] questions = {"Please choose class: "};
         String[] expectedTypes = {"integer"};
         ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
@@ -108,7 +108,7 @@ public class ManagerController implements UserController {
         return Integer.parseInt(userInput.get(0));
     }
 
-    private Integer getUserChoiceOfMentor( ) {
+    private Integer getUserChoiceOfMentor() {
         String[] questions = {"Please choose mentor: "};
         String[] expectedTypes = {"integer"};
         ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
@@ -127,7 +127,7 @@ public class ManagerController implements UserController {
         userInterface.println("");
     }
 
-    private void createClass( ) {
+    private void createClass() {
 
         userInterface.println("Provide name for new class:");
         String name = userInterface.inputs.getInput("name: ");
@@ -138,7 +138,7 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void editMentor( ) {
+    private void editMentor() {
 
         this.printAllMentors();
 
@@ -149,7 +149,7 @@ public class ManagerController implements UserController {
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
     }
 
-    private void showMentorsClass( ) {
+    private void showMentorsClass() {
 
         this.printAllMentors();
 
@@ -165,7 +165,7 @@ public class ManagerController implements UserController {
         userInterface.lockActualState();
     }
 
-    private void printAllMentors( ) {
+    private void printAllMentors() {
 
         userInterface.println("List of existing mentors: ");
 
@@ -189,12 +189,12 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void startExperienceLevelController( ) {
+    private void startExperienceLevelController() {
 
         new ExperienceLevelsController().startController(this.user, this.school);
     }
 
-    private void handleNoSuchCommand( ) {
+    private void handleNoSuchCommand() {
 
         userInterface.println("No such option.");
     }

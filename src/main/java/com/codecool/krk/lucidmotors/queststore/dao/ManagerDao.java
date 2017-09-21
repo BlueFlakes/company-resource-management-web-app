@@ -11,7 +11,7 @@ public class ManagerDao {
     private final Connection connection;
     private Statement stmt = null;
 
-    public ManagerDao( ) {
+    public ManagerDao() {
 
         this.connection = DatabaseConnection.getConnection();
     }
@@ -93,7 +93,7 @@ public class ManagerDao {
 
     }
 
-    public void save( ) {
+    public void save() {
 
     }
 }

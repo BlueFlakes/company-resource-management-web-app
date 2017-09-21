@@ -15,7 +15,7 @@ public class ClassDao {
     private final Connection connection;
     private Statement stmt = null;
 
-    public ClassDao( ) {
+    public ClassDao() {
 
         this.connection = DatabaseConnection.getConnection();
     }
@@ -100,7 +100,7 @@ public class ClassDao {
         return schoolClass;
     }
 
-    public ArrayList<SchoolClass> getAllClasses( ) {
+    public ArrayList<SchoolClass> getAllClasses() {
 
         ArrayList<SchoolClass> schoolClasses = new ArrayList<>();
 
