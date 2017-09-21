@@ -9,13 +9,14 @@ import java.util.Scanner;
 public class FileLoader {
 
     public List<String> getDataFromFile(String fileName) {
+
         List<String> temp = new ArrayList<>();
         Scanner inputStream;
 
         try {
             inputStream = new Scanner(new File(fileName));
 
-            while(inputStream.hasNextLine()) {
+            while (inputStream.hasNextLine()) {
                 String line = inputStream.nextLine();
                 temp.add(line);
             }

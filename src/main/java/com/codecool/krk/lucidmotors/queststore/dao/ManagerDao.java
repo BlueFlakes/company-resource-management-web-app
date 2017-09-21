@@ -1,23 +1,29 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
-import java.sql.*;
-
 import com.codecool.krk.lucidmotors.queststore.models.Manager;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class ManagerDao {
-    private Connection connection;
+
+    private final Connection connection;
     private Statement stmt = null;
 
-    public ManagerDao() {
+    public ManagerDao( ) {
+
         this.connection = DatabaseConnection.getConnection();
     }
 
     public Manager getManager(Integer id) {
+
         Manager manager = null;
 
         try {
+
             String sqlQuery = "SELECT * FROM managers "
-                   + "WHERE id = " + id + ";";
+                    + "WHERE id = " + id + ";";
             ResultSet result = this.executeSqlQuery(sqlQuery);
 
             if (result.next()) {
@@ -31,8 +37,8 @@ public class ManagerDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -40,13 +46,15 @@ public class ManagerDao {
     }
 
     private ResultSet executeSqlQuery(String sqlQuery) {
+
         ResultSet result = null;
 
         try {
             stmt = connection.createStatement();
             result = stmt.executeQuery(sqlQuery);
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -54,11 +62,12 @@ public class ManagerDao {
     }
 
     public Manager getManager(String login) {
+
         Manager manager = null;
 
         try {
             String sqlQuery = "SELECT * FROM managers "
-                   + "WHERE login = '" + login + "';";
+                    + "WHERE login = '" + login + "';";
             ResultSet result = this.executeSqlQuery(sqlQuery);
 
             if (result.next()) {
@@ -72,8 +81,8 @@ public class ManagerDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -84,7 +93,7 @@ public class ManagerDao {
 
     }
 
-    public void save() {
+    public void save( ) {
 
     }
 }

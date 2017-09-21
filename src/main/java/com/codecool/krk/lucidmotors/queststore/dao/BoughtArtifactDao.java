@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class BoughtArtifactDao {
-    public BoughtArtifact getArtifact(Integer id){
+
+    public BoughtArtifact getArtifact(Integer id) {
         /* #TODO database request*/
         return new BoughtArtifact("AA", 10, new ArtifactCategory(), "description", id, new Date(), false);
     }
@@ -20,8 +21,10 @@ public class BoughtArtifactDao {
     public ArrayList<BoughtArtifact> getAllArtifacts() {
         /* #TODO database request*/
         ArrayList<BoughtArtifact> list = new ArrayList<>();
+
         list.add(new BoughtArtifact("Temple", 20, new ArtifactCategory(), "description", 1, new Date(), false));
         list.add(new BoughtArtifact("ABB", 10, new ArtifactCategory(), "description", 2, new Date(), false));
+
         return list;
     }
 }

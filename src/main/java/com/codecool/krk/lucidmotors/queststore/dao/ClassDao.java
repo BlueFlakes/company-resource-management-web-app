@@ -1,29 +1,35 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
-import java.sql.*;
-import java.util.ArrayList;
-
+import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
-import com.codecool.krk.lucidmotors.queststore.models.Mentor;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 
 public class ClassDao {
-    private Connection connection;
-    Statement stmt = null;
 
-    public ClassDao() {
+    private final Connection connection;
+    private Statement stmt = null;
+
+    public ClassDao( ) {
+
         this.connection = DatabaseConnection.getConnection();
     }
 
     private ResultSet executeSqlQuery(String sqlQuery) {
+
         ResultSet result = null;
 
         try {
             stmt = connection.createStatement();
             result = stmt.executeQuery(sqlQuery);
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -36,19 +42,21 @@ public class ClassDao {
             stmt = connection.createStatement();
             stmt.executeUpdate(sqlQuery);
             stmt.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
     }
 
     public SchoolClass getSchoolClass(Integer id) {
+
         SchoolClass schoolClass = null;
 
         try {
             String sqlQuery = "SELECT * FROM classes "
-                   + "WHERE id = " + id + ";";
+                    + "WHERE id = " + id + ";";
             ResultSet result = this.executeSqlQuery(sqlQuery);
 
             if (result.next()) {
@@ -59,8 +67,8 @@ public class ClassDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -68,11 +76,12 @@ public class ClassDao {
     }
 
     public SchoolClass getSchoolClass(String name) {
+
         SchoolClass schoolClass = null;
 
         try {
             String sqlQuery = "SELECT * FROM classes "
-                   + "WHERE name = '" + name + "';";
+                    + "WHERE name = '" + name + "';";
             ResultSet result = this.executeSqlQuery(sqlQuery);
 
             if (result.next()) {
@@ -83,15 +92,16 @@ public class ClassDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
         return schoolClass;
     }
 
-    public ArrayList<SchoolClass> getAllClasses() {
+    public ArrayList<SchoolClass> getAllClasses( ) {
+
         ArrayList<SchoolClass> schoolClasses = new ArrayList<>();
 
         try {
@@ -108,8 +118,8 @@ public class ClassDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -117,6 +127,7 @@ public class ClassDao {
     }
 
     public ArrayList<Student> getAllStudentsFromClass(SchoolClass schoolClass) {
+
         ArrayList<Student> foundStudents = new ArrayList<>();
         Integer classId = schoolClass.getId();
 
@@ -132,17 +143,17 @@ public class ClassDao {
                 String password = result.getString("password");
                 String email = result.getString("email");
                 Integer earnedCoins = result.getInt("earned_coins");
-                Integer possesedCoins = result.getInt("possesed_coins");
+                Integer possessedCoins = result.getInt("possesed_coins");
 
-                Student student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possesedCoins);
+                Student student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
                 foundStudents.add(student);
             }
 
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -150,6 +161,7 @@ public class ClassDao {
     }
 
     public ArrayList<Mentor> getAllMentorsFromClass(SchoolClass schoolClass) {
+
         ArrayList<Mentor> foundMentors = new ArrayList<>();
         Integer classId = schoolClass.getId();
 
@@ -172,8 +184,8 @@ public class ClassDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -188,8 +200,8 @@ public class ClassDao {
                     + "VALUES ('" + name + "');";
             this.executeSqlUpdate(sqlQuery);
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
     }
