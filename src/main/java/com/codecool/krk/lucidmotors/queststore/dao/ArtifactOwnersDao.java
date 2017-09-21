@@ -9,13 +9,17 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ArtifactOwnersDao {
+
     public Student getStudent(BoughtArtifact boughtArtifact) {
+
         return new Student("Maciej nowak", "mcnowak", "boczniak", "", new SchoolClass("druga"));
     }
 
     public ArrayList<BoughtArtifact> getArtifacts(Student student) {
+
         ArrayList<BoughtArtifact> studentsArtifactsList = new ArrayList<>();
         studentsArtifactsList.add(new BoughtArtifact("Temple", 20, new ArtifactCategory(), "description", 1, new Date(), false));
+        
         return studentsArtifactsList;
     }
 

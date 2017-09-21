@@ -1,29 +1,35 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
-import java.sql.*;
-import java.util.ArrayList;
-
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 public class MentorDao {
-    private Connection connection;
+
+    private final Connection connection;
     private Statement stmt = null;
     private ClassDao classDao;
 
     public MentorDao(ClassDao classDao) {
+
         this.connection = DatabaseConnection.getConnection();
         this.classDao = classDao;
     }
 
     private ResultSet executeSqlQuery(String sqlQuery) {
+
         ResultSet result = null;
 
         try {
             stmt = connection.createStatement();
             result = stmt.executeQuery(sqlQuery);
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -36,19 +42,20 @@ public class MentorDao {
             stmt = connection.createStatement();
             stmt.executeUpdate(sqlQuery);
             stmt.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-
     }
 
     public Mentor getMentor(Integer id) {
+
         Mentor mentor = null;
 
         try {
             String sqlQuery = "SELECT * FROM mentors "
-                   + "WHERE id = " + id + ";";
+                    + "WHERE id = " + id + ";";
             ResultSet result = this.executeSqlQuery(sqlQuery);
 
             if (result.next()) {
@@ -64,8 +71,8 @@ public class MentorDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -73,11 +80,12 @@ public class MentorDao {
     }
 
     public Mentor getMentor(String login) {
+
         Mentor mentor = null;
 
         try {
             String sqlQuery = "SELECT * FROM mentors "
-                   + "WHERE login = '" + login + "';";
+                    + "WHERE login = '" + login + "';";
             ResultSet result = this.executeSqlQuery(sqlQuery);
 
             if (result.next()) {
@@ -93,8 +101,8 @@ public class MentorDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -102,6 +110,7 @@ public class MentorDao {
     }
 
     public ArrayList<Mentor> getAllMentors() {
+
         ArrayList<Mentor> foundMentors = new ArrayList<>();
 
         try {
@@ -124,8 +133,8 @@ public class MentorDao {
             result.close();
             stmt.close();
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -137,6 +146,7 @@ public class MentorDao {
     }
 
     public void save(Mentor mentor) {
+
         try {
             String name = mentor.getName();
             String login = mentor.getLogin();
@@ -149,8 +159,8 @@ public class MentorDao {
                     + "VALUES ('" + name + "', '" + login + "', '" + password + "', '" + email + "', '" + classId + "');";
             this.executeSqlUpdate(sqlQuery);
 
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
     }
