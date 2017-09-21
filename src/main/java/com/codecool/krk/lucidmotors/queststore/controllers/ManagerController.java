@@ -83,7 +83,8 @@ public class ManagerController implements UserController {
         SchoolClass choosenClass = chooseProperClass();
 
         try {
-            this.school.addUser(new Mentor(name, login, password, email, choosenClass));
+            this.school.isLoginAvailable(login);
+            new Mentor(name, login, password, email, choosenClass);
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }

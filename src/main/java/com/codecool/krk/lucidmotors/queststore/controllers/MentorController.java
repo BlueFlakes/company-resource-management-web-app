@@ -80,7 +80,8 @@ public class MentorController {
         SchoolClass choosenClass = chooseProperClass();
 
         try {
-            this.school.addUser(new Student(name, login, password, email, choosenClass));
+            this.school.isLoginAvailable(login);
+            new Student(name, login, password, email, choosenClass);
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
