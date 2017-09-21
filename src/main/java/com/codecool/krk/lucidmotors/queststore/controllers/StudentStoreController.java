@@ -56,7 +56,7 @@ public class StudentStoreController implements UserController {
 
     private void buyArtifact() {
         /* #TODO refactor */
-        this.userInterface.printStoreArtifacts();
+        this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
 
         try {
             // # TODO check is student have enough cc
@@ -96,7 +96,7 @@ public class StudentStoreController implements UserController {
     }
 
     private void showAvailableArtifacts() {
-        this.userInterface.printStoreArtifacts();
+        this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
         this.userInterface.lockActualState();
     }
 

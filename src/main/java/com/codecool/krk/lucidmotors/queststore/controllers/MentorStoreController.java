@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
@@ -57,7 +58,7 @@ public class MentorStoreController implements UserController {
     }
 
     private void showAvailableArtifacts() {
-        this.userInterface.printStoreArtifacts();
+        this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
 
         this.userInterface.lockActualState();
     }

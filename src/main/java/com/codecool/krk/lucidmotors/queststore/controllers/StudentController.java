@@ -2,6 +2,8 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+
 import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
@@ -57,7 +59,7 @@ public class StudentController implements UserController {
     private void showWallet() {
         String accountBalance = Integer.toString(this.user.getPossesedCoins());
         userInterface.println("Balance: " + accountBalance);
-        userInterface.printBoughtArtifacts(this.user);
+        userInterface.printBoughtArtifacts(this.user, new ArtifactOwnersDao().getArtifacts(this.user));
         this.userInterface.lockActualState();
     }
 
