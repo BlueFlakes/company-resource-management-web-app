@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import java.sql.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
@@ -7,72 +8,191 @@ import java.io.File;
 import java.util.Formatter;
 
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
+import com.codecool.krk.lucidmotors.queststore.models.Student;
+import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 
 
 public class ClassDao {
-
-    private ArrayList<SchoolClass> classes;
+    private Connection connection;
+    Statement stmt = null;
 
     public ClassDao() {
-        this.classes = readClassesData();
+        this.connection = DatabaseConnection.getConnection();
     }
 
-    private ArrayList<SchoolClass> readClassesData() {
-        ArrayList<SchoolClass> loadedClasses= new ArrayList<>();
-        String[] classData;
+    private ResultSet executeSqlQuery(String sqlQuery) {
+        ResultSet result = null;
 
-        try (Scanner fileScan = new Scanner(new File("data/class.csv"))) {
-
-            while(fileScan.hasNextLine()) {
-                classData = fileScan.nextLine().split("\\|");
-                String name = classData[1];
-                Integer id = Integer.parseInt(classData[0]);
-                loadedClasses.add(new SchoolClass(name, id));
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File class.csv not found!");
+        try {
+            stmt = connection.createStatement();
+            result = stmt.executeQuery(sqlQuery);
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return loadedClasses;
+        return result;
+    }
+
+    private void executeSqlUpdate(String sqlQuery) {
+
+        try {
+            stmt = connection.createStatement();
+            stmt.executeUpdate(sqlQuery);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+
     }
 
     public SchoolClass getSchoolClass(Integer id) {
+        SchoolClass schoolClass = null;
 
-        for (SchoolClass clas : this.classes) {
-            if(clas.getId() == id) {
-                return clas;
+        try {
+            String sqlQuery = "SELECT * FROM classes "
+                   + "WHERE id = " + id + ";";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                String name = result.getString("name");
+                schoolClass = new SchoolClass(name, id);
             }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return null;
+        return schoolClass;
     }
 
     public SchoolClass getSchoolClass(String name) {
+        SchoolClass schoolClass = null;
 
-        for (SchoolClass clas : this.classes) {
-            if (clas.getName().equals(name)) {
-                return clas;
+        try {
+            String sqlQuery = "SELECT * FROM classes "
+                   + "WHERE name = '" + name + "';";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                Integer id = result.getInt("id");
+                schoolClass = new SchoolClass(name, id);
             }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return null;
+        return schoolClass;
     }
 
     public ArrayList<SchoolClass> getAllClasses() {
-        return this.classes;
-    }
+        ArrayList<SchoolClass> schoolClasses = new ArrayList<>();
 
-    public void save() {
-        try (Formatter writer = new Formatter("data/class.csv")) {
+        try {
+            String sqlQuery = "SELECT * FROM classes";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
 
-            for(SchoolClass clas: this.classes) {
-                String lineToSave = clas.getClassSaveString();
-                writer.format(lineToSave);
+            while (result.next()) {
+                Integer id = result.getInt("id");
+                String name = result.getString("name");
+                SchoolClass schoolClass = new SchoolClass(name, id);
+                schoolClasses.add(schoolClass);
             }
 
-        } catch (Exception e) {
-            System.out.println("File not found");
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+
+        return schoolClasses;
+    }
+
+    public ArrayList<Student> getAllStudentsFromClass(SchoolClass schoolClass) {
+        ArrayList<Student> foundStudents = new ArrayList<>();
+        Integer classId = schoolClass.getId();
+
+        try {
+            String sqlQuery = "SELECT * FROM students"
+                    + "WHERE class_id = " + classId + ";";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            while (result.next()) {
+                Integer id = result.getInt("id");
+                String name = result.getString("name");
+                String login = result.getString("login");
+                String password = result.getString("password");
+                String email = result.getString("email");
+
+                Student student = new Student(name, login, password, email, schoolClass, id);
+                foundStudents.add(student);
+            }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+
+        return foundStudents;
+    }
+
+    public ArrayList<Mentor> getAllMentorsFromClass(SchoolClass schoolClass) {
+        ArrayList<Mentor> foundMentors = new ArrayList<>();
+        Integer classId = schoolClass.getId();
+
+        try {
+            String sqlQuery = "SELECT * FROM mentors"
+                    + "WHERE class_id = " + classId + ";";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            while (result.next()) {
+                Integer id = result.getInt("id");
+                String name = result.getString("name");
+                String login = result.getString("login");
+                String password = result.getString("password");
+                String email = result.getString("email");
+
+                Mentor mentor = new Mentor(name, login, password, email, schoolClass, id);
+                foundMentors.add(mentor);
+            }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+
+        return foundMentors;
+    }
+
+    public void save(SchoolClass schoolClass) {
+        try {
+            String name = schoolClass.getName();
+            String sqlQuery = "INSERT INTO classes "
+                    + "(name) "
+                    + "VALUES ('" + name + "');";
+            this.executeSqlUpdate(sqlQuery);
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
     }
 }

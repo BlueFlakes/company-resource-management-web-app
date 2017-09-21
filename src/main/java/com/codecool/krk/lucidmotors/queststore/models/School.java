@@ -66,10 +66,7 @@ public class School {
     }
 
     public void save() {
-        this.managerDao.save();
-        this.mentorDao.save();
-        this.studentDao.save();
-        this.classDao.save();
+        
     }
 
     public ArrayList<SchoolClass> getAllClasses() {
