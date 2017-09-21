@@ -49,27 +49,14 @@ public class School {
         return this.mentorDao.getMentor(id);
     }
 
-    public void addUser(User user) throws LoginInUseException {
-        String login = user.getLogin();
-
+    public void isLoginAvailable(String login) throws LoginInUseException {
         if (this.getUser(login) != null) {
             throw new LoginInUseException();
-        }
-
-        if (user instanceof Manager) {
-            this.managerDao.addManager((Manager) user);
-        } else if (user instanceof Mentor) {
-            this.mentorDao.addMentor((Mentor) user);
-        } else if (user instanceof Student) {
-            this.studentDao.addStudent((Student) user);
         }
     }
 
     public void save() {
-        this.managerDao.save();
-        this.mentorDao.save();
-        this.studentDao.save();
-        this.classDao.save();
+        
     }
 
     public ArrayList<SchoolClass> getAllClasses() {
