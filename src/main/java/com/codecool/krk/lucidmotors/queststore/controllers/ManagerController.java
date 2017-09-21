@@ -7,12 +7,11 @@ import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
-
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
-
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.Manager;
+
+import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 
@@ -21,15 +20,16 @@ public class ManagerController implements UserController {
 
     private Manager user;
     private School school;
-    private UserInterface userInterface = new UserInterface();
+    private final UserInterface userInterface = new UserInterface();
 
     public void startController(User user, School school) {
 
         this.user = (Manager) user;
         this.school = school;
-
         String userChoice = "";
+
         while (!userChoice.equals("0")) {
+
             this.userInterface.printManagerMenu();
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
@@ -41,6 +41,7 @@ public class ManagerController implements UserController {
     private void handleUserRequest(String choice) {
 
         switch(choice) {
+
             case "1":
                 addMentor();
                 break;
@@ -85,6 +86,7 @@ public class ManagerController implements UserController {
         try {
             this.school.isLoginAvailable(login);
             new Mentor(name, login, password, email, choosenClass);
+
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
@@ -93,6 +95,7 @@ public class ManagerController implements UserController {
     }
 
     private SchoolClass chooseProperClass() {
+
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
 
@@ -133,8 +136,10 @@ public class ManagerController implements UserController {
     }
 
     private void createClass() {
+
         userInterface.println("Provide name for new class:");
         String name = userInterface.inputs.getInput("name: ");
+
         new SchoolClass(name);
         userInterface.println(String.format("Class %s created.", name));
 
@@ -142,17 +147,18 @@ public class ManagerController implements UserController {
     }
 
     private void editMentor() {
-        this.printAllMentors();
-        Integer mentorId = getUserChoiceOfMentor();
 
+        this.printAllMentors();
+
+        Integer mentorId = getUserChoiceOfMentor();
         String[] questions = {"New name: ", "New login: ", "New password: ", "New email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
 
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
-
     }
 
     private void showMentorsClass() {
+
         this.printAllMentors();
 
         Integer mentorId = this.getUserChoiceOfMentor();
@@ -167,7 +173,8 @@ public class ManagerController implements UserController {
         userInterface.lockActualState();
     }
 
-    public void printAllMentors() {
+    private void printAllMentors( ) {
+
         userInterface.println("List of existing mentors: ");
 
         ArrayList<Mentor> mentors = this.school.getAllMentors();
@@ -177,6 +184,7 @@ public class ManagerController implements UserController {
     }
 
     private void printMentorInfo(Mentor mentor) {
+
         SchoolClass schoolClass = mentor.getClas();
         ArrayList<Student> students = schoolClass.getAllStudents();
 
@@ -190,10 +198,12 @@ public class ManagerController implements UserController {
     }
 
     private void startExperienceLevelController(){
+
         new ExperienceLevelsController().startController(this.user, this.school);
     }
 
     private void handleNoSuchCommand() {
+        
         userInterface.println("No such option.");
     }
 }
