@@ -1,7 +1,5 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import java.util.ArrayList;
-
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import com.codecool.krk.lucidmotors.queststore.models.School;

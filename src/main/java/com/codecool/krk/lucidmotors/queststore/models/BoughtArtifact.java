@@ -1,7 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.Date;
-import java.util.ArrayList;
 
 public class BoughtArtifact extends AbstractArtifact {
 

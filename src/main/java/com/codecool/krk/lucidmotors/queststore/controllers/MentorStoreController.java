@@ -84,8 +84,7 @@ public class MentorStoreController implements UserController {
         String[] question = {"Provide artifact id: "};
         String[] type = {"integer"};
 
-        Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
-        return id;
+        return Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
     }
 
     private void addArtifactCategory() {

@@ -1,11 +1,8 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import java.util.Date;
-
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
-import com.codecool.krk.lucidmotors.queststore.exceptions.InvalidArgumentException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 
 import com.codecool.krk.lucidmotors.queststore.models.*;
@@ -83,8 +80,8 @@ public class StudentStoreController implements UserController {
         this.userInterface.println("Provide artifact id");
         String input = this.userInterface.inputs.getInput("artifact id:");
         Integer artifact_id = Integer.parseInt(input);
-        ShopArtifact shopArtifact = new ShopArtifactDao().getArtifact(artifact_id);
-        return shopArtifact;
+
+        return new ShopArtifactDao().getArtifact(artifact_id);
     }
 
     private void makePurchase(ShopArtifact shopArtifact) {
