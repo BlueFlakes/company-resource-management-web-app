@@ -24,13 +24,13 @@ public class Student extends User {
 		studentDao.save(this);
     }
 
-	public Student(String name, String login, String password, String email, SchoolClass class_, Integer id) {
-      super(name, login, password, email, id);
-	    this.earnedCoins = 0;
-		  this.possesedCoins = 0;
-		  this.ownedArtifacts = new ArrayList<>();
-		  this.achievedQuests = new ArrayList<>();
-		  this.class_ = class_;
+	public Student(String name, String login, String password, String email, SchoolClass class_, Integer id, Integer earnedCoins, Integer possesedCoins) {
+      	super(name, login, password, email, id);
+	    	this.earnedCoins = earnedCoins;
+		  	this.possesedCoins = possesedCoins;
+		  	this.ownedArtifacts = new ArrayList<>();
+		  	this.achievedQuests = new ArrayList<>();
+		  	this.class_ = class_;
     }
 
 	public Integer getEarnedCoins() {

@@ -61,8 +61,10 @@ public class StudentDao {
                 String email = result.getString("email");
                 String login = result.getString("login");
                 Integer classId = result.getInt("class_id");
+                Integer earnedCoins = result.getInt("earned_coins");
+                Integer possesedCoins = result.getInt("possesed_coins");
                 SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                student = new Student(name, login, password, email, schoolClass, id);
+                student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possesedCoins);
             }
 
             result.close();
@@ -90,8 +92,10 @@ public class StudentDao {
                 String email = result.getString("email");
                 Integer id = result.getInt("id");
                 Integer classId = result.getInt("class_id");
+                Integer earnedCoins = result.getInt("earned_coins");
+                Integer possesedCoins = result.getInt("possesed_coins");
                 SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                student = new Student(name, login, password, email, schoolClass, id);
+                student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possesedCoins);
             }
 
             result.close();

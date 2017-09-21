@@ -135,8 +135,10 @@ public class ClassDao {
                 String login = result.getString("login");
                 String password = result.getString("password");
                 String email = result.getString("email");
+                Integer earnedCoins = result.getInt("earned_coins");
+                Integer possesedCoins = result.getInt("possesed_coins");
 
-                Student student = new Student(name, login, password, email, schoolClass, id);
+                Student student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possesedCoins);
                 foundStudents.add(student);
             }
 
