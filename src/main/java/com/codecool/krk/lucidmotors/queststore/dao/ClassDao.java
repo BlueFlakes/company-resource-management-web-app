@@ -1,11 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
 import java.sql.*;
-import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.FileNotFoundException;
-import java.io.File;
-import java.util.Formatter;
 
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 import com.codecool.krk.lucidmotors.queststore.models.Student;

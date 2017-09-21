@@ -1,10 +1,8 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.FileLoader;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;

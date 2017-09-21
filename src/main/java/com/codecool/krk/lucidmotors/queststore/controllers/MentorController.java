@@ -151,8 +151,7 @@ public class MentorController {
         String[] question = {"Provide quest id: "};
         String[] type = {"integer"};
 
-        Integer id = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
-        return id;
+        return Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
     }
 
     private void markBoughtArtifactsAsUsed() {
