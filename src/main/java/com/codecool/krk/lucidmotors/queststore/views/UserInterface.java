@@ -10,9 +10,9 @@ import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
 public class UserInterface {
-    private Scanner in = new Scanner(System.in);
-    private FileLoader dataLoader = new FileLoader();
-    public Inputs inputs = new Inputs();
+    private final Scanner in = new Scanner(System.in);
+    private final FileLoader dataLoader = new FileLoader();
+    public final Inputs inputs = new Inputs();
 
     public void println(String text) {
         System.out.println(text);

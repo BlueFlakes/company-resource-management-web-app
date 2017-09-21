@@ -4,7 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.controllers.LoginController;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
 
-public class App {
+class App {
 
     public static void main(String[] args) {
 
