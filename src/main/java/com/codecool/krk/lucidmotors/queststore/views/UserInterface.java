@@ -2,10 +2,9 @@ package com.codecool.krk.lucidmotors.queststore.views;
 
 import java.util.Scanner;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.codecool.krk.lucidmotors.queststore.dao.FileLoader;
-import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
@@ -93,16 +92,16 @@ public class UserInterface {
         System.out.println();
     }
 
-    public void printStoreArtifacts() {
-        for(ShopArtifact shopArtifact : new ShopArtifactDao().getAllArtifacts()) {
+    public void printStoreArtifacts(ArrayList<ShopArtifact> allArtifacts) {
+        for(ShopArtifact shopArtifact : allArtifacts) {
             System.out.println(shopArtifact);
         }
 
     }
 
-    public void printBoughtArtifacts(Student student) {
+    public void printBoughtArtifacts(Student student, ArrayList<BoughtArtifact> studentArtifacts) {
         this.println("Owned artifacts:");
-        for(BoughtArtifact boughtArtifact : new ArtifactOwnersDao().getArtifacts(student)) {
+        for(BoughtArtifact boughtArtifact : studentArtifacts) {
             System.out.println(boughtArtifact);
         }
     }

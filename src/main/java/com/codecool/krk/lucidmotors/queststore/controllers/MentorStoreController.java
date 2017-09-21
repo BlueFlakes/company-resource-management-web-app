@@ -1,7 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 
+import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import com.codecool.krk.lucidmotors.queststore.models.School;
@@ -10,6 +10,7 @@ import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 
 public class MentorStoreController implements UserController {
 
+    private ShopArtifactController shopArtifactController = new ShopArtifactController();
     private UserInterface userInterface = new UserInterface();
     private User user;
     private School school;
@@ -33,7 +34,7 @@ public class MentorStoreController implements UserController {
 
         switch(userChoice) {
             case "1":
-                showAvailableArtifacts();
+                shopArtifactController.showAvailableArtifacts();
                 break;
 
             case "2":
@@ -54,12 +55,6 @@ public class MentorStoreController implements UserController {
             default:
                 handleNoSuchCommand();
         }
-    }
-
-    private void showAvailableArtifacts() {
-        this.userInterface.printStoreArtifacts();
-
-        this.userInterface.lockActualState();
     }
 
     private void addArtifact() {
