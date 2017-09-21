@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import java.sql.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
@@ -10,82 +11,151 @@ import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 
 public class MentorDao {
-    private ArrayList<Mentor> mentors;
+    private Connection connection;
+    private Statement stmt = null;
+    private ClassDao classDao;
 
     public MentorDao(ClassDao classDao) {
-        this.mentors = readMentorsData(classDao);
+        this.connection = DatabaseConnection.getConnection();
+        this.classDao = classDao;
     }
 
-    private ArrayList<Mentor> readMentorsData(ClassDao classDao) {
-        ArrayList<Mentor> loadedMentors= new ArrayList<>();
-        String[] mentorData;
+    private ResultSet executeSqlQuery(String sqlQuery) {
+        ResultSet result = null;
 
-        try (Scanner fileScan = new Scanner(new File("data/mentor.csv"))) {
-
-            while(fileScan.hasNextLine()) {
-                mentorData = fileScan.nextLine().split("\\|");
-                String name = mentorData[1];
-                Integer id = Integer.parseInt(mentorData[0]);
-                String login = mentorData[2];
-                String password = mentorData[3];
-                String email = mentorData[4];
-                Integer classId = Integer.parseInt(mentorData[5]);
-                SchoolClass clas = classDao.getSchoolClass(classId);
-
-                Mentor mentor = new Mentor(name, login, password, email, clas, id);
-                loadedMentors.add(mentor);
-                clas.addMentor(mentor);
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File mentor.csv not found!");
+        try {
+            stmt = connection.createStatement();
+            result = stmt.executeQuery(sqlQuery);
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return loadedMentors;
+        return result;
+    }
+
+    private void executeSqlUpdate(String sqlQuery) {
+
+        try {
+            stmt = connection.createStatement();
+            stmt.executeUpdate(sqlQuery);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+
     }
 
     public Mentor getMentor(Integer id) {
+        Mentor mentor = null;
 
-        for (Mentor mentor : this.mentors) {
-            if (mentor.getId() == id) {
-                return mentor;
+        try {
+            String sqlQuery = "SELECT * FROM mentors "
+                   + "WHERE id = " + id + ";";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                String name = result.getString("name");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                String login = result.getString("login");
+                Integer classId = result.getInt("class_id");
+                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+                mentor = new Mentor(name, login, password, email, schoolClass, id);
             }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return null;
+        return mentor;
     }
 
     public Mentor getMentor(String login) {
+        Mentor mentor = null;
 
-        for(Mentor mentor : this.mentors) {
-            if (mentor.getLogin().equals(login)) {
-                return mentor;
+        try {
+            String sqlQuery = "SELECT * FROM mentors "
+                   + "WHERE login = '" + login + "';";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                String name = result.getString("name");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                Integer id = result.getInt("id");
+                Integer classId = result.getInt("class_id");
+                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+                mentor = new Mentor(name, login, password, email, schoolClass, id);
             }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return null;
+        return mentor;
     }
 
     public ArrayList<Mentor> getAllMentors() {
-        return this.mentors;
+        ArrayList<Mentor> foundMentors = new ArrayList<>();
+
+        try {
+            String sqlQuery = "SELECT * FROM mentors";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            while (result.next()) {
+                Integer id = result.getInt("id");
+                String name = result.getString("name");
+                String login = result.getString("login");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                Integer classId = result.getInt("class_id");
+                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+
+                Mentor mentor = new Mentor(name, login, password, email, schoolClass, id);
+                foundMentors.add(mentor);
+            }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+
+        return foundMentors;
     }
 
     public void addMentor(Mentor mentor) {
-        this.mentors.add(mentor);
-        SchoolClass clas = mentor.getClas();
-        clas.addMentor(mentor);
+
     }
 
-    public void save() {
-        try (Formatter writer = new Formatter("data/mentor.csv")) {
+    public void save(Mentor mentor) {
+        try {
+            String name = mentor.getName();
+            String login = mentor.getLogin();
+            String password = mentor.getPassword();
+            String email = mentor.getEmail();
+            Integer classId = mentor.getClas().getId();
 
-            for(Mentor mentor: this.mentors) {
-                String lineToSave = mentor.getMentorSaveString();
-                writer.format(lineToSave);
-            }
+            String sqlQuery = "INSERT INTO mentors "
+                    + "(name, login, password, email, class_id) "
+                    + "VALUES ('" + name + "', '" + login + "', '" + password + "', '" + email + "', '" + classId + "');";
+            this.executeSqlUpdate(sqlQuery);
 
-        } catch (Exception e) {
-            System.out.println("File not found");
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
     }
 }
