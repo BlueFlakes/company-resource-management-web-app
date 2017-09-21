@@ -7,7 +7,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.NotEqualElementsExcept
 import com.codecool.krk.lucidmotors.queststore.exceptions.InvalidArgumentException;
 
 public class Inputs {
-    public Scanner in = new Scanner(System.in);
+    private final Scanner in = new Scanner(System.in);
 
     public String getInput(String question){
         System.out.print(question);

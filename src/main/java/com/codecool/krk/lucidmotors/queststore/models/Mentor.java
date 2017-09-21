@@ -5,8 +5,8 @@ import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 
 public class Mentor extends User {
     
-    private SchoolClass class_;
-    private MentorDao mentorDao = new MentorDao(new ClassDao());
+    private final SchoolClass class_;
+    private final MentorDao mentorDao = new MentorDao(new ClassDao());
 
     public Mentor(String name, String login, String password, String email, SchoolClass class_) {
 

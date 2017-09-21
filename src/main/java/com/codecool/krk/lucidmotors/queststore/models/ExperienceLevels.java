@@ -2,9 +2,9 @@ package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.TreeMap;
 
-public class ExperienceLevels {
+class ExperienceLevels {
 
-    private TreeMap<Integer, Integer> levels;
+    private final TreeMap<Integer, Integer> levels;
 
     public ExperienceLevels() {
         this.levels = new TreeMap<>();
