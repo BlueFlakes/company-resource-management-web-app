@@ -125,7 +125,7 @@ public class ClassDao {
         Integer classId = schoolClass.getId();
 
         try {
-            String sqlQuery = "SELECT * FROM students"
+            String sqlQuery = "SELECT * FROM students "
                     + "WHERE class_id = " + classId + ";";
             ResultSet result = this.executeSqlQuery(sqlQuery);
 
@@ -156,7 +156,7 @@ public class ClassDao {
         Integer classId = schoolClass.getId();
 
         try {
-            String sqlQuery = "SELECT * FROM mentors"
+            String sqlQuery = "SELECT * FROM mentors "
                     + "WHERE class_id = " + classId + ";";
             ResultSet result = this.executeSqlQuery(sqlQuery);
 
