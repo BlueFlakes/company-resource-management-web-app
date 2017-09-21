@@ -11,6 +11,7 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 public class StudentStoreController implements UserController {
 
+    private ShopArtifactController shopArtifactController = new ShopArtifactController();
     private Student user;
     private School school;
     private UserInterface userInterface = new UserInterface();
@@ -34,7 +35,7 @@ public class StudentStoreController implements UserController {
 
         switch(choice){
             case "1":
-                showAvailableArtifacts();
+                shopArtifactController.showAvailableArtifacts();
                 break;
 
             case "2":
@@ -90,11 +91,6 @@ public class StudentStoreController implements UserController {
         this.user.substractCoins(boughtArtifact.getPrice());
         this.userInterface.println(String.format("Bought artifact: %s", boughtArtifact.getName()));
         new ArtifactOwnersDao().update(this.user, boughtArtifact);
-    }
-
-    private void showAvailableArtifacts() {
-        this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
-        this.userInterface.lockActualState();
     }
 
     private void handleNoSuchCommand() {

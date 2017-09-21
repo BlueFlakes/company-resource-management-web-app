@@ -2,10 +2,9 @@ package com.codecool.krk.lucidmotors.queststore.views;
 
 import java.util.Scanner;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.codecool.krk.lucidmotors.queststore.dao.FileLoader;
-import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
