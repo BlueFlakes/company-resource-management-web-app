@@ -151,7 +151,6 @@ public class ManagerController implements UserController {
 
     }
 
-
     private void showMentorsClass() {
         this.printAllMentors();
 
