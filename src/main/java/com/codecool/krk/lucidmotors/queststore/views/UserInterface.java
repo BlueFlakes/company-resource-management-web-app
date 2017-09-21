@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.FileLoader;
+import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
+import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
+import com.codecool.krk.lucidmotors.queststore.models.Student;
 
 public class UserInterface {
     private Scanner in = new Scanner(System.in);
@@ -90,12 +96,18 @@ public class UserInterface {
     }
 
     public void printStoreArtifacts() {
-        String fileName = "csv/artifactsList.csv";
-
-        List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
-        for (String line : loadedMenu) {
-            System.out.println(line);
+        for(ShopArtifact shopArtifact : new ShopArtifactDao().getAllArtifacts()) {
+            System.out.println(shopArtifact);
         }
 
     }
+
+    public void printBoughtArtifacts(Student student) {
+        this.println("Owned artifacts:");
+        for(BoughtArtifact boughtArtifact : new ArtifactOwnersDao().getArtifacts(student)) {
+            System.out.println(boughtArtifact);
+        }
+    }
+
+
 }

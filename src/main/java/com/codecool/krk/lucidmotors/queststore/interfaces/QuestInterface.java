@@ -1,4 +1,6 @@
-package com.codecool.krk.lucidmotors.queststore.models;
+package com.codecool.krk.lucidmotors.queststore.interfaces;
+
+import com.codecool.krk.lucidmotors.queststore.models.QuestCategory;
 
 public interface QuestInterface {
 
