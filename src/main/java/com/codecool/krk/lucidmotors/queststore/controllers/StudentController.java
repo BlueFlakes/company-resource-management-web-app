@@ -1,7 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 
+import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 
 import com.codecool.krk.lucidmotors.queststore.models.User;

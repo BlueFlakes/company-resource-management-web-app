@@ -1,11 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
 import java.sql.*;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.io.FileNotFoundException;
-import java.io.File;
-import java.util.Formatter;
 
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
@@ -61,8 +56,10 @@ public class StudentDao {
                 String email = result.getString("email");
                 String login = result.getString("login");
                 Integer classId = result.getInt("class_id");
+                Integer earnedCoins = result.getInt("earned_coins");
+                Integer possesedCoins = result.getInt("possesed_coins");
                 SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                student = new Student(name, login, password, email, schoolClass, id);
+                student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possesedCoins);
             }
 
             result.close();
@@ -90,8 +87,10 @@ public class StudentDao {
                 String email = result.getString("email");
                 Integer id = result.getInt("id");
                 Integer classId = result.getInt("class_id");
+                Integer earnedCoins = result.getInt("earned_coins");
+                Integer possesedCoins = result.getInt("possesed_coins");
                 SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                student = new Student(name, login, password, email, schoolClass, id);
+                student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possesedCoins);
             }
 
             result.close();
