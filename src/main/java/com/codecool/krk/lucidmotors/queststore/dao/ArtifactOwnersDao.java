@@ -7,10 +7,11 @@ import com.codecool.krk.lucidmotors.queststore.models.Student;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.sql.SQLException;
 
 public class ArtifactOwnersDao {
 
-    public Student getStudent(BoughtArtifact boughtArtifact) {
+    public Student getStudent(BoughtArtifact boughtArtifact) throws SQLException {
 
         return new Student("Maciej nowak", "mcnowak", "boczniak", "", new SchoolClass("druga"));
     }
@@ -19,7 +20,7 @@ public class ArtifactOwnersDao {
 
         ArrayList<BoughtArtifact> studentsArtifactsList = new ArrayList<>();
         studentsArtifactsList.add(new BoughtArtifact("Temple", 20, new ArtifactCategory(), "description", 1, new Date(), false));
-        
+
         return studentsArtifactsList;
     }
 

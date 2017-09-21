@@ -6,7 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
-
+import java.sql.SQLException;
 
 public class ManagerController implements UserController {
 
@@ -14,7 +14,7 @@ public class ManagerController implements UserController {
     private Manager user;
     private School school;
 
-    public void startController(User user, School school) {
+    public void startController(User user, School school) throws SQLException {
 
         this.user = (Manager) user;
         this.school = school;
@@ -26,11 +26,10 @@ public class ManagerController implements UserController {
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
-            school.save();
         }
     }
 
-    private void handleUserRequest(String choice) {
+    private void handleUserRequest(String choice) throws SQLException {
 
         switch (choice) {
 
@@ -63,7 +62,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void addMentor() {
+    private void addMentor() throws SQLException {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -86,7 +85,7 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass() {
+    private SchoolClass chooseProperClass() throws SQLException {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
@@ -127,7 +126,7 @@ public class ManagerController implements UserController {
         userInterface.println("");
     }
 
-    private void createClass() {
+    private void createClass() throws SQLException {
 
         userInterface.println("Provide name for new class:");
         String name = userInterface.inputs.getInput("name: ");
@@ -138,7 +137,7 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void editMentor() {
+    private void editMentor() throws SQLException {
 
         this.printAllMentors();
 
@@ -149,7 +148,7 @@ public class ManagerController implements UserController {
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
     }
 
-    private void showMentorsClass() {
+    private void showMentorsClass() throws SQLException {
 
         this.printAllMentors();
 
@@ -165,7 +164,7 @@ public class ManagerController implements UserController {
         userInterface.lockActualState();
     }
 
-    private void printAllMentors() {
+    private void printAllMentors() throws SQLException {
 
         userInterface.println("List of existing mentors: ");
 
@@ -175,7 +174,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void printMentorInfo(Mentor mentor) {
+    private void printMentorInfo(Mentor mentor) throws SQLException {
 
         SchoolClass schoolClass = mentor.getClas();
         ArrayList<Student> students = schoolClass.getAllStudents();

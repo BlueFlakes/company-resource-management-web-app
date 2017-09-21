@@ -7,7 +7,6 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
-
 public class ExperienceLevelsController implements UserController {
 
     private final UserInterface userInterface = new UserInterface();
@@ -26,7 +25,6 @@ public class ExperienceLevelsController implements UserController {
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
-            school.save();
         }
     }
 

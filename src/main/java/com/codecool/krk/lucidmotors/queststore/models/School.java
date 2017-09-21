@@ -1,12 +1,14 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import java.util.ArrayList;
+import java.sql.SQLException;
+
+import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ManagerDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
-
-import java.util.ArrayList;
 
 public class School {
 
@@ -16,7 +18,7 @@ public class School {
     private final MentorDao mentorDao;
     private final StudentDao studentDao;
 
-    public School(String name) {
+    public School(String name) throws SQLException {
 
         this.name = name;
         this.classDao = new ClassDao();
@@ -25,7 +27,7 @@ public class School {
         this.studentDao = new StudentDao(this.classDao);
     }
 
-    public User getUser(String login) {
+    public User getUser(String login) throws SQLException {
 
         User foundUser = null;
 
@@ -44,26 +46,23 @@ public class School {
         return foundUser;
     }
 
-    public Mentor getMentor(Integer id) {
+    public Mentor getMentor(Integer id) throws SQLException {
         return this.mentorDao.getMentor(id);
     }
 
-    public void isLoginAvailable(String login) throws LoginInUseException {
+    public void isLoginAvailable(String login) throws LoginInUseException, SQLException {
 
         if (this.getUser(login) != null) {
             throw new LoginInUseException();
         }
     }
 
-    public void save() {
+    public ArrayList<SchoolClass> getAllClasses() throws SQLException {
 
-    }
-
-    public ArrayList<SchoolClass> getAllClasses() {
         return this.classDao.getAllClasses();
     }
 
-    public ArrayList<Mentor> getAllMentors() {
+    public ArrayList<Mentor> getAllMentors() throws SQLException {
         return this.mentorDao.getAllMentors();
     }
 

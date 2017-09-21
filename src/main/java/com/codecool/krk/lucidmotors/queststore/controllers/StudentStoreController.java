@@ -26,7 +26,6 @@ public class StudentStoreController implements UserController {
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
             handleUserRequest(userChoice);
 
-            school.save();
         }
     }
 
