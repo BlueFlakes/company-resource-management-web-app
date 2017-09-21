@@ -1,24 +1,23 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
-import java.util.ArrayList;
-
-import com.codecool.krk.lucidmotors.queststore.models.User;
-
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ManagerDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 
+import java.util.ArrayList;
+
 public class School {
 
-    private String name;
-    private ClassDao classDao;
-    private ManagerDao managerDao;
-    private MentorDao mentorDao;
-    private StudentDao studentDao;
+    private final String name;
+    private final ClassDao classDao;
+    private final ManagerDao managerDao;
+    private final MentorDao mentorDao;
+    private final StudentDao studentDao;
 
     public School(String name) {
+
         this.name = name;
         this.classDao = new ClassDao();
         this.managerDao = new ManagerDao();
@@ -50,13 +49,14 @@ public class School {
     }
 
     public void isLoginAvailable(String login) throws LoginInUseException {
+
         if (this.getUser(login) != null) {
             throw new LoginInUseException();
         }
     }
 
     public void save() {
-        
+
     }
 
     public ArrayList<SchoolClass> getAllClasses() {

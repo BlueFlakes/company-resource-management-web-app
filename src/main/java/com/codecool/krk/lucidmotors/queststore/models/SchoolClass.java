@@ -1,29 +1,24 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
-import java.util.ArrayList;
-
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
+
+import java.util.ArrayList;
 
 public class SchoolClass {
 
     private String name;
-    private ArrayList<Student> studentsList;
-    private ArrayList<Mentor> mentorsList;
     private Integer id;
-    private ClassDao classDao = new ClassDao();
+    private final ClassDao classDao = new ClassDao();
 
     public SchoolClass(String name) {
+
         this.name = name;
-        this.studentsList = new ArrayList<>();
-        this.mentorsList = new ArrayList<>();
         this.id = null;
         classDao.save(this);
     }
 
     public SchoolClass(String name, Integer id) {
         this.name = name;
-        this.studentsList = new ArrayList<>();
-        this.mentorsList = new ArrayList<>();
         this.id = id;
     }
 
@@ -32,7 +27,7 @@ public class SchoolClass {
     }
 
     public void removeStudent(Student student) {
-        
+
     }
 
     public ArrayList<Student> getAllStudents() {
