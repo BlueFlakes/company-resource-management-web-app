@@ -1,0 +1,91 @@
+CREATE TABLE IF NOT EXISTS students (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT,
+	login	TEXT NOT NULL UNIQUE,
+	password	TEXT NOT NULL,
+	email	TEXT,
+	class_id	INTEGER NOT NULL,
+	earned_coins	INTEGER,
+	possesed_coins	INTEGER,
+	FOREIGN KEY(class_id) REFERENCES classes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS shop_artifacts (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT,
+	price	INTEGER NOT NULL,
+	category_id	INTEGER NOT NULL,
+	description	TEXT,
+	FOREIGN KEY(category_id) REFERENCES artifact_categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS quest_categories (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT
+);
+
+CREATE TABLE IF NOT EXISTS mentors (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT,
+	login	TEXT NOT NULL UNIQUE,
+	password	TEXT NOT NULL,
+	email	TEXT,
+	class_id	INTEGER NOT NULL,
+	FOREIGN KEY(class_id) REFERENCES classes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS managers (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT,
+	login	TEXT NOT NULL UNIQUE,
+	password	TEXT NOT NULL,
+	email	TEXT
+);
+
+CREATE TABLE IF NOT EXISTS classes (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT
+);
+
+CREATE TABLE IF NOT EXISTS bought_artifacts (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT,
+	price	INTEGER,
+	category_id	INTEGER NOT NULL,
+	purchase_date	TEXT,
+	is_used	INTEGER NOT NULL,
+	description	TEXT,
+	FOREIGN KEY(category_id) REFERENCES artifact_categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS available_quests (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT,
+	description	TEXT,
+	value	INTEGER NOT NULL,
+	category_id	INTEGER NOT NULL,
+	FOREIGN KEY(category_id) REFERENCES quest_categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS artifact_owners (
+	artifact_id	INTEGER NOT NULL,
+	student_id	INTEGER NOT NULL,
+	FOREIGN KEY(student_id) REFERENCES students(id) ON DELETE CASCADE,
+	FOREIGN KEY(artifact_id) REFERENCES bought_artifacts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS artifact_categories (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT
+);
+
+CREATE TABLE IF NOT EXISTS achieved_quests (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name	TEXT,
+	description	TEXT,
+	value	INTEGER NOT NULL,
+	owner_id	INTEGER NOT NULL,
+	date	TEXT,
+	category_id	INTEGER NOT NULL,
+	FOREIGN KEY(category_id) REFERENCES quest_categories(id) ON DELETE CASCADE
+);
