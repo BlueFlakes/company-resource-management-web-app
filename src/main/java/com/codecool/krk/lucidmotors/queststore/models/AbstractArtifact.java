@@ -9,6 +9,7 @@ public abstract class AbstractArtifact {
     private Integer id;
 
     public AbstractArtifact(String name, Integer price, ArtifactCategory artifactCategory, String description, Integer id) {
+
         this.name = name;
         this.price = price;
         this.artifactCategory = artifactCategory;

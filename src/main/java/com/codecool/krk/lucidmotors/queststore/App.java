@@ -7,7 +7,7 @@ import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
 import com.codecool.krk.lucidmotors.queststore.dao.DatabaseConnection;
 
-public class App {
+class App {
 
     public static void main(String[] args) {
 

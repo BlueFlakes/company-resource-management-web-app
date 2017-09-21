@@ -13,7 +13,7 @@ public class MentorDao {
 
     private final Connection connection;
     private Statement stmt = null;
-    private ClassDao classDao;
+    private final ClassDao classDao;
 
     public MentorDao(ClassDao classDao) throws SQLException {
 

@@ -3,7 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
-public class ShopArtifactController {
+class ShopArtifactController {
     private final UserInterface userInterface = new UserInterface();
 
     public void showAvailableArtifacts() {

@@ -2,29 +2,24 @@ package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
 import java.sql.SQLException;
-
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 
 public class SchoolClass {
 
     private String name;
-    private ArrayList<Student> studentsList;
-    private ArrayList<Mentor> mentorsList;
     private Integer id;
-    private ClassDao classDao = new ClassDao();
+    private final ClassDao classDao = new ClassDao();
+
 
     public SchoolClass(String name) throws SQLException {
+
         this.name = name;
-        this.studentsList = new ArrayList<>();
-        this.mentorsList = new ArrayList<>();
         this.id = null;
         classDao.save(this);
     }
 
     public SchoolClass(String name, Integer id) throws SQLException {
         this.name = name;
-        this.studentsList = new ArrayList<>();
-        this.mentorsList = new ArrayList<>();
         this.id = id;
     }
 

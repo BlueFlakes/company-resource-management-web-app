@@ -7,7 +7,7 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import java.util.ArrayList;
 import java.sql.SQLException;
 
-public class MentorController {
+class MentorController {
 
     private final UserInterface userInterface = new UserInterface();
     private Mentor user;

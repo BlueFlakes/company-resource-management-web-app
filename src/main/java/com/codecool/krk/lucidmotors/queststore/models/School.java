@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 
 import com.codecool.krk.lucidmotors.queststore.models.User;
-
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ManagerDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
@@ -13,13 +12,14 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 
 public class School {
 
-    private String name;
-    private ClassDao classDao;
-    private ManagerDao managerDao;
-    private MentorDao mentorDao;
-    private StudentDao studentDao;
+    private final String name;
+    private final ClassDao classDao;
+    private final ManagerDao managerDao;
+    private final MentorDao mentorDao;
+    private final StudentDao studentDao;
 
     public School(String name) throws SQLException {
+
         this.name = name;
         this.classDao = new ClassDao();
         this.managerDao = new ManagerDao();
@@ -51,12 +51,14 @@ public class School {
     }
 
     public void isLoginAvailable(String login) throws LoginInUseException, SQLException {
+
         if (this.getUser(login) != null) {
             throw new LoginInUseException();
         }
     }
 
     public ArrayList<SchoolClass> getAllClasses() throws SQLException {
+
         return this.classDao.getAllClasses();
     }
 
