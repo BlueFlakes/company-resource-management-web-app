@@ -83,7 +83,8 @@ public class ManagerController implements UserController {
         SchoolClass choosenClass = chooseProperClass();
 
         try {
-            this.school.addUser(new Mentor(name, login, password, email, choosenClass));
+            this.school.isLoginAvailable(login);
+            new Mentor(name, login, password, email, choosenClass);
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
@@ -134,7 +135,7 @@ public class ManagerController implements UserController {
     private void createClass() {
         userInterface.println("Provide name for new class:");
         String name = userInterface.inputs.getInput("name: ");
-
+        new SchoolClass(name);
         userInterface.println(String.format("Class %s created.", name));
 
         this.userInterface.lockActualState();
@@ -150,7 +151,6 @@ public class ManagerController implements UserController {
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
 
     }
-
 
     private void showMentorsClass() {
         this.printAllMentors();

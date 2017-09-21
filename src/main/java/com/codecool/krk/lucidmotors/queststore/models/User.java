@@ -7,14 +7,13 @@ public abstract class User {
     private String login;
     private String password;
     private String email;
-    private static Integer index = 0;
 
     public User(String name, String login, String password, String email) {
         this.name = name;
         this.login = login;
         this.password = password;
         this.email = email;
-        this.id = index++;
+        this.id = null;
     }
 
     public User(String name, String login, String password, String email, Integer id) {
@@ -24,9 +23,6 @@ public abstract class User {
         this.email = email;
         this.id = id;
 
-        if(id >= index) {
-            index = ++id;
-        }
     }
 
     public void setName(String name) {
