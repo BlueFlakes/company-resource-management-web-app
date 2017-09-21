@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import java.sql.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
@@ -10,81 +11,123 @@ import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 
 public class StudentDao {
-
-    private ArrayList<Student> students;
+    private Connection connection;
+    private Statement stmt = null;
+    private ClassDao classDao;
 
     public StudentDao(ClassDao classDao) {
-        this.students = readStudentsData(classDao);
+        this.connection = DatabaseConnection.getConnection();
+        this.classDao = classDao;
     }
 
-    private ArrayList<Student> readStudentsData(ClassDao classDao) {
-        ArrayList<Student> loadedStudents= new ArrayList<>();
-        String[] studentData;
+    private ResultSet executeSqlQuery(String sqlQuery) {
+        ResultSet result = null;
 
-        try (Scanner fileScan = new Scanner(new File("data/student.csv"))) {
-
-            while(fileScan.hasNextLine()) {
-                studentData = fileScan.nextLine().split("\\|");
-                String name = studentData[1];
-                Integer id = Integer.parseInt(studentData[0]);
-                String login = studentData[2];
-                String password = studentData[3];
-                String email = studentData[4];
-
-                Integer classId = Integer.parseInt(studentData[5]);
-                SchoolClass clas = classDao.getSchoolClass(classId);
-
-                Student student = new Student(name, login, password, email, clas, id);
-                loadedStudents.add(student);
-
-                clas.addStudent(student);
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File student.csv not found!");
+        try {
+            stmt = connection.createStatement();
+            result = stmt.executeQuery(sqlQuery);
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return loadedStudents;
+        return result;
+    }
+
+    private void executeSqlUpdate(String sqlQuery) {
+
+        try {
+            stmt = connection.createStatement();
+            stmt.executeUpdate(sqlQuery);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+
     }
 
     public Student getStudent(Integer id) {
+        Student student = null;
 
-        for (Student student : this.students) {
-            if (student.getId() == id) {
-                return student;
+        try {
+            String sqlQuery = "SELECT * FROM students "
+                   + "WHERE id = " + id + ";";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                String name = result.getString("name");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                String login = result.getString("login");
+                Integer classId = result.getInt("class_id");
+                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+                student = new Student(name, login, password, email, schoolClass, id);
             }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return null;
+        return student;
     }
 
     public Student getStudent(String login) {
+        Student student = null;
 
-        for (Student student : this.students) {
-            if (student.getLogin().equals(login)) {
-                return student;
+        try {
+            String sqlQuery = "SELECT * FROM students "
+                   + "WHERE login = '" + login + "';";
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                String name = result.getString("name");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                Integer id = result.getInt("id");
+                Integer classId = result.getInt("class_id");
+                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+                student = new Student(name, login, password, email, schoolClass, id);
             }
+
+            result.close();
+            stmt.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
 
-        return null;
+        return student;
     }
 
     public void addStudent(Student student) {
-        this.students.add(student);
-        SchoolClass clas = student.getClas();
-        clas.addStudent(student);
+
     }
 
-    public void save() {
-        try (Formatter writer = new Formatter("data/student.csv")) {
+    public void save(Student student) {
+        try {
+            String name = student.getName();
+            String login = student.getLogin();
+            String password = student.getPassword();
+            String email = student.getEmail();
+            Integer classId = student.getClas().getId();
+            Integer earnedCoins = student.getEarnedCoins();
+            Integer possesedCoins = student.getPossesedCoins();
 
-            for(Student student: this.students) {
-                String lineToSave = student.getStudentSaveString();
-                writer.format(lineToSave);
-            }
+            String sqlQuery = "INSERT INTO students "
+                    + "(name, login, password, email, class_id, earned_coins, possesed_coins) "
+                    + "VALUES ('" + name + "', '" + login + "', '" + password + "', '" + email + "', " + classId
+                    + ", " + earnedCoins + ", " + possesedCoins + ");";
+            this.executeSqlUpdate(sqlQuery);
 
-        } catch (Exception e) {
-            System.out.println("File not found");
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
     }
 }

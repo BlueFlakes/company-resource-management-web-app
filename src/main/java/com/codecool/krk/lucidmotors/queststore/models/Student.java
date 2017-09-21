@@ -2,6 +2,9 @@ package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
 
+import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
+
 public class Student extends User {
 
 	private Integer earnedCoins;
@@ -9,6 +12,7 @@ public class Student extends User {
 	private ArrayList<BoughtArtifact> ownedArtifacts;
 	private ArrayList<Quest> achievedQuests;
 	private SchoolClass class_;
+	private StudentDao studentDao = new StudentDao(new ClassDao());
 
     public Student(String name, String login, String password, String email, SchoolClass class_) {
         super(name, login, password, email);
@@ -17,6 +21,7 @@ public class Student extends User {
 		this.ownedArtifacts = new ArrayList<>();
 		this.achievedQuests = new ArrayList<>();
 		this.class_ = class_;
+		studentDao.save(this);
     }
 
 	public Student(String name, String login, String password, String email, SchoolClass class_, Integer id) {
