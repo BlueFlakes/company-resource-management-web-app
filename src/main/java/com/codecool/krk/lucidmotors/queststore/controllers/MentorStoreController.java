@@ -58,7 +58,7 @@ public class MentorStoreController implements UserController {
         }
     }
 
-    private void addArtifact( ) {
+    private void addArtifact() {
 
         String[] questions = {"Name: ", "Price: ", "Artifact category: "};
         String[] types = {"string", "integer", "string"};
@@ -67,7 +67,7 @@ public class MentorStoreController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void updateArtifact( ) {
+    private void updateArtifact() {
 
         this.getArtifactId();
         String[] questions = {"New name: ", "New price: ", "New artifact category: "};
@@ -78,7 +78,7 @@ public class MentorStoreController implements UserController {
     }
 
 
-    private Integer getArtifactId( ) {
+    private Integer getArtifactId() {
 
         String[] question = {"Provide artifact id: "};
         String[] type = {"integer"};
@@ -86,7 +86,7 @@ public class MentorStoreController implements UserController {
         return Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
     }
 
-    private void addArtifactCategory( ) {
+    private void addArtifactCategory() {
 
         String[] question = {"Provide new artifact category name: "};
         String[] type = {"integer"};
@@ -95,7 +95,7 @@ public class MentorStoreController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void handleNoSuchCommand( ) {
+    private void handleNoSuchCommand() {
 
         userInterface.println("Wrong command!");
         this.userInterface.lockActualState();

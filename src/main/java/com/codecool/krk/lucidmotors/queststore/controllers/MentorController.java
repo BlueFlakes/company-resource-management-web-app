@@ -62,7 +62,7 @@ public class MentorController {
         }
     }
 
-    private void addStudent( ) {
+    private void addStudent() {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -85,7 +85,7 @@ public class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass( ) {
+    private SchoolClass chooseProperClass() {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
@@ -99,7 +99,7 @@ public class MentorController {
         return allClasses.get(userChoice);
     }
 
-    private Integer getUserChoice( ) {
+    private Integer getUserChoice() {
 
         String[] questions = {"Please choose class: "};
         String[] expectedTypes = {"integer"};
@@ -119,7 +119,7 @@ public class MentorController {
         userInterface.newLine();
     }
 
-    private void addQuest( ) {
+    private void addQuest() {
 
         String[] questions = {"Name: ", "Quest category: ", "Description: ", "Value: "};
         String[] types = {"string", "string", "string", "integer"};
@@ -128,7 +128,7 @@ public class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private void addQuestCategory( ) {
+    private void addQuestCategory() {
 
         String[] questions = {"Name: "};
         String[] types = {"string"};
@@ -137,7 +137,7 @@ public class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private void updateQuest( ) {
+    private void updateQuest() {
 
         Integer id = this.getQuestId();
         String[] questions = {"new name: ", "new quest category: ", "new description: ", "new value: "};
@@ -147,7 +147,7 @@ public class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private Integer getQuestId( ) {
+    private Integer getQuestId() {
 
         String[] question = {"Provide quest id: "};
         String[] type = {"integer"};
@@ -155,7 +155,7 @@ public class MentorController {
         return Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
     }
 
-    private void markBoughtArtifactsAsUsed( ) {
+    private void markBoughtArtifactsAsUsed() {
 
         String mockArtifactsList = "id - owner - name - status\n" +
                 "1 - Maciej Nowak - Sanctuary - used\n" +
@@ -176,12 +176,12 @@ public class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private void runMentorStoreController( ) {
+    private void runMentorStoreController() {
 
         new MentorStoreController().startController(this.user, this.school);
     }
 
-    private void handleNoSuchCommand( ) {
+    private void handleNoSuchCommand() {
 
         userInterface.println("Wrong command!");
         this.userInterface.lockActualState();

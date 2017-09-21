@@ -14,7 +14,7 @@ public class LoginController {
         this.school = school;
     }
 
-    public void start( ) throws WrongPasswordException {
+    public void start() throws WrongPasswordException {
 
         String login = userInterface.inputs.getInput("Please provide your login: ");
         String givenPassword = userInterface.inputs.getInput("Please provide your password: ");
