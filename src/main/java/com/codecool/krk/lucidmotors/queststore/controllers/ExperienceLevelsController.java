@@ -1,18 +1,18 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import java.util.ArrayList;
-
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
-import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.models.School;
+import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
+
+import java.util.ArrayList;
 
 
 public class ExperienceLevelsController implements UserController {
 
+    private final UserInterface userInterface = new UserInterface();
     private User user;
     private School school;
-    private final UserInterface userInterface = new UserInterface();
 
     public void startController(User user, School school) {
 
@@ -20,7 +20,7 @@ public class ExperienceLevelsController implements UserController {
         this.school = school;
         String userChoice = "";
 
-        while(!userChoice.equals("0")) {
+        while (!userChoice.equals("0")) {
 
             this.userInterface.printExperienceLevelsMenu();
             userChoice = this.userInterface.inputs.getInput("Provide options: ");
@@ -32,7 +32,7 @@ public class ExperienceLevelsController implements UserController {
 
     private void handleUserRequest(String choice) {
 
-        switch(choice) {
+        switch (choice) {
 
             case "1":
                 createNewLevel();
@@ -51,7 +51,7 @@ public class ExperienceLevelsController implements UserController {
         }
     }
 
-    private void createNewLevel() {
+    private void createNewLevel( ) {
 
         String[] questions = {"level: ", "needed coins: "};
         String[] types = {"integer", "integer"};
@@ -61,7 +61,7 @@ public class ExperienceLevelsController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void updateLevel() {
+    private void updateLevel( ) {
 
         String[] questions = {"level: ", "needed coins: "};
         String[] types = {"integer", "integer"};

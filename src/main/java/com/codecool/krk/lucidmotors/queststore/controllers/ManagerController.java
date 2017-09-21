@@ -1,26 +1,18 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import java.util.ArrayList;
-
+import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
-
-import com.codecool.krk.lucidmotors.queststore.models.User;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.Mentor;
-import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
-import com.codecool.krk.lucidmotors.queststore.models.Student;
-import com.codecool.krk.lucidmotors.queststore.models.Manager;
-
+import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
-import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
+import java.util.ArrayList;
 
 
 public class ManagerController implements UserController {
 
+    private final UserInterface userInterface = new UserInterface();
     private Manager user;
     private School school;
-    private final UserInterface userInterface = new UserInterface();
 
     public void startController(User user, School school) {
 
@@ -40,7 +32,7 @@ public class ManagerController implements UserController {
 
     private void handleUserRequest(String choice) {
 
-        switch(choice) {
+        switch (choice) {
 
             case "1":
                 addMentor();
@@ -71,7 +63,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void addMentor() {
+    private void addMentor( ) {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -94,7 +86,7 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass() {
+    private SchoolClass chooseProperClass( ) {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
@@ -108,7 +100,7 @@ public class ManagerController implements UserController {
         return allClasses.get(userChoice);
     }
 
-    private Integer getUserChoice() {
+    private Integer getUserChoice( ) {
         String[] questions = {"Please choose class: "};
         String[] expectedTypes = {"integer"};
         ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
@@ -116,7 +108,7 @@ public class ManagerController implements UserController {
         return Integer.parseInt(userInput.get(0));
     }
 
-    private Integer getUserChoiceOfMentor() {
+    private Integer getUserChoiceOfMentor( ) {
         String[] questions = {"Please choose mentor: "};
         String[] expectedTypes = {"integer"};
         ArrayList<String> userInput = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
@@ -128,14 +120,14 @@ public class ManagerController implements UserController {
         userInterface.println("");
 
         for (int i = 0; i < allClasses.size(); i++) {
-            String index = Integer.toString(i+1);
+            String index = Integer.toString(i + 1);
             System.out.println(index + ". " + allClasses.get(i));
         }
 
         userInterface.println("");
     }
 
-    private void createClass() {
+    private void createClass( ) {
 
         userInterface.println("Provide name for new class:");
         String name = userInterface.inputs.getInput("name: ");
@@ -146,7 +138,7 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void editMentor() {
+    private void editMentor( ) {
 
         this.printAllMentors();
 
@@ -157,7 +149,7 @@ public class ManagerController implements UserController {
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
     }
 
-    private void showMentorsClass() {
+    private void showMentorsClass( ) {
 
         this.printAllMentors();
 
@@ -178,7 +170,7 @@ public class ManagerController implements UserController {
         userInterface.println("List of existing mentors: ");
 
         ArrayList<Mentor> mentors = this.school.getAllMentors();
-        for (Mentor mentor: mentors) {
+        for (Mentor mentor : mentors) {
             userInterface.println(mentor.toString());
         }
     }
@@ -192,18 +184,18 @@ public class ManagerController implements UserController {
         userInterface.println(mentor.getMentorData());
         userInterface.println("\nList of this mentor students: ");
 
-        for (Student student: students) {
+        for (Student student : students) {
             userInterface.println(student.toString());
         }
     }
 
-    private void startExperienceLevelController(){
+    private void startExperienceLevelController( ) {
 
         new ExperienceLevelsController().startController(this.user, this.school);
     }
 
-    private void handleNoSuchCommand() {
-        
+    private void handleNoSuchCommand( ) {
+
         userInterface.println("No such option.");
     }
 }

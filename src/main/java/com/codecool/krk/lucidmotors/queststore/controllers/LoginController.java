@@ -1,24 +1,20 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.User;
-import com.codecool.krk.lucidmotors.queststore.models.Student;
-import com.codecool.krk.lucidmotors.queststore.models.Mentor;
-import com.codecool.krk.lucidmotors.queststore.models.Manager;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
+import com.codecool.krk.lucidmotors.queststore.models.*;
+import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 
 public class LoginController {
 
-    private School school;
     private final UserInterface userInterface = new UserInterface();
+    private School school;
 
     public LoginController(School school) {
         this.school = school;
     }
 
-    public void start() throws WrongPasswordException {
+    public void start( ) throws WrongPasswordException {
 
         String login = userInterface.inputs.getInput("Please provide your login: ");
         String givenPassword = userInterface.inputs.getInput("Please provide your password: ");
@@ -30,7 +26,7 @@ public class LoginController {
 
             if (expectedPassword.equals(givenPassword)) {
                 runUserController(user);
-                
+
             } else {
                 throw new WrongPasswordException();
             }
