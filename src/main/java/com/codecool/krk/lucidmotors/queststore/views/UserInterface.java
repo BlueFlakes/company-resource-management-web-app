@@ -18,6 +18,10 @@ public class UserInterface {
         System.out.println(text);
     }
 
+    public void newLine() {
+        System.out.println();
+    }
+
     public void clearWindow() {
         for(int i = 0; i < 50; i ++) {
             System.out.println();
