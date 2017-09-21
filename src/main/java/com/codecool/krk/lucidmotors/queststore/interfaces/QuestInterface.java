@@ -4,19 +4,19 @@ import com.codecool.krk.lucidmotors.queststore.models.QuestCategory;
 
 public interface QuestInterface {
 
-    String getName( );
+    String getName();
 
     void setName(String name);
 
-    QuestCategory getQuestCategory( );
+    QuestCategory getQuestCategory();
 
     void setQuestCategory(QuestCategory questCategory);
 
-    String getDescription( );
+    String getDescription();
 
     void setDescription(String description);
 
-    Integer getValue( );
+    Integer getValue();
 
     void setValue(Integer value);
 }
