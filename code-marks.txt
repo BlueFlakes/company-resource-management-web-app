@@ -1,0 +1,20 @@
+<file>:<line>, Note: <note>
+/src/main/java/com/codecool/krk/lucidmotors/queststore/dao/ManagerDao.java:52, Note: SQL: should use prepared statement
+/src/main/java/com/codecool/krk/lucidmotors/queststore/models/Mentor.java:10, Note: OOP: model should not be coupled with DAO
+/src/main/java/com/codecool/krk/lucidmotors/queststore/controllers/MentorController.java:161, Note: CC: you bastard! :D
+/src/main/java/com/codecool/krk/lucidmotors/queststore/controllers/MentorController.java:143, Note: CC: dead code
+/src/main/java/com/codecool/krk/lucidmotors/queststore/views/UserInterface.java:31, Note: CC: name it pause
+/src/main/java/com/codecool/krk/lucidmotors/queststore/views/UserInterface.java:38, Note: CC: this should be a .txt file
+/src/main/java/com/codecool/krk/lucidmotors/queststore/views/Inputs.java:45, Note: JA: logic based on exceptions
+/src/main/java/com/codecool/krk/lucidmotors/queststore/views/Inputs.java:39, Note: CC: for-each is better
+/src/main/java/com/codecool/krk/lucidmotors/queststore/views/Inputs.java:85, Note: JA: should return boolean instead of throwing exception
+/src/main/java/com/codecool/krk/lucidmotors/queststore/controllers/MentorController.java:35, Note: JA: use enum
+/src/main/java/com/codecool/krk/lucidmotors/queststore/interfaces/UserController.java:8, Note: not all controllers implement this interface
+/src/main/java/com/codecool/krk/lucidmotors/queststore/controllers/LoginController.java:44, Note: OOP: consider creating ControllerRegistry
+/src/main/java/com/codecool/krk/lucidmotors/queststore/controllers/LoginController.java:36, Note: JA: logic is based on exceptions
+/src/main/java/com/codecool/krk/lucidmotors/queststore/controllers/LoginController.java:28, Note: JA: this problem could be handeled right here
+/src/main/java/com/codecool/krk/lucidmotors/queststore/App.java:21, Note: CC: more generic exception should be caught here
+/src/main/java/com/codecool/krk/lucidmotors/queststore/sources.txt:1, Note: CC: I still don't get this file
+/pom.xml:50, Note: CC: trailing space
+/.project:9, Note: eclipse?
+
