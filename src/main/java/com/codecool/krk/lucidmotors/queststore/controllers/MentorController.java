@@ -5,7 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
-
+import java.sql.SQLException;
 
 class MentorController {
 
@@ -13,7 +13,7 @@ class MentorController {
     private Mentor user;
     private School school;
 
-    public void startController(User user, School school) {
+    public void startController(User user, School school) throws SQLException {
 
         this.user = (Mentor) user;
         this.school = school;
@@ -24,11 +24,10 @@ class MentorController {
             userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
 
-            school.save();
         }
     }
 
-    private void handleUserRequest(String userChoice) {
+    private void handleUserRequest(String userChoice) throws SQLException {
 
         switch (userChoice) {
             case "1":
@@ -62,7 +61,7 @@ class MentorController {
         }
     }
 
-    private void addStudent() {
+    private void addStudent() throws SQLException {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -85,7 +84,7 @@ class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass() {
+    private SchoolClass chooseProperClass() throws SQLException {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;

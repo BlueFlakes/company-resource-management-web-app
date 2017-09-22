@@ -31,10 +31,8 @@ public class ShopArtifactDao {
         ArrayList<ShopArtifact> list = new ArrayList<>();
         list.add(new ShopArtifact("Combat training", 50, new ArtifactCategory(), "Private mentoring", 10));
         list.add(new ShopArtifact("Combat training", 50, new ArtifactCategory(), "Private mentoring", 20));
-        
+
         return list;
     }
-
-
 
 }
