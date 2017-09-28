@@ -23,24 +23,8 @@ public class SchoolClass {
         this.id = id;
     }
 
-    public void addStudent(Student student) {
-
-    }
-
-    public void removeStudent(Student student) {
-
-    }
-
     public ArrayList<Student> getAllStudents() throws SQLException {
         return classDao.getAllStudentsFromClass(this);
-    }
-
-    public void addMentor(Mentor mentor) {
-
-    }
-
-    public void removeMentor(Mentor mentor) {
-
     }
 
     public ArrayList<Mentor> getAllMentors() throws SQLException {
