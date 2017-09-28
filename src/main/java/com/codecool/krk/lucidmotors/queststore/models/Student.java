@@ -24,7 +24,6 @@ public class Student extends User {
         this.ownedArtifacts = new ArrayList<>();
         this.achievedQuests = new ArrayList<>();
         this.class_ = class_;
-        studentDao.save(this);
     }
 
 	public Student(String name, String login, String password, String email, SchoolClass class_, 
@@ -80,4 +79,9 @@ public class Student extends User {
     public void substractCoins(Integer ammount) {
         this.possesedCoins -= ammount;
     }
+
+    public void save() throws SQLException {
+        studentDao.save(this);
+    }
+
 }

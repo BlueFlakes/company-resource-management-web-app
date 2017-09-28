@@ -75,7 +75,8 @@ class MentorController {
 
         try {
             this.school.isLoginAvailable(login);
-            new Student(name, login, password, email, choosenClass);
+            Student student = new Student(name, login, password, email, choosenClass);
+            student.save();
 
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
