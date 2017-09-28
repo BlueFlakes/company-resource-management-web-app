@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
 public class SchoolClass {
 
@@ -11,21 +12,21 @@ public class SchoolClass {
     private final ClassDao classDao = new ClassDao();
 
 
-    public SchoolClass(String name) throws SQLException {
+    public SchoolClass(String name) throws DaoException {
         this.name = name;
         this.id = null;
     }
 
-    public SchoolClass(String name, Integer id) throws SQLException {
+    public SchoolClass(String name, Integer id) throws DaoException {
         this.name = name;
         this.id = id;
     }
 
-    public ArrayList<Student> getAllStudents() throws SQLException {
+    public ArrayList<Student> getAllStudents() throws DaoException {
         return classDao.getAllStudentsFromClass(this);
     }
 
-    public ArrayList<Mentor> getAllMentors() throws SQLException {
+    public ArrayList<Mentor> getAllMentors() throws DaoException {
         return classDao.getAllMentorsFromClass(this);
     }
 
@@ -45,7 +46,7 @@ public class SchoolClass {
         return this.name;
     }
 
-    public void save() throws SQLException {
+    public void save() throws DaoException {
         classDao.save(this);
     }
 

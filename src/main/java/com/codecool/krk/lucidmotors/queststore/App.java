@@ -1,8 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore;
 
-import java.sql.SQLException;
-
 import com.codecool.krk.lucidmotors.queststore.controllers.LoginController;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
 import com.codecool.krk.lucidmotors.queststore.dao.DatabaseConnection;
@@ -18,15 +17,15 @@ class App {
         } catch (WrongPasswordException e) {
             System.out.println(e.getMessage());
 
-        } catch (SQLException ex) {
-            System.out.println("Database connection failed!");
+        } catch (DaoException ex) {
+            System.out.println("Database connection failed!\n" + ex.getMessage());
 
         } finally {
 
             try {
                 DatabaseConnection.closeConnection();
-            } catch (SQLException ex) {
-                System.out.println("Database connection failed!");
+            } catch (DaoException ex) {
+                System.out.println("Database connection failed!\n" + ex.getMessage());
             }
 
         }

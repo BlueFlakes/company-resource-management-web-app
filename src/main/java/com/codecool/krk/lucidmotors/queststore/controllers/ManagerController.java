@@ -1,12 +1,12 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
-import java.sql.SQLException;
 
 public class ManagerController implements UserController {
 
@@ -14,7 +14,7 @@ public class ManagerController implements UserController {
     private Manager user;
     private School school;
 
-    public void startController(User user, School school) throws SQLException {
+    public void startController(User user, School school) throws DaoException {
 
         this.user = (Manager) user;
         this.school = school;
@@ -29,7 +29,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void handleUserRequest(String choice) throws SQLException {
+    private void handleUserRequest(String choice) throws DaoException {
 
         switch (choice) {
 
@@ -62,7 +62,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void addMentor() throws SQLException {
+    private void addMentor() throws DaoException {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -86,7 +86,7 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass() throws SQLException {
+    private SchoolClass chooseProperClass() throws DaoException {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
@@ -127,7 +127,7 @@ public class ManagerController implements UserController {
         userInterface.println("");
     }
 
-    private void createClass() throws SQLException {
+    private void createClass() throws DaoException {
 
         userInterface.println("Provide name for new class:");
         String name = userInterface.inputs.getInput("name: ");
@@ -140,7 +140,7 @@ public class ManagerController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private void editMentor() throws SQLException {
+    private void editMentor() throws DaoException {
 
         this.printAllMentors();
 
@@ -151,7 +151,7 @@ public class ManagerController implements UserController {
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
     }
 
-    private void showMentorsClass() throws SQLException {
+    private void showMentorsClass() throws DaoException {
 
         this.printAllMentors();
 
@@ -167,7 +167,7 @@ public class ManagerController implements UserController {
         userInterface.lockActualState();
     }
 
-    private void printAllMentors() throws SQLException {
+    private void printAllMentors() throws DaoException {
 
         userInterface.println("List of existing mentors: ");
 
@@ -177,7 +177,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void printMentorInfo(Mentor mentor) throws SQLException {
+    private void printMentorInfo(Mentor mentor) throws DaoException {
 
         SchoolClass schoolClass = mentor.getClas();
         ArrayList<Student> students = schoolClass.getAllStudents();

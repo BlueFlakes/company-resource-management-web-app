@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
 public class Student extends User {
 
@@ -16,7 +17,7 @@ public class Student extends User {
     private Integer earnedCoins;
     private Integer possesedCoins;
 
-    public Student(String name, String login, String password, String email, SchoolClass class_) throws SQLException {
+    public Student(String name, String login, String password, String email, SchoolClass class_) throws DaoException {
 
         super(name, login, password, email);
         this.earnedCoins = 0;
@@ -27,7 +28,7 @@ public class Student extends User {
     }
 
 	public Student(String name, String login, String password, String email, SchoolClass class_, 
-                 Integer id, Integer earnedCoins, Integer possesedCoins) throws SQLException {
+                 Integer id, Integer earnedCoins, Integer possesedCoins) throws DaoException {
   
       super(name, login, password, email, id);
     	this.earnedCoins = earnedCoins;
@@ -80,7 +81,7 @@ public class Student extends User {
         this.possesedCoins -= ammount;
     }
 
-    public void save() throws SQLException {
+    public void save() throws DaoException {
         studentDao.save(this);
     }
 

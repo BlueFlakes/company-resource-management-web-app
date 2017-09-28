@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 
@@ -15,102 +16,124 @@ public class MentorDao {
     private Statement stmt = null;
     private final ClassDao classDao;
 
-    public MentorDao(ClassDao classDao) throws SQLException {
+    public MentorDao(ClassDao classDao) throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
         this.classDao = classDao;
     }
 
-    private ResultSet executeSqlQuery(String sqlQuery) throws SQLException {
+    private ResultSet executeSqlQuery(String sqlQuery) throws DaoException {
+        ResultSet result = null;
 
-        stmt = connection.createStatement();
-        ResultSet result = stmt.executeQuery(sqlQuery);
+        try {
+            stmt = connection.createStatement();
+            result = stmt.executeQuery(sqlQuery);
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
 
         return result;
     }
 
-    private void executeSqlUpdate(String sqlQuery) throws SQLException {
+    private void executeSqlUpdate(String sqlQuery) throws DaoException {
 
-        stmt = connection.createStatement();
-        stmt.executeUpdate(sqlQuery);
-        stmt.close();
+        try {
+            stmt = connection.createStatement();
+            stmt.executeUpdate(sqlQuery);
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
 
     }
 
-    public Mentor getMentor(Integer id) throws SQLException {
+    public Mentor getMentor(Integer id) throws DaoException {
 
         Mentor mentor = null;
         String sqlQuery = "SELECT * FROM mentors "
                 + "WHERE id = " + id + ";";
-        ResultSet result = this.executeSqlQuery(sqlQuery);
 
-        if (result.next()) {
-            String name = result.getString("name");
-            String password = result.getString("password");
-            String email = result.getString("email");
-            String login = result.getString("login");
-            Integer classId = result.getInt("class_id");
-            SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-            mentor = new Mentor(name, login, password, email, schoolClass, id);
+        try {
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                String name = result.getString("name");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                String login = result.getString("login");
+                Integer classId = result.getInt("class_id");
+                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+                mentor = new Mentor(name, login, password, email, schoolClass, id);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
         }
-
-        result.close();
-        stmt.close();
 
         return mentor;
     }
 
-    public Mentor getMentor(String login) throws SQLException {
+    public Mentor getMentor(String login) throws DaoException {
 
         Mentor mentor = null;
-
         String sqlQuery = "SELECT * FROM mentors "
                 + "WHERE login = '" + login + "';";
-        ResultSet result = this.executeSqlQuery(sqlQuery);
 
-        if (result.next()) {
-            String name = result.getString("name");
-            String password = result.getString("password");
-            String email = result.getString("email");
-            Integer id = result.getInt("id");
-            Integer classId = result.getInt("class_id");
-            SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-            mentor = new Mentor(name, login, password, email, schoolClass, id);
+        try {
+            ResultSet result = this.executeSqlQuery(sqlQuery);
+
+            if (result.next()) {
+                String name = result.getString("name");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                Integer id = result.getInt("id");
+                Integer classId = result.getInt("class_id");
+                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+                mentor = new Mentor(name, login, password, email, schoolClass, id);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
         }
-
-        result.close();
-        stmt.close();
 
         return mentor;
     }
 
-    public ArrayList<Mentor> getAllMentors() throws SQLException {
+    public ArrayList<Mentor> getAllMentors() throws DaoException {
 
         ArrayList<Mentor> foundMentors = new ArrayList<>();
-
         String sqlQuery = "SELECT * FROM mentors";
-        ResultSet result = this.executeSqlQuery(sqlQuery);
 
-        while (result.next()) {
-            Integer id = result.getInt("id");
-            String name = result.getString("name");
-            String login = result.getString("login");
-            String password = result.getString("password");
-            String email = result.getString("email");
-            Integer classId = result.getInt("class_id");
-            SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+        try {
+            ResultSet result = this.executeSqlQuery(sqlQuery);
 
-            Mentor mentor = new Mentor(name, login, password, email, schoolClass, id);
-            foundMentors.add(mentor);
+            while (result.next()) {
+                Integer id = result.getInt("id");
+                String name = result.getString("name");
+                String login = result.getString("login");
+                String password = result.getString("password");
+                String email = result.getString("email");
+                Integer classId = result.getInt("class_id");
+                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+
+                Mentor mentor = new Mentor(name, login, password, email, schoolClass, id);
+                foundMentors.add(mentor);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
         }
-
-        result.close();
-        stmt.close();
 
         return foundMentors;
     }
 
-    public void save(Mentor mentor) throws SQLException {
+    public void save(Mentor mentor) throws DaoException {
 
         String name = mentor.getName();
         String login = mentor.getLogin();
@@ -121,6 +144,7 @@ public class MentorDao {
         String sqlQuery = "INSERT INTO mentors "
                 + "(name, login, password, email, class_id) "
                 + "VALUES ('" + name + "', '" + login + "', '" + password + "', '" + email + "', '" + classId + "');";
+
         this.executeSqlUpdate(sqlQuery);
     }
 
