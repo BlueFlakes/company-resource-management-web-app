@@ -14,7 +14,6 @@ public class Mentor extends User {
 
         super(name, login, password, email);
         this.class_ = class_;
-        mentorDao.save(this);
     }
 
 
@@ -44,4 +43,9 @@ public class Mentor extends User {
     public String toString() {
         return String.format("id: %d. %s%n", this.getId(), this.getName());
     }
+
+    public void save() throws SQLException {
+        mentorDao.save(this);
+    }
+
 }

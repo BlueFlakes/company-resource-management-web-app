@@ -76,7 +76,8 @@ public class ManagerController implements UserController {
 
         try {
             this.school.isLoginAvailable(login);
-            new Mentor(name, login, password, email, choosenClass);
+            Mentor mentor = new Mentor(name, login, password, email, choosenClass);
+            mentor.save();
 
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
