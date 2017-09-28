@@ -29,3 +29,5 @@ target/*
 data/*
 .vscode/*
 .project
+sources.txt
+
