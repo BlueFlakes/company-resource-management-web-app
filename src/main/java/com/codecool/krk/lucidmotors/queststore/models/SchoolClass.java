@@ -12,10 +12,8 @@ public class SchoolClass {
 
 
     public SchoolClass(String name) throws SQLException {
-
         this.name = name;
         this.id = null;
-        classDao.save(this);
     }
 
     public SchoolClass(String name, Integer id) throws SQLException {
@@ -46,4 +44,9 @@ public class SchoolClass {
     public String toString() {
         return this.name;
     }
+
+    public void save() throws SQLException {
+        classDao.save(this);
+    }
+
 }
