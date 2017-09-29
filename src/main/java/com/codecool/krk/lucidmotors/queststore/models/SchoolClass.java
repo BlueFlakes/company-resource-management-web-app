@@ -1,7 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
-import java.sql.SQLException;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
