@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
 import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
@@ -7,11 +8,10 @@ import com.codecool.krk.lucidmotors.queststore.models.Student;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.sql.SQLException;
 
 public class ArtifactOwnersDao {
 
-    public Student getStudent(BoughtArtifact boughtArtifact) throws SQLException {
+    public Student getStudent(BoughtArtifact boughtArtifact) throws DaoException {
 
         return new Student("Maciej nowak", "mcnowak", "boczniak", "", new SchoolClass("druga"));
     }

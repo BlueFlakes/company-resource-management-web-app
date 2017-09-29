@@ -1,11 +1,11 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
-import java.sql.SQLException;
 
 class MentorController {
 
@@ -13,7 +13,7 @@ class MentorController {
     private Mentor user;
     private School school;
 
-    public void startController(User user, School school) throws SQLException {
+    public void startController(User user, School school) throws DaoException {
 
         this.user = (Mentor) user;
         this.school = school;
@@ -27,7 +27,7 @@ class MentorController {
         }
     }
 
-    private void handleUserRequest(String userChoice) throws SQLException {
+    private void handleUserRequest(String userChoice) throws DaoException {
 
         switch (userChoice) {
             case "1":
@@ -61,7 +61,7 @@ class MentorController {
         }
     }
 
-    private void addStudent() throws SQLException {
+    private void addStudent() throws DaoException {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -75,7 +75,8 @@ class MentorController {
 
         try {
             this.school.isLoginAvailable(login);
-            new Student(name, login, password, email, choosenClass);
+            Student student = new Student(name, login, password, email, choosenClass);
+            student.save();
 
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
@@ -84,7 +85,7 @@ class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private SchoolClass chooseProperClass() throws SQLException {
+    private SchoolClass chooseProperClass() throws DaoException {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
