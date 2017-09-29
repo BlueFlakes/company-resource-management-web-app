@@ -7,53 +7,30 @@ import com.codecool.krk.lucidmotors.queststore.models.Student;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.sql.SQLException;
 
 public class ClassDao {
 
     private final Connection connection;
-    private Statement stmt = null;
+    private PreparedStatement stmt = null;
 
     public ClassDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
     }
 
-    private ResultSet executeSqlQuery(String sqlQuery) throws DaoException {
-        ResultSet result = null;
-
-        try {
-            stmt = connection.createStatement();
-            result = stmt.executeQuery(sqlQuery);
-        } catch (SQLException e) {
-            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-        }
-
-        return result;
-    }
-
-    private void executeSqlUpdate(String sqlQuery) throws DaoException {
-
-        try {
-            stmt = connection.createStatement();
-            stmt.executeUpdate(sqlQuery);
-            stmt.close();
-        } catch (SQLException e) {
-            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-        }
-
-    }
-
     public SchoolClass getSchoolClass(Integer id) throws DaoException {
 
         SchoolClass schoolClass = null;
-        String sqlQuery = "SELECT * FROM classes "
-                + "WHERE id = " + id + ";";
+        String sqlQuery = "SELECT * FROM classes WHERE id = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, id);
+
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
                 String name = result.getString("name");
@@ -73,11 +50,13 @@ public class ClassDao {
 
         SchoolClass schoolClass = null;
 
-        String sqlQuery = "SELECT * FROM classes "
-                + "WHERE name = '" + name + "';";
+        String sqlQuery = "SELECT * FROM classes WHERE name = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
                 Integer id = result.getInt("id");
@@ -99,7 +78,8 @@ public class ClassDao {
         String sqlQuery = "SELECT * FROM classes";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
                 Integer id = result.getInt("id");
@@ -122,11 +102,13 @@ public class ClassDao {
         ArrayList<Student> foundStudents = new ArrayList<>();
         Integer classId = schoolClass.getId();
 
-        String sqlQuery = "SELECT * FROM students "
-                + "WHERE class_id = " + classId + ";";
+        String sqlQuery = "SELECT * FROM students WHERE class_id = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, classId);
+
+            ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
                 Integer id = result.getInt("id");
@@ -155,11 +137,13 @@ public class ClassDao {
         ArrayList<Mentor> foundMentors = new ArrayList<>();
         Integer classId = schoolClass.getId();
 
-        String sqlQuery = "SELECT * FROM mentors "
-                + "WHERE class_id = " + classId + ";";
+        String sqlQuery = "SELECT * FROM mentors WHERE class_id = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, classId);
+
+            ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
                 Integer id = result.getInt("id");
@@ -184,11 +168,16 @@ public class ClassDao {
     public void save(SchoolClass schoolClass) throws DaoException {
 
         String name = schoolClass.getName();
-        String sqlQuery = "INSERT INTO classes "
-                + "(name) "
-                + "VALUES ('" + name + "');";
+        String sqlQuery = "INSERT INTO classes (name) VALUES (?);";
 
-        this.executeSqlUpdate(sqlQuery);
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
     }
 
 }

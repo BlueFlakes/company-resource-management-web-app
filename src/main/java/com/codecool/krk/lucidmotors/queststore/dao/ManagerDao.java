@@ -5,13 +5,13 @@ import com.codecool.krk.lucidmotors.queststore.models.Manager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ManagerDao {
 
     private final Connection connection;
-    private Statement stmt = null;
+    private PreparedStatement stmt = null;
 
     public ManagerDao() throws DaoException {
 
@@ -21,11 +21,13 @@ public class ManagerDao {
     public Manager getManager(Integer id) throws DaoException {
 
         Manager manager = null;
-        String sqlQuery = "SELECT * FROM managers "
-                + "WHERE id = " + id + ";";
+        String sqlQuery = "SELECT * FROM managers WHERE id = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, id);
+
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
                 String name = result.getString("name");
@@ -44,27 +46,16 @@ public class ManagerDao {
         return manager;
     }
 
-    private ResultSet executeSqlQuery(String sqlQuery) throws DaoException {
-        ResultSet result = null;
-
-        try {
-            stmt = connection.createStatement();
-            result = stmt.executeQuery(sqlQuery);
-        } catch (SQLException e) {
-            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-        }
-
-        return result;
-    }
-
     public Manager getManager(String login) throws DaoException {
 
         Manager manager = null;
-        String sqlQuery = "SELECT * FROM managers "
-                + "WHERE login = '" + login + "';";
+        String sqlQuery = "SELECT * FROM managers WHERE login = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, login);
+
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
                 String name = result.getString("name");
