@@ -112,4 +112,30 @@ public class ShopArtifactDao {
         return shopArtifacts;
     }
 
+    public void save(ShopArtifact shopArtifact) throws DaoException {
+
+        String name = shopArtifact.getName();
+        Integer price = shopArtifact.getPrice();
+        Integer categoryId = shopArtifact.getArtifactCategory().getId();
+        String description = shopArtifact.getDescription();
+
+        String sqlQuery = "INSERT INTO shop_artifacts "
+                + "(name, price, category_id, description) "
+                + "VALUES (?, ?, ?, ?);";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+
+            stmt.setString(1, name);
+            stmt.setInt(2, price);
+            stmt.setInt(3, categoryId);
+            stmt.setString(4, description);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+    }
+
 }
