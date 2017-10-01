@@ -3,9 +3,12 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
+
+import java.util.ArrayList;
 
 public class StudentStoreController implements UserController {
 
@@ -14,7 +17,7 @@ public class StudentStoreController implements UserController {
     private Student user;
     private School school;
 
-    public void startController(User user, School school) {
+    public void startController(User user, School school) throws DaoException {
 
         this.user = (Student) user;
         this.school = school;
@@ -29,7 +32,7 @@ public class StudentStoreController implements UserController {
         }
     }
 
-    private void handleUserRequest(String choice) {
+    private void handleUserRequest(String choice) throws DaoException {
 
         switch (choice) {
 
@@ -50,7 +53,7 @@ public class StudentStoreController implements UserController {
         }
     }
 
-    private void buyArtifact() {
+    private void buyArtifact() throws DaoException {
         /* #TODO refactor */
         this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
 
@@ -77,7 +80,7 @@ public class StudentStoreController implements UserController {
         this.userInterface.lockActualState();
     }
 
-    private ShopArtifact getShopArtifact() throws NumberFormatException {
+    private ShopArtifact getShopArtifact() throws NumberFormatException, DaoException {
 
         this.userInterface.println("Provide artifact id");
         String input = this.userInterface.inputs.getInput("artifact id:");
@@ -86,15 +89,18 @@ public class StudentStoreController implements UserController {
         return new ShopArtifactDao().getArtifact(artifact_id);
     }
 
-    private void makePurchase(ShopArtifact shopArtifact) {
+    private void makePurchase(ShopArtifact shopArtifact) throws DaoException {
 
         BoughtArtifact boughtArtifact = new BoughtArtifact(shopArtifact);
-        new BoughtArtifactDao().updateArtifact(boughtArtifact);
 
         this.user.substractCoins(boughtArtifact.getPrice());
+        this.user.update();
         this.userInterface.println(String.format("Bought artifact: %s", boughtArtifact.getName()));
 
-        new ArtifactOwnersDao().update(this.user, boughtArtifact);
+        ArrayList<Student> owners = new ArrayList<>();
+        owners.add(this.user);
+
+        new BoughtArtifactDao().save(boughtArtifact, owners);
     }
 
     private void handleNoSuchCommand() {
