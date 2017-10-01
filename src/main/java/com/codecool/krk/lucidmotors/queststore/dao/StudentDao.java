@@ -116,6 +116,7 @@ public class StudentDao {
 
     public void update(Student student) throws DaoException {
 
+        Integer studentId = student.getId();
         String name = student.getName();
         String login = student.getLogin();
         String password = student.getPassword();
@@ -125,7 +126,7 @@ public class StudentDao {
         Integer possessedCoins = student.getPossesedCoins();
 
         String sqlQuery = "UPDATE students "
-                + "SET name = ?, login = ?, password = ?, email = ?, class_id = ?, earned_coins = ?, possesed_coins = ?) "
+                + "SET name = ?, login = ?, password = ?, email = ?, class_id = ?, earned_coins = ?, possesed_coins = ? "
                 + "WHERE id = ?;";
 
         try {
@@ -138,6 +139,7 @@ public class StudentDao {
             stmt.setInt(5, classId);
             stmt.setInt(6, earnedCoins);
             stmt.setInt(7, possessedCoins);
+            stmt.setInt(8, studentId);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
