@@ -94,39 +94,6 @@ public class ArtifactCategoryDao {
         return artifactCategories;
     }
 
-//    public ArrayList<Mentor> getAllMentorsFromClass(SchoolClass schoolClass) throws DaoException {
-//
-//        ArrayList<Mentor> foundMentors = new ArrayList<>();
-//        Integer classId = schoolClass.getId();
-//
-//        String sqlQuery = "SELECT * FROM mentors WHERE class_id = ?;";
-//
-//        try {
-//            stmt = connection.prepareStatement(sqlQuery);
-//            stmt.setInt(1, classId);
-//
-//            ResultSet result = stmt.executeQuery();
-//
-//            while (result.next()) {
-//                Integer id = result.getInt("id");
-//                String name = result.getString("name");
-//                String login = result.getString("login");
-//                String password = result.getString("password");
-//                String email = result.getString("email");
-//
-//                Mentor mentor = new Mentor(name, login, password, email, schoolClass, id);
-//                foundMentors.add(mentor);
-//            }
-//
-//            result.close();
-//            stmt.close();
-//        } catch (SQLException e) {
-//            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-//        }
-//
-//        return foundMentors;
-//    }
-
     public void save(ArtifactCategory artifactCategory) throws DaoException {
 
         String name = artifactCategory.getName();
