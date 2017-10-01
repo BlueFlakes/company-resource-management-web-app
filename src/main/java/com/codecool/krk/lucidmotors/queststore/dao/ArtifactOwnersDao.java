@@ -1,30 +1,112 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
 import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
-import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
 import java.util.ArrayList;
-import java.util.Date;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ArtifactOwnersDao {
 
-    public Student getStudent(BoughtArtifact boughtArtifact) throws DaoException {
+    private final Connection connection;
+    private PreparedStatement stmt = null;
+    //private ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
 
-        return new Student("Maciej nowak", "mcnowak", "boczniak", "", new SchoolClass("druga"));
+    public ArtifactOwnersDao() throws DaoException {
+
+        this.connection = DatabaseConnection.getConnection();
     }
 
-    public ArrayList<BoughtArtifact> getArtifacts(Student student) {
 
-        ArrayList<BoughtArtifact> studentsArtifactsList = new ArrayList<>();
-        studentsArtifactsList.add(new BoughtArtifact("Temple", 20, new ArtifactCategory(), "description", 1, new Date(), false));
+    public ArrayList<Student> getOwners(BoughtArtifact boughtArtifact) throws DaoException {
+        ArrayList<Student> owners = new ArrayList<>();
 
-        return studentsArtifactsList;
+        Integer artifactId = boughtArtifact.getId();
+        String sqlQuery = "SELECT * FROM artifact_owners "
+                + "WHERE artifact_id = ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, artifactId);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Integer studentId = result.getInt("student_id");
+
+                Student owner = new StudentDao(new ClassDao()).getStudent(studentId);
+                owners.add(owner);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return owners;
     }
 
-    public void update(Student student, BoughtArtifact boughtArtifact) {
+    public ArrayList<BoughtArtifact> getArtifacts(Student student) throws DaoException {
+        ArrayList<BoughtArtifact> ownedArtifacts = new ArrayList<>();
+
+        Integer studentId = student.getId();
+        String sqlQuery = "SELECT * FROM artifact_owners "
+                + "WHERE student_id = ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, studentId);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Integer artifactId = result.getInt("artifact_id");
+
+                BoughtArtifact ownedArtifact = new BoughtArtifactDao().getArtifact(artifactId);
+                ownedArtifacts.add(ownedArtifact);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return ownedArtifacts;
+    }
+
+
+    private void saveOwner(Integer artifactId, Student owner) throws DaoException {
+        Integer studentId = owner.getId();
+
+        String sqlQuery = "INSERT INTO artifact_owners "
+                + "(artifact_id, student_id) "
+                + "VALUES (?, ?);";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+
+            stmt.setInt(1, artifactId);
+            stmt.setInt(2, studentId);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+    }
+
+    public void saveArtifactOwners(Integer artifactId, ArrayList<Student> owners) throws DaoException {
+
+        for (Student owner : owners) {
+            this.saveOwner(artifactId, owner);
+        }
 
     }
 
