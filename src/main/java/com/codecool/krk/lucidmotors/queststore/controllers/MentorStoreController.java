@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
@@ -14,7 +15,7 @@ public class MentorStoreController implements UserController {
     private User user;
     private School school;
 
-    public void startController(User user, School school) {
+    public void startController(User user, School school) throws DaoException {
 
         this.user = (Mentor) user;
         this.school = school;
@@ -29,7 +30,7 @@ public class MentorStoreController implements UserController {
         }
     }
 
-    private void handleUserRequest(String userChoice) {
+    private void handleUserRequest(String userChoice) throws DaoException {
 
         switch (userChoice) {
 

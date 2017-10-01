@@ -85,4 +85,8 @@ public class Student extends User {
         studentDao.save(this);
     }
 
+    public void update() throws DaoException {
+        studentDao.update(this);
+    }
+
 }

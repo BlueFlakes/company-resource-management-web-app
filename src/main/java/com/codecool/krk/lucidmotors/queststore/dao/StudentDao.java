@@ -9,7 +9,7 @@ import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 public class StudentDao {
 
     private final Connection connection;
-    private Statement stmt = null;
+    private PreparedStatement stmt = null;
     private final ClassDao classDao;
 
     public StudentDao(ClassDao classDao) throws DaoException {
@@ -18,40 +18,16 @@ public class StudentDao {
         this.classDao = classDao;
     }
 
-    private ResultSet executeSqlQuery(String sqlQuery) throws DaoException {
-        ResultSet result = null;
-
-        try {
-            stmt = connection.createStatement();
-            result = stmt.executeQuery(sqlQuery);
-        } catch (SQLException e) {
-            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-        }
-
-        return result;
-    }
-
-    private void executeSqlUpdate(String sqlQuery) throws DaoException {
-
-        try {
-            stmt = connection.createStatement();
-            stmt.executeUpdate(sqlQuery);
-            stmt.close();
-        } catch (SQLException e) {
-            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-        }
-
-
-    }
-
     public Student getStudent(Integer id) throws DaoException {
 
         Student student = null;
-        String sqlQuery = "SELECT * FROM students "
-                + "WHERE id = " + id + ";";
+        String sqlQuery = "SELECT * FROM students WHERE id = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, id);
+
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
                 String name = result.getString("name");
@@ -77,11 +53,13 @@ public class StudentDao {
     public Student getStudent(String login) throws DaoException {
 
         Student student = null;
-        String sqlQuery = "SELECT * FROM students "
-               + "WHERE login = '" + login + "';";
+        String sqlQuery = "SELECT * FROM students WHERE login = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, login);
+
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
                 String name = result.getString("name");
@@ -116,10 +94,58 @@ public class StudentDao {
 
         String sqlQuery = "INSERT INTO students "
                 + "(name, login, password, email, class_id, earned_coins, possesed_coins) "
-                + "VALUES ('" + name + "', '" + login + "', '" + password + "', '" + email + "', " + classId
-                + ", " + earnedCoins + ", " + possessedCoins + ");";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-        this.executeSqlUpdate(sqlQuery);
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+
+            stmt.setString(1, name);
+            stmt.setString(2, login);
+            stmt.setString(3, password);
+            stmt.setString(4, email);
+            stmt.setInt(5, classId);
+            stmt.setInt(6, earnedCoins);
+            stmt.setInt(7, possessedCoins);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+    }
+
+    public void update(Student student) throws DaoException {
+
+        Integer studentId = student.getId();
+        String name = student.getName();
+        String login = student.getLogin();
+        String password = student.getPassword();
+        String email = student.getEmail();
+        Integer classId = student.getClas().getId();
+        Integer earnedCoins = student.getEarnedCoins();
+        Integer possessedCoins = student.getPossesedCoins();
+
+        String sqlQuery = "UPDATE students "
+                + "SET name = ?, login = ?, password = ?, email = ?, class_id = ?, earned_coins = ?, possesed_coins = ? "
+                + "WHERE id = ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+
+            stmt.setString(1, name);
+            stmt.setString(2, login);
+            stmt.setString(3, password);
+            stmt.setString(4, email);
+            stmt.setInt(5, classId);
+            stmt.setInt(6, earnedCoins);
+            stmt.setInt(7, possessedCoins);
+            stmt.setInt(8, studentId);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
     }
 
 }

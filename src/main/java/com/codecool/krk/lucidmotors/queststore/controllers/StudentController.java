@@ -1,11 +1,14 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
+
+import java.util.ArrayList;
 
 
 public class StudentController implements UserController {
@@ -14,7 +17,7 @@ public class StudentController implements UserController {
     private Student user;
     private School school;
 
-    public void startController(User user, School school) {
+    public void startController(User user, School school) throws DaoException {
 
         this.user = (Student) user;
         this.school = school;
@@ -29,7 +32,7 @@ public class StudentController implements UserController {
         }
     }
 
-    private void handleUserRequest(String choice) {
+    private void handleUserRequest(String choice) throws DaoException {
 
         switch (choice) {
 
@@ -54,7 +57,7 @@ public class StudentController implements UserController {
         }
     }
 
-    private void showWallet() {
+    private void showWallet() throws DaoException {
 
         String accountBalance = Integer.toString(this.user.getPossesedCoins());
         userInterface.println("Balance: " + accountBalance);
@@ -74,7 +77,7 @@ public class StudentController implements UserController {
         userInterface.println("No such option.");
     }
 
-    private void startStoreController() {
+    private void startStoreController() throws DaoException {
 
         new StudentStoreController().startController(this.user, this.school);
     }

@@ -6,14 +6,14 @@ import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MentorDao {
 
     private final Connection connection;
-    private Statement stmt = null;
+    private PreparedStatement stmt = null;
     private final ClassDao classDao;
 
     public MentorDao(ClassDao classDao) throws DaoException {
@@ -22,39 +22,16 @@ public class MentorDao {
         this.classDao = classDao;
     }
 
-    private ResultSet executeSqlQuery(String sqlQuery) throws DaoException {
-        ResultSet result = null;
-
-        try {
-            stmt = connection.createStatement();
-            result = stmt.executeQuery(sqlQuery);
-        } catch (SQLException e) {
-            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-        }
-
-        return result;
-    }
-
-    private void executeSqlUpdate(String sqlQuery) throws DaoException {
-
-        try {
-            stmt = connection.createStatement();
-            stmt.executeUpdate(sqlQuery);
-            stmt.close();
-        } catch (SQLException e) {
-            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-        }
-
-    }
-
     public Mentor getMentor(Integer id) throws DaoException {
 
         Mentor mentor = null;
-        String sqlQuery = "SELECT * FROM mentors "
-                + "WHERE id = " + id + ";";
+        String sqlQuery = "SELECT * FROM mentors WHERE id = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, id);
+
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
                 String name = result.getString("name");
@@ -78,11 +55,13 @@ public class MentorDao {
     public Mentor getMentor(String login) throws DaoException {
 
         Mentor mentor = null;
-        String sqlQuery = "SELECT * FROM mentors "
-                + "WHERE login = '" + login + "';";
+        String sqlQuery = "SELECT * FROM mentors WHERE login = ?;";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, login);
+
+            ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
                 String name = result.getString("name");
@@ -109,7 +88,8 @@ public class MentorDao {
         String sqlQuery = "SELECT * FROM mentors";
 
         try {
-            ResultSet result = this.executeSqlQuery(sqlQuery);
+            stmt = connection.prepareStatement(sqlQuery);
+            ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
                 Integer id = result.getInt("id");
@@ -143,9 +123,20 @@ public class MentorDao {
 
         String sqlQuery = "INSERT INTO mentors "
                 + "(name, login, password, email, class_id) "
-                + "VALUES ('" + name + "', '" + login + "', '" + password + "', '" + email + "', '" + classId + "');";
+                + "VALUES (?, ?, ?, ?, ?);";
 
-        this.executeSqlUpdate(sqlQuery);
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+            stmt.setString(2, login);
+            stmt.setString(3, password);
+            stmt.setString(4, email);
+            stmt.setInt(5, classId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
     }
 
 }
