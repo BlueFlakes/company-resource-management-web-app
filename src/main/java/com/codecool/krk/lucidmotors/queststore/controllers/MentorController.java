@@ -176,7 +176,7 @@ class MentorController {
         this.userInterface.lockActualState();
     }
 
-    private void runMentorStoreController() {
+    private void runMentorStoreController() throws DaoException {
 
         new MentorStoreController().startController(this.user, this.school);
     }
