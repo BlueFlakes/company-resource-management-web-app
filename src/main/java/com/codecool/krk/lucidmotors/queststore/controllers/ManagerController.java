@@ -8,28 +8,9 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
-public class ManagerController implements UserController {
+public class ManagerController extends AbstractController<Manager> {
 
-    private final UserInterface userInterface = new UserInterface();
-    private Manager user;
-    private School school;
-
-    public void startController(User user, School school) throws DaoException {
-
-        this.user = (Manager) user;
-        this.school = school;
-        String userChoice = "";
-
-        while (!userChoice.equals("0")) {
-
-            this.userInterface.printManagerMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options: ");
-            handleUserRequest(userChoice);
-
-        }
-    }
-
-    private void handleUserRequest(String choice) throws DaoException {
+    protected void handleUserRequest(String choice) throws DaoException {
 
         switch (choice) {
 
@@ -60,6 +41,10 @@ public class ManagerController implements UserController {
                 handleNoSuchCommand();
                 break;
         }
+    }
+
+    protected void showMenu(String title) {
+        userInterface.printManagerMenu();
     }
 
     private void addMentor() throws DaoException {
@@ -191,7 +176,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void startExperienceLevelController() {
+    private void startExperienceLevelController() throws DaoException {
 
         new ExperienceLevelsController().startController(this.user, this.school);
     }
