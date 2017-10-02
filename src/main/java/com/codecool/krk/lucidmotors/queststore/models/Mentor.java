@@ -49,4 +49,8 @@ public class Mentor extends User {
         mentorDao.save(this);
     }
 
+    public void update() throws DaoException {
+        mentorDao.update(this);
+    }
+
 }
