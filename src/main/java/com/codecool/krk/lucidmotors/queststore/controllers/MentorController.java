@@ -2,7 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
-import com.codecool.krk.lucidmotors.queststore.menu_enums.MentorMenuOptions;
+import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
@@ -18,7 +18,12 @@ class MentorController extends AbstractController<Mentor> {
      */
     protected void handleUserRequest(String userChoice) throws DaoException {
 
-      MentorMenuOptions chosenOption = MentorMenuOptions.getChosenOption(userChoice);
+        MentorMenuOptions chosenOption;
+        try {
+            chosenOption = MentorMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = null;
+        }
 
         if (chosenOption != null) {
             switch (chosenOption) {
