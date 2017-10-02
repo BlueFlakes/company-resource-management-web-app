@@ -63,13 +63,13 @@ public class StudentController implements UserController {
         userInterface.println("Balance: " + accountBalance);
         userInterface.printBoughtArtifacts(this.user, new ArtifactOwnersDao().getArtifacts(this.user));
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void showLevel() {
 
         userInterface.println("Your level: 0");
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void handleNoSuchCommand() {

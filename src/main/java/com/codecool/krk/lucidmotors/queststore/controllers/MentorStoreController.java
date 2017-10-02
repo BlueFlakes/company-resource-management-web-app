@@ -82,7 +82,7 @@ public class MentorStoreController implements UserController {
             this.userInterface.println(e.getMessage());
         }
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private Integer getArtifactCategoryId() throws DaoException {
@@ -118,7 +118,7 @@ public class MentorStoreController implements UserController {
         updatedArtifact.setArtifactCategory(artifactCategory);
 
         shopArtifactDao.updateArtifact(updatedArtifact);
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
 
@@ -140,12 +140,12 @@ public class MentorStoreController implements UserController {
         ArtifactCategory artifactCategory = new ArtifactCategory(name);
         new ArtifactCategoryDao().save(artifactCategory);
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void handleNoSuchCommand() {
 
         userInterface.println("Wrong command!");
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 }

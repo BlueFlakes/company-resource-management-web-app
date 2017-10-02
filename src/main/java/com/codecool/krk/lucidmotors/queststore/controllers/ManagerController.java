@@ -83,7 +83,7 @@ public class ManagerController implements UserController {
             userInterface.println(e.getMessage());
         }
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private SchoolClass chooseProperClass() throws DaoException {
@@ -137,7 +137,7 @@ public class ManagerController implements UserController {
 
         userInterface.println(String.format("Class %s created.", name));
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void editMentor() throws DaoException {
@@ -164,7 +164,7 @@ public class ManagerController implements UserController {
             this.printMentorInfo(mentor);
         }
 
-        userInterface.lockActualState();
+        userInterface.pause();
     }
 
     private void printAllMentors() throws DaoException {

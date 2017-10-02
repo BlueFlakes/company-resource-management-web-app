@@ -77,7 +77,7 @@ public class StudentStoreController implements UserController {
             this.userInterface.println("Wrong artifact id.");
         }
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private ShopArtifact getShopArtifact() throws NumberFormatException, DaoException {
