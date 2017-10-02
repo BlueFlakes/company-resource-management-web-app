@@ -9,29 +9,11 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
-public class StudentStoreController implements UserController {
+public class StudentStoreController extends AbstractController<Student> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
-    private final UserInterface userInterface = new UserInterface();
-    private Student user;
-    private School school;
 
-    public void startController(User user, School school) throws DaoException {
-
-        this.user = (Student) user;
-        this.school = school;
-        String userChoice = "";
-
-        while (!userChoice.equals("0")) {
-
-            this.userInterface.printStudentStoreMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options: ");
-            handleUserRequest(userChoice);
-
-        }
-    }
-
-    private void handleUserRequest(String choice) throws DaoException {
+    protected void handleUserRequest(String choice) throws DaoException {
 
         switch (choice) {
 
@@ -50,6 +32,10 @@ public class StudentStoreController implements UserController {
                 handleNoSuchCommand();
                 break;
         }
+    }
+
+    protected void showMenu() {
+        userInterface.printStudentStoreMenu();
     }
 
     private void buyArtifact() throws DaoException {

@@ -11,29 +11,12 @@ import java.util.ArrayList;
 
 
 
-public class MentorStoreController implements UserController {
+public class MentorStoreController extends AbstractController<Mentor> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
-    private final UserInterface userInterface = new UserInterface();
-    private User user;
-    private School school;
 
-    public void startController(User user, School school) throws DaoException {
 
-        this.user = (Mentor) user;
-        this.school = school;
-        String userChoice = "";
-
-        while (!userChoice.equals("0")) {
-
-            this.userInterface.printMentorStoreMenu();
-            userChoice = userInterface.inputs.getInput("What do you want to do: ");
-            handleUserRequest(userChoice);
-
-        }
-    }
-
-    private void handleUserRequest(String userChoice) throws DaoException {
+    protected void handleUserRequest(String userChoice) throws DaoException {
 
         switch (userChoice) {
 
@@ -59,6 +42,10 @@ public class MentorStoreController implements UserController {
             default:
                 handleNoSuchCommand();
         }
+    }
+
+    protected void showMenu() {
+        userInterface.printMentorStoreMenu();
     }
 
     private void addArtifact() throws DaoException {
