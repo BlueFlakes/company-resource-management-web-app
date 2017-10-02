@@ -1,34 +1,12 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.User;
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
+import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 
 import java.util.ArrayList;
 
-public class ExperienceLevelsController implements UserController {
+public class ExperienceLevelsController extends AbstractController<Mentor> {
 
-    private final UserInterface userInterface = new UserInterface();
-    private User user;
-    private School school;
-
-    public void startController(User user, School school) {
-
-        this.user = user;
-        this.school = school;
-        String userChoice = "";
-
-        while (!userChoice.equals("0")) {
-
-            this.userInterface.printExperienceLevelsMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options: ");
-            handleUserRequest(userChoice);
-
-        }
-    }
-
-    private void handleUserRequest(String choice) {
+    protected void handleUserRequest(String choice) {
 
         switch (choice) {
 
@@ -47,6 +25,10 @@ public class ExperienceLevelsController implements UserController {
                 userInterface.println("No such option.");
                 break;
         }
+    }
+
+    protected void showMenu(String title) {
+        userInterface.printExperienceLevelsMenu();
     }
 
     private void createNewLevel() {
