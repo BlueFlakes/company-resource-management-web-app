@@ -147,16 +147,22 @@ public class ManagerController implements UserController {
         this.printAllMentors();
 
         Integer mentorId = getUserChoiceOfMentor();
+        Mentor mentor = new MentorDao(new ClassDao()).getMentor(mentorId);
+
         String[] questions = {"New name: ", "New login: ", "New password: ", "New email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
 
-        ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
-        updateMentorRecord(basicUserData, mentorId);
+        if (mentor != null) {
+            ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+            updateMentorRecord(basicUserData, mentor);
+        } else {
+            this.userInterface.println("There is no mentor with provided id!");
+        }
 
         userInterface.pause();
     }
 
-    private void updateMentorRecord(ArrayList<String> userData, Integer mentorId) throws DaoException {
+    private void updateMentorRecord(ArrayList<String> userData, Mentor mentor) throws DaoException {
         String name = userData.get(0);
         String login = userData.get(1);
         String password = userData.get(2);
@@ -164,7 +170,6 @@ public class ManagerController implements UserController {
 
         try {
             this.school.isLoginAvailable(login);
-            Mentor mentor = new MentorDao(new ClassDao()).getMentor(mentorId);
             mentor.setName(name);
             mentor.setLogin(login);
             mentor.setPassword(password);
