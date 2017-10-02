@@ -49,7 +49,7 @@ class MentorController extends AbstractController<Mentor> {
 
                 case START_MENTOR_STORE_CONTROLLER:
                     runMentorStoreController();
-                    // # TODO write break here
+                    break;
 
                 case EXIT:
                     break;
