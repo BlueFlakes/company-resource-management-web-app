@@ -1,11 +1,13 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
-import com.codecool.krk.lucidmotors.queststore.models.Mentor;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.User;
+
+import java.util.ArrayList;
 
 
 public class MentorStoreController implements UserController {
@@ -58,13 +60,43 @@ public class MentorStoreController implements UserController {
         }
     }
 
-    private void addArtifact() {
+    private void addArtifact() throws DaoException {
 
-        String[] questions = {"Name: ", "Price: ", "Artifact category: "};
-        String[] types = {"string", "integer", "string"};
-        this.userInterface.inputs.getValidatedInputs(questions, types);
+        this.printAllArtifacts();
+
+        String[] questions = {"Artifact category id: ", "Name: ", "Description: ", "Price: "};
+        String[] types = {"integer", "string", "string", "integer"};
+
+        ArrayList<String> givenValues = this.userInterface.inputs.getValidatedInputs(questions, types);
+
+        Integer artifactCategoryId = Integer.parseInt(givenValues.get(0));
+        ArtifactCategory artifactCategory = new ArtifactCategoryDao().getArtifactCategory(artifactCategoryId);
+        String name = givenValues.get(1);
+        String description = givenValues.get(2);
+        Integer price = Integer.parseInt(givenValues.get(3));
+
+        this.createArtifact(artifactCategory, name, description, price);
 
         this.userInterface.lockActualState();
+    }
+
+    private void printAllArtifacts() throws DaoException {
+
+        ArrayList<ArtifactCategory> artifactCategories = new ArtifactCategoryDao().getAllArtifactCategories();
+        this.userInterface.printArtifactsCategories(artifactCategories);
+    }
+
+    private void createArtifact(ArtifactCategory artifactCategory, String name, String description, Integer price) throws DaoException{
+
+        if(artifactCategory == null) {
+            this.userInterface.println("Artifact creation failure: No such artifact category.");
+        } else if(price < 0) {
+            this.userInterface.println("Artifact creation failure: Price should be at least 0.");
+        } else {
+            ShopArtifact shopArtifact = new ShopArtifact(name, price, artifactCategory, description);
+            shopArtifact.save();
+            this.userInterface.println("Artifact created.");
+        }
     }
 
     private void updateArtifact() {

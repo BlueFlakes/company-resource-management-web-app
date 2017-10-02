@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.codecool.krk.lucidmotors.queststore.dao.FileLoader;
+import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
 import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
@@ -108,6 +109,17 @@ public class UserInterface {
         for(BoughtArtifact boughtArtifact : studentArtifacts) {
             System.out.println(boughtArtifact);
         }
+    }
+
+    public void printArtifactsCategories(ArrayList<ArtifactCategory> artifactCategories) {
+        this.println("Possible artifact categories:");
+
+        artifactCategories.stream()
+                          .map(artifactCategory -> String.format("id: %d, name: %s",
+                                                                 artifactCategory.getId(),
+                                                                 artifactCategory.getName()))
+                          .forEach(System.out::println);
+
     }
 
 
