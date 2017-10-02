@@ -1,6 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
-public class AbstractQuest {
+public abstract class AbstractQuest {
 
     private Integer id;
     private String name;
