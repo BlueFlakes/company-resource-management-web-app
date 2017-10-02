@@ -47,7 +47,7 @@
   </build>
   <packaging>jar</packaging>
 
-  <name>queststore-system-lucid_motors </name>
+  <name>queststore-system-lucid_motors</name>
   <url>http://maven.apache.org</url>
 
   <properties>
