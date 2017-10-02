@@ -148,9 +148,8 @@ public class MentorDao {
         Integer classId = mentor.getClas().getId();
         Integer mentorId = mentor.getId();
 
-        String sqlQuery = "INSERT INTO mentors "
-                + "(name, login, password, email, class_id) "
-                + "VALUES (?, ?, ?, ?, ?) "
+        String sqlQuery = "UPDATE mentors "
+                + "SET name = ?, login = ?, password = ?, email = ?, class_id = ? "
                 + "WHERE id = ?;";
 
         try {

@@ -153,7 +153,7 @@ public class ManagerController implements UserController {
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
         updateMentorRecord(basicUserData, mentorId);
 
-        this.userInterface.lockActualState();
+        userInterface.pause();
     }
 
     private void updateMentorRecord(ArrayList<String> userData, Integer mentorId) throws DaoException {
