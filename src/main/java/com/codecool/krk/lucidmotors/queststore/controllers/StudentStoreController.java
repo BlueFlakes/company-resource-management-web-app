@@ -1,6 +1,5 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
@@ -77,7 +76,7 @@ public class StudentStoreController implements UserController {
             this.userInterface.println("Wrong artifact id.");
         }
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private ShopArtifact getShopArtifact() throws NumberFormatException, DaoException {

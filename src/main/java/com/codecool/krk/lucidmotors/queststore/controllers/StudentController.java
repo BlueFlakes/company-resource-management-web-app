@@ -8,8 +8,6 @@ import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
-import java.util.ArrayList;
-
 
 public class StudentController implements UserController {
 
@@ -63,13 +61,13 @@ public class StudentController implements UserController {
         userInterface.println("Balance: " + accountBalance);
         userInterface.printBoughtArtifacts(this.user, new ArtifactOwnersDao().getArtifacts(this.user));
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void showLevel() {
 
         userInterface.println("Your level: 0");
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void handleNoSuchCommand() {

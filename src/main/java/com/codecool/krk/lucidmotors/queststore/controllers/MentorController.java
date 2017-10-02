@@ -82,7 +82,7 @@ class MentorController {
             userInterface.println(e.getMessage());
         }
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private SchoolClass chooseProperClass() throws DaoException {
@@ -125,7 +125,7 @@ class MentorController {
         String[] types = {"string", "string", "string", "integer"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void addQuestCategory() {
@@ -134,7 +134,7 @@ class MentorController {
         String[] types = {"string"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void updateQuest() {
@@ -144,7 +144,7 @@ class MentorController {
         String[] types = {"string", "string", "string", "integer"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private Integer getQuestId() {
@@ -173,7 +173,7 @@ class MentorController {
             this.userInterface.println("Artifact already used!");
         }
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void runMentorStoreController() throws DaoException {
@@ -184,7 +184,7 @@ class MentorController {
     private void handleNoSuchCommand() {
 
         userInterface.println("Wrong command!");
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
 }
