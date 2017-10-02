@@ -139,4 +139,34 @@ public class MentorDao {
 
     }
 
+    public void update(Mentor mentor) throws DaoException {
+
+        String name = mentor.getName();
+        String login = mentor.getLogin();
+        String password = mentor.getPassword();
+        String email = mentor.getEmail();
+        Integer classId = mentor.getClas().getId();
+        Integer mentorId = mentor.getId();
+
+        String sqlQuery = "INSERT INTO mentors "
+                + "(name, login, password, email, class_id) "
+                + "VALUES (?, ?, ?, ?, ?) "
+                + "WHERE id = ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+            stmt.setString(2, login);
+            stmt.setString(3, password);
+            stmt.setString(4, email);
+            stmt.setInt(5, classId);
+            stmt.setInt(6, mentorId);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+    }
+
 }
