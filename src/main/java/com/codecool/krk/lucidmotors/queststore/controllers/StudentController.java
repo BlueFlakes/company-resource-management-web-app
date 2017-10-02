@@ -8,29 +8,12 @@ import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
+import java.sql.SQLException;
 
-public class StudentController implements UserController {
 
-    private final UserInterface userInterface = new UserInterface();
-    private Student user;
-    private School school;
+public class StudentController extends AbstractController<Student> {
 
-    public void startController(User user, School school) throws DaoException {
-
-        this.user = (Student) user;
-        this.school = school;
-        String userChoice = "";
-
-        while (!userChoice.equals("0")) {
-
-            this.userInterface.printStudentMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options: ");
-            handleUserRequest(userChoice);
-
-        }
-    }
-
-    private void handleUserRequest(String choice) throws DaoException {
+    protected void handleUserRequest(String choice) throws DaoException {
 
         switch (choice) {
 
@@ -53,6 +36,10 @@ public class StudentController implements UserController {
                 handleNoSuchCommand();
                 break;
         }
+    }
+
+    protected void showMenu(String title) {
+        userInterface.printStudentMenu();
     }
 
     private void showWallet() throws DaoException {
