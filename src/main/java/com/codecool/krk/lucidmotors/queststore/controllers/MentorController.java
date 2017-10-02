@@ -20,8 +20,8 @@ class MentorController extends AbstractController<Mentor> {
 
         MentorMenuOptions chosenOption;
         try {
-            chosenOption = MentorMenuOptions.values()[userChoice];
-        } catch (IndexOutOfBoundsException e) {
+            chosenOption = MentorMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
             chosenOption = null;
         }
 
