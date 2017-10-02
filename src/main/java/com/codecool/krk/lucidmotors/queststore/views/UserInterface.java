@@ -36,42 +36,42 @@ public class UserInterface {
     }
 
     public void printMentorMenu() {
-        String fileName = "csv/mentorMenu.csv";
+        String fileName = "csv/mentorMenu.txt";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
 
         printMenu(loadedMenu);
     }
 
     public void printMentorStoreMenu() {
-        String fileName = "csv/mentorStoreMenu.csv";
+        String fileName = "csv/mentorStoreMenu.txt";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
 
         printMenu(loadedMenu);
     }
 
     public void printStudentMenu() {
-        String fileName = "csv/studentMenu.csv";
+        String fileName = "csv/studentMenu.txt";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
 
         printMenu(loadedMenu);
     }
 
     public void printStudentStoreMenu() {
-        String fileName = "csv/studentStoreMenu.csv";
+        String fileName = "csv/studentStoreMenu.txt";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
 
         printMenu(loadedMenu);
     }
 
     public void printManagerMenu() {
-        String fileName = "csv/managerMenu.csv";
+        String fileName = "csv/managerMenu.txt";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
 
         printMenu(loadedMenu);
     }
 
     public void printExperienceLevelsMenu() {
-        String fileName = "csv/experienceLevelsMenu.csv";
+        String fileName = "csv/experienceLevelsMenu.txt";
         List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
 
         printMenu(loadedMenu);

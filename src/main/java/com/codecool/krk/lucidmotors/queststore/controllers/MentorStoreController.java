@@ -118,6 +118,7 @@ public class MentorStoreController implements UserController {
         updatedArtifact.setArtifactCategory(artifactCategory);
 
         shopArtifactDao.updateArtifact(updatedArtifact);
+      
         this.userInterface.pause();
     }
 

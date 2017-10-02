@@ -1,17 +1,15 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
-import java.sql.SQLException;
 
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
-import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
 public class Student extends User {
 
     private final ArrayList<BoughtArtifact> ownedArtifacts;
-    private final ArrayList<Quest> achievedQuests;
+    private final ArrayList<AbstractQuest> achievedQuests;
     private final SchoolClass class_;
     private final StudentDao studentDao = new StudentDao(new ClassDao());
     private Integer earnedCoins;
@@ -51,7 +49,7 @@ public class Student extends User {
         return this.ownedArtifacts;
     }
 
-    public ArrayList<Quest> getAchievedQuests() {
+    public ArrayList<AbstractQuest> getAchievedQuests() {
         return this.achievedQuests;
     }
 

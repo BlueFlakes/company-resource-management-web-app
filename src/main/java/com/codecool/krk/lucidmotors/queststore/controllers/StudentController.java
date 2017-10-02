@@ -8,8 +8,6 @@ import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
-import java.util.ArrayList;
-
 
 public class StudentController implements UserController {
 

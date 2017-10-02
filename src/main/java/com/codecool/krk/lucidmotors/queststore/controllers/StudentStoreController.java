@@ -1,6 +1,5 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
