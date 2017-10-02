@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
+import com.codecool.krk.lucidmotors.queststore.menu_enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
@@ -29,37 +30,42 @@ class MentorController {
 
     private void handleUserRequest(String userChoice) throws DaoException {
 
-        switch (userChoice) {
-            case "1":
-                addStudent();
-                break;
+        MentorMenuOptions chosenOption = MentorMenuOptions.getChosenOption(userChoice);
 
-            case "2":
-                addQuest();
-                break;
+        if (chosenOption != null) {
+            switch (chosenOption) {
+                case ADD_STUDENT:
+                    addStudent();
+                    break;
 
-            case "3":
-                addQuestCategory();
-                break;
+                case ADD_QUEST:
+                    addQuest();
+                    break;
 
-            case "4":
-                updateQuest();
-                break;
+                case ADD_QUEST_CATEGORY:
+                    addQuestCategory();
+                    break;
 
-            case "5":
-                markBoughtArtifactsAsUsed();
-                break;
+                case UPDATE_QUEST:
+                    updateQuest();
+                    break;
 
-            case "6":
-                runMentorStoreController();
+                case MARK_BOUGHT_ARTIFACT_AS_USED:
+                    markBoughtArtifactsAsUsed();
+                    break;
 
-            case "0":
-                break;
+                case START_MENTOR_STORE_CONTROLLER:
+                    runMentorStoreController();
 
-            default:
-                handleNoSuchCommand();
+                case EXIT:
+                    break;
+
+                default:
+                    handleNoSuchCommand();
+            }
         }
     }
+
 
     private void addStudent() throws DaoException {
 
@@ -186,5 +192,4 @@ class MentorController {
         userInterface.println("Wrong command!");
         this.userInterface.lockActualState();
     }
-
 }
