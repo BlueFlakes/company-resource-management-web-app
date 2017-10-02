@@ -21,4 +21,19 @@ public class AchievedQuest extends AbstractQuest {
         this.owner = owner;
     }
 
+    public Student getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Student owner) {
+        this.owner = owner;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
