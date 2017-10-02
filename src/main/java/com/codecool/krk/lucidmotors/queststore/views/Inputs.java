@@ -1,6 +1,8 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.NotEqualElementsException;
@@ -24,56 +26,12 @@ public class Inputs {
 
         } catch (InvalidArgumentException e) {
             System.out.println(e.getMessage());
+
         } catch (NotEqualElementsException e) {
             System.out.println(e.getMessage());
         }
 
         return receivedData;
-    }
-
-    private ArrayList<String> getMultipleInputs(String[] deliveredQuestions, String[] expectedTypes) {
-        ArrayList<String> collectedData = new ArrayList<>();
-        boolean isExpectedType;
-        String userInput;
-
-        for(int i = 0; i < deliveredQuestions.length; i++) {
-
-            do {
-                userInput = getInput(deliveredQuestions[i]);
-                isExpectedType = true;
-
-                try {
-                    validateUserInput(userInput, expectedTypes[i]);
-
-                } catch (NumberFormatException e) {
-                    isExpectedType = false;
-                    System.out.println("Error: failure due to wrong input delivered.\n");
-
-                } catch (IllegalArgumentException e) {
-                    isExpectedType = false;
-                    System.out.println(e.getMessage());
-                }
-
-            } while (!isExpectedType);
-
-            collectedData.add(userInput);
-        }
-
-        return collectedData;
-    }
-
-    private void validateUserInput(String userInput, String expectedType) {
-        if (expectedType.equalsIgnoreCase("String")) {
-            if (userInput.isEmpty()) {
-                throw new IllegalArgumentException("Error: expected at least one sign.\n");
-            }
-        } else if (expectedType.equalsIgnoreCase("Integer")) {
-            Integer.parseInt(userInput);
-        } else if (expectedType.equalsIgnoreCase("Float")) {
-            Float.parseFloat(userInput);
-        } else if (expectedType.equalsIgnoreCase("Double")) {
-            Double.parseDouble(userInput);
-        }
     }
 
     private void areEqualByLength(String[] deliveredQuestions, String[] expectedTypes) throws NotEqualElementsException {
@@ -97,5 +55,97 @@ public class Inputs {
                 throw new InvalidArgumentException();
             }
         }
+    }
+
+    private ArrayList<String> getMultipleInputs(String[] deliveredQuestions, String[] expectedTypes) {
+        ArrayList<String> collectedData = new ArrayList<>();
+        boolean isExpectedType;
+        String userInput;
+
+        for (int i = 0; i < deliveredQuestions.length; i++) {
+
+            do {
+                userInput = getInput(deliveredQuestions[i]);
+                isExpectedType = handleUserInputValidation(userInput, expectedTypes[i]);
+
+            } while (!isExpectedType);
+
+            collectedData.add(userInput);
+        }
+
+        return collectedData;
+    }
+
+    private boolean handleUserInputValidation(String userInput, String expectedType) {
+        boolean isValid = false;
+
+        if (isInputApproved(userInput, expectedType)) {
+            isValid = true;
+        } else {
+            boolean isFloatingPointNumber = (expectedType.equalsIgnoreCase("float")
+                    || expectedType.equalsIgnoreCase("double"));
+
+            String errorMessageType = isFloatingPointNumber ? "floating point number!" : expectedType.toLowerCase();
+            System.out.println("Error: ~expect " + errorMessageType);
+        }
+
+        return isValid;
+    }
+
+    private Boolean isInputApproved(String userInput, String expectedType) {
+        Boolean isValid = null;
+
+        if (expectedType.equalsIgnoreCase("String")) {
+            isValid = isProperBuildedString(userInput);
+
+        } else if (expectedType.equalsIgnoreCase("Integer")) {
+            isValid = isInteger(userInput);
+
+        } else if (expectedType.equalsIgnoreCase("Float")) {
+            isValid = isFloatingPointNumber(userInput);
+
+        } else if (expectedType.equalsIgnoreCase("Double")) {
+            isValid = isFloatingPointNumber(userInput);
+        }
+
+        return isValid;
+    }
+
+    private boolean isProperBuildedString(String userInput) {
+
+        return !userInput.isEmpty();
+    }
+
+    private boolean isInteger(String userInput) {
+
+        for (char sign : userInput.toCharArray()) {
+
+            if (!Character.isDigit(sign)) {
+                return false;
+            }
+        }
+
+        return !userInput.isEmpty();
+    }
+
+    private boolean isFloatingPointNumber(String userInput) {
+        int startFromNextValue = 1;
+        int wrongValue = -1;
+
+        int separatorIndex = userInput.indexOf(".");
+
+        if (separatorIndex != wrongValue) {
+            String firstPartOfNumber = userInput.substring(0, separatorIndex);
+            String secondPartOfNumber = userInput.substring(separatorIndex + startFromNextValue, userInput.length());
+
+            if (!(isInteger(firstPartOfNumber) && isInteger(secondPartOfNumber))) {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+        return true;
     }
 }

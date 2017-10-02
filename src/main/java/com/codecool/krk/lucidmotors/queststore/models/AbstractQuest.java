@@ -1,13 +1,27 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
-import com.codecool.krk.lucidmotors.queststore.interfaces.QuestInterface;
+public abstract class AbstractQuest {
 
-public class Quest implements QuestInterface {
-
+    private Integer id;
     private String name;
     private QuestCategory questCategory;
     private String description;
     private Integer value;
+
+    public AbstractQuest(String name, QuestCategory questCategory, String description, Integer value) {
+        this.name = name;
+        this.questCategory = questCategory;
+        this.description = description;
+        this.value = value;
+    }
+
+    public AbstractQuest(String name, QuestCategory questCategory, String description, Integer value, Integer id) {
+        this.id = id;
+        this.name = name;
+        this.questCategory = questCategory;
+        this.description = description;
+        this.value = value;
+    }
 
     public String getName() {
         return this.name;
@@ -39,6 +53,14 @@ public class Quest implements QuestInterface {
 
     public void setValue(Integer value) {
         this.value = value;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 }

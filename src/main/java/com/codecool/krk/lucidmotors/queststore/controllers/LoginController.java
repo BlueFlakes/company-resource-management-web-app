@@ -14,6 +14,13 @@ public class LoginController {
         this.school = school;
     }
 
+    /**
+     * Gets login and password from user, check existance of such user.
+     * If password is correct runs appropriate controller.
+     *
+     * @throws WrongPasswordException
+     * @throws DaoException
+     */
     public void start() throws WrongPasswordException, DaoException {
 
         String login = userInterface.inputs.getInput("Please provide your login: ");
@@ -36,6 +43,12 @@ public class LoginController {
         }
     }
 
+    /**
+     * Runs appropriate controller based on user Type
+     *
+     * @param user
+     * @throws DaoException
+     */
     private void runUserController(User user) throws DaoException {
 
         if (user instanceof Manager) {

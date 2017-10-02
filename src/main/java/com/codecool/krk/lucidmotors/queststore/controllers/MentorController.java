@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
+import com.codecool.krk.lucidmotors.queststore.menu_enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
@@ -9,44 +10,61 @@ import java.util.ArrayList;
 
 class MentorController extends AbstractController<Mentor> {
 
+      /**
+     * Switches between methods, acording to userChoice param.
+     *
+     * @param userChoice
+     * @throws DaoException
+     */
     protected void handleUserRequest(String userChoice) throws DaoException {
 
-        switch (userChoice) {
-            case "1":
-                addStudent();
-                break;
+      MentorMenuOptions chosenOption = MentorMenuOptions.getChosenOption(userChoice);
 
-            case "2":
-                addQuest();
-                break;
+        if (chosenOption != null) {
+            switch (chosenOption) {
+                case ADD_STUDENT:
+                    addStudent();
+                    break;
 
-            case "3":
-                addQuestCategory();
-                break;
+                case ADD_QUEST:
+                    addQuest();
+                    break;
 
-            case "4":
-                updateQuest();
-                break;
+                case ADD_QUEST_CATEGORY:
+                    addQuestCategory();
+                    break;
 
-            case "5":
-                markBoughtArtifactsAsUsed();
-                break;
+                case UPDATE_QUEST:
+                    updateQuest();
+                    break;
 
-            case "6":
-                runMentorStoreController();
+                case MARK_BOUGHT_ARTIFACT_AS_USED:
+                    markBoughtArtifactsAsUsed();
+                    break;
 
-            case "0":
-                break;
+                case START_MENTOR_STORE_CONTROLLER:
+                    runMentorStoreController();
+                    // # TODO write break here
 
-            default:
-                handleNoSuchCommand();
+                case EXIT:
+                    break;
+
+                default:
+                    handleNoSuchCommand();
+            }
         }
     }
+
 
     protected void showMenu(String title) {
         userInterface.printMentorMenu();
     }
 
+    /**
+     * Gather data about new student, create object and insert data into database.
+     *
+     * @throws DaoException
+     */
     private void addStudent() throws DaoException {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
@@ -71,6 +89,12 @@ class MentorController extends AbstractController<Mentor> {
         this.userInterface.pause();
     }
 
+    /**
+     * Shows all classes and returns SchoolClass object chosen by user.
+     *
+     * @return
+     * @throws DaoException
+     */
     private SchoolClass chooseProperClass() throws DaoException {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
@@ -81,10 +105,14 @@ class MentorController extends AbstractController<Mentor> {
             userChoice = getUserChoice() - 1;
 
         } while (userChoice > (allClasses.size() - 1) || userChoice < 0);
-
         return allClasses.get(userChoice);
     }
 
+    /**
+     * Gets choice of class from user
+     *
+     * @return class number (generated automatically based on ArrayList size)
+     */
     private Integer getUserChoice() {
 
         String[] questions = {"Please choose class: "};
@@ -94,6 +122,11 @@ class MentorController extends AbstractController<Mentor> {
         return Integer.parseInt(userInput.get(0));
     }
 
+    /**
+     * Prints all classes and index generated on base of ArrayList size
+     *
+     * @param allClasses
+     */
     private void showAvailableClasses(ArrayList<SchoolClass> allClasses) {
         userInterface.newLine();
 
@@ -105,34 +138,49 @@ class MentorController extends AbstractController<Mentor> {
         userInterface.newLine();
     }
 
+    /**
+     * Gather data about new Quest and insert it into database
+     */
     private void addQuest() {
 
         String[] questions = {"Name: ", "Quest category: ", "Description: ", "Value: "};
         String[] types = {"string", "string", "string", "integer"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
-
+        // # TODO implement database connection
         this.userInterface.pause();
     }
 
+    /**
+     * Gather data about new Quest Category and inset it into database
+     */
     private void addQuestCategory() {
 
         String[] questions = {"Name: "};
         String[] types = {"string"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
-
+        // # TODO implement database connection
         this.userInterface.pause();
     }
 
+    /**
+     * Get choice which quest to update.
+     * Gather new data about quest.
+     * Update database.
+     */
     private void updateQuest() {
 
         Integer id = this.getQuestId();
         String[] questions = {"new name: ", "new quest category: ", "new description: ", "new value: "};
         String[] types = {"string", "string", "string", "integer"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
-
+        // # TODO implement database connection
         this.userInterface.pause();
     }
 
+    /**
+     * Gets integer from user
+     * @return
+     */
     private Integer getQuestId() {
 
         String[] question = {"Provide quest id: "};
@@ -172,5 +220,4 @@ class MentorController extends AbstractController<Mentor> {
         userInterface.println("Wrong command!");
         this.userInterface.pause();
     }
-
 }
