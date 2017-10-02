@@ -56,7 +56,7 @@ class MentorController extends AbstractController<Mentor> {
     }
 
 
-    protected void showMenu(String title) {
+    protected void showMenu() {
         userInterface.printMentorMenu();
     }
 

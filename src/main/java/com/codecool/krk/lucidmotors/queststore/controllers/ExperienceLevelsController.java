@@ -34,7 +34,7 @@ public class ExperienceLevelsController extends AbstractController<Mentor> {
         }
     }
 
-    protected void showMenu(String title) {
+    protected void showMenu() {
         userInterface.printExperienceLevelsMenu();
     }
 

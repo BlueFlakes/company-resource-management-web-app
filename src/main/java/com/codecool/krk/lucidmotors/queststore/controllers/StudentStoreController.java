@@ -34,7 +34,7 @@ public class StudentStoreController extends AbstractController<Student> {
         }
     }
 
-    protected void showMenu(String title) {
+    protected void showMenu() {
         userInterface.printStudentStoreMenu();
     }
 

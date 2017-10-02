@@ -45,7 +45,7 @@ public class ManagerController extends AbstractController<Manager> {
         }
     }
 
-    protected void showMenu(String title) {
+    protected void showMenu() {
         userInterface.printManagerMenu();
     }
 

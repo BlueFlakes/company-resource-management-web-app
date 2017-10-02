@@ -13,7 +13,7 @@ public abstract class AbstractController<T> implements UserController {
     protected School school;
     protected T user;
 
-    protected abstract void showMenu(String title);
+    protected abstract void showMenu();
     protected abstract void handleUserRequest(String userChoice) throws DaoException;
 
     public final void startController(User user, School school) throws DaoException {
@@ -22,10 +22,9 @@ public abstract class AbstractController<T> implements UserController {
         this.school = school;
 
         String userChoice;
-        String title = "Hello " + user.getName();
 
         do {
-            showMenu(title);
+            showMenu();
             userChoice = userInterface.inputs.getInput("What do you want to do: ");
             handleUserRequest(userChoice);
 

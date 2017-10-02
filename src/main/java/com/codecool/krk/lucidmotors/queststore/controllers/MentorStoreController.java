@@ -44,7 +44,7 @@ public class MentorStoreController extends AbstractController<Mentor> {
         }
     }
 
-    protected void showMenu(String title) {
+    protected void showMenu() {
         userInterface.printMentorStoreMenu();
     }
 
