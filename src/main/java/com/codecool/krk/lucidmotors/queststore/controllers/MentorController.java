@@ -2,7 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
-import com.codecool.krk.lucidmotors.queststore.menu_enums.MentorMenuOptions;
+import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
@@ -18,19 +18,22 @@ class MentorController {
 
         this.user = (Mentor) user;
         this.school = school;
-        String userChoice = "";
+        Integer userChoice;
 
-        while (!userChoice.equals("0")) {
+        do {
             this.userInterface.printMentorMenu();
-            userChoice = userInterface.inputs.getInput("What do you want to do: ");
+            String[] questions = {"What do you want to do: "};
+            String[] types = {"integer"};
+            userChoice = Integer.parseInt(userInterface.inputs.getValidatedInputs(questions, types)
+                                                              .get(0));
             handleUserRequest(userChoice);
 
-        }
+        } while (!userChoice.equals(0));
     }
 
-    private void handleUserRequest(String userChoice) throws DaoException {
+    private void handleUserRequest(Integer userChoice) throws DaoException {
 
-        MentorMenuOptions chosenOption = MentorMenuOptions.getChosenOption(userChoice);
+        MentorMenuOptions chosenOption = MentorMenuOptions.values()[userChoice];
 
         if (chosenOption != null) {
             switch (chosenOption) {
