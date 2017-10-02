@@ -8,35 +8,17 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
-class MentorController {
+class MentorController extends AbstractController<Mentor> {
 
-    private final UserInterface userInterface = new UserInterface();
-    private Mentor user;
-    private School school;
-
-    public void startController(User user, School school) throws DaoException {
-
-        this.user = (Mentor) user;
-        this.school = school;
-        String userChoice = "";
-
-        while (!userChoice.equals("0")) {
-            this.userInterface.printMentorMenu();
-            userChoice = userInterface.inputs.getInput("What do you want to do: ");
-            handleUserRequest(userChoice);
-
-        }
-    }
-
-    /**
+      /**
      * Switches between methods, acording to userChoice param.
      *
      * @param userChoice
      * @throws DaoException
      */
-    private void handleUserRequest(String userChoice) throws DaoException {
+    protected void handleUserRequest(String userChoice) throws DaoException {
 
-        MentorMenuOptions chosenOption = MentorMenuOptions.getChosenOption(userChoice);
+      MentorMenuOptions chosenOption = MentorMenuOptions.getChosenOption(userChoice);
 
         if (chosenOption != null) {
             switch (chosenOption) {
@@ -71,6 +53,11 @@ class MentorController {
                     handleNoSuchCommand();
             }
         }
+    }
+
+
+    protected void showMenu() {
+        userInterface.printMentorMenu();
     }
 
     /**
