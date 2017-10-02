@@ -1,13 +1,15 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
+import com.codecool.krk.lucidmotors.queststore.models.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MentorStoreController implements UserController {
@@ -62,25 +64,37 @@ public class MentorStoreController implements UserController {
 
     private void addArtifact() throws DaoException {
 
-        this.printAllArtifacts();
-
-        String[] questions = {"Artifact category id: ", "Name: ", "Description: ", "Price: "};
-        String[] types = {"integer", "string", "string", "integer"};
+        String[] questions = {"Name: ", "Description: ", "Price: "};
+        String[] types = {"string", "string", "integer"};
 
         ArrayList<String> givenValues = this.userInterface.inputs.getValidatedInputs(questions, types);
 
-        Integer artifactCategoryId = Integer.parseInt(givenValues.get(0));
+        Integer artifactCategoryId = this.getArtifactCategoryId();
         ArtifactCategory artifactCategory = new ArtifactCategoryDao().getArtifactCategory(artifactCategoryId);
-        String name = givenValues.get(1);
-        String description = givenValues.get(2);
-        Integer price = Integer.parseInt(givenValues.get(3));
+        String name = givenValues.get(0);
+        String description = givenValues.get(1);
+        Integer price = Integer.parseInt(givenValues.get(2));
 
-        this.createArtifact(artifactCategory, name, description, price);
+        try {
+            ShopArtifact shopArtifact = new ShopArtifact(name, price, artifactCategory, description);
+            shopArtifact.save();
+            this.userInterface.println("Artifact created.");
+        } catch (IllegalArgumentException e) {
+            this.userInterface.println(e.getMessage());
+        }
 
         this.userInterface.lockActualState();
     }
 
-    private void printAllArtifacts() throws DaoException {
+    private Integer getArtifactCategoryId() throws DaoException {
+        this.printAllArtifactsCategories();
+        String[] questions = {"Artifact category id: "};
+        String[] types = {"integer"};
+        return Integer.parseInt(this.userInterface.inputs.getValidatedInputs(questions, types)
+                      .get(0));
+    }
+
+    private void printAllArtifactsCategories() throws DaoException {
 
         ArrayList<ArtifactCategory> artifactCategories = new ArtifactCategoryDao().getAllArtifactCategories();
         this.userInterface.printArtifactsCategories(artifactCategories);
