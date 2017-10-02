@@ -28,7 +28,7 @@ public class UserInterface {
         }
     }
 
-    public void lockActualState() {
+    public void pause() {
         System.out.println();
         System.out.print("Press enter to continue...");
         in.nextLine();

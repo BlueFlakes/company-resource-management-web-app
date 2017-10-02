@@ -64,7 +64,7 @@ public class MentorStoreController implements UserController {
         String[] types = {"string", "integer", "string"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void updateArtifact() {
@@ -74,7 +74,7 @@ public class MentorStoreController implements UserController {
         String[] types = {"string", "integer", "string"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
 
@@ -92,12 +92,12 @@ public class MentorStoreController implements UserController {
         String[] type = {"string"};
         userInterface.inputs.getValidatedInputs(question, type).get(0);
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void handleNoSuchCommand() {
 
         userInterface.println("Wrong command!");
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 }

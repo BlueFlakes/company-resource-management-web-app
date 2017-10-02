@@ -10,7 +10,7 @@ class ShopArtifactController {
     public void showAvailableArtifacts() throws DaoException {
 
         this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
 }

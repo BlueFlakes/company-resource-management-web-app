@@ -56,7 +56,7 @@ public class ExperienceLevelsController implements UserController {
         ArrayList<String> answers = this.userInterface.inputs.getValidatedInputs(questions, types);
 
         this.userInterface.println("Level added.");
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
     private void updateLevel() {
@@ -66,6 +66,6 @@ public class ExperienceLevelsController implements UserController {
         ArrayList<String> answers = this.userInterface.inputs.getValidatedInputs(questions, types);
 
         this.userInterface.println("Level Updated.");
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 }
