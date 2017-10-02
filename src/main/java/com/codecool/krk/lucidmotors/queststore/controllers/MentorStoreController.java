@@ -7,9 +7,8 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 
 public class MentorStoreController implements UserController {
