@@ -33,7 +33,12 @@ class MentorController {
 
     private void handleUserRequest(Integer userChoice) throws DaoException {
 
-        MentorMenuOptions chosenOption = MentorMenuOptions.values()[userChoice];
+        MentorMenuOptions chosenOption;
+        try {
+            chosenOption = MentorMenuOptions.values()[userChoice];
+        } catch (IndexOutOfBoundsException e) {
+            chosenOption = null;
+        }
 
         if (chosenOption != null) {
             switch (chosenOption) {
