@@ -100,26 +100,25 @@ public class MentorStoreController implements UserController {
         this.userInterface.printArtifactsCategories(artifactCategories);
     }
 
-    private void createArtifact(ArtifactCategory artifactCategory, String name, String description, Integer price) throws DaoException{
+    private void updateArtifact() throws DaoException {
+        ShopArtifactDao shopArtifactDao = new ShopArtifactDao();
 
-        if(artifactCategory == null) {
-            this.userInterface.println("Artifact creation failure: No such artifact category.");
-        } else if(price < 0) {
-            this.userInterface.println("Artifact creation failure: Price should be at least 0.");
-        } else {
-            ShopArtifact shopArtifact = new ShopArtifact(name, price, artifactCategory, description);
-            shopArtifact.save();
-            this.userInterface.println("Artifact created.");
-        }
-    }
+        this.userInterface.printStoreArtifacts(shopArtifactDao.getAllArtifacts());
+        ShopArtifact updatedArtifact = shopArtifactDao.getArtifact(this.getArtifactId());
 
-    private void updateArtifact() {
+        String[] questions = {"Name: ", "Description: ", "Price: "};
+        String[] types = {"string", "string", "integer"};
+        ArrayList<String> givenValues = this.userInterface.inputs.getValidatedInputs(questions, types);
 
-        this.getArtifactId();
-        String[] questions = {"New name: ", "New price: ", "New artifact category: "};
-        String[] types = {"string", "integer", "string"};
-        this.userInterface.inputs.getValidatedInputs(questions, types);
+        Integer artifactCategoryId = this.getArtifactCategoryId();
+        ArtifactCategory artifactCategory = new ArtifactCategoryDao().getArtifactCategory(artifactCategoryId);
 
+        updatedArtifact.setName(givenValues.get(0));
+        updatedArtifact.setDescription(givenValues.get(1));
+        updatedArtifact.setPrice(Integer.parseInt(givenValues.get(2)));
+        updatedArtifact.setArtifactCategory(artifactCategory);
+
+        shopArtifactDao.updateArtifact(updatedArtifact);
         this.userInterface.lockActualState();
     }
 
