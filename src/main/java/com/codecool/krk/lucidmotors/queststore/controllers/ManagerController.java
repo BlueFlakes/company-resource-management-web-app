@@ -1,5 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
+import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
@@ -149,6 +151,29 @@ public class ManagerController implements UserController {
         String[] expectedTypes = {"String", "String", "String", "String"};
 
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+        updateMentorRecord(basicUserData, mentorId);
+
+        this.userInterface.lockActualState();
+    }
+
+    private void updateMentorRecord(ArrayList<String> userData, Integer mentorId) throws DaoException {
+        String name = userData.get(0);
+        String login = userData.get(1);
+        String password = userData.get(2);
+        String email = userData.get(3);
+
+        try {
+            this.school.isLoginAvailable(login);
+            Mentor mentor = new MentorDao(new ClassDao()).getMentor(mentorId);
+            mentor.setName(name);
+            mentor.setLogin(login);
+            mentor.setPassword(password);
+            mentor.setEmail(email);
+            mentor.update();
+
+        } catch (LoginInUseException e) {
+            userInterface.println(e.getMessage());
+        }
     }
 
     private void showMentorsClass() throws DaoException {
