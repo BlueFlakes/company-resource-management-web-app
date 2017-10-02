@@ -50,6 +50,9 @@ public class MentorStoreController extends AbstractController<Mentor> {
 
     private void addArtifact() throws DaoException {
 
+        String[] questions = {"Name: ", "Description: ", "Price: "};
+        String[] types = {"string", "string", "integer"};
+
         ArrayList<String> givenValues = this.userInterface.inputs.getValidatedInputs(questions, types);
 
         Integer artifactCategoryId = this.getArtifactCategoryId();
