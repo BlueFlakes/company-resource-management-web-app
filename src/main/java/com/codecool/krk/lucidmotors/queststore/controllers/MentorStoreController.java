@@ -105,6 +105,17 @@ public class MentorStoreController implements UserController {
         this.userInterface.printStoreArtifacts(shopArtifactDao.getAllArtifacts());
         ShopArtifact updatedArtifact = shopArtifactDao.getArtifact(this.getArtifactId());
 
+        if(updatedArtifact != null) {
+            updatedArtifact = this.getUpdatedArtifact(updatedArtifact);
+            shopArtifactDao.updateArtifact(updatedArtifact);
+        } else {
+            this.userInterface.println("Update failure: No artifact of such id");
+        }
+
+        this.userInterface.pause();
+    }
+
+    private ShopArtifact getUpdatedArtifact(ShopArtifact updatedArtifact) throws DaoException {
         String[] questions = {"Name: ", "Description: ", "Price: "};
         String[] types = {"string", "string", "integer"};
         ArrayList<String> givenValues = this.userInterface.inputs.getValidatedInputs(questions, types);
@@ -116,12 +127,8 @@ public class MentorStoreController implements UserController {
         updatedArtifact.setDescription(givenValues.get(1));
         updatedArtifact.setPrice(Integer.parseInt(givenValues.get(2)));
         updatedArtifact.setArtifactCategory(artifactCategory);
-
-        shopArtifactDao.updateArtifact(updatedArtifact);
-      
-        this.userInterface.pause();
+        return updatedArtifact;
     }
-
 
     private Integer getArtifactId() {
 
