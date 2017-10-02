@@ -151,10 +151,16 @@ public class ManagerController implements UserController {
         String[] expectedTypes = {"String", "String", "String", "String"};
 
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
-        String name = basicUserData.get(0);
-        String login = basicUserData.get(1);
-        String password = basicUserData.get(2);
-        String email = basicUserData.get(3);
+        updateMentorRecord(basicUserData, mentorId);
+
+        this.userInterface.lockActualState();
+    }
+
+    private void updateMentorRecord(ArrayList<String> userData, Integer mentorId) throws DaoException {
+        String name = userData.get(0);
+        String login = userData.get(1);
+        String password = userData.get(2);
+        String email = userData.get(3);
 
         try {
             this.school.isLoginAvailable(login);
@@ -165,11 +171,9 @@ public class ManagerController implements UserController {
             mentor.setEmail(email);
             mentor.update();
 
-        } catch (LoginInUseException | DaoException e) {
+        } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
-
-        this.userInterface.lockActualState();
     }
 
     private void showMentorsClass() throws DaoException {
