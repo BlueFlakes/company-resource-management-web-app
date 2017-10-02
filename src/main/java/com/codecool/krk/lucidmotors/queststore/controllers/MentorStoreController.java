@@ -130,11 +130,15 @@ public class MentorStoreController implements UserController {
         return Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
     }
 
-    private void addArtifactCategory() {
+    private void addArtifactCategory() throws DaoException {
 
         String[] question = {"Provide new artifact category name: "};
         String[] type = {"string"};
-        userInterface.inputs.getValidatedInputs(question, type).get(0);
+
+        String name = userInterface.inputs.getValidatedInputs(question, type).get(0);
+
+        ArtifactCategory artifactCategory = new ArtifactCategory(name);
+        new ArtifactCategoryDao().save(artifactCategory);
 
         this.userInterface.lockActualState();
     }
