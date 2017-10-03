@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.exceptions.NoSuchIdException;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
@@ -92,23 +93,30 @@ public class MentorStoreController extends AbstractUserController<Mentor> {
         this.userInterface.printStoreArtifacts(shopArtifactDao.getAllArtifacts());
         ShopArtifact updatedArtifact = shopArtifactDao.getArtifact(this.getArtifactId());
 
-        if(updatedArtifact != null) {
-            updatedArtifact = this.getUpdatedArtifact(updatedArtifact);
-            shopArtifactDao.updateArtifact(updatedArtifact);
-        } else {
-            this.userInterface.println("Update failure: No artifact of such id");
+        try {
+            if (updatedArtifact != null) {
+                updatedArtifact = this.getUpdatedArtifact(updatedArtifact);
+                shopArtifactDao.updateArtifact(updatedArtifact);
+            } else {
+                this.userInterface.println("Update failure: No artifact of such id");
+            }
+        } catch (NoSuchIdException e) {
+            this.userInterface.println("There is no category of such id!");
         }
 
         this.userInterface.pause();
     }
 
-    private ShopArtifact getUpdatedArtifact(ShopArtifact updatedArtifact) throws DaoException {
+    private ShopArtifact getUpdatedArtifact(ShopArtifact updatedArtifact) throws DaoException, NoSuchIdException {
         String[] questions = {"Name: ", "Description: ", "Price: "};
         String[] types = {"string", "string", "integer"};
         ArrayList<String> givenValues = this.userInterface.inputs.getValidatedInputs(questions, types);
 
         Integer artifactCategoryId = this.getArtifactCategoryId();
         ArtifactCategory artifactCategory = new ArtifactCategoryDao().getArtifactCategory(artifactCategoryId);
+        if (artifactCategory == null) {
+            throw new NoSuchIdException();
+        }
 
         updatedArtifact.setName(givenValues.get(0));
         updatedArtifact.setDescription(givenValues.get(1));
