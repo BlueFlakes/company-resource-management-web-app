@@ -1,7 +1,16 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
-import java.util.TreeMap;
+import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.util.TreeMap;
+import java.util.Map;
+
+/**
+ * Treemap<Integer, Integer> levels:
+ * key - coins
+ * value - level
+ */
 public class ExperienceLevels {
 
     private TreeMap<Integer, Integer> levels;
