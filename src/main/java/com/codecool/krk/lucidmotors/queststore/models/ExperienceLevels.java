@@ -77,11 +77,20 @@ public class ExperienceLevels {
                     .get();
 
             this.levels.remove(entryToRemove.getKey());
-        this.levels.put(coins, level);
+            this.levels.put(coins, level);
         }
     }
 
     public TreeMap<Integer, Integer> getLevels() {
         return levels;
+    }
+
+    /**
+     * Saves data into database
+     *
+     * @throws DaoException
+     */
+    public void updateExperienceLevels() throws DaoException {
+        new ExperienceLevelsDao().updateExperienceLevels(this);
     }
 }
