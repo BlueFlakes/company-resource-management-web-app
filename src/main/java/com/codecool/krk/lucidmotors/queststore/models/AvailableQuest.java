@@ -3,8 +3,6 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
-import java.util.ArrayList;
-
 public class AvailableQuest extends AbstractQuest {
 
     private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
