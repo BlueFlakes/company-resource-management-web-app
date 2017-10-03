@@ -1,9 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
-import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
-import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
+import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
@@ -221,25 +218,48 @@ class MentorController extends AbstractController<Mentor> {
         return Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
     }
 
-    private void markBoughtArtifactsAsUsed() {
+    private void chooseAndMarkArtifact(Student student) throws DaoException {
 
-        String mockArtifactsList = "id - owner - name - status\n" +
-                "1 - Maciej Nowak - Sanctuary - used\n" +
-                "2 - Paweł Polakiewicz - Teleport - not used";
+        this.userInterface.println("Choose student's artifact from list: ");
+        ArtifactOwnersDao artifactOwnersDao = new ArtifactOwnersDao();
+        BoughtArtifactDao boughtArtifactDao = new BoughtArtifactDao();
 
-        this.userInterface.println(mockArtifactsList);
-
+        this.userInterface.printBoughtArtifacts(artifactOwnersDao.getArtifacts(student));
         String[] question = {"id: "};
         String[] type = {"integer"};
+        Integer artifactId = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
+        BoughtArtifact chosenArtifact = boughtArtifactDao.getArtifact(artifactId);
 
-        if (this.userInterface.inputs.getValidatedInputs(question, type).get(0).equals("1")) {
-            this.userInterface.println("Artifact mark as used!");
-
+        if (chosenArtifact != null && !chosenArtifact.isUsed()) {
+            chosenArtifact.markAsUsed();
+            chosenArtifact.update();
+        } else if (chosenArtifact == null) {
+            this.userInterface.println("There is no artifact of such id!");
         } else {
-            this.userInterface.println("Artifact already used!");
+            this.userInterface.println("Chosen artifact is already used!");
+        }
+
+    }
+
+    private void markBoughtArtifactsAsUsed() throws DaoException {
+
+        this.userInterface.println("Choose student from list: ");
+        StudentDao studentDao = new StudentDao(new ClassDao());
+
+        this.userInterface.printStudents(studentDao.getAllStudents());
+        String[] question = {"id: "};
+        String[] type = {"integer"};
+        Integer studentId = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
+        Student chosenStudent = studentDao.getStudent(studentId);
+
+        if (chosenStudent != null) {
+            chooseAndMarkArtifact(chosenStudent);
+        } else {
+            this.userInterface.println("There is no student of such id!");
         }
 
         this.userInterface.pause();
+
     }
 
     private void runMentorStoreController() throws DaoException {

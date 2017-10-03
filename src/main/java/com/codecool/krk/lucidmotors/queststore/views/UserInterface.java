@@ -104,6 +104,20 @@ public class UserInterface {
 
     }
 
+    public void printBoughtArtifacts(ArrayList<BoughtArtifact> artifacts) {
+        for(BoughtArtifact artifact : artifacts) {
+            System.out.println(artifact);
+        }
+
+    }
+
+    public void printStudents(ArrayList<Student> students) {
+        for(Student student : students) {
+            System.out.println(student);
+        }
+
+    }
+
     public void printBoughtArtifacts(Student student, ArrayList<BoughtArtifact> studentArtifacts) {
         this.println("Owned artifacts:");
         for(BoughtArtifact boughtArtifact : studentArtifacts) {
