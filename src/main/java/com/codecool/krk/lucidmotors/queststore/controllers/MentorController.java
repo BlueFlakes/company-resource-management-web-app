@@ -1,12 +1,14 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
+import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
-import com.sun.xml.internal.bind.v2.TODO;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,10 @@ class MentorController extends AbstractController<Mentor> {
 
                 case ADD_QUEST:
                     addQuest();
+                    break;
+
+                case LIST_STUDENTS_WALLETS:
+                    listWallets();
                     break;
 
                 case ADD_QUEST_CATEGORY:
@@ -244,6 +250,24 @@ class MentorController extends AbstractController<Mentor> {
     private void handleNoSuchCommand() {
 
         userInterface.println("Wrong command!");
+        this.userInterface.pause();
+    }
+
+    private void showWallet(Student student) throws DaoException {
+        userInterface.println("\nName: " + student.getName());
+        userInterface.println("Balance: " + student.getPossesedCoins());
+        userInterface.printBoughtArtifacts(student, new ArtifactOwnersDao().getArtifacts(student));
+
+    }
+
+    private void listWallets() throws DaoException {
+        ArrayList<Student> students = new StudentDao(new ClassDao()).getAllStudents();
+
+        userInterface.println("List of students wallets: ");
+        for (Student student : students) {
+            this.showWallet(student);
+        }
+
         this.userInterface.pause();
     }
 }
