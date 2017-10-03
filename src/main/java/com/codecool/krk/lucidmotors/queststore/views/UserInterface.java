@@ -77,6 +77,13 @@ public class UserInterface {
         printMenu(loadedMenu);
     }
 
+    public void printLoginMenu() {
+        String fileName = "txt/loginControllerMenu.txt";
+        List<String> loadedMenu = dataLoader.getDataFromFile(fileName);
+
+        printMenu(loadedMenu);
+    }
+
     private void printMenu(List<String> data) {
         clearWindow();
         printAllRecordsInMenuStyle(data);
@@ -100,8 +107,8 @@ public class UserInterface {
     public void printStoreArtifacts(ArrayList<ShopArtifact> allArtifacts) {
         for(ShopArtifact shopArtifact : allArtifacts) {
             System.out.println(shopArtifact);
-        }
 
+        }
     }
 
     public void printBoughtArtifacts(Student student, ArrayList<BoughtArtifact> studentArtifacts) {
