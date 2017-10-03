@@ -43,7 +43,7 @@ class ExperienceLevelsTest {
     }
 
     @Test
-    public void updateNonExistingLevel() {
+    public void testUpdateNonExistingLevel() {
         this.experienceLevels.updateLevel(10, 1);
 
         TreeMap<Integer, Integer> expectedLevels = new TreeMap<>();
@@ -52,7 +52,7 @@ class ExperienceLevelsTest {
     }
 
     @Test
-    public void updateExistingLevel() {
+    public void testUpdateExistingLevel() {
         this.experienceLevels.addLevel(5, 1);
         this.experienceLevels.updateLevel(10, 1);
 
