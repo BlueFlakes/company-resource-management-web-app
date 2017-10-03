@@ -93,4 +93,11 @@ public class ExperienceLevels {
     public void updateExperienceLevels() throws DaoException {
         new ExperienceLevelsDao().updateExperienceLevels(this);
     }
+
+    @Override
+    public String toString() {
+        return this.levels.entrySet().stream()
+                                     .map(entry -> String.format("level: %d -> %d", entry.getValue(), entry.getKey()))
+                                     .collect(Collectors.joining("\n"));
+    }
 }
