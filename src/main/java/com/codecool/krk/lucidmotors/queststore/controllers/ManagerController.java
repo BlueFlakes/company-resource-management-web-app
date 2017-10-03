@@ -77,13 +77,11 @@ public class ManagerController extends AbstractUserController<Manager> {
         String email = basicUserData.get(3);
         SchoolClass choosenClass = chooseProperClass();
 
-        try {
-            this.school.isLoginAvailable(login);
+        if (this.school.isLoginAvailable(login)) {
             Mentor mentor = new Mentor(name, login, password, email, choosenClass);
             mentor.save();
-
-        } catch (LoginInUseException e) {
-            userInterface.println(e.getMessage());
+        } else {
+            userInterface.println("Action failed! Login already in use!");
         }
 
         this.userInterface.pause();
@@ -169,17 +167,16 @@ public class ManagerController extends AbstractUserController<Manager> {
         String password = userData.get(2);
         String email = userData.get(3);
 
-        try {
-            this.school.isLoginAvailable(login);
+        if (this.school.isLoginAvailable(login) || login.equals(mentor.getLogin())) {
             mentor.setName(name);
             mentor.setLogin(login);
             mentor.setPassword(password);
             mentor.setEmail(email);
             mentor.update();
-
-        } catch (LoginInUseException e) {
-            userInterface.println(e.getMessage());
+        }  else {
+            userInterface.println("Action failed! Login already in use!");
         }
+
     }
 
     private void showMentorsClass() throws DaoException {
