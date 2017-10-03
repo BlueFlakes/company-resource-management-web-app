@@ -47,6 +47,25 @@ public class School {
         return foundUser;
     }
 
+    public User getUser(String login, String password) throws DaoException {
+
+        User foundUser = null;
+
+        foundUser = managerDao.getManager(login, password);
+        if (foundUser != null) {
+            return foundUser;
+        }
+
+        foundUser = mentorDao.getMentor(login, password);
+        if (foundUser != null) {
+            return foundUser;
+        }
+
+        foundUser = studentDao.getStudent(login, password);
+
+        return foundUser;
+    }
+
     public Mentor getMentor(Integer id) throws DaoException {
         return this.mentorDao.getMentor(id);
     }
