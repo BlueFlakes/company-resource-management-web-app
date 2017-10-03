@@ -53,13 +53,27 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
     /**
      * Gathers data about new level and insert it into database.
      */
-    private void createNewLevel() {
+    private void createNewLevel() throws DaoException {
+        ExperienceLevels experienceLevels = this.experienceLevelsDao
+                                   .getExperienceLevels();
 
-        String[] questions = {"level: ", "needed coins: "};
-        String[] types = {"integer", "integer"};
-        ArrayList<String> answers = this.userInterface.inputs.getValidatedInputs(questions, types);
-        // #TODO implement database connection
-        this.userInterface.println("Level added.");
+
+        Integer nextLevel = experienceLevels.getLevels().size() + 1;
+
+        this.userInterface.println(String.format("Provide coins amount for level %d%n", nextLevel));
+        String[] questions = {"needed coins: "};
+        String[] types = {"integer"};
+        Integer coins = Integer.parseInt(this.userInterface.inputs.getValidatedInputs(questions, types).get(0));
+
+        if(experienceLevels.getMaxCoins() < coins) {
+            experienceLevels.addLevel(coins, nextLevel);
+            experienceLevels.updateExperienceLevels();
+            this.userInterface.println("Level added");
+        } else {
+            this.userInterface.println("Level addition failure! Needed coins of new level must be greater than any other levels.");
+        }
+
+
         this.userInterface.pause();
     }
 
@@ -73,6 +87,8 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
         ArrayList<String> answers = this.userInterface.inputs.getValidatedInputs(questions, types);
         // #TODO implement database connection
         this.userInterface.println("Level Updated.");
+        this.userInterface.pause();
+    }
 
     private void showLevels() throws DaoException {
 
