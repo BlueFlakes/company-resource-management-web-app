@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.enums.LoginMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
@@ -38,16 +39,27 @@ public class LoginController {
 
     private void handleUserRequest(String userChoice) throws DaoException {
 
-        switch (userChoice) {
-            case "1":
-                handleLogin();
-                break;
+        LoginMenuOptions chosenOption;
 
-            case "0":
-                break;
+        try {
+            chosenOption = LoginMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = null;
+        }
 
-            default:
-                userInterface.println("Wrong choice");
+        if (chosenOption != null) {
+
+            switch (chosenOption) {
+                case HANDLE_LOGIN:
+                    handleLogin();
+                    break;
+
+                case EXIT:
+                    break;
+
+                default:
+                    userInterface.println("Wrong choice");
+            }
         }
     }
 
