@@ -4,7 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 
 import java.util.ArrayList;
 
-public class ExperienceLevelsController extends AbstractController<Mentor> {
+public class ExperienceLevelsController extends AbstractUserController<Mentor> {
 
 
     /**
