@@ -34,13 +34,7 @@ public class MentorDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                String login = result.getString("login");
-                Integer classId = result.getInt("class_id");
-                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                mentor = new Mentor(name, login, password, email, schoolClass, id);
+                mentor = createMentor(result);
             }
 
             result.close();
@@ -64,13 +58,7 @@ public class MentorDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                Integer id = result.getInt("id");
-                Integer classId = result.getInt("class_id");
-                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                mentor = new Mentor(name, login, password, email, schoolClass, id);
+                mentor = createMentor(result);
             }
 
             result.close();
@@ -80,6 +68,41 @@ public class MentorDao {
         }
 
         return mentor;
+    }
+
+    public Mentor getMentor(String login, String password) throws DaoException {
+
+        Mentor mentor = null;
+        String sqlQuery = String.format("SELECT * FROM mentors WHERE login = '%s' AND password = '%s';", login, password);
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                mentor = createMentor(result);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return mentor;
+    }
+
+    private Mentor createMentor(ResultSet result) throws SQLException, DaoException {
+        String name = result.getString("name");
+        String login = result.getString("login");
+        String password = result.getString("password");
+        String email = result.getString("email");
+        Integer id = result.getInt("id");
+        Integer classId = result.getInt("class_id");
+        SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+
+        return new Mentor(name, login, password, email, schoolClass, id);
     }
 
     public ArrayList<Mentor> getAllMentors() throws DaoException {
