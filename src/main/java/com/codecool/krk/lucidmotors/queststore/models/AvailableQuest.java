@@ -3,8 +3,6 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
-import java.util.ArrayList;
-
 public class AvailableQuest extends AbstractQuest {
 
     private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
@@ -27,6 +25,16 @@ public class AvailableQuest extends AbstractQuest {
 
     public void update() throws DaoException {
         availableQuestDao.updateQuest(this);
+    }
+
+    @Override
+    public String toString() {
+        Integer id = this.getId();
+        String name = this.getName();
+        String description = this.getDescription();
+        Integer value = this.getValue();
+
+        return ("\t" + id + ". " + name + ": " + description + "; value: " + value);
     }
 
 }

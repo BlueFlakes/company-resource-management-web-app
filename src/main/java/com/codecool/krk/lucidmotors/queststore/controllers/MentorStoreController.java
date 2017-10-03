@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.enums.MentorStoreMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
@@ -18,30 +19,44 @@ public class MentorStoreController extends AbstractUserController<Mentor> {
 
     protected void handleUserRequest(String userChoice) throws DaoException {
 
-        switch (userChoice) {
+        MentorStoreMenuOptions chosenOption = getEnumValue(userChoice);
 
-            case "1":
+        switch (chosenOption) {
+
+            case SHOW_AVAILABLE_ARTIFACTS:
                 shopArtifactController.showAvailableArtifacts();
                 break;
 
-            case "2":
+            case ADD_ARTIFACT:
                 addArtifact();
                 break;
 
-            case "3":
+            case UPDATE_ARTIFACT:
                 updateArtifact();
                 break;
 
-            case "4":
+            case ADD_ARTIFACT_CATEGORY:
                 addArtifactCategory();
                 break;
 
-            case "0":
+            case EXIT:
                 break;
 
-            default:
+            case DEFAULT:
                 handleNoSuchCommand();
         }
+    }
+
+    private MentorStoreMenuOptions getEnumValue(String userChoice) {
+        MentorStoreMenuOptions chosenOption;
+
+        try {
+            chosenOption = MentorStoreMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = MentorStoreMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
     }
 
     protected void showMenu() {
@@ -135,12 +150,6 @@ public class MentorStoreController extends AbstractUserController<Mentor> {
         ArtifactCategory artifactCategory = new ArtifactCategory(name);
         new ArtifactCategoryDao().save(artifactCategory);
 
-        this.userInterface.pause();
-    }
-
-    private void handleNoSuchCommand() {
-
-        userInterface.println("Wrong command!");
         this.userInterface.pause();
     }
 }

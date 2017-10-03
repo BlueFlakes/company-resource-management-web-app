@@ -30,4 +30,9 @@ public abstract class AbstractUserController<T> implements UserController {
 
         } while (!userChoice.equals("0"));
     }
+
+    void handleNoSuchCommand() {
+        userInterface.println("Wrong choice");
+        userInterface.pause();
+    }
 }

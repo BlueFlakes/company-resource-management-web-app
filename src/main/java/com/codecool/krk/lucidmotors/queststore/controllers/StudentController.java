@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.enums.StudentControllerMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.School;
@@ -13,29 +14,43 @@ import java.sql.SQLException;
 
 public class StudentController extends AbstractUserController<Student> {
 
-    protected void handleUserRequest(String choice) throws DaoException {
+    protected void handleUserRequest(String userChoice) throws DaoException {
 
-        switch (choice) {
+        StudentControllerMenuOptions chosenOption = getEnumValue(userChoice);
 
-            case "1":
+        switch (chosenOption) {
+
+            case START_STORE_CONTROLLER:
                 startStoreController();
                 break;
 
-            case "2":
+            case SHOW_LEVEL:
                 showLevel();
                 break;
 
-            case "3":
+            case SHOW_WALLET:
                 showWallet();
                 break;
 
-            case "0":
+            case EXIT:
                 break;
 
-            default:
+            case DEFAULT:
                 handleNoSuchCommand();
                 break;
         }
+    }
+
+    private StudentControllerMenuOptions getEnumValue(String userChoice) {
+        StudentControllerMenuOptions chosenOption;
+
+        try {
+            chosenOption = StudentControllerMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = StudentControllerMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
     }
 
     protected void showMenu() {
@@ -55,11 +70,6 @@ public class StudentController extends AbstractUserController<Student> {
 
         userInterface.println("Your level: 0");
         this.userInterface.pause();
-    }
-
-    private void handleNoSuchCommand() {
-
-        userInterface.println("No such option.");
     }
 
     private void startStoreController() throws DaoException {
