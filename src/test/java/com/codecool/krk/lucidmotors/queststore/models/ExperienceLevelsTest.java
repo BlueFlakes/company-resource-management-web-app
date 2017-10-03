@@ -61,4 +61,34 @@ class ExperienceLevelsTest {
 
         assertEquals(expectedLevels, this.experienceLevels.getLevels());
     }
+
+    @Test
+    public void testComputeLevelMin() {
+        this.experienceLevels.addLevel(10, 1);
+        this.experienceLevels.addLevel(30, 2);
+
+        assertEquals(Integer.valueOf(1), this.experienceLevels.computeStudentLevel(10));
+    }
+
+    @Test
+    public void testComputeLevelMax() {
+        this.experienceLevels.addLevel(10, 1);
+        this.experienceLevels.addLevel(30, 2);
+
+        assertEquals(Integer.valueOf(1), this.experienceLevels.computeStudentLevel(29));
+    }
+
+    @Test
+    public void testComputeLevelLowerThanFirstLevel() {
+        this.experienceLevels.addLevel(10, 1);
+        this.experienceLevels.addLevel(30, 2);
+
+        assertEquals(Integer.valueOf(0), this.experienceLevels.computeStudentLevel(9));
+    }
+
+    @Test
+    public void testComputeLevelWhenThereIsNoLevels() {
+        assertEquals(Integer.valueOf(0), this.experienceLevels.computeStudentLevel(30));
+    }
+
 }
