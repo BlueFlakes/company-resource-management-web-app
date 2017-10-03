@@ -11,7 +11,7 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import java.sql.SQLException;
 
 
-public class StudentController extends AbstractController<Student> {
+public class StudentController extends AbstractUserController<Student> {
 
     protected void handleUserRequest(String choice) throws DaoException {
 

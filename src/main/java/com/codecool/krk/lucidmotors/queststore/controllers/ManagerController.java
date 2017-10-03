@@ -10,7 +10,7 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
-public class ManagerController extends AbstractController<Manager> {
+public class ManagerController extends AbstractUserController<Manager> {
 
     protected void handleUserRequest(String choice) throws DaoException {
 

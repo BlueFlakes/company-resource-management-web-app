@@ -12,7 +12,7 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
-class MentorController extends AbstractController<Mentor> {
+class MentorController extends AbstractUserController<Mentor> {
 
       /**
      * Switches between methods, acording to userChoice param.

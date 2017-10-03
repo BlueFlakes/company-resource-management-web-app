@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 
 
-public class MentorStoreController extends AbstractController<Mentor> {
+public class MentorStoreController extends AbstractUserController<Mentor> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
 

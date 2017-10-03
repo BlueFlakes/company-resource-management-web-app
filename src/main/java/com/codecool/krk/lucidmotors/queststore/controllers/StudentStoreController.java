@@ -9,7 +9,7 @@ import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
-public class StudentStoreController extends AbstractController<Student> {
+public class StudentStoreController extends AbstractUserController<Student> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
 
