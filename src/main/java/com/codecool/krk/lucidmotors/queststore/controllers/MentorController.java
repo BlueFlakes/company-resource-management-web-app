@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
@@ -158,12 +159,18 @@ class MentorController extends AbstractController<Mentor> {
     /**
      * Gather data about new Quest Category and inset it into database
      */
-    private void addQuestCategory() {
+    private void addQuestCategory() throws DaoException {
 
         String[] questions = {"Name: "};
         String[] types = {"string"};
-        this.userInterface.inputs.getValidatedInputs(questions, types);
-        // # TODO implement database connection
+        ArrayList<String> questCategoryInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
+
+        String questCategoryName = questCategoryInfo.get(0);
+        QuestCategoryDao qcDao = new QuestCategoryDao();
+        QuestCategory questCategory = new QuestCategory(questCategoryName);
+
+        qcDao.save(questCategory);
+        this.userInterface.println("New quest category added successfully!");
         this.userInterface.pause();
     }
 
