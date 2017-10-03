@@ -1,13 +1,17 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import com.codecool.krk.lucidmotors.queststore.dao.AchievedQuestDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+
 import java.util.Date;
 
 public class AchievedQuest extends AbstractQuest {
 
     private Student owner;
     private Date date;
+    private AchievedQuestDao achievedQuestDao = new AchievedQuestDao();
 
-    public AchievedQuest(AvailableQuest availableQuest, Student owner) {
+    public AchievedQuest(AvailableQuest availableQuest, Student owner) throws DaoException {
         super(availableQuest.getName(), availableQuest.getQuestCategory(),
               availableQuest.getDescription(), availableQuest.getValue());
         this.date = new Date();
@@ -15,7 +19,7 @@ public class AchievedQuest extends AbstractQuest {
     }
 
     public AchievedQuest(String name, QuestCategory questCategory, String description, Integer value, Integer id,
-                         Date date, Student owner) {
+                         Date date, Student owner) throws DaoException {
         super(name, questCategory, description, value, id);
         this.date = date;
         this.owner = owner;
@@ -35,5 +39,9 @@ public class AchievedQuest extends AbstractQuest {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void save() throws DaoException {
+        achievedQuestDao.saveQuest(this);
     }
 }

@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.codecool.krk.lucidmotors.queststore.dao.FileLoader;
-import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
-import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
-import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
-import com.codecool.krk.lucidmotors.queststore.models.Student;
+import com.codecool.krk.lucidmotors.queststore.models.*;
 
 public class UserInterface {
     private final Scanner in = new Scanner(System.in);
@@ -114,6 +111,13 @@ public class UserInterface {
     public void printBoughtArtifacts(ArrayList<BoughtArtifact> artifacts) {
         for(BoughtArtifact artifact : artifacts) {
             System.out.println(artifact);
+        }
+
+    }
+
+    public void printAvailableQuests(ArrayList<AvailableQuest> quests) {
+        for(AvailableQuest quest : quests) {
+            System.out.println(quest);
         }
 
     }

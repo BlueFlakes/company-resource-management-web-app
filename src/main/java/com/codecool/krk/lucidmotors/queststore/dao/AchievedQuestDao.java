@@ -118,7 +118,7 @@ public class AchievedQuestDao {
         return achievedQuests;
     }
 
-    private void saveQuest(AchievedQuest achievedQuest) throws DaoException {
+    public void saveQuest(AchievedQuest achievedQuest) throws DaoException {
         String name = achievedQuest.getName();
         Integer value = achievedQuest.getValue();
         Integer categoryId = achievedQuest.getQuestCategory().getId();
