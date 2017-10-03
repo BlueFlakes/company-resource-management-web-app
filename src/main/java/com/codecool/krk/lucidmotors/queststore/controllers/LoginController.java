@@ -46,12 +46,12 @@ public class LoginController {
                 handleLogin();
                 break;
 
-            case LOGOUT:
+            case EXIT:
                 userInterface.println("Have a nice day!");
                 break;
 
             case DEFAULT:
-                
+
         }
     }
 
