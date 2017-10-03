@@ -39,29 +39,32 @@ public class LoginController {
 
     private void handleUserRequest(String userChoice) throws DaoException {
 
+        LoginMenuOptions chosenOption = getEnumValue(userChoice);
+
+        switch (chosenOption) {
+            case HANDLE_LOGIN:
+                handleLogin();
+                break;
+
+            case LOGOUT:
+                userInterface.println("Have a nice day!");
+                break;
+
+            case DEFAULT:
+                
+        }
+    }
+
+    private LoginMenuOptions getEnumValue(String userChoice) {
         LoginMenuOptions chosenOption;
 
         try {
             chosenOption = LoginMenuOptions.values()[Integer.parseInt(userChoice)];
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            chosenOption = null;
+            chosenOption = LoginMenuOptions.DEFAULT;
         }
 
-        if (chosenOption != null) {
-
-            switch (chosenOption) {
-                case HANDLE_LOGIN:
-                    handleLogin();
-                    break;
-
-                case EXIT:
-                    userInterface.println("Have a nice day!");
-                    break;
-
-                default:
-                    userInterface.println("Wrong choice");
-            }
-        }
+        return chosenOption;
     }
 
     private void showMenu() {
