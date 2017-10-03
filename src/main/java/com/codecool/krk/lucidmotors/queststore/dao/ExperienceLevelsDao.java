@@ -10,6 +10,7 @@ import java.sql.SQLException;
 
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class ExperienceLevelsDao {
 
@@ -37,7 +38,10 @@ public class ExperienceLevelsDao {
     public void updateExperienceLevels(ExperienceLevels experienceLevels) throws DaoException {
 
         TreeMap<Integer, Integer> levels = experienceLevels.getLevels();
-        TreeSet<Integer> coinsKeys = (TreeSet<Integer>) levels.keySet();
+        TreeSet<Integer> coinsKeys = new TreeSet<>();
+        levels.keySet()
+              .stream()
+              .forEach(coinsKeys::add);
 
         this.clearTable();
 

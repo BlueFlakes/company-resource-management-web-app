@@ -5,6 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Treemap<Integer, Integer> levels:
@@ -55,8 +56,8 @@ public class ExperienceLevels {
      * @param level
      */
     public void addLevel(Integer coins, Integer level) {
-
         if (!this.levels.values().contains(level) && !this.levels.keySet().contains(coins)) {
+
             this.levels.put(coins, level);
         }
     }
@@ -92,5 +93,19 @@ public class ExperienceLevels {
      */
     public void updateExperienceLevels() throws DaoException {
         new ExperienceLevelsDao().updateExperienceLevels(this);
+    }
+
+    @Override
+    public String toString() {
+        return this.levels.entrySet().stream()
+                                     .map(entry -> String.format("level: %d -> %d", entry.getValue(), entry.getKey()))
+                                     .collect(Collectors.joining("\n"));
+    }
+
+    public Integer getMaxCoins() {
+        return this.levels.keySet()
+                          .stream()
+                          .max(Integer::compare)
+                          .get();
     }
 }
