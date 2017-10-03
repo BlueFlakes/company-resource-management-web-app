@@ -24,10 +24,7 @@ public class Inputs {
             areDeliveredTypesCorrect(expectedTypes);
             receivedData = getMultipleInputs(questions, expectedTypes);
 
-        } catch (InvalidArgumentException e) {
-            System.out.println(e.getMessage());
-
-        } catch (NotEqualElementsException e) {
+        } catch (InvalidArgumentException | NotEqualElementsException e) {
             System.out.println(e.getMessage());
         }
 

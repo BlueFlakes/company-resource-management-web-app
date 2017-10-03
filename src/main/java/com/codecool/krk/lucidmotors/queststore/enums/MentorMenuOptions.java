@@ -5,6 +5,7 @@ import java.lang.NullPointerException;
 public enum MentorMenuOptions {
     EXIT,
     ADD_STUDENT,
+    LIST_STUDENTS_WALLETS,
     ADD_QUEST,
     ADD_QUEST_CATEGORY,
     UPDATE_QUEST,

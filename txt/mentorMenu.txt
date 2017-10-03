@@ -1,5 +1,6 @@
 Mentor menu:
 Add student
+List students wallets
 Add quest
 Add questCategory
 Update quest
