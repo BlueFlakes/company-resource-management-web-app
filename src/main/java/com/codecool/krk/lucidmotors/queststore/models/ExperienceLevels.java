@@ -48,7 +48,18 @@ public class ExperienceLevels {
         return level;
     }
 
+    /**
+     * Creates new level
+     *
+     * @param coins
+     * @param level
+     */
     public void addLevel(Integer coins, Integer level) {
+
+        if (!this.levels.values().contains(level) && !this.levels.keySet().contains(coins)) {
+            this.levels.put(coins, level);
+        }
+    }
         this.levels.put(coins, level);
     }
 
