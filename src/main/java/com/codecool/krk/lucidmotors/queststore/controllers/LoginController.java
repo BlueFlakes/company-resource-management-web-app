@@ -5,6 +5,8 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
+import java.util.ArrayList;
+
 public class LoginController {
 
     private final UserInterface userInterface = new UserInterface();
@@ -21,25 +23,54 @@ public class LoginController {
      * @throws WrongPasswordException
      * @throws DaoException
      */
-    public void start() throws WrongPasswordException, DaoException {
+    public void start() throws DaoException {
 
-        String login = userInterface.inputs.getInput("Please provide your login: ");
-        String givenPassword = userInterface.inputs.getInput("Please provide your password: ");
-        User user = this.school.getUser(login);
+        String userChoice;
+
+        do {
+            showMenu();
+            userChoice = userInterface.inputs.getInput("What do you want to do: ");
+            userInterface.clearWindow();
+            handleUserRequest(userChoice);
+
+        } while (!userChoice.equals("0"));
+    }
+
+    private void handleUserRequest(String userChoice) throws DaoException {
+
+        switch (userChoice) {
+            case "1":
+                handleLogin();
+                break;
+
+            case "0":
+                break;
+
+            default:
+                userInterface.println("Wrong choice");
+        }
+    }
+
+    private void showMenu() {
+        userInterface.printLoginMenu();
+    }
+
+    private void handleLogin() throws DaoException {
+
+        String[] questions = {"-> Login: ", "-> Password: "};
+        String[] expectedTypes = {"String", "String"};
+
+        ArrayList<String> userInputs = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+        String login = userInputs.get(0);
+        String password = userInputs.get(1);
+
+        User user = this.school.getUser(login, password);
 
         if (user != null) {
-
-            String expectedPassword = user.getPassword();
-
-            if (expectedPassword.equals(givenPassword)) {
-                runUserController(user);
-
-            } else {
-                throw new WrongPasswordException();
-            }
-
+            runUserController(user);
         } else {
-            throw new WrongPasswordException();
+            userInterface.println("error: ~please provide correct login and password!");
+            userInterface.pause();
         }
     }
 
