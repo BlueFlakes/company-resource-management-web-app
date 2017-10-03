@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
+import com.codecool.krk.lucidmotors.queststore.enums.ManagerControllerMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
@@ -12,37 +13,52 @@ import java.util.ArrayList;
 
 public class ManagerController extends AbstractUserController<Manager> {
 
-    protected void handleUserRequest(String choice) throws DaoException {
+    protected void handleUserRequest(String userChoice) throws DaoException {
 
-        switch (choice) {
+        ManagerControllerMenuOptions chosenOption = getEnumValue(userChoice);
 
-            case "1":
+        switch (chosenOption) {
+
+            case ADD_MENTOR:
                 addMentor();
                 break;
 
-            case "2":
+            case CREATE_CLASS:
                 createClass();
                 break;
 
-            case "3":
+            case EDIT_MENTOR:
                 editMentor();
                 break;
 
-            case "4":
+            case SHOW_MENTORS_CLASS:
                 showMentorsClass();
                 break;
 
-            case "5":
+            case START_EXPERIENCE_LEVEL_CONTROLLER:
                 startExperienceLevelController();
                 break;
 
-            case "0":
+            case LOGOUT:
                 break;
 
-            default:
-                handleNoSuchCommand();
+            case DEFAULT:
+                // handleNoSuchCommand();
                 break;
         }
+    }
+
+
+    private ManagerControllerMenuOptions getEnumValue(String userChoice) {
+        ManagerControllerMenuOptions chosenOption;
+
+        try {
+            chosenOption = ManagerControllerMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = ManagerControllerMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
     }
 
     protected void showMenu() {
