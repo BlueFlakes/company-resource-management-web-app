@@ -226,11 +226,10 @@ class MentorController extends AbstractController<Mentor> {
     private void updateQuest() throws DaoException {
 
         this.displayAvailableQuests();
-        Integer id = this.getQuestId();
-        String[] questions = {"new name: ", "new quest category: ", "new description: ", "new value: "};
-        String[] types = {"string", "string", "string", "integer"};
+        String[] questions = {"Quest id: ", "New name: ", "New quest category: ", "New description: ", "New value: "};
+        String[] types = {"integer", "string", "string", "string", "integer"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
-        
+
         this.userInterface.pause();
     }
 
@@ -241,18 +240,6 @@ class MentorController extends AbstractController<Mentor> {
         for (AvailableQuest availableQuest : availableQuests) {
             this.userInterface.println(availableQuest.toString());
         }
-    }
-
-    /**
-     * Gets integer from user
-     * @return
-     */
-    private Integer getQuestId() {
-
-        String[] question = {"Provide quest id: "};
-        String[] type = {"integer"};
-
-        return Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
     }
 
     private void markBoughtArtifactsAsUsed() {
