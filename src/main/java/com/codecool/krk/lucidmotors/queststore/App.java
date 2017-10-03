@@ -14,9 +14,6 @@ class App {
             School school = new School("Codecool");
             new LoginController(school).start();
 
-        } catch (WrongPasswordException e) {
-            System.out.println(e.getMessage());
-
         } catch (DaoException ex) {
             System.out.println("Database connection failed!\n" + ex.getMessage());
 

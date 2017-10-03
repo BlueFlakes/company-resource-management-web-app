@@ -1,7 +1,16 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
-import java.util.TreeMap;
+import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.util.TreeMap;
+import java.util.Map;
+
+/**
+ * Treemap<Integer, Integer> levels:
+ * key - coins
+ * value - level
+ */
 public class ExperienceLevels {
 
     private TreeMap<Integer, Integer> levels;
@@ -23,7 +32,7 @@ public class ExperienceLevels {
             level = (level != null) ? level : 0;
 
         } else {
-            level = coins;
+            level = 0;
         }
 
         return level;
@@ -32,18 +41,56 @@ public class ExperienceLevels {
     private Integer findLevelInMap(Integer coins) {
         Integer level = null;
 
-        for (Integer minimalCoinAmmount : levels.keySet()) {
-            if (minimalCoinAmmount <= coins) level = this.levels.get(minimalCoinAmmount);
+        for (Integer minimalCoinAmount : levels.keySet()) {
+            if (minimalCoinAmount <= coins) level = this.levels.get(minimalCoinAmount);
         }
 
         return level;
     }
 
+    /**
+     * Creates new level
+     *
+     * @param coins
+     * @param level
+     */
     public void addLevel(Integer coins, Integer level) {
-        this.levels.put(coins, level);
+
+        if (!this.levels.values().contains(level) && !this.levels.keySet().contains(coins)) {
+            this.levels.put(coins, level);
+        }
+    }
+
+    /**
+     * Sets new data to existing level
+     *
+     * @param coins
+     * @param level
+     */
+    public void updateLevel(Integer coins, Integer level) {
+        if (this.levels.values().contains(level) && !this.levels.keySet().contains(coins)) {
+
+            Map.Entry<Integer, Integer> entryToRemove = this.levels.entrySet()
+                    .stream()
+                    .filter(entry -> entry.getValue().equals(level))
+                    .findFirst()
+                    .get();
+
+            this.levels.remove(entryToRemove.getKey());
+            this.levels.put(coins, level);
+        }
     }
 
     public TreeMap<Integer, Integer> getLevels() {
         return levels;
+    }
+
+    /**
+     * Saves data into database
+     *
+     * @throws DaoException
+     */
+    public void updateExperienceLevels() throws DaoException {
+        new ExperienceLevelsDao().updateExperienceLevels(this);
     }
 }

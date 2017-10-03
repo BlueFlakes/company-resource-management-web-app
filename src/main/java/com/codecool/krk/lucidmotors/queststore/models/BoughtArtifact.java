@@ -47,10 +47,12 @@ public class BoughtArtifact extends AbstractArtifact {
     @Override
     public String toString() {
         if (this.isUsed) {
-            return String.format("name: %s,  date: %s, %s %n", this.getName(), this.date.toString(), "is used");
+            return String.format("id: %s. name: %s,  date: %s, %s %n", this.getId(), this.getName(),
+                    this.date.toString(), "is used");
             
         } else {
-            return String.format("name: %s,  date: %s, %s %n", this.getName(), this.date.toString(), "isn't used");
+            return String.format("id: %s. name: %s,  date: %s, %s %n", this.getId(), this.getName(),
+                    this.date.toString(), "isn't used");
         }
     }
 

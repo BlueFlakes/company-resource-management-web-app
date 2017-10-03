@@ -7,7 +7,7 @@ import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 
-public abstract class AbstractController<T> implements UserController {
+public abstract class AbstractUserController<T> implements UserController {
 
     final UserInterface userInterface = new UserInterface();
     protected School school;
