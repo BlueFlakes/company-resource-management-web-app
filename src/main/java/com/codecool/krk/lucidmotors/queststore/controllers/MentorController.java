@@ -271,12 +271,6 @@ class MentorController extends AbstractUserController<Mentor> {
         new MentorStoreController().startController(this.user, this.school);
     }
 
-    private void handleNoSuchCommand() {
-
-        userInterface.println("Wrong command!");
-        this.userInterface.pause();
-    }
-
     private void showWallet(Student student) throws DaoException {
         userInterface.println("\nName: " + student.getName());
         userInterface.println("Balance: " + student.getPossesedCoins());

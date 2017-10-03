@@ -102,9 +102,4 @@ public class StudentStoreController extends AbstractUserController<Student> {
 
         new BoughtArtifactDao().save(boughtArtifact, owners);
     }
-
-    private void handleNoSuchCommand() {
-
-        userInterface.println("No such option.");
-    }
 }

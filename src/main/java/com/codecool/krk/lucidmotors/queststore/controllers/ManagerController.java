@@ -43,7 +43,7 @@ public class ManagerController extends AbstractUserController<Manager> {
                 break;
 
             case DEFAULT:
-                // handleNoSuchCommand();
+                handleNoSuchCommand();
                 break;
         }
     }
@@ -225,10 +225,5 @@ public class ManagerController extends AbstractUserController<Manager> {
     private void startExperienceLevelController() throws DaoException {
 
         new ExperienceLevelsController().startController(this.user, this.school);
-    }
-
-    private void handleNoSuchCommand() {
-
-        userInterface.println("No such option.");
     }
 }

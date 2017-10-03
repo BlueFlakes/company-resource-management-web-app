@@ -72,11 +72,6 @@ public class StudentController extends AbstractUserController<Student> {
         this.userInterface.pause();
     }
 
-    private void handleNoSuchCommand() {
-
-        userInterface.println("No such option.");
-    }
-
     private void startStoreController() throws DaoException {
 
         new StudentStoreController().startController(this.user, this.school);

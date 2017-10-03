@@ -30,7 +30,7 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
                 break;
 
             case DEFAULT:
-                userInterface.println("No such option.");
+                handleNoSuchCommand();
                 break;
         }
     }

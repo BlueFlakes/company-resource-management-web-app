@@ -152,10 +152,4 @@ public class MentorStoreController extends AbstractUserController<Mentor> {
 
         this.userInterface.pause();
     }
-
-    private void handleNoSuchCommand() {
-
-        userInterface.println("Wrong command!");
-        this.userInterface.pause();
-    }
 }

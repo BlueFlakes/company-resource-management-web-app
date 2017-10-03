@@ -51,8 +51,13 @@ public class LoginController {
                 break;
 
             case DEFAULT:
-
+                handleNoSuchCommand();
         }
+    }
+
+    private void handleNoSuchCommand() {
+        userInterface.println("Wrong choice");
+        userInterface.pause();
     }
 
     private LoginMenuOptions getEnumValue(String userChoice) {
