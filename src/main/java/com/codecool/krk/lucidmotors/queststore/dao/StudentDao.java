@@ -149,6 +149,21 @@ public class StudentDao {
 
     }
 
+    private Student getStudentFromResultset(ResultSet result) throws SQLException, DaoException {
+        String name = result.getString("name");
+        String password = result.getString("password");
+        String email = result.getString("email");
+        String login = result.getString("login");
+        Integer classId = result.getInt("class_id");
+        Integer earnedCoins = result.getInt("earned_coins");
+        Integer possessedCoins = result.getInt("possesed_coins");
+        SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+        Integer id = result.getInt("id");
+        Student student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
+
+        return student;
+    }
+
     public ArrayList<Student> getAllStudents() throws DaoException {
 
         ArrayList<Student> students = new ArrayList<>();
@@ -160,17 +175,8 @@ public class StudentDao {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                String login = result.getString("login");
-                Integer classId = result.getInt("class_id");
-                Integer earnedCoins = result.getInt("earned_coins");
-                Integer possessedCoins = result.getInt("possesed_coins");
-                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                Integer id = result.getInt("id");
-                Student student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
 
+                Student student = this.getStudentFromResultset(result);
                 students.add(student);
             }
 
