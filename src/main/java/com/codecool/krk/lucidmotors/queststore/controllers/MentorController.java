@@ -6,6 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import java.util.ArrayList;
 
@@ -151,9 +152,22 @@ class MentorController extends AbstractController<Mentor> {
 
         String[] questions = {"Name: ", "Quest category: ", "Description: ", "Value: "};
         String[] types = {"string", "string", "string", "integer"};
-        this.userInterface.inputs.getValidatedInputs(questions, types);
-        // # TODO implement database connection
+        ArrayList<String> questInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
+        //this.addNewQuestRecord(questInfo);
         this.userInterface.pause();
+    }
+
+    private void addNewQuestRecord(ArrayList<String> questInfo) throws DaoException {
+        QuestCategoryDao qcDao = new QuestCategoryDao();
+
+        String name = questInfo.get(0);
+        QuestCategory questCategory = qcDao.getQuestCategory(questInfo.get(1));
+        String description = questInfo.get(2);
+        Integer value = Integer.parseInt(questInfo.get(3));
+
+        AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
+        // #TODO QUEST TO ADD NEEDS TO BE RECORDED IN DAO
+
     }
 
     /**
