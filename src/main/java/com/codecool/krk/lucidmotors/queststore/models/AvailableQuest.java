@@ -30,7 +30,7 @@ public class AvailableQuest extends AbstractQuest {
     }
 
     public String toString() {
-        return String.format("id: %d. name: %s description: %s value: %d", this.getId(), this.getName(),
+        return String.format("id: %d. name: %s, description: %s, value: %d", this.getId(), this.getName(),
                              this.getDescription(), this.getValue());
     }
 

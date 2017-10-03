@@ -122,6 +122,13 @@ public class UserInterface {
 
     }
 
+    public void printAchievedQuests(ArrayList<AchievedQuest> quests) {
+        for(AchievedQuest quest : quests) {
+            System.out.println(quest);
+        }
+
+    }
+
     public void printStudents(ArrayList<Student> students) {
         for(Student student : students) {
             System.out.println(student);

@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.dao.AchievedQuestDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
@@ -47,6 +48,9 @@ public class StudentController extends AbstractUserController<Student> {
         String accountBalance = Integer.toString(this.user.getPossesedCoins());
         userInterface.println("Balance: " + accountBalance);
         userInterface.printBoughtArtifacts(this.user, new ArtifactOwnersDao().getArtifacts(this.user));
+        userInterface.println("Achieved quests: ");
+
+        userInterface.printAchievedQuests(new AchievedQuestDao().getAllQuestsByStudent(this.user));
 
         this.userInterface.pause();
     }

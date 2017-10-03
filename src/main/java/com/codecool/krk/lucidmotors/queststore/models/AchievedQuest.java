@@ -44,4 +44,10 @@ public class AchievedQuest extends AbstractQuest {
     public void save() throws DaoException {
         achievedQuestDao.saveQuest(this);
     }
+
+    public String toString() {
+        return String.format("id: %d. name: %s, description: %s, value: %d, purchase date: %s", this.getId(), this.getName(),
+                this.getDescription(), this.getValue(), this.getDate().toString());
+    }
+
 }
