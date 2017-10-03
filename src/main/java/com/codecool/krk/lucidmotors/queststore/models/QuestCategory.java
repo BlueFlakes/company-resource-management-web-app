@@ -29,4 +29,9 @@ public class QuestCategory {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return ("\t" + this.id + ". " + this.name);
+    }
 }
