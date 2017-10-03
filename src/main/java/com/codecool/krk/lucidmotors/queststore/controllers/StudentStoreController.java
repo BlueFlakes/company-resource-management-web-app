@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.enums.StudentStoreMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
@@ -13,25 +14,39 @@ public class StudentStoreController extends AbstractUserController<Student> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
 
-    protected void handleUserRequest(String choice) throws DaoException {
+    protected void handleUserRequest(String userChoice) throws DaoException {
 
-        switch (choice) {
+        StudentStoreMenuOptions chosenOption = getEnumValue(userChoice);
 
-            case "1":
+        switch (chosenOption) {
+
+            case SHOW_AVAILABLE_ARTIFACTS:
                 shopArtifactController.showAvailableArtifacts();
                 break;
 
-            case "2":
+            case BUY_ARTIFACT:
                 buyArtifact();
                 break;
 
-            case "0":
+            case LOGOUT:
                 break;
 
-            default:
+            case DEFAULT:
                 handleNoSuchCommand();
                 break;
         }
+    }
+
+    private StudentStoreMenuOptions getEnumValue(String userChoice) {
+        StudentStoreMenuOptions chosenOption;
+
+        try {
+            chosenOption = StudentStoreMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = StudentStoreMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
     }
 
     protected void showMenu() {
