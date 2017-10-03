@@ -8,6 +8,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
+import com.codecool.krk.lucidmotors.queststore.exceptions.NameInUseException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 
 import java.util.ArrayList;
@@ -169,6 +170,8 @@ class MentorController extends AbstractController<Mentor> {
             this.userInterface.println("New quest added successfully!");
         } catch (NullPointerException e) {
             this.userInterface.println("Given quest category id does not exist!");
+        } catch (NameInUseException e) {
+            this.userInterface.println(e.getMessage());
         }
 
         this.userInterface.pause();
@@ -209,19 +212,33 @@ class MentorController extends AbstractController<Mentor> {
      * @param questInfo
      * @throws DaoException
      */
-    private void createNewAvailableQuest(ArrayList<String> questInfo) throws DaoException {
+    private void createNewAvailableQuest(ArrayList<String> questInfo)
+                                        throws DaoException, NameInUseException {
         String name = questInfo.get(0);
         QuestCategory questCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(questInfo.get(1)));
         String description = questInfo.get(2);
         Integer value = Integer.parseInt(questInfo.get(3));
 
-        AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
-        questToAdd.save();
+        if (isQuestNameAvailable(name)) {
+            AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
+            questToAdd.save();
+        } else {
+            throw new NameInUseException();
+        }
+    }
+
     /**
      * Makes sure that name provided by the user is not taken by already existing quest.
      *
      * @param name
      */
+    private boolean isQuestNameAvailable(String name) throws DaoException {
+        AvailableQuest quest = this.availableQuestDao.getQuest(name);
+
+        boolean isAvailable;
+        isAvailable = (quest != null) ? false : true;
+
+        return isAvailable;
     }
 
     /**
