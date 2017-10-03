@@ -29,4 +29,14 @@ public class AvailableQuest extends AbstractQuest {
         availableQuestDao.updateQuest(this);
     }
 
+    @Override
+    public String toString() {
+        Integer id = this.getId();
+        String name = this.getName();
+        String description = this.getDescription();
+        Integer value = this.getValue();
+
+        return ("\t" + id + ". " + name + ": " + description + "; value: " + value);
+    }
+
 }
