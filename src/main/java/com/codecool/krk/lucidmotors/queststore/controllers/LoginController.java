@@ -55,6 +55,7 @@ public class LoginController {
                     break;
 
                 case EXIT:
+                    userInterface.println("Have a nice day!");
                     break;
 
                 default:
