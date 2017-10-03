@@ -4,6 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
+import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 class MentorController extends AbstractController<Mentor> {
 
     private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+    private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
 
     MentorController() throws DaoException {
     }
@@ -221,14 +223,24 @@ class MentorController extends AbstractController<Mentor> {
      * Gather new data about quest.
      * Update database.
      */
-    private void updateQuest() {
+    private void updateQuest() throws DaoException {
 
+        this.displayAvailableQuests();
         Integer id = this.getQuestId();
         String[] questions = {"new name: ", "new quest category: ", "new description: ", "new value: "};
         String[] types = {"string", "string", "string", "integer"};
         this.userInterface.inputs.getValidatedInputs(questions, types);
-        // # TODO implement database connection
+        
         this.userInterface.pause();
+    }
+
+    private void displayAvailableQuests() throws DaoException {
+        ArrayList<AvailableQuest> availableQuests = availableQuestDao.getAllQuests();
+
+        this.userInterface.println("Available quests list:");
+        for (AvailableQuest availableQuest : availableQuests) {
+            this.userInterface.println(availableQuest.toString());
+        }
     }
 
     /**
