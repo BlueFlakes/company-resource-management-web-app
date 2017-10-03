@@ -44,31 +44,6 @@ public class QuestCategoryDao {
         return questCategory;
     }
 
-    public QuestCategory getQuestCategory(String name) throws DaoException {
-
-        QuestCategory questCategory = null;
-        String sqlQuery = "SELECT * FROM quest_categories WHERE name = ?;";
-
-        try {
-            stmt = connection.prepareStatement(sqlQuery);
-            stmt.setString(1, name);
-
-            ResultSet result = stmt.executeQuery();
-
-            if (result.next()) {
-                Integer id = result.getInt("id");
-                questCategory = new QuestCategory(name, id);
-            }
-
-            result.close();
-            stmt.close();
-        } catch (SQLException e) {
-            throw new DaoException(this.getClass().getName() + " class caused a problem!");
-        }
-
-        return questCategory;
-    }
-
     public ArrayList<QuestCategory> getAllQuestCategories() throws DaoException {
 
         ArrayList<QuestCategory> questCategories = new ArrayList<>();

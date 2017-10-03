@@ -3,15 +3,19 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
-import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
 class MentorController extends AbstractUserController<Mentor> {
 
-      /**
+    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+    private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
+
+    MentorController() throws DaoException {
+    }
+
+    /**
      * Switches between methods, acording to userChoice param.
      *
      * @param userChoice
@@ -95,7 +99,6 @@ class MentorController extends AbstractUserController<Mentor> {
             this.school.isLoginAvailable(login);
             Student student = new Student(name, login, password, email, choosenClass);
             student.save();
-
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
@@ -154,27 +157,65 @@ class MentorController extends AbstractUserController<Mentor> {
 
     /**
      * Gather data about new Quest and insert it into database
+     * @throws DaoException
      */
-    private void addQuest() {
+    private void addQuest() throws DaoException {
 
-        String[] questions = {"Name: ", "Quest category: ", "Description: ", "Value: "};
-        String[] types = {"string", "string", "string", "integer"};
-        ArrayList<String> questInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
-        //this.addNewQuestRecord(questInfo);
+        ArrayList<String> questInfo = this.askForQuestDetails();
+
+        try {
+            this.createNewAvailableQuest(questInfo);
+            this.userInterface.println("New quest added successfully!");
+        } catch (NullPointerException e) {
+            this.userInterface.println("Given quest category id does not exist!");
+        }
+
         this.userInterface.pause();
     }
 
-    private void addNewQuestRecord(ArrayList<String> questInfo) throws DaoException {
-        QuestCategoryDao qcDao = new QuestCategoryDao();
+    /**
+     * Asks user for details about new quests, which is going to be added.
+     *
+     * @throws DaoException
+     */
+    private ArrayList<String> askForQuestDetails () throws DaoException {
+        String[] questions = {"Quest name: ", "Quest category: ", "Description: ", "Value: "};
+        String[] types = {"string", "integer", "string", "integer"};
 
+        this.displayAllQuestCategories();
+
+        return this.userInterface.inputs.getValidatedInputs(questions, types);
+    }
+
+    /**
+     * Iterates through all questCategories and calls toString method on each.
+     *
+     * @throws DaoException
+     */
+    private void displayAllQuestCategories() throws DaoException {
+        ArrayList<QuestCategory> questCategories = this.questCategoryDao.getAllQuestCategories();
+
+        this.userInterface.println("Available quest categories:");
+        for (QuestCategory questCategory : questCategories) {
+            this.userInterface.println(questCategory.toString());
+        }
+        this.userInterface.println("\n");
+    }
+
+    /**
+     * Creates new AvailableQuest instance and adds it to proper table in database.
+     *
+     * @param questInfo
+     * @throws DaoException
+     */
+    private void createNewAvailableQuest(ArrayList<String> questInfo) throws DaoException {
         String name = questInfo.get(0);
-        QuestCategory questCategory = qcDao.getQuestCategory(questInfo.get(1));
+        QuestCategory questCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(questInfo.get(1)));
         String description = questInfo.get(2);
         Integer value = Integer.parseInt(questInfo.get(3));
 
         AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
-        // #TODO QUEST TO ADD NEEDS TO BE RECORDED IN DAO
-
+        questToAdd.save();
     }
 
     /**
@@ -184,14 +225,15 @@ class MentorController extends AbstractUserController<Mentor> {
 
         String[] questions = {"Name: "};
         String[] types = {"string"};
+        this.displayAllQuestCategories();
+
         ArrayList<String> questCategoryInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
-
         String questCategoryName = questCategoryInfo.get(0);
-        QuestCategoryDao qcDao = new QuestCategoryDao();
-        QuestCategory questCategory = new QuestCategory(questCategoryName);
 
-        qcDao.save(questCategory);
+        QuestCategory questCategory = new QuestCategory(questCategoryName);
+        this.questCategoryDao.save(questCategory);
         this.userInterface.println("New quest category added successfully!");
+
         this.userInterface.pause();
     }
 
@@ -200,26 +242,58 @@ class MentorController extends AbstractUserController<Mentor> {
      * Gather new data about quest.
      * Update database.
      */
-    private void updateQuest() {
+    private void updateQuest() throws DaoException {
 
-        Integer id = this.getQuestId();
-        String[] questions = {"new name: ", "new quest category: ", "new description: ", "new value: "};
-        String[] types = {"string", "string", "string", "integer"};
-        this.userInterface.inputs.getValidatedInputs(questions, types);
-        // # TODO implement database connection
+        this.displayAvailableQuests();
+        this.displayAllQuestCategories();
+        String[] questions = {"Quest id: ", "New name: ", "New quest category id: ", "New description: ", "New value: "};
+        String[] types = {"integer", "string", "integer", "string", "integer"};
+        ArrayList<String> newQuestInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
+
+        try {
+            this.changeQuestData(newQuestInfo);
+            this.userInterface.println("Quest updated successfully!");
+        } catch (NullPointerException e) {
+            this.userInterface.println("Given quest category id or quest id is wrong!");
+        }
+
         this.userInterface.pause();
     }
 
     /**
-     * Gets integer from user
-     * @return
+     * Iterates through all AvailableQuest objects and calls toString method on each.
+     *
+     * @throws DaoException
      */
-    private Integer getQuestId() {
+    private void displayAvailableQuests() throws DaoException {
+        ArrayList<AvailableQuest> availableQuests = availableQuestDao.getAllQuests();
 
-        String[] question = {"Provide quest id: "};
-        String[] type = {"integer"};
+        this.userInterface.println("Available quests list:");
+        for (AvailableQuest availableQuest : availableQuests) {
+            this.userInterface.println(availableQuest.toString());
+        }
+        this.userInterface.println("\n");
+    }
 
-        return Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
+    /**
+     * Updates already existing quest in the database.
+     *
+     * @param newQuestInfo
+     * @throws DaoException
+     */
+    private void changeQuestData(ArrayList<String> newQuestInfo) throws DaoException {
+        Integer id = Integer.parseInt(newQuestInfo.get(0));
+        String newName = newQuestInfo.get(1);
+        QuestCategory newQuestCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(newQuestInfo.get(2)));
+        String newDescription = newQuestInfo.get(3);
+        Integer newValue = Integer.valueOf(newQuestInfo.get(4));
+
+        AvailableQuest quest = this.availableQuestDao.getQuest(id);
+        quest.setName(newName);
+        quest.setQuestCategory(newQuestCategory);
+        quest.setDescription(newDescription);
+        quest.setValue(newValue);
+        quest.update();
     }
 
     private void chooseAndMarkArtifact(Student student) throws DaoException {
