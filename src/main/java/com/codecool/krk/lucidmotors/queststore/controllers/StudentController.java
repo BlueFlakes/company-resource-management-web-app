@@ -1,9 +1,12 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
+import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.enums.StudentControllerMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
+import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.User;
@@ -66,9 +69,10 @@ public class StudentController extends AbstractUserController<Student> {
         this.userInterface.pause();
     }
 
-    private void showLevel() {
+    private void showLevel() throws DaoException {
 
-        userInterface.println("Your level: 0");
+        Integer level = new ExperienceLevelsDao().getExperienceLevels().computeStudentLevel(this.user.getEarnedCoins());
+        this.userInterface.println(String.format("Your level: %d", level));
         this.userInterface.pause();
     }
 
