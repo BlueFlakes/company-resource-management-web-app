@@ -30,15 +30,7 @@ public class StudentDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                String login = result.getString("login");
-                Integer classId = result.getInt("class_id");
-                Integer earnedCoins = result.getInt("earned_coins");
-                Integer possessedCoins = result.getInt("possesed_coins");
-                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
+                student = createStudent(result);
             }
 
             result.close();
@@ -62,15 +54,7 @@ public class StudentDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                Integer id = result.getInt("id");
-                Integer classId = result.getInt("class_id");
-                Integer earnedCoins = result.getInt("earned_coins");
-                Integer possessedCoins = result.getInt("possesed_coins");
-                SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-                student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
+                student = createStudent(result);
             }
 
             result.close();
@@ -80,6 +64,44 @@ public class StudentDao {
         }
 
         return student;
+    }
+
+    public Student getStudent(String login, String password) throws DaoException {
+
+        Student student = null;
+        String sqlQuery = String.format("SELECT * FROM students WHERE login = '%s' AND password = '%s';", login, password);
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                student = createStudent(result);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return student;
+    }
+
+    private Student createStudent(ResultSet result) throws SQLException, DaoException {
+
+        String name = result.getString("name");
+        String login = result.getString("login");
+        String password = result.getString("password");
+        String email = result.getString("email");
+        Integer id = result.getInt("id");
+        Integer classId = result.getInt("class_id");
+        Integer earnedCoins = result.getInt("earned_coins");
+        Integer possessedCoins = result.getInt("possesed_coins");
+        SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+
+        return new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
     }
 
     public void save(Student student) throws DaoException {
