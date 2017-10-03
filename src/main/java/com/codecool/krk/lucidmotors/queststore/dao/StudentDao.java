@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
@@ -146,6 +147,46 @@ public class StudentDao {
             throw new DaoException(this.getClass().getName() + " class caused a problem!");
         }
 
+    }
+
+    private Student getStudentFromResultset(ResultSet result) throws SQLException, DaoException {
+        String name = result.getString("name");
+        String password = result.getString("password");
+        String email = result.getString("email");
+        String login = result.getString("login");
+        Integer classId = result.getInt("class_id");
+        Integer earnedCoins = result.getInt("earned_coins");
+        Integer possessedCoins = result.getInt("possesed_coins");
+        SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
+        Integer id = result.getInt("id");
+        Student student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
+
+        return student;
+    }
+
+    public ArrayList<Student> getAllStudents() throws DaoException {
+
+        ArrayList<Student> students = new ArrayList<>();
+        String sqlQuery = "SELECT * FROM students;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+
+                Student student = this.getStudentFromResultset(result);
+                students.add(student);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return students;
     }
 
 }
