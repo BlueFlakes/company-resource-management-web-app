@@ -23,7 +23,7 @@ public class ExperienceLevels {
             level = (level != null) ? level : 0;
 
         } else {
-            level = coins;
+            level = 0;
         }
 
         return level;
