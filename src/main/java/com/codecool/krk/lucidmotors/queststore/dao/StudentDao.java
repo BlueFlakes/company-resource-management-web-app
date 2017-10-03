@@ -31,7 +31,7 @@ public class StudentDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                student = createStudent(result);
+                student = getStudentFromResultset(result);
             }
 
             result.close();
@@ -55,7 +55,7 @@ public class StudentDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                student = createStudent(result);
+                student = getStudentFromResultset(result);
             }
 
             result.close();
@@ -80,7 +80,7 @@ public class StudentDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                student = createStudent(result);
+                student = getStudentFromResultset(result);
             }
 
             result.close();
@@ -90,21 +90,6 @@ public class StudentDao {
         }
 
         return student;
-    }
-
-    private Student createStudent(ResultSet result) throws SQLException, DaoException {
-
-        String name = result.getString("name");
-        String login = result.getString("login");
-        String password = result.getString("password");
-        String email = result.getString("email");
-        Integer id = result.getInt("id");
-        Integer classId = result.getInt("class_id");
-        Integer earnedCoins = result.getInt("earned_coins");
-        Integer possessedCoins = result.getInt("possesed_coins");
-        SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
-
-        return new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
     }
 
     public void save(Student student) throws DaoException {
