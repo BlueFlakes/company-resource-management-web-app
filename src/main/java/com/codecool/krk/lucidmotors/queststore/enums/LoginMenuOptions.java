@@ -1,7 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.enums;
 
 public enum LoginMenuOptions {
-    LOGOUT,
+    EXIT,
     HANDLE_LOGIN,
     DEFAULT
 }

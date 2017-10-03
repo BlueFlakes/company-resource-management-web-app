@@ -1,7 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.enums;
 
 public enum StudentControllerMenuOptions {
-    LOGOUT,
+    EXIT,
     START_STORE_CONTROLLER,
     SHOW_LEVEL,
     SHOW_WALLET,

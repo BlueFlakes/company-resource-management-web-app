@@ -32,7 +32,7 @@ public class StudentController extends AbstractUserController<Student> {
                 showWallet();
                 break;
 
-            case LOGOUT:
+            case EXIT:
                 break;
 
             case DEFAULT:

@@ -39,7 +39,7 @@ public class ManagerController extends AbstractUserController<Manager> {
                 startExperienceLevelController();
                 break;
 
-            case LOGOUT:
+            case EXIT:
                 break;
 
             case DEFAULT:

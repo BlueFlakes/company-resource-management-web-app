@@ -28,7 +28,7 @@ public class StudentStoreController extends AbstractUserController<Student> {
                 buyArtifact();
                 break;
 
-            case LOGOUT:
+            case EXIT:
                 break;
 
             case DEFAULT:

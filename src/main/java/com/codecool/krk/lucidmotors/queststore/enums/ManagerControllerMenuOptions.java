@@ -1,7 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.enums;
 
 public enum ManagerControllerMenuOptions {
-    LOGOUT,
+    EXIT,
     ADD_MENTOR,
     CREATE_CLASS,
     EDIT_MENTOR,
