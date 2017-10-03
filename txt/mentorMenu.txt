@@ -6,4 +6,4 @@ Add questCategory
 Update quest
 Mark bought artifact as used
 Enter MentorStore
-Exit
+Logout
