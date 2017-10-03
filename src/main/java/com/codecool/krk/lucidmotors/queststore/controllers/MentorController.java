@@ -4,17 +4,22 @@ import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
+import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
-import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 class MentorController extends AbstractController<Mentor> {
 
-      /**
+    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+
+    MentorController() throws DaoException {
+    }
+
+    /**
      * Switches between methods, acording to userChoice param.
      *
      * @param userChoice
@@ -94,7 +99,6 @@ class MentorController extends AbstractController<Mentor> {
             this.school.isLoginAvailable(login);
             Student student = new Student(name, login, password, email, choosenClass);
             student.save();
-
         } catch (LoginInUseException e) {
             userInterface.println(e.getMessage());
         }
@@ -154,26 +158,36 @@ class MentorController extends AbstractController<Mentor> {
     /**
      * Gather data about new Quest and insert it into database
      */
-    private void addQuest() {
+    private void addQuest() throws DaoException {
 
-        String[] questions = {"Name: ", "Quest category: ", "Description: ", "Value: "};
-        String[] types = {"string", "string", "string", "integer"};
-        ArrayList<String> questInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
-        //this.addNewQuestRecord(questInfo);
+        ArrayList<String> questInfo = this.askForQuestDetails();
+
+        try {
+            this.createNewAvailableQuest(questInfo);
+            this.userInterface.println("New quest added successfully!");
+        } catch (NullPointerException e) {
+            this.userInterface.println("Given quest category does not exist!");
+        }
+
         this.userInterface.pause();
     }
 
-    private void addNewQuestRecord(ArrayList<String> questInfo) throws DaoException {
-        QuestCategoryDao qcDao = new QuestCategoryDao();
+    private ArrayList<String> askForQuestDetails() {
+        String[] questions = {"Name: ", "Quest category: ", "Description: ", "Value: "};
+        String[] types = {"string", "string", "string", "integer"};
+        ArrayList<String> questInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
 
+        return questInfo;
+    }
+
+    private void createNewAvailableQuest(ArrayList<String> questInfo) throws DaoException {
         String name = questInfo.get(0);
-        QuestCategory questCategory = qcDao.getQuestCategory(questInfo.get(1));
+        QuestCategory questCategory = this.questCategoryDao.getQuestCategory(questInfo.get(1));
         String description = questInfo.get(2);
         Integer value = Integer.parseInt(questInfo.get(3));
 
         AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
-        // #TODO QUEST TO ADD NEEDS TO BE RECORDED IN DAO
-
+        questToAdd.save();
     }
 
     /**
@@ -186,10 +200,9 @@ class MentorController extends AbstractController<Mentor> {
         ArrayList<String> questCategoryInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
 
         String questCategoryName = questCategoryInfo.get(0);
-        QuestCategoryDao qcDao = new QuestCategoryDao();
         QuestCategory questCategory = new QuestCategory(questCategoryName);
 
-        qcDao.save(questCategory);
+        this.questCategoryDao.save(questCategory);
         this.userInterface.println("New quest category added successfully!");
         this.userInterface.pause();
     }
