@@ -178,6 +178,13 @@ class MentorController extends AbstractController<Mentor> {
         ArrayList<String> questInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
 
         return questInfo;
+    private void displayAllQuestCategories() throws DaoException {
+        ArrayList<QuestCategory> questCategories = this.questCategoryDao.getAllQuestCategories();
+
+        this.userInterface.println("Available quest categories:");
+        for (QuestCategory questCategory : questCategories) {
+            this.userInterface.println(questCategory.toString());
+        }
     }
 
     private void createNewAvailableQuest(ArrayList<String> questInfo) throws DaoException {
