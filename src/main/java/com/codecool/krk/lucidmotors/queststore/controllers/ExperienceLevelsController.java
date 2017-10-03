@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.enums.ExperienceLevelsMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 
 import java.util.ArrayList;
@@ -12,30 +13,42 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
      *
      * @param choice
      */
-    protected void handleUserRequest(String choice) {
+    protected void handleUserRequest(String userChoice) {
+        ExperienceLevelsMenuOptions chosenOption = getEnumValue(userChoice);
 
+        switch (chosenOption) {
 
-        switch (choice) {
-
-            case "1":
+            case CREATE_NEW_LEVEL:
                 createNewLevel();
                 break;
 
-            case "2":
+            case UPDATE_LEVEL:
                 updateLevel();
                 break;
 
-            case "0":
+            case EXIT:
                 break;
 
-            default:
-                userInterface.println("No such option.");
+            case DEFAULT:
+                handleNoSuchCommand();
                 break;
         }
     }
 
     protected void showMenu() {
         userInterface.printExperienceLevelsMenu();
+    }
+
+    private ExperienceLevelsMenuOptions getEnumValue(String userChoice) {
+        ExperienceLevelsMenuOptions chosenOption;
+
+        try {
+            chosenOption = ExperienceLevelsMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = ExperienceLevelsMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
     }
 
     /**

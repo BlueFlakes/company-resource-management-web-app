@@ -19,52 +19,56 @@ class MentorController extends AbstractUserController<Mentor> {
      */
     protected void handleUserRequest(String userChoice) throws DaoException {
 
-        MentorMenuOptions chosenOption;
-        try {
-            chosenOption = MentorMenuOptions.values()[Integer.parseInt(userChoice)];
-        } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            chosenOption = null;
-        }
+        MentorMenuOptions chosenOption = getEnumValue(userChoice);
 
-        if (chosenOption != null) {
-            switch (chosenOption) {
-                case ADD_STUDENT:
-                    addStudent();
-                    break;
+        switch (chosenOption) {
+            case ADD_STUDENT:
+                addStudent();
+                break;
 
-                case ADD_QUEST:
-                    addQuest();
-                    break;
+            case ADD_QUEST:
+                addQuest();
+                break;
 
-                case LIST_STUDENTS_WALLETS:
-                    listWallets();
-                    break;
+            case LIST_STUDENTS_WALLETS:
+                listWallets();
+                break;
 
-                case ADD_QUEST_CATEGORY:
-                    addQuestCategory();
-                    break;
+            case ADD_QUEST_CATEGORY:
+                addQuestCategory();
+                break;
 
-                case UPDATE_QUEST:
-                    updateQuest();
-                    break;
+            case UPDATE_QUEST:
+                updateQuest();
+                break;
 
-                case MARK_BOUGHT_ARTIFACT_AS_USED:
-                    markBoughtArtifactsAsUsed();
-                    break;
+            case MARK_BOUGHT_ARTIFACT_AS_USED:
+                markBoughtArtifactsAsUsed();
+                break;
 
-                case START_MENTOR_STORE_CONTROLLER:
-                    runMentorStoreController();
-                    break;
+            case START_MENTOR_STORE_CONTROLLER:
+                runMentorStoreController();
+                break;
 
-                case EXIT:
-                    break;
+            case EXIT:
+                break;
 
-                default:
-                    handleNoSuchCommand();
-            }
+            case DEFAULT:
+                handleNoSuchCommand();
         }
     }
 
+    private MentorMenuOptions getEnumValue(String userChoice) {
+        MentorMenuOptions chosenOption;
+
+        try {
+            chosenOption = MentorMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = MentorMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
+    }
 
     protected void showMenu() {
         userInterface.printMentorMenu();
@@ -265,12 +269,6 @@ class MentorController extends AbstractUserController<Mentor> {
     private void runMentorStoreController() throws DaoException {
 
         new MentorStoreController().startController(this.user, this.school);
-    }
-
-    private void handleNoSuchCommand() {
-
-        userInterface.println("Wrong command!");
-        this.userInterface.pause();
     }
 
     private void showWallet(Student student) throws DaoException {
