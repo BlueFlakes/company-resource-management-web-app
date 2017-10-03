@@ -20,7 +20,7 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
      *
      * @param choice
      */
-    protected void handleUserRequest(String choice) {
+    protected void handleUserRequest(String choice) throws DaoException {
 
 
         switch (choice) {
@@ -31,6 +31,10 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
 
             case "2":
                 updateLevel();
+                break;
+
+            case "3":
+                showLevels();
                 break;
 
             case "0":
