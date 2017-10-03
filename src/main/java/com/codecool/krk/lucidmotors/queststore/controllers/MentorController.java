@@ -168,7 +168,7 @@ class MentorController extends AbstractController<Mentor> {
             this.createNewAvailableQuest(questInfo);
             this.userInterface.println("New quest added successfully!");
         } catch (NullPointerException e) {
-            this.userInterface.println("Given quest category does not exist!");
+            this.userInterface.println("Given quest category id does not exist!");
         }
 
         this.userInterface.pause();
@@ -181,7 +181,7 @@ class MentorController extends AbstractController<Mentor> {
      */
     private ArrayList<String> askForQuestDetails () throws DaoException {
         String[] questions = {"Quest name: ", "Quest category: ", "Description: ", "Value: "};
-        String[] types = {"string", "string", "string", "integer"};
+        String[] types = {"string", "integer", "string", "integer"};
 
         this.displayAllQuestCategories();
 
@@ -211,7 +211,7 @@ class MentorController extends AbstractController<Mentor> {
      */
     private void createNewAvailableQuest(ArrayList<String> questInfo) throws DaoException {
         String name = questInfo.get(0);
-        QuestCategory questCategory = this.questCategoryDao.getQuestCategory(questInfo.get(1));
+        QuestCategory questCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(questInfo.get(1)));
         String description = questInfo.get(2);
         Integer value = Integer.parseInt(questInfo.get(3));
 
@@ -250,15 +250,15 @@ class MentorController extends AbstractController<Mentor> {
 
         this.displayAvailableQuests();
         this.displayAllQuestCategories();
-        String[] questions = {"Quest id: ", "New name: ", "New quest category: ", "New description: ", "New value: "};
-        String[] types = {"integer", "string", "string", "string", "integer"};
+        String[] questions = {"Quest id: ", "New name: ", "New quest category id: ", "New description: ", "New value: "};
+        String[] types = {"integer", "string", "integer", "string", "integer"};
         ArrayList<String> newQuestInfo = this.userInterface.inputs.getValidatedInputs(questions, types);
 
         try {
             this.changeQuestData(newQuestInfo);
             this.userInterface.println("Quest updated successfully!");
         } catch (NullPointerException e) {
-            this.userInterface.println("Given quest category or quest id is wrong!");
+            this.userInterface.println("Given quest category id or quest id is wrong!");
         }
 
         this.userInterface.pause();
@@ -288,7 +288,7 @@ class MentorController extends AbstractController<Mentor> {
     private void changeQuestData(ArrayList<String> newQuestInfo) throws DaoException {
         Integer id = Integer.parseInt(newQuestInfo.get(0));
         String newName = newQuestInfo.get(1);
-        QuestCategory newQuestCategory = this.questCategoryDao.getQuestCategory(newQuestInfo.get(2));
+        QuestCategory newQuestCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(newQuestInfo.get(2)));
         String newDescription = newQuestInfo.get(3);
         Integer newValue = Integer.valueOf(newQuestInfo.get(4));
 
