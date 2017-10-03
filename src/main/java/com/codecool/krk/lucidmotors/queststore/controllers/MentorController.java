@@ -9,7 +9,6 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 class MentorController extends AbstractController<Mentor> {
