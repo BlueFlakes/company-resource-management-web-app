@@ -60,7 +60,25 @@ public class ExperienceLevels {
             this.levels.put(coins, level);
         }
     }
+
+    /**
+     * Sets new data to existing level
+     *
+     * @param coins
+     * @param level
+     */
+    public void updateLevel(Integer coins, Integer level) {
+        if (this.levels.values().contains(level) && !this.levels.keySet().contains(coins)) {
+
+            Map.Entry<Integer, Integer> entryToRemove = this.levels.entrySet()
+                    .stream()
+                    .filter(entry -> entry.getValue().equals(level))
+                    .findFirst()
+                    .get();
+
+            this.levels.remove(entryToRemove.getKey());
         this.levels.put(coins, level);
+        }
     }
 
     public TreeMap<Integer, Integer> getLevels() {
