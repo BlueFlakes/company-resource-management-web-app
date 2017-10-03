@@ -158,6 +158,7 @@ class MentorController extends AbstractController<Mentor> {
 
     /**
      * Gather data about new Quest and insert it into database
+     * @throws DaoException
      */
     private void addQuest() throws DaoException {
 
@@ -173,6 +174,11 @@ class MentorController extends AbstractController<Mentor> {
         this.userInterface.pause();
     }
 
+    /**
+     * Asks user for details about new quests, which is going to be added.
+     *
+     * @throws DaoException
+     */
     private ArrayList<String> askForQuestDetails () throws DaoException {
         String[] questions = {"Quest name: ", "Quest category: ", "Description: ", "Value: "};
         String[] types = {"string", "string", "string", "integer"};
@@ -182,6 +188,11 @@ class MentorController extends AbstractController<Mentor> {
         return this.userInterface.inputs.getValidatedInputs(questions, types);
     }
 
+    /**
+     * Iterates through all questCategories and calls toString method on each.
+     *
+     * @throws DaoException
+     */
     private void displayAllQuestCategories() throws DaoException {
         ArrayList<QuestCategory> questCategories = this.questCategoryDao.getAllQuestCategories();
 
@@ -192,6 +203,12 @@ class MentorController extends AbstractController<Mentor> {
         this.userInterface.println("\n");
     }
 
+    /**
+     * Creates new AvailableQuest instance and adds it to proper table in database.
+     *
+     * @param questInfo
+     * @throws DaoException
+     */
     private void createNewAvailableQuest(ArrayList<String> questInfo) throws DaoException {
         String name = questInfo.get(0);
         QuestCategory questCategory = this.questCategoryDao.getQuestCategory(questInfo.get(1));
@@ -200,6 +217,11 @@ class MentorController extends AbstractController<Mentor> {
 
         AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
         questToAdd.save();
+    /**
+     * Makes sure that name provided by the user is not taken by already existing quest.
+     *
+     * @param name
+     */
     }
 
     /**
@@ -242,6 +264,11 @@ class MentorController extends AbstractController<Mentor> {
         this.userInterface.pause();
     }
 
+    /**
+     * Iterates through all AvailableQuest objects and calls toString method on each.
+     *
+     * @throws DaoException
+     */
     private void displayAvailableQuests() throws DaoException {
         ArrayList<AvailableQuest> availableQuests = availableQuestDao.getAllQuests();
 
@@ -252,6 +279,12 @@ class MentorController extends AbstractController<Mentor> {
         this.userInterface.println("\n");
     }
 
+    /**
+     * Updates already existing quest in the database.
+     *
+     * @param newQuestInfo
+     * @throws DaoException
+     */
     private void changeQuestData(ArrayList<String> newQuestInfo) throws DaoException {
         Integer id = Integer.parseInt(newQuestInfo.get(0));
         String newName = newQuestInfo.get(1);
