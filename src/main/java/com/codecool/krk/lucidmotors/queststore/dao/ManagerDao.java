@@ -66,14 +66,15 @@ public class ManagerDao {
         return manager;
     }
 
-
     public Manager getManager(String login, String password) throws DaoException {
 
         Manager manager = null;
-        String sqlQuery = String.format("SELECT * FROM managers WHERE login = '%s' AND password = '%s';", login, password);
+        String sqlQuery = "SELECT * FROM managers WHERE login = ? AND password = ?;";
 
         try {
             stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, login);
+            stmt.setString(2, password);
 
             ResultSet result = stmt.executeQuery();
 

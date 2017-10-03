@@ -69,10 +69,12 @@ public class StudentDao {
     public Student getStudent(String login, String password) throws DaoException {
 
         Student student = null;
-        String sqlQuery = String.format("SELECT * FROM students WHERE login = '%s' AND password = '%s';", login, password);
+        String sqlQuery = "SELECT * FROM students WHERE login = ? AND password = ?;";
 
         try {
             stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, login);
+            stmt.setString(2, password);
 
             ResultSet result = stmt.executeQuery();
 
