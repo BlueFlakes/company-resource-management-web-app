@@ -30,11 +30,7 @@ public class ManagerDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                String login = result.getString("login");
-                manager = new Manager(name, login, password, email, id);
+                manager = createManager(result);
             }
 
             result.close();
@@ -58,11 +54,7 @@ public class ManagerDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                String name = result.getString("name");
-                String password = result.getString("password");
-                String email = result.getString("email");
-                Integer id = result.getInt("id");
-                manager = new Manager(name, login, password, email, id);
+                manager = createManager(result);
             }
 
             result.close();
@@ -72,6 +64,40 @@ public class ManagerDao {
         }
 
         return manager;
+    }
+
+
+    public Manager getManager(String login, String password) throws DaoException {
+
+        Manager manager = null;
+        String sqlQuery = String.format("SELECT * FROM managers WHERE login = '%s' AND password = '%s';", login, password);
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                manager = createManager(result);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return manager;
+    }
+
+    private Manager createManager(ResultSet result) throws SQLException {
+        String name = result.getString("name");
+        String login = result.getString("login");
+        String password = result.getString("password");
+        String email = result.getString("email");
+        Integer id = result.getInt("id");
+
+        return new Manager(name, login, password, email, id);
     }
 
 }
