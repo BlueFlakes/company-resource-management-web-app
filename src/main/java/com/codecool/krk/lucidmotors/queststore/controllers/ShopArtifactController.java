@@ -12,5 +12,4 @@ class ShopArtifactController {
         this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
         this.userInterface.pause();
     }
-
 }

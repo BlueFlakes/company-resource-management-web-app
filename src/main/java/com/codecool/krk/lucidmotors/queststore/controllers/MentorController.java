@@ -23,50 +23,55 @@ class MentorController extends AbstractUserController<Mentor> {
      */
     protected void handleUserRequest(String userChoice) throws DaoException {
 
+        MentorMenuOptions chosenOption = getEnumValue(userChoice);
+
+        switch (chosenOption) {
+            case ADD_STUDENT:
+                addStudent();
+                break;
+
+            case ADD_QUEST:
+                addQuest();
+                break;
+
+            case LIST_STUDENTS_WALLETS:
+                listWallets();
+                break;
+
+            case ADD_QUEST_CATEGORY:
+                addQuestCategory();
+                break;
+
+            case UPDATE_QUEST:
+                updateQuest();
+                break;
+
+            case MARK_BOUGHT_ARTIFACT_AS_USED:
+                markBoughtArtifactsAsUsed();
+                break;
+
+            case START_MENTOR_STORE_CONTROLLER:
+                runMentorStoreController();
+                break;
+
+            case EXIT:
+                break;
+
+            case DEFAULT:
+                handleNoSuchCommand();
+        }
+    }
+
+    private MentorMenuOptions getEnumValue(String userChoice) {
         MentorMenuOptions chosenOption;
+
         try {
             chosenOption = MentorMenuOptions.values()[Integer.parseInt(userChoice)];
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            chosenOption = null;
+            chosenOption = MentorMenuOptions.DEFAULT;
         }
 
-        if (chosenOption != null) {
-            switch (chosenOption) {
-                case ADD_STUDENT:
-                    addStudent();
-                    break;
-
-                case ADD_QUEST:
-                    addQuest();
-                    break;
-
-                case LIST_STUDENTS_WALLETS:
-                    listWallets();
-                    break;
-
-                case ADD_QUEST_CATEGORY:
-                    addQuestCategory();
-                    break;
-
-                case UPDATE_QUEST:
-                    updateQuest();
-                    break;
-
-                case MARK_BOUGHT_ARTIFACT_AS_USED:
-                    markBoughtArtifactsAsUsed();
-                    break;
-
-                case START_MENTOR_STORE_CONTROLLER:
-                    runMentorStoreController();
-                    break;
-
-                case EXIT:
-                    break;
-
-                default:
-                    handleNoSuchCommand();
-            }
-        }
+        return chosenOption;
     }
 
     protected void showMenu() {
@@ -338,12 +343,6 @@ class MentorController extends AbstractUserController<Mentor> {
     private void runMentorStoreController() throws DaoException {
 
         new MentorStoreController().startController(this.user, this.school);
-    }
-
-    private void handleNoSuchCommand() {
-
-        userInterface.println("Wrong command!");
-        this.userInterface.pause();
     }
 
     private void showWallet(Student student) throws DaoException {
