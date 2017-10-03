@@ -32,8 +32,8 @@ public class ExperienceLevels {
     private Integer findLevelInMap(Integer coins) {
         Integer level = null;
 
-        for (Integer minimalCoinAmmount : levels.keySet()) {
-            if (minimalCoinAmmount <= coins) level = this.levels.get(minimalCoinAmmount);
+        for (Integer minimalCoinAmount : levels.keySet()) {
+            if (minimalCoinAmount <= coins) level = this.levels.get(minimalCoinAmount);
         }
 
         return level;
