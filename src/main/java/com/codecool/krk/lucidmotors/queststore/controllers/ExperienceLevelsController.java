@@ -6,6 +6,9 @@ import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class ExperienceLevelsController extends AbstractUserController<Mentor> {
 
@@ -80,14 +83,59 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
     /**
      * Gathers new data about level and update it in database.
      */
-    private void updateLevel() {
+    private void updateLevel() throws DaoException {
+        ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
 
         String[] questions = {"level: ", "needed coins: "};
         String[] types = {"integer", "integer"};
         ArrayList<String> answers = this.userInterface.inputs.getValidatedInputs(questions, types);
-        // #TODO implement database connection
-        this.userInterface.println("Level Updated.");
+
+        Integer level = Integer.parseInt(answers.get(0));
+        Integer coins = Integer.parseInt(answers.get(1));
+
+        Map<Integer, Integer> levels = experienceLevels.getLevels();
+
+        Integer previousLevelCoins = findPreviousLevelCoins(levels, level, coins);
+        Integer nextLevelCoins = findNextLevelCoins(levels, level, coins);
+
+        if (levels.values().contains(level) &&
+                previousLevelCoins < coins && nextLevelCoins > coins) {
+            experienceLevels.updateLevel(coins, level);
+            experienceLevels.updateExperienceLevels();
+            this.userInterface.println("Level updated");
+        } else {
+            this.userInterface.println("Level update failure!");
+        }
         this.userInterface.pause();
+    }
+
+    private Integer findPreviousLevelCoins(Map<Integer, Integer> levels, Integer level, Integer coins) {
+        Integer previousLevelCoins;
+        try {
+            previousLevelCoins = levels.entrySet().stream()
+                    .filter(entry -> (entry.getValue() == level - 1))
+                    .map(entry -> entry.getKey())
+                    .findFirst().get();
+        } catch (NoSuchElementException e) {
+            previousLevelCoins = coins - 1;
+        }
+
+        return previousLevelCoins;
+    }
+
+    private Integer findNextLevelCoins(Map<Integer, Integer> levels, Integer level, Integer coins) {
+        Integer nextLevelCoins;
+        try {
+            nextLevelCoins = levels.entrySet().stream()
+                    .filter(entry -> (entry.getValue() == level + 1))
+                    .map(entry -> entry.getKey())
+                    .findFirst().get();
+
+        } catch (NoSuchElementException e) {
+            nextLevelCoins = coins + 1;
+        }
+
+        return nextLevelCoins;
     }
 
     private void showLevels() throws DaoException {
