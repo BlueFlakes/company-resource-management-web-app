@@ -5,5 +5,6 @@ Add quest
 Add questCategory
 Update quest
 Mark bought artifact as used
+Approve quest achievement
 Enter MentorStore
 Logout

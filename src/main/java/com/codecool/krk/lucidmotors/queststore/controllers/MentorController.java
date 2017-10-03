@@ -51,6 +51,10 @@ class MentorController extends AbstractUserController<Mentor> {
                 markBoughtArtifactsAsUsed();
                 break;
 
+            case APPROVE_QUEST_ACHIEVEMENT:
+                approveQuestAchievement();
+                break;
+
             case START_MENTOR_STORE_CONTROLLER:
                 runMentorStoreController();
                 break;
@@ -351,6 +355,10 @@ class MentorController extends AbstractUserController<Mentor> {
         userInterface.println("Balance: " + student.getPossesedCoins());
         userInterface.printBoughtArtifacts(student, new ArtifactOwnersDao().getArtifacts(student));
 
+        userInterface.println("Achieved quests: ");
+
+        userInterface.printAchievedQuests(new AchievedQuestDao().getAllQuestsByStudent(student));
+
     }
 
     private void listWallets() throws DaoException {
@@ -359,6 +367,50 @@ class MentorController extends AbstractUserController<Mentor> {
         userInterface.println("List of students wallets: ");
         for (Student student : students) {
             this.showWallet(student);
+        }
+
+        this.userInterface.pause();
+    }
+
+    private void chooseAndMarkQuest(Student student) throws DaoException {
+
+        this.userInterface.println("Choose quest you want to confirm from list: ");
+        AvailableQuestDao availableQuestDao = new AvailableQuestDao();
+
+        this.userInterface.printAvailableQuests(availableQuestDao.getAllQuests());
+        String[] question = {"id: "};
+        String[] type = {"integer"};
+        Integer questId = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
+        AvailableQuest availableQuest = availableQuestDao.getQuest(questId);
+
+        if (availableQuest != null) {
+            AchievedQuest achievedQuest = new AchievedQuest(availableQuest, student);
+            achievedQuest.save();
+            this.userInterface.println("Quest approved!");
+            this.userInterface.println(String.format("Student got %s coins.", availableQuest.getValue()));
+            student.addCoins(availableQuest.getValue());
+            student.update();
+        } else {
+            this.userInterface.println("There is no quest of such id!");
+        }
+
+    }
+
+    private void approveQuestAchievement() throws DaoException {
+
+        this.userInterface.println("Choose student from list: ");
+        StudentDao studentDao = new StudentDao(new ClassDao());
+
+        this.userInterface.printStudents(studentDao.getAllStudents());
+        String[] question = {"id: "};
+        String[] type = {"integer"};
+        Integer studentId = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
+        Student chosenStudent = studentDao.getStudent(studentId);
+
+        if (chosenStudent != null) {
+            chooseAndMarkQuest(chosenStudent);
+        } else {
+            this.userInterface.println("There is no student of such id!");
         }
 
         this.userInterface.pause();

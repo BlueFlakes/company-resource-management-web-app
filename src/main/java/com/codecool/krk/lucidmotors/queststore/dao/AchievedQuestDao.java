@@ -81,7 +81,7 @@ public class AchievedQuestDao {
 
     public ArrayList<AchievedQuest> getAllQuests() throws DaoException {
 
-        ArrayList<AchievedQuest> achievedQuests = null;
+        ArrayList<AchievedQuest> achievedQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM achieved_quests;";
 
         try {
@@ -89,7 +89,7 @@ public class AchievedQuestDao {
 
             ResultSet result = stmt.executeQuery();
 
-            if (result.next()) {
+            while (result.next()) {
                 Integer id = result.getInt("id");
                 String name = result.getString("name");
                 Integer value = result.getInt("value");
@@ -118,7 +118,47 @@ public class AchievedQuestDao {
         return achievedQuests;
     }
 
-    private void saveQuest(AchievedQuest achievedQuest) throws DaoException {
+    public ArrayList<AchievedQuest> getAllQuestsByStudent(Student student) throws DaoException {
+
+        Integer ownerId = student.getId();
+        ArrayList<AchievedQuest> achievedQuests = new ArrayList<>();
+        String sqlQuery = "SELECT * FROM achieved_quests WHERE owner_id = ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, ownerId);
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Integer id = result.getInt("id");
+                String name = result.getString("name");
+                Integer value = result.getInt("value");
+                Integer categoryId = result.getInt("category_id");
+                String description = result.getString("description");
+                String achieveDateString = result.getString("date");
+
+                QuestCategory questCategory = questCategoryDao.getQuestCategory(categoryId);
+                Date achieveDate = this.parseDate(achieveDateString);
+
+                AchievedQuest achievedQuest = new AchievedQuest(name, questCategory, description, value, id,
+                                                                achieveDate, student);
+
+                achievedQuests.add(achievedQuest);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        } catch (ParseException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem! Wrong database date data!");
+        }
+
+        return achievedQuests;
+    }
+
+    public void saveQuest(AchievedQuest achievedQuest) throws DaoException {
         String name = achievedQuest.getName();
         Integer value = achievedQuest.getValue();
         Integer categoryId = achievedQuest.getQuestCategory().getId();

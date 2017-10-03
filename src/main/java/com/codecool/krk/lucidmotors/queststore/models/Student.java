@@ -63,11 +63,11 @@ public class Student extends User {
     }
 
     public String getStudentSaveString() {
-        return String.format("%d|%s|%s|%s|%s|%d%n", this.getId(), this.getName(), this.getLogin(), this.getPassword(), this.getEmail(), this.getClas().getId());
+        return String.format("%d|%s|%s|%s|%s|%d", this.getId(), this.getName(), this.getLogin(), this.getPassword(), this.getEmail(), this.getClas().getId());
     }
 
     public String toString() {
-        return String.format("id: %d. %s%n", this.getId(), this.getName());
+        return String.format("id: %d. %s", this.getId(), this.getName());
     }
 
     public void addCoins(Integer ammount) {
