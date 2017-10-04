@@ -9,7 +9,7 @@ class ShopArtifactController {
 
     public void showAvailableArtifacts() throws DaoException {
 
-        this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
+        this.userInterface.print(new ShopArtifactDao().getAllArtifacts().iterator());
         this.userInterface.pause();
     }
 }

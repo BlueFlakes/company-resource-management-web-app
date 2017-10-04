@@ -306,7 +306,7 @@ class MentorController extends AbstractUserController<Mentor> {
         ArtifactOwnersDao artifactOwnersDao = new ArtifactOwnersDao();
         BoughtArtifactDao boughtArtifactDao = new BoughtArtifactDao();
 
-        this.userInterface.printBoughtArtifacts(artifactOwnersDao.getArtifacts(student));
+        this.userInterface.print(artifactOwnersDao.getArtifacts(student).iterator());
         String[] question = {"id: "};
         String[] type = {"integer"};
         Integer artifactId = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
@@ -328,7 +328,7 @@ class MentorController extends AbstractUserController<Mentor> {
         this.userInterface.println("Choose student from list: ");
         StudentDao studentDao = new StudentDao(new ClassDao());
 
-        this.userInterface.printStudents(studentDao.getAllStudents());
+        this.userInterface.print(studentDao.getAllStudents().iterator());
         String[] question = {"id: "};
         String[] type = {"integer"};
         Integer studentId = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
@@ -352,11 +352,11 @@ class MentorController extends AbstractUserController<Mentor> {
     private void showWallet(Student student) throws DaoException {
         userInterface.println("\nName: " + student.getName());
         userInterface.println("Balance: " + student.getPossesedCoins());
-        userInterface.printBoughtArtifacts(student, new ArtifactOwnersDao().getArtifacts(student));
+        userInterface.printBoughtArtifactsByStudent(new ArtifactOwnersDao().getArtifacts(student));
 
         userInterface.println("Achieved quests: ");
 
-        userInterface.printAchievedQuests(new AchievedQuestDao().getAllQuestsByStudent(student));
+        userInterface.print(new AchievedQuestDao().getAllQuestsByStudent(student).iterator());
 
     }
 
@@ -376,7 +376,7 @@ class MentorController extends AbstractUserController<Mentor> {
         this.userInterface.println("Choose quest you want to confirm from list: ");
         AvailableQuestDao availableQuestDao = new AvailableQuestDao();
 
-        this.userInterface.printAvailableQuests(availableQuestDao.getAllQuests());
+        this.userInterface.print(availableQuestDao.getAllQuests().iterator());
         String[] question = {"id: "};
         String[] type = {"integer"};
         Integer questId = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
@@ -400,7 +400,7 @@ class MentorController extends AbstractUserController<Mentor> {
         this.userInterface.println("Choose student from list: ");
         StudentDao studentDao = new StudentDao(new ClassDao());
 
-        this.userInterface.printStudents(studentDao.getAllStudents());
+        this.userInterface.print(studentDao.getAllStudents().iterator());
         String[] question = {"id: "};
         String[] type = {"integer"};
         Integer studentId = Integer.parseInt(userInterface.inputs.getValidatedInputs(question, type).get(0));
