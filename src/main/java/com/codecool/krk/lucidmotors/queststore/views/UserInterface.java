@@ -108,11 +108,6 @@ public class UserInterface {
         }
     }
 
-    public void printBoughtArtifactsByStudent(ArrayList<BoughtArtifact> studentArtifacts) {
-        println("Owned artifacts:");
-        print(studentArtifacts.iterator());
-    }
-
     public void printArtifactsCategories(ArrayList<ArtifactCategory> artifactCategories) {
         println("Possible artifact categories:");
 

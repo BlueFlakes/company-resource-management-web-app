@@ -352,7 +352,7 @@ class MentorController extends AbstractUserController<Mentor> {
     private void showWallet(Student student) throws DaoException {
         userInterface.println("\nName: " + student.getName());
         userInterface.println("Balance: " + student.getPossesedCoins());
-        userInterface.printBoughtArtifactsByStudent(new ArtifactOwnersDao().getArtifacts(student));
+        userInterface.print(new ArtifactOwnersDao().getArtifacts(student).iterator());
 
         userInterface.println("Achieved quests: ");
 
