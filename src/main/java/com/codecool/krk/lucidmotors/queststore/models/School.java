@@ -70,11 +70,10 @@ public class School {
         return this.mentorDao.getMentor(id);
     }
 
-    public void isLoginAvailable(String login) throws LoginInUseException, DaoException {
+    public boolean isLoginAvailable(String login) throws DaoException {
 
-        if (this.getUser(login) != null) {
-            throw new LoginInUseException();
-        }
+        return this.getUser(login) == null;
+
     }
 
     public ArrayList<SchoolClass> getAllClasses() throws DaoException {

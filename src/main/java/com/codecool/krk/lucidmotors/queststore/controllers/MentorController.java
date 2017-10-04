@@ -100,12 +100,11 @@ class MentorController extends AbstractUserController<Mentor> {
         String email = basicUserData.get(3);
         SchoolClass choosenClass = chooseProperClass();
 
-        try {
-            this.school.isLoginAvailable(login);
+        if (this.school.isLoginAvailable(login)) {
             Student student = new Student(name, login, password, email, choosenClass);
             student.save();
-        } catch (LoginInUseException e) {
-            userInterface.println(e.getMessage());
+        } else {
+            userInterface.println("Action failed! Login already in use!");
         }
 
         this.userInterface.pause();
