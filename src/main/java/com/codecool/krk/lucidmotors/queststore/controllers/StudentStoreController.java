@@ -55,7 +55,7 @@ public class StudentStoreController extends AbstractUserController<Student> {
 
     private void buyArtifact() throws DaoException {
         /* #TODO refactor */
-        this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
+        this.userInterface.print(new ShopArtifactDao().getAllArtifacts().iterator());
 
         try {
             // # TODO check is student have enough cc

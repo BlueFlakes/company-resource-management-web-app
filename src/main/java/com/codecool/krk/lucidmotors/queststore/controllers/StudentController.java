@@ -65,10 +65,10 @@ public class StudentController extends AbstractUserController<Student> {
 
         String accountBalance = Integer.toString(this.user.getPossesedCoins());
         userInterface.println("Balance: " + accountBalance);
-        userInterface.printBoughtArtifacts(this.user, new ArtifactOwnersDao().getArtifacts(this.user));
+        userInterface.print(new ArtifactOwnersDao().getArtifacts(this.user).iterator());
         userInterface.println("Achieved quests: ");
 
-        userInterface.printAchievedQuests(new AchievedQuestDao().getAllQuestsByStudent(this.user));
+        userInterface.print(new AchievedQuestDao().getAllQuestsByStudent(this.user).iterator());
 
         this.userInterface.pause();
     }

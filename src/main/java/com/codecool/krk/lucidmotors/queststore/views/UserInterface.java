@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
@@ -101,50 +102,14 @@ public class UserInterface {
         System.out.println();
     }
 
-    public void printStoreArtifacts(ArrayList<ShopArtifact> allArtifacts) {
-        for(ShopArtifact shopArtifact : allArtifacts) {
-            System.out.println(shopArtifact);
-
-        }
-    }
-
-    public void printBoughtArtifacts(ArrayList<BoughtArtifact> artifacts) {
-        for(BoughtArtifact artifact : artifacts) {
-            System.out.println(artifact);
-        }
-
-    }
-
-    public void printAvailableQuests(ArrayList<AvailableQuest> quests) {
-        for(AvailableQuest quest : quests) {
-            System.out.println(quest);
-        }
-
-    }
-
-    public void printAchievedQuests(ArrayList<AchievedQuest> quests) {
-        for(AchievedQuest quest : quests) {
-            System.out.println(quest);
-        }
-
-    }
-
-    public void printStudents(ArrayList<Student> students) {
-        for(Student student : students) {
-            System.out.println(student);
-        }
-
-    }
-
-    public void printBoughtArtifacts(Student student, ArrayList<BoughtArtifact> studentArtifacts) {
-        this.println("Owned artifacts:");
-        for(BoughtArtifact boughtArtifact : studentArtifacts) {
-            System.out.println(boughtArtifact);
+    public void print(Iterator collection) {
+        while (collection.hasNext()) {
+            println(collection.next().toString());
         }
     }
 
     public void printArtifactsCategories(ArrayList<ArtifactCategory> artifactCategories) {
-        this.println("Possible artifact categories:");
+        println("Possible artifact categories:");
 
         artifactCategories.stream()
                           .map(artifactCategory -> String.format("id: %d, name: %s",

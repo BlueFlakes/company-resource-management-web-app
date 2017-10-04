@@ -105,7 +105,7 @@ public class MentorStoreController extends AbstractUserController<Mentor> {
     private void updateArtifact() throws DaoException {
         ShopArtifactDao shopArtifactDao = new ShopArtifactDao();
 
-        this.userInterface.printStoreArtifacts(shopArtifactDao.getAllArtifacts());
+        this.userInterface.print(shopArtifactDao.getAllArtifacts().iterator());
         ShopArtifact updatedArtifact = shopArtifactDao.getArtifact(this.getArtifactId());
 
         try {
