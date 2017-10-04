@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.AchievedQuestDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AchievedQuest extends AbstractQuest {
@@ -46,8 +47,16 @@ public class AchievedQuest extends AbstractQuest {
     }
 
     public String toString() {
+        String dateString = this.convertDateToString(this.getDate());
         return String.format("id: %d. name: %s, description: %s, value: %d, purchase date: %s", this.getId(), this.getName(),
-                this.getDescription(), this.getValue(), this.getDate().toString());
+                this.getDescription(), this.getValue(), dateString);
+    }
+
+    private String convertDateToString(Date purchaseDate) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String purchaseDateString = dateFormatter.format(purchaseDate);
+
+        return purchaseDateString;
     }
 
 }

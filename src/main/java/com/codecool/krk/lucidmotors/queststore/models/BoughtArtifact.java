@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -46,13 +47,14 @@ public class BoughtArtifact extends AbstractArtifact {
 
     @Override
     public String toString() {
+        String dateString = this.convertDateToString(this.getDate());
         if (this.isUsed) {
             return String.format("id: %s. name: %s,  date: %s, %s", this.getId(), this.getName(),
-                    this.date.toString(), "is used");
+                    dateString, "is used");
             
         } else {
             return String.format("id: %s. name: %s,  date: %s, %s", this.getId(), this.getName(),
-                    this.date.toString(), "isn't used");
+                    dateString, "isn't used");
         }
     }
 
@@ -62,6 +64,13 @@ public class BoughtArtifact extends AbstractArtifact {
 
     public void update() throws DaoException {
         boughtArtifactDao.updateArtifact(this);
+    }
+
+    private String convertDateToString(Date purchaseDate) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String purchaseDateString = dateFormatter.format(purchaseDate);
+
+        return purchaseDateString;
     }
 
 }
