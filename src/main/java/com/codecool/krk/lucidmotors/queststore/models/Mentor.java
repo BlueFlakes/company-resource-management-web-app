@@ -42,7 +42,7 @@ public class Mentor extends User {
     }
 
     public String toString() {
-        return String.format("id: %d. %s%n", this.getId(), this.getName());
+        return String.format("id: %d. %s", this.getId(), this.getName());
     }
 
     public void save() throws DaoException {
