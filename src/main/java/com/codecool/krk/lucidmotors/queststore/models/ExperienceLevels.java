@@ -3,14 +3,15 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Treemap<Integer, Integer> levels:
- * key - coins
- * value - level
+ * key - level
+ * value - coins
  */
 public class ExperienceLevels {
 
@@ -24,26 +25,25 @@ public class ExperienceLevels {
         this.levels = levels;
     }
 
-    public Integer computeStudentLevel(Integer coins) {
+    public Integer computeStudentLevel(Integer userCoins) {
 
         Integer level;
 
-        if (!this.levels.isEmpty()) {
-            level = findLevelInMap(coins);
-            level = (level != null) ? level : 0;
+        if (this.levels.isEmpty()) {
+
+            level = 0;
 
         } else {
-            level = 0;
-        }
 
-        return level;
-    }
-
-    private Integer findLevelInMap(Integer coins) {
-        Integer level = null;
-
-        for (Integer minimalCoinAmount : levels.keySet()) {
-            if (minimalCoinAmount <= coins) level = this.levels.get(minimalCoinAmount);
+            try {
+                level = this.levels.entrySet().stream()
+                        .filter(entry -> (userCoins >= entry.getValue()))
+                        .map(entry -> entry.getKey())
+                        .max(Integer::compareTo)
+                        .get();
+            } catch (NoSuchElementException e) {
+                level = 0;
+            }
         }
 
         return level;
@@ -56,9 +56,11 @@ public class ExperienceLevels {
      * @param level
      */
     public void addLevel(Integer coins, Integer level) {
-        if (!this.levels.values().contains(level) && !this.levels.keySet().contains(coins)) {
+        Integer previousLevelCoins = this.levels.get(level - 1);
+        previousLevelCoins = (previousLevelCoins == null) ? coins - 1 : previousLevelCoins;
 
-            this.levels.put(coins, level);
+        if (!this.levels.containsKey(level) && previousLevelCoins < coins) {
+            this.levels.put(level, coins);
         }
     }
 
@@ -69,16 +71,16 @@ public class ExperienceLevels {
      * @param level
      */
     public void updateLevel(Integer coins, Integer level) {
-        if (this.levels.values().contains(level) && !this.levels.keySet().contains(coins)) {
+        Integer previousLevelCoins = this.levels.get(level - 1);
+        previousLevelCoins = (previousLevelCoins == null) ? coins - 1 : previousLevelCoins;
 
-            Map.Entry<Integer, Integer> entryToRemove = this.levels.entrySet()
-                    .stream()
-                    .filter(entry -> entry.getValue().equals(level))
-                    .findFirst()
-                    .get();
+        Integer nextLevelCoins = this.levels.get(level + 1);
+        nextLevelCoins = (nextLevelCoins == null) ? coins + 1 : nextLevelCoins;
 
-            this.levels.remove(entryToRemove.getKey());
-            this.levels.put(coins, level);
+        if(this.levels.containsKey(level) &&
+                previousLevelCoins < coins &&
+                nextLevelCoins > coins) {
+            this.levels.put(level, coins);
         }
     }
 
@@ -98,14 +100,8 @@ public class ExperienceLevels {
     @Override
     public String toString() {
         return this.levels.entrySet().stream()
-                                     .map(entry -> String.format("level: %d -> %d", entry.getValue(), entry.getKey()))
+                                     .map(entry -> String.format("level: %d -> %d", entry.getKey(), entry.getValue()))
                                      .collect(Collectors.joining("\n"));
     }
 
-    public Integer getMaxCoins() {
-        return this.levels.keySet()
-                          .stream()
-                          .max(Integer::compare)
-                          .get();
-    }
 }
