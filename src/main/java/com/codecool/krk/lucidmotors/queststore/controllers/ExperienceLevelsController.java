@@ -5,6 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
 import com.codecool.krk.lucidmotors.queststore.enums.ExperienceLevelsMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
+import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 public class ExperienceLevelsController extends AbstractUserController<Mentor> {
 
     private ExperienceLevelsDao experienceLevelsDao = new ExperienceLevelsDao();
+    private final ManagerView managerView = new ManagerView();
 
     public ExperienceLevelsController() throws DaoException {
 
@@ -50,7 +52,7 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
     }
 
     protected void showMenu() {
-        userInterface.printExperienceLevelsMenu();
+        this.managerView.printExperienceLevelsMenu();
     }
 
     private ExperienceLevelsMenuOptions getEnumValue(String userChoice) {

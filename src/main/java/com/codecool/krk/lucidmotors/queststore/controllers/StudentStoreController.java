@@ -6,6 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.enums.StudentStoreMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
+import com.codecool.krk.lucidmotors.queststore.views.StudentView;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 public class StudentStoreController extends AbstractUserController<Student> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
+    private final StudentView studentView = new StudentView();
 
     protected void handleUserRequest(String userChoice) throws DaoException {
 
@@ -50,7 +52,7 @@ public class StudentStoreController extends AbstractUserController<Student> {
     }
 
     protected void showMenu() {
-        userInterface.printStudentStoreMenu();
+        this.studentView.printStudentStoreMenu();
     }
 
     private void buyArtifact() throws DaoException {

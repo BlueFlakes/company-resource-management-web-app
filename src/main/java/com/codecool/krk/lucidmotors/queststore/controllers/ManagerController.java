@@ -7,11 +7,14 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
+import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
 
 public class ManagerController extends AbstractUserController<Manager> {
+
+    private final ManagerView managerView = new ManagerView();
 
     protected void handleUserRequest(String userChoice) throws DaoException {
 
@@ -62,7 +65,7 @@ public class ManagerController extends AbstractUserController<Manager> {
     }
 
     protected void showMenu() {
-        userInterface.printManagerMenu();
+        this.managerView.printManagerMenu();
     }
 
     private void addMentor() throws DaoException {
