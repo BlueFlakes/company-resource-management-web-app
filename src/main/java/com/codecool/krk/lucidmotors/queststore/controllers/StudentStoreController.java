@@ -1,58 +1,61 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.enums.StudentStoreMenuOptions;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
-public class StudentStoreController implements UserController {
+import java.util.ArrayList;
+
+public class StudentStoreController extends AbstractUserController<Student> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
-    private final UserInterface userInterface = new UserInterface();
-    private Student user;
-    private School school;
 
-    public void startController(User user, School school) {
+    protected void handleUserRequest(String userChoice) throws DaoException {
 
-        this.user = (Student) user;
-        this.school = school;
-        String userChoice = "";
+        StudentStoreMenuOptions chosenOption = getEnumValue(userChoice);
 
-        while (!userChoice.equals("0")) {
+        switch (chosenOption) {
 
-            this.userInterface.printStudentStoreMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options: ");
-            handleUserRequest(userChoice);
-
-        }
-    }
-
-    private void handleUserRequest(String choice) {
-
-        switch (choice) {
-
-            case "1":
+            case SHOW_AVAILABLE_ARTIFACTS:
                 shopArtifactController.showAvailableArtifacts();
                 break;
 
-            case "2":
+            case BUY_ARTIFACT:
                 buyArtifact();
                 break;
 
-            case "0":
+            case EXIT:
                 break;
 
-            default:
+            case DEFAULT:
                 handleNoSuchCommand();
                 break;
         }
     }
 
-    private void buyArtifact() {
+    private StudentStoreMenuOptions getEnumValue(String userChoice) {
+        StudentStoreMenuOptions chosenOption;
+
+        try {
+            chosenOption = StudentStoreMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = StudentStoreMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
+    }
+
+    protected void showMenu() {
+        userInterface.printStudentStoreMenu();
+    }
+
+    private void buyArtifact() throws DaoException {
         /* #TODO refactor */
-        this.userInterface.printStoreArtifacts(new ShopArtifactDao().getAllArtifacts());
+        this.userInterface.print(new ShopArtifactDao().getAllArtifacts().iterator());
 
         try {
             // # TODO check is student have enough cc
@@ -74,10 +77,10 @@ public class StudentStoreController implements UserController {
             this.userInterface.println("Wrong artifact id.");
         }
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
-    private ShopArtifact getShopArtifact() throws NumberFormatException {
+    private ShopArtifact getShopArtifact() throws NumberFormatException, DaoException {
 
         this.userInterface.println("Provide artifact id");
         String input = this.userInterface.inputs.getInput("artifact id:");
@@ -86,19 +89,17 @@ public class StudentStoreController implements UserController {
         return new ShopArtifactDao().getArtifact(artifact_id);
     }
 
-    private void makePurchase(ShopArtifact shopArtifact) {
+    private void makePurchase(ShopArtifact shopArtifact) throws DaoException {
 
         BoughtArtifact boughtArtifact = new BoughtArtifact(shopArtifact);
-        new BoughtArtifactDao().updateArtifact(boughtArtifact);
 
         this.user.substractCoins(boughtArtifact.getPrice());
+        this.user.update();
         this.userInterface.println(String.format("Bought artifact: %s", boughtArtifact.getName()));
 
-        new ArtifactOwnersDao().update(this.user, boughtArtifact);
-    }
+        ArrayList<Student> owners = new ArrayList<>();
+        owners.add(this.user);
 
-    private void handleNoSuchCommand() {
-
-        userInterface.println("No such option.");
+        new BoughtArtifactDao().save(boughtArtifact, owners);
     }
 }

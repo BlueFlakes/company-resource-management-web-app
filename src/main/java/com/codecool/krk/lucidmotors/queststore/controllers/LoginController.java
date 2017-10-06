@@ -1,10 +1,12 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.enums.LoginMenuOptions;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class LoginController {
 
@@ -15,29 +17,91 @@ public class LoginController {
         this.school = school;
     }
 
-    public void start() throws WrongPasswordException, SQLException {
+    /**
+     * Gets login and password from user, check existance of such user.
+     * If password is correct runs appropriate controller.
+     *
+     * @throws WrongPasswordException
+     * @throws DaoException
+     */
+    public void start() throws DaoException {
 
-        String login = userInterface.inputs.getInput("Please provide your login: ");
-        String givenPassword = userInterface.inputs.getInput("Please provide your password: ");
-        User user = this.school.getUser(login);
+        String userChoice;
 
-        if (user != null) {
+        do {
+            showMenu();
+            userChoice = userInterface.inputs.getInput("What do you want to do: ");
+            userInterface.clearWindow();
+            handleUserRequest(userChoice);
 
-            String expectedPassword = user.getPassword();
+        } while (!userChoice.equals("0"));
+    }
 
-            if (expectedPassword.equals(givenPassword)) {
-                runUserController(user);
+    private void handleUserRequest(String userChoice) throws DaoException {
 
-            } else {
-                throw new WrongPasswordException();
-            }
+        LoginMenuOptions chosenOption = getEnumValue(userChoice);
 
-        } else {
-            throw new WrongPasswordException();
+        switch (chosenOption) {
+            case HANDLE_LOGIN:
+                handleLogin();
+                break;
+
+            case EXIT:
+                userInterface.println("Have a nice day!");
+                break;
+
+            case DEFAULT:
+                handleNoSuchCommand();
         }
     }
 
-    private void runUserController(User user) throws SQLException {
+    private void handleNoSuchCommand() {
+        userInterface.println("Wrong choice");
+        userInterface.pause();
+    }
+
+    private LoginMenuOptions getEnumValue(String userChoice) {
+        LoginMenuOptions chosenOption;
+
+        try {
+            chosenOption = LoginMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = LoginMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
+    }
+
+    private void showMenu() {
+        userInterface.printLoginMenu();
+    }
+
+    private void handleLogin() throws DaoException {
+
+        String[] questions = {"-> Login: ", "-> Password: "};
+        String[] expectedTypes = {"String", "String"};
+
+        ArrayList<String> userInputs = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+        String login = userInputs.get(0);
+        String password = userInputs.get(1);
+
+        User user = this.school.getUser(login, password);
+
+        if (user != null) {
+            runUserController(user);
+        } else {
+            userInterface.println("error: ~please provide correct login and password!");
+            userInterface.pause();
+        }
+    }
+
+    /**
+     * Runs appropriate controller based on user Type
+     *
+     * @param user
+     * @throws DaoException
+     */
+    private void runUserController(User user) throws DaoException {
 
         if (user instanceof Manager) {
             new ManagerController().startController(user, this.school);

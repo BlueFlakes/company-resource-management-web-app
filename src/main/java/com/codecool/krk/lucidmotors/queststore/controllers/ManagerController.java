@@ -1,68 +1,71 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
+import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
+import com.codecool.krk.lucidmotors.queststore.enums.ManagerControllerMenuOptions;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
-import java.sql.SQLException;
 
-public class ManagerController implements UserController {
+public class ManagerController extends AbstractUserController<Manager> {
 
-    private final UserInterface userInterface = new UserInterface();
-    private Manager user;
-    private School school;
+    protected void handleUserRequest(String userChoice) throws DaoException {
 
-    public void startController(User user, School school) throws SQLException {
+        ManagerControllerMenuOptions chosenOption = getEnumValue(userChoice);
 
-        this.user = (Manager) user;
-        this.school = school;
-        String userChoice = "";
+        switch (chosenOption) {
 
-        while (!userChoice.equals("0")) {
-
-            this.userInterface.printManagerMenu();
-            userChoice = this.userInterface.inputs.getInput("Provide options: ");
-            handleUserRequest(userChoice);
-
-        }
-    }
-
-    private void handleUserRequest(String choice) throws SQLException {
-
-        switch (choice) {
-
-            case "1":
+            case ADD_MENTOR:
                 addMentor();
                 break;
 
-            case "2":
+            case CREATE_CLASS:
                 createClass();
                 break;
 
-            case "3":
+            case EDIT_MENTOR:
                 editMentor();
                 break;
 
-            case "4":
+            case SHOW_MENTORS_CLASS:
                 showMentorsClass();
                 break;
 
-            case "5":
+            case START_EXPERIENCE_LEVEL_CONTROLLER:
                 startExperienceLevelController();
                 break;
 
-            case "0":
+            case EXIT:
                 break;
 
-            default:
+            case DEFAULT:
                 handleNoSuchCommand();
                 break;
         }
     }
 
-    private void addMentor() throws SQLException {
+
+    private ManagerControllerMenuOptions getEnumValue(String userChoice) {
+        ManagerControllerMenuOptions chosenOption;
+
+        try {
+            chosenOption = ManagerControllerMenuOptions.values()[Integer.parseInt(userChoice)];
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            chosenOption = ManagerControllerMenuOptions.DEFAULT;
+        }
+
+        return chosenOption;
+    }
+
+    protected void showMenu() {
+        userInterface.printManagerMenu();
+    }
+
+    private void addMentor() throws DaoException {
 
         String[] questions = {"Name: ", "Login: ", "Password: ", "Email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
@@ -74,18 +77,17 @@ public class ManagerController implements UserController {
         String email = basicUserData.get(3);
         SchoolClass choosenClass = chooseProperClass();
 
-        try {
-            this.school.isLoginAvailable(login);
-            new Mentor(name, login, password, email, choosenClass);
-
-        } catch (LoginInUseException e) {
-            userInterface.println(e.getMessage());
+        if (this.school.isLoginAvailable(login)) {
+            Mentor mentor = new Mentor(name, login, password, email, choosenClass);
+            mentor.save();
+        } else {
+            userInterface.println("Action failed! Login already in use!");
         }
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
-    private SchoolClass chooseProperClass() throws SQLException {
+    private SchoolClass chooseProperClass() throws DaoException {
 
         ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
@@ -126,29 +128,58 @@ public class ManagerController implements UserController {
         userInterface.println("");
     }
 
-    private void createClass() throws SQLException {
+    private void createClass() throws DaoException {
 
         userInterface.println("Provide name for new class:");
         String name = userInterface.inputs.getInput("name: ");
 
-        new SchoolClass(name);
+        SchoolClass schoolClass = new SchoolClass(name);
+        schoolClass.save();
+
         userInterface.println(String.format("Class %s created.", name));
 
-        this.userInterface.lockActualState();
+        this.userInterface.pause();
     }
 
-    private void editMentor() throws SQLException {
+    private void editMentor() throws DaoException {
 
         this.printAllMentors();
 
         Integer mentorId = getUserChoiceOfMentor();
+        Mentor mentor = new MentorDao(new ClassDao()).getMentor(mentorId);
+
         String[] questions = {"New name: ", "New login: ", "New password: ", "New email: "};
         String[] expectedTypes = {"String", "String", "String", "String"};
 
-        ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+        if (mentor != null) {
+            ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+            updateMentorRecord(basicUserData, mentor);
+        } else {
+            this.userInterface.println("There is no mentor with provided id!");
+        }
+
+        userInterface.pause();
     }
 
-    private void showMentorsClass() throws SQLException {
+    private void updateMentorRecord(ArrayList<String> userData, Mentor mentor) throws DaoException {
+        String name = userData.get(0);
+        String login = userData.get(1);
+        String password = userData.get(2);
+        String email = userData.get(3);
+
+        if (this.school.isLoginAvailable(login) || login.equals(mentor.getLogin())) {
+            mentor.setName(name);
+            mentor.setLogin(login);
+            mentor.setPassword(password);
+            mentor.setEmail(email);
+            mentor.update();
+        }  else {
+            userInterface.println("Action failed! Login already in use!");
+        }
+
+    }
+
+    private void showMentorsClass() throws DaoException {
 
         this.printAllMentors();
 
@@ -161,10 +192,10 @@ public class ManagerController implements UserController {
             this.printMentorInfo(mentor);
         }
 
-        userInterface.lockActualState();
+        userInterface.pause();
     }
 
-    private void printAllMentors() throws SQLException {
+    private void printAllMentors() throws DaoException {
 
         userInterface.println("List of existing mentors: ");
 
@@ -174,7 +205,7 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void printMentorInfo(Mentor mentor) throws SQLException {
+    private void printMentorInfo(Mentor mentor) throws DaoException {
 
         SchoolClass schoolClass = mentor.getClas();
         ArrayList<Student> students = schoolClass.getAllStudents();
@@ -188,13 +219,8 @@ public class ManagerController implements UserController {
         }
     }
 
-    private void startExperienceLevelController() {
+    private void startExperienceLevelController() throws DaoException {
 
         new ExperienceLevelsController().startController(this.user, this.school);
-    }
-
-    private void handleNoSuchCommand() {
-
-        userInterface.println("No such option.");
     }
 }
