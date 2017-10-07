@@ -29,12 +29,12 @@ public class Mentor extends User {
     }
 
     public String getMentorSaveString() {
-        return String.format("%d|%s|%s|%s|%s|%d%n", this.getId(), this.getName(), this.getLogin(), this.getPassword(), this.getEmail(), this.getClas().getId());
+        return String.format("%d|%s|%s|%s|%s|%d", this.getId(), this.getName(), this.getLogin(), this.getPassword(), this.getEmail(), this.getClas().getId());
     }
 
     public String getMentorData() {
 
-        return String.format("id: %d. %s %s class name: %s%n",
+        return String.format("id: %d. %s %s class name: %s",
                 this.getId(),
                 this.getName(),
                 this.getEmail(),
@@ -42,7 +42,7 @@ public class Mentor extends User {
     }
 
     public String toString() {
-        return String.format("id: %d. %s%n", this.getId(), this.getName());
+        return String.format("id: %d. %s", this.getId(), this.getName());
     }
 
     public void save() throws DaoException {
