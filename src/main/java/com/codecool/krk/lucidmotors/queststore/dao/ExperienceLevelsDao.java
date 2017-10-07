@@ -38,14 +38,10 @@ public class ExperienceLevelsDao {
     public void updateExperienceLevels(ExperienceLevels experienceLevels) throws DaoException {
 
         TreeMap<Integer, Integer> levels = experienceLevels.getLevels();
-        TreeSet<Integer> coinsKeys = new TreeSet<>();
-        levels.keySet()
-              .stream()
-              .forEach(coinsKeys::add);
 
         this.clearTable();
 
-        for (Integer coins : coinsKeys) {
+        for (Integer level : levels.keySet()) {
 
             String sqlQuery = "INSERT INTO experience_levels "
                     + "(id, coins_needed) "
@@ -54,8 +50,8 @@ public class ExperienceLevelsDao {
             try {
                 stmt = connection.prepareStatement(sqlQuery);
 
-                stmt.setInt(1, levels.get(coins));
-                stmt.setInt(2, coins);
+                stmt.setInt(1, level);
+                stmt.setInt(2, levels.get(level));
 
                 stmt.executeUpdate();
             } catch (SQLException e) {
