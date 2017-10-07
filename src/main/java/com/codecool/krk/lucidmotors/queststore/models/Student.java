@@ -76,7 +76,7 @@ public class Student extends User {
     }
 
     public void substractCoins(Integer amount) {
-        this.possesedCoins = (this.possesedCoins - amount > 0) ? this.possesedCoins-amount : possesedCoins;
+        this.possesedCoins = (this.possesedCoins - amount >= 0) ? (this.possesedCoins - amount) : possesedCoins;
     }
 
     public void save() throws DaoException {
