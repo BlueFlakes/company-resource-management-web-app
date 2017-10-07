@@ -55,12 +55,12 @@ public class ExperienceLevels {
      * @param coins
      * @param level
      */
-    public void addLevel(Integer coins, Integer level) {
-        Integer previousLevelCoins = this.levels.get(level - 1);
-        previousLevelCoins = (previousLevelCoins == null) ? coins - 1 : previousLevelCoins;
+    public void addLevel(Integer neededCoins, Integer newLevel) {
+        Integer previousLevelCoins = this.levels.get(newLevel - 1);
+        previousLevelCoins = (previousLevelCoins == null) ? neededCoins - 1 : previousLevelCoins;
 
-        if (!this.levels.containsKey(level) && previousLevelCoins < coins) {
-            this.levels.put(level, coins);
+        if (!this.levels.containsKey(newLevel) && previousLevelCoins < neededCoins) {
+            this.levels.put(newLevel, neededCoins);
         }
     }
 
@@ -70,17 +70,17 @@ public class ExperienceLevels {
      * @param coins
      * @param level
      */
-    public void updateLevel(Integer coins, Integer level) {
-        Integer previousLevelCoins = this.levels.get(level - 1);
-        previousLevelCoins = (previousLevelCoins == null) ? coins - 1 : previousLevelCoins;
+    public void updateLevel(Integer neededCoins, Integer updatedLevel) {
+        Integer previousLevelCoins = this.levels.get(updatedLevel - 1);
+        previousLevelCoins = (previousLevelCoins == null) ? neededCoins - 1 : previousLevelCoins;
 
-        Integer nextLevelCoins = this.levels.get(level + 1);
-        nextLevelCoins = (nextLevelCoins == null) ? coins + 1 : nextLevelCoins;
+        Integer nextLevelCoins = this.levels.get(updatedLevel + 1);
+        nextLevelCoins = (nextLevelCoins == null) ? neededCoins + 1 : nextLevelCoins;
 
-        if(this.levels.containsKey(level) &&
-                previousLevelCoins < coins &&
-                nextLevelCoins > coins) {
-            this.levels.put(level, coins);
+        if(this.levels.containsKey(updatedLevel) &&
+                previousLevelCoins < neededCoins &&
+                nextLevelCoins > neededCoins) {
+            this.levels.put(level, neededCoins);
         }
     }
 
