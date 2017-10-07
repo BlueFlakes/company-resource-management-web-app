@@ -4,6 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.enums.LoginMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
+import com.codecool.krk.lucidmotors.queststore.views.LoginView;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 public class LoginController {
 
     private final UserInterface userInterface = new UserInterface();
+    private final LoginView loginView = new LoginView();
     private School school;
 
     public LoginController(School school) {
@@ -73,7 +75,7 @@ public class LoginController {
     }
 
     private void showMenu() {
-        userInterface.printLoginMenu();
+        this.loginView.printLoginMenu();
     }
 
     private void handleLogin() throws DaoException {
