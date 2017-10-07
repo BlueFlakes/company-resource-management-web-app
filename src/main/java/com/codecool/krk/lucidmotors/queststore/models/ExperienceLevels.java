@@ -80,7 +80,7 @@ public class ExperienceLevels {
         if(this.levels.containsKey(updatedLevel) &&
                 previousLevelCoins < neededCoins &&
                 nextLevelCoins > neededCoins) {
-            this.levels.put(level, neededCoins);
+            this.levels.put(updatedLevel, neededCoins);
         }
     }
 
