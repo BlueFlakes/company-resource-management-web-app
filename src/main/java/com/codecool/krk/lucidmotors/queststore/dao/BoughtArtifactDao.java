@@ -156,6 +156,12 @@ public class BoughtArtifactDao {
         return boughtArtifacts;
     }
 
+    public void save(BoughtArtifact boughtArtifact, ArrayList<Student> owners) throws DaoException {
+        this.saveArtifact(boughtArtifact);
+        Integer artifactId = this.getArtifactId();
+        new ArtifactOwnersDao().saveArtifactOwners(artifactId, owners);
+    }
+
     private void saveArtifact(BoughtArtifact boughtArtifact) throws DaoException {
         String name = boughtArtifact.getName();
         Integer price = boughtArtifact.getPrice();
@@ -211,12 +217,6 @@ public class BoughtArtifactDao {
 
         return artifactID;
 
-    }
-
-    public void save(BoughtArtifact boughtArtifact, ArrayList<Student> owners) throws DaoException {
-        this.saveArtifact(boughtArtifact);
-        Integer artifactId = this.getArtifactId();
-        new ArtifactOwnersDao().saveArtifactOwners(artifactId, owners);
     }
 
 }
