@@ -104,4 +104,21 @@ public class StudentStoreController extends AbstractUserController<Student> {
 
         new BoughtArtifactDao().save(boughtArtifact, owners);
     }
+    private void createNewContribution() throws DaoException {
+
+        ShopArtifactDao shopArtifactDao = new ShopArtifactDao();
+        this.userInterface.print(shopArtifactDao.getAllArtifacts().iterator());
+
+        String[] questions = {"Contribution name: "};
+        String[] expectedTypes = {"String"};
+
+        ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+        String name = basicUserData.get(0);
+        ShopArtifact shopArtifact = getArtifactChoice();
+
+        Contribution contribution = new Contribution(name, user, shopArtifact);
+        contribution.save();
+        this.userInterface.println("New contribution created successfully!");
+        this.userInterface.pause();
+    }
 }
