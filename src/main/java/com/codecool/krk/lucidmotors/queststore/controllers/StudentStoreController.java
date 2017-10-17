@@ -216,13 +216,14 @@ public class StudentStoreController extends AbstractUserController<Student> {
         ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
         Integer contributionId = Integer.parseInt(basicUserData.get(0));
 
-        Contribution contribution = contributionDao.getContribution(contributionId);
+        Contribution contribution = getOpenContribution(contributionId);
 
         if (contribution == null) {
             this.userInterface.println("Given contribution id is wrong!");
         } else if (user.getId().equals(contribution.getCreator().getId())){
             contribution.setStatus("closed");
             giveMoneyBackToStudents(contribution);
+            this.userInterface.println("Contribution closed successfully! Coins were given back to contributors!");
             contribution.update();
         } else {
             this.userInterface.println("You are not creator of this contribution!");
