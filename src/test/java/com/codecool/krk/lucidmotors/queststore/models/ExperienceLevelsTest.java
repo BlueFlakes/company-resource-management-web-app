@@ -18,7 +18,7 @@ class ExperienceLevelsTest {
     public void testAddTestLevel() {
         this.experienceLevels.addLevel(10, 1);
         TreeMap<Integer, Integer> expectedLevels = new TreeMap<>();
-        expectedLevels.put(10, 1);
+        expectedLevels.put(1, 10);
         assertEquals(expectedLevels, this.experienceLevels.getLevels());
     }
 
@@ -28,7 +28,7 @@ class ExperienceLevelsTest {
         this.experienceLevels.addLevel(12, 1);
 
         TreeMap<Integer, Integer> expectedLevels = new TreeMap<>();
-        expectedLevels.put(10, 1);
+        expectedLevels.put(1, 10);
         assertEquals(expectedLevels, this.experienceLevels.getLevels());
     }
 
@@ -38,7 +38,7 @@ class ExperienceLevelsTest {
         this.experienceLevels.addLevel(10, 2);
 
         TreeMap<Integer, Integer> expectedLevels = new TreeMap<>();
-        expectedLevels.put(10, 1);
+        expectedLevels.put(1, 10);
         assertEquals(expectedLevels, this.experienceLevels.getLevels());
     }
 
@@ -57,7 +57,7 @@ class ExperienceLevelsTest {
         this.experienceLevels.updateLevel(10, 1);
 
         TreeMap<Integer, Integer> expectedLevels = new TreeMap<>();
-        expectedLevels.put(10, 1);
+        expectedLevels.put(1, 10);
 
         assertEquals(expectedLevels, this.experienceLevels.getLevels());
     }

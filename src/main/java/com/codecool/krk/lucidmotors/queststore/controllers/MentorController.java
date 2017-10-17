@@ -5,6 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.enums.MentorMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
+import com.codecool.krk.lucidmotors.queststore.views.MentorView;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ class MentorController extends AbstractUserController<Mentor> {
 
     private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
     private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
+    private final MentorView mentorView = new MentorView();
 
     MentorController() throws DaoException {
     }
@@ -80,7 +82,7 @@ class MentorController extends AbstractUserController<Mentor> {
     }
 
     protected void showMenu() {
-        userInterface.printMentorMenu();
+        this.mentorView.printMentorMenu();
     }
 
     /**

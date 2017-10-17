@@ -5,6 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorStoreMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.NoSuchIdException;
+import com.codecool.krk.lucidmotors.queststore.views.MentorView;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class MentorStoreController extends AbstractUserController<Mentor> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
-
+    private final MentorView mentorView = new MentorView();
 
     protected void handleUserRequest(String userChoice) throws DaoException {
 
@@ -61,7 +62,7 @@ public class MentorStoreController extends AbstractUserController<Mentor> {
     }
 
     protected void showMenu() {
-        userInterface.printMentorStoreMenu();
+        this.mentorView.printMentorStoreMenu();
     }
 
     private void addArtifact() throws DaoException {
