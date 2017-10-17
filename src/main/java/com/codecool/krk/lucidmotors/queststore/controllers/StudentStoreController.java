@@ -1,20 +1,25 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ContributionDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.enums.StudentStoreMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.StudentView;
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StudentStoreController extends AbstractUserController<Student> {
 
     private final ShopArtifactController shopArtifactController = new ShopArtifactController();
     private final StudentView studentView = new StudentView();
+    private final ContributionDao contributionDao = new ContributionDao();
+
+    public StudentStoreController() throws DaoException {
+    }
 
     protected void handleUserRequest(String userChoice) throws DaoException {
 
@@ -28,6 +33,18 @@ public class StudentStoreController extends AbstractUserController<Student> {
 
             case BUY_ARTIFACT:
                 buyArtifact();
+                break;
+
+            case CONTRIBUTION:
+                spendCoinsOnContribution();
+                break;
+
+            case CREATE_CONTRIBUTION:
+                createNewContribution();
+                break;
+
+            case CLOSE_CONTRIBUTION:
+                closeContribution();
                 break;
 
             case EXIT:
@@ -60,15 +77,12 @@ public class StudentStoreController extends AbstractUserController<Student> {
         this.userInterface.print(new ShopArtifactDao().getAllArtifacts().iterator());
 
         try {
-            // # TODO check is student have enough cc
-
-            ShopArtifact shopArtifact = this.getShopArtifact();
-            Integer studentBalance = this.user.getPossesedCoins();
+            ShopArtifact shopArtifact = this.getArtifactChoice();
 
             if (shopArtifact == null) {
                 this.userInterface.println("No such artifact");
 
-            } else if (studentBalance < shopArtifact.getPrice()) {
+            } else if (!isStudentBalanceEnough(shopArtifact.getPrice())) {
                 this.userInterface.println("Not enough money");
 
             } else {
@@ -82,9 +96,14 @@ public class StudentStoreController extends AbstractUserController<Student> {
         this.userInterface.pause();
     }
 
-    private ShopArtifact getShopArtifact() throws NumberFormatException, DaoException {
+    private boolean isStudentBalanceEnough(Integer coinsToSpend) {
+        Integer studentBalance = this.user.getPossesedCoins();
 
-        this.userInterface.println("Provide artifact id");
+        return studentBalance >= coinsToSpend;
+    }
+
+    private ShopArtifact getArtifactChoice() throws NumberFormatException, DaoException {
+
         String input = this.userInterface.inputs.getInput("artifact id:");
         Integer artifact_id = Integer.parseInt(input);
 
@@ -104,6 +123,7 @@ public class StudentStoreController extends AbstractUserController<Student> {
 
         new BoughtArtifactDao().save(boughtArtifact, owners);
     }
+
     private void createNewContribution() throws DaoException {
 
         ShopArtifactDao shopArtifactDao = new ShopArtifactDao();
@@ -120,5 +140,111 @@ public class StudentStoreController extends AbstractUserController<Student> {
         contribution.save();
         this.userInterface.println("New contribution created successfully!");
         this.userInterface.pause();
+    }
+
+    private void spendCoinsOnContribution() throws DaoException {
+
+        this.userInterface.print(contributionDao.getOpenContributions().iterator());
+
+        String[] questions = {"Id of contribution you would like to contribute to: ", "Coins: "};
+        String[] expectedTypes = {"Integer", "Integer"};
+
+        ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+        Integer contributionId = Integer.parseInt(basicUserData.get(0));
+        Integer coinsToSpend = Integer.parseInt(basicUserData.get(1));
+
+        Contribution contribution = getOpenContribution(contributionId);
+
+        if (!(contribution == null)) {
+            takePartInContribution(contribution, coinsToSpend);
+        } else {
+            this.userInterface.println("Contribution with given id doesn't exist!");
+        }
+
+        this.userInterface.pause();
+    }
+
+    private Contribution getOpenContribution(Integer contributionId) throws DaoException {
+        ArrayList<Contribution> openedContributions = contributionDao.getOpenContributions();
+        Contribution contribution = null;
+
+        for (Contribution openedContribution : openedContributions) {
+            if (openedContribution.getId().equals(contributionId)) {
+                contribution = openedContribution;
+            }
+        }
+
+        return contribution;
+    }
+
+    private void takePartInContribution(Contribution contribution, Integer coinsToSpend) throws DaoException {
+        Integer neededCoinsToFinish = contribution.getShopArtifact().getPrice() - contribution.getGivenCoins();
+
+        if (!isStudentBalanceEnough(coinsToSpend)) {
+            userInterface.println("You don't have enough coins!");
+        } else if (coinsToSpend > neededCoinsToFinish) {
+            userInterface.println("Max offer for this contribution at this moment is " + neededCoinsToFinish);
+        } else {
+            contribution.addCoins(coinsToSpend);
+            user.substractCoins(coinsToSpend);
+            contribution.update();
+            user.update();
+            contributionDao.saveContributor(user, coinsToSpend, contribution);
+            this.userInterface.println("Coins added successfully!");
+            checkContributionStatus(contribution);
+        }
+    }
+
+    private void checkContributionStatus(Contribution contribution) throws DaoException {
+        if (contribution.getShopArtifact().getPrice().equals(contribution.getGivenCoins())) {
+            contribution.setStatus("closed");
+            ArrayList<Student> contributors = contributionDao.getContributors(contribution.getId());
+
+            BoughtArtifact boughtArtifact = new BoughtArtifact(contribution.getShopArtifact());
+            new BoughtArtifactDao().save(boughtArtifact, contributors);
+
+            contribution.update();
+        }
+    }
+
+    private void closeContribution() throws DaoException {
+        this.userInterface.print(contributionDao.getOpenContributions().iterator());
+
+        String[] questions = {"Id of contribution you would like to close: "};
+        String[] expectedTypes = {"Integer"};
+
+        ArrayList<String> basicUserData = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
+        Integer contributionId = Integer.parseInt(basicUserData.get(0));
+
+        Contribution contribution = contributionDao.getContribution(contributionId);
+
+        if (contribution == null) {
+            this.userInterface.println("Given contribution id is wrong!");
+        } else if (user.getId().equals(contribution.getCreator().getId())){
+            contribution.setStatus("closed");
+            giveMoneyBackToStudents(contribution);
+            contribution.update();
+        } else {
+            this.userInterface.println("You are not creator of this contribution!");
+        }
+
+        this.userInterface.pause();
+    }
+
+    private void giveMoneyBackToStudents(Contribution contribution) throws DaoException {
+        HashMap<Student, Integer> contributorsWithShares = contributionDao.getContributorsShares(contribution.getId());
+
+        for(Map.Entry<Student,Integer> entry : contributorsWithShares.entrySet()) {
+            Student student = entry.getKey();
+            Integer spentCoins = entry.getValue();
+
+            if (user.getId().equals(student.getId())) {
+                user.returnCoins(spentCoins);
+                user.update();
+            } else {
+                student.returnCoins(spentCoins);
+                student.update();
+            }
+        }
     }
 }
