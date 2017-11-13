@@ -3,18 +3,11 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 import com.codecool.krk.lucidmotors.queststore.dao.AchievedQuestDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
-import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.enums.StudentControllerMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
-import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
-import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
-import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.views.StudentView;
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
-import java.sql.SQLException;
 
 
 public class StudentController extends AbstractUserController<Student> {
