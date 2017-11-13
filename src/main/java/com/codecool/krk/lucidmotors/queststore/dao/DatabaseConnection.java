@@ -13,16 +13,24 @@ public class DatabaseConnection {
     static Connection getConnection() throws DaoException {
 
         if (connection == null) {
+            // synchronized Works with java >= 1.5, lazy loading + thread safety
+            synchronized (DatabaseConnection.class) {
 
-            try {
-                connection = DriverManager.getConnection("jdbc:sqlite:data/Codecool.db");
-            } catch (SQLException e) {
-                throw new DaoException("DatabaseConnection class caused a problem!");
+                if (connection == null) {
+                    connectWithDatabase();
+                }
             }
-
         }
 
         return connection;
+    }
+
+    private static void connectWithDatabase() throws DaoException {
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:data/Codecool.db");
+        } catch (SQLException e) {
+            throw new DaoException("DatabaseConnection class caused a problem!");
+        }
     }
 
     public static void closeConnection() throws DaoException {
