@@ -27,6 +27,7 @@ public class MainController {
         Map<UUID, User> loggedUsers = new HashMap<>();
 
         server.createContext("/", new LoginHandler(this.school, loggedUsers));
+        server.createContext("/manager", new ManagerHandler(this.school, loggedUsers));
         server.createContext("/static", new Static());
         server.setExecutor(null); // creates a default executor
 

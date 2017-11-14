@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Codecool store for students">
+		<meta name="keywords" content="quest, artifact, store, coin, codecool">
+		<meta name="author" content="Lucidmotors">
+		{{redirect}}
+		<title>{{title}}</title>
+		<link rel="stylesheet" href="static/css/reset.css">
+		<link rel="stylesheet" href="static/css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Droid+Sans|Lato" rel="stylesheet">
+		<script src="https://use.fontawesome.com/0dc27d5e41.js"></script>
+		<script src="https://www.w3schools.com/lib/w3.js"></script>
+	</head>
+	<body>
+		<header>
+			<div class="horizontal-bar" id="top-bar">
+				<figure>
+					<img src="static/images/codecool_kolkoxD.png" alt="codecool logo">
+				</figure>
+				<h1 id="shop-name">Queststore</h1>
+                    <div class="button">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                        <a href="/logout">Logout</a>
+                    </div>
+			</div>
+		</header>
+		<aside>
+			<nav>
+				<ul>
+					<div w3-include-html="{{navigation}}"></div>
+				</ul>
+			</nav>
+			<div id="menu-description">
+				<h3>MENU</h3>
+			</div>
+		</aside>
+		<div class="gradient" id="top-gradient"></div>
+		<div class="container">
+			<main>
+				{{content}}
+			</main>
+		</div>
+		<div class="gradient" id="bottom-gradient"></div>
+		<!-- SECTION FOOTER-->
+ 	   	<footer >
+    	  	<div class="horizontal-bar" id="bottom-bar">
+				<div>
+					<p><i class="fa fa-envelope-open-o mail-icon" aria-hidden="true"></i>lucidmotors@gmail.com</p>
+				</div>
+				<p>Lucid Motors sp. z o .o. <i class="fa fa-copyright" aria-hidden="true"></i></p>
+				<div class="social-medias">
+					<button class="icon-btn facebook"><i class="fa fa-facebook"></i></button>
+					<button class="icon-btn twitter"><i class="fa fa-twitter"></i></button>
+					<button class="icon-btn google"><i class="fa fa-google-plus"></i></button>
+					<button class="icon-btn instagram"><i class="fa fa-instagram"></i></button>
+					<button class="icon-btn youtube"><i class="fa fa-youtube"></i></button>
+				</div>
+    	  	</div>
+    	</footer>
+		<script>
+            w3.includeHTML();
+        </script>
+	</body>
+</html>
