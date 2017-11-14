@@ -10,7 +10,7 @@ public class DatabaseConnection {
 
     private static Connection connection = null;
 
-    static Connection getConnection() throws DaoException {
+    public static Connection getConnection() throws DaoException {
 
         if (connection == null) {
             // synchronized Works with java >= 1.5, lazy loading + thread safety
