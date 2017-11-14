@@ -8,6 +8,7 @@ import com.codecool.krk.lucidmotors.queststore.views.LoginView;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class LoginController {
 
@@ -45,7 +46,7 @@ public class LoginController {
 
         switch (chosenOption) {
             case HANDLE_LOGIN:
-                handleLogin();
+                //
                 break;
 
             case EXIT:
@@ -78,23 +79,10 @@ public class LoginController {
         this.loginView.printLoginMenu();
     }
 
-    private void handleLogin() throws DaoException {
-
-        String[] questions = {"-> Login: ", "-> Password: "};
-        String[] expectedTypes = {"String", "String"};
-
-        ArrayList<String> userInputs = userInterface.inputs.getValidatedInputs(questions, expectedTypes);
-        String login = userInputs.get(0);
-        String password = userInputs.get(1);
-
+    public Optional<User> getUser(String login, String password) throws DaoException {
         User user = this.school.getUser(login, password);
 
-        if (user != null) {
-            runUserController(user);
-        } else {
-            userInterface.println("error: ~please provide correct login and password!");
-            userInterface.pause();
-        }
+        return Optional.ofNullable(user);
     }
 
     /**
