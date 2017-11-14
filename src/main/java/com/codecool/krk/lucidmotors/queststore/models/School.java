@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.User;
@@ -76,12 +77,12 @@ public class School {
 
     }
 
-    public ArrayList<SchoolClass> getAllClasses() throws DaoException {
+    public List<SchoolClass> getAllClasses() throws DaoException {
 
         return this.classDao.getAllClasses();
     }
 
-    public ArrayList<Mentor> getAllMentors() throws DaoException {
+    public List<Mentor> getAllMentors() throws DaoException {
         return this.mentorDao.getAllMentors();
     }
 

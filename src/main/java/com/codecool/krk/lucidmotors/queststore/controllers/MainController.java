@@ -28,6 +28,7 @@ public class MainController {
 
         server.createContext("/", new LoginHandler(this.school, loggedUsers));
         server.createContext("/manager", new ManagerHandler(this.school, loggedUsers));
+        server.createContext("/manager-mentor", new ManagerMentorHandler(this.school, loggedUsers));
         server.createContext("/mentor", new MentorHandler(this.school));
         server.createContext("/student", new StudentHandler(this.school));
         server.createContext("/logout", new LogoutHandler());

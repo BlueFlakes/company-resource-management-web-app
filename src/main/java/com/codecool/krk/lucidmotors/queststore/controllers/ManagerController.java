@@ -11,6 +11,7 @@ import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
 import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ManagerController extends AbstractUserController<Manager> {
 
@@ -92,7 +93,7 @@ public class ManagerController extends AbstractUserController<Manager> {
 
     private SchoolClass chooseProperClass() throws DaoException {
 
-        ArrayList<SchoolClass> allClasses = this.school.getAllClasses();
+        List<SchoolClass> allClasses = this.school.getAllClasses();
         int userChoice;
 
         do {
@@ -120,7 +121,7 @@ public class ManagerController extends AbstractUserController<Manager> {
         return Integer.parseInt(userInput.get(0));
     }
 
-    private void showAvailableClasses(ArrayList<SchoolClass> allClasses) {
+    private void showAvailableClasses(List<SchoolClass> allClasses) {
         userInterface.println("");
 
         for (int i = 0; i < allClasses.size(); i++) {
@@ -202,7 +203,7 @@ public class ManagerController extends AbstractUserController<Manager> {
 
         userInterface.println("List of existing mentors: ");
 
-        ArrayList<Mentor> mentors = this.school.getAllMentors();
+        List<Mentor> mentors = this.school.getAllMentors();
         for (Mentor mentor : mentors) {
             userInterface.println(mentor.toString());
         }

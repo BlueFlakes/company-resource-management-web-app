@@ -1,0 +1,9 @@
+<form>
+    <label for="mentor">Mentor:</label>
+    <select id="mentor">
+        {% for mentor in mentors %}
+        <option value="{{mentor[0]}}">{{mentor[1]}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="choose">
+</form>
