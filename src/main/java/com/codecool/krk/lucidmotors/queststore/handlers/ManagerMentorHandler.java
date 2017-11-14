@@ -47,9 +47,10 @@ public class ManagerMentorHandler implements HttpHandler {
 
         response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
+        final byte[] finalResponseBytes = response.getBytes("UTF-8");
+        httpExchange.sendResponseHeaders(200, finalResponseBytes.length);
         OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(finalResponseBytes);
         os.close();
     }
 

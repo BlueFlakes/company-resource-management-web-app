@@ -32,11 +32,13 @@ public class ManagerHandler implements HttpHandler {
         model.with("title", "Manager menu");
         model.with("navigation", "static/snippets/ManagerMenuSnippet.html");
         model.with("templatePath", "classpath:/templates/empty.twig");
+
         response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
+        final byte[] finalResponseBytes = response.getBytes("UTF-8");
+        httpExchange.sendResponseHeaders(200, finalResponseBytes.length);
         OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(finalResponseBytes);
         os.close();
     }
 
