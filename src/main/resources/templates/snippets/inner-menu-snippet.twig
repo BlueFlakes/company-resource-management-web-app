@@ -1,0 +1,9 @@
+<h2>Manager menu</h2>
+<div class="options">
+    {% for entry in entries %}
+    <div class="option">
+        <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+        <a href="{{ entry }}">{{ entry }}</a>
+    </div>
+    {% endfor %}
+</div>

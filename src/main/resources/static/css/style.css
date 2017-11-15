@@ -7,6 +7,8 @@
     --menu-vertical-button: #fcce07;
     --menu-button-hover: #273442;
     --menu-button-text: #fcce07;
+    --user-data-text: #fcce07;
+    --user-border-color: #fcce07;
     --gradient1: rgba(248, 238, 231, 0);
     --gradient2: rgba(248, 238, 231, 0);
     --page-title: black;
@@ -36,7 +38,7 @@ body {
     margin: 0;
     font-family: 'Droid Sans', sans-serif;
     background-color: var(--main-backgroud);
-    background-image: url("concrete_seamless.png");
+    background-image: url("static/images/concrete_seamless.png");
     justify-content: center;
 }
 
@@ -76,7 +78,7 @@ body {
 }
 
 .horizontal-bar div p {
-    display: block;
+   display: block;
 }
 
 .horizontal-bar img {
@@ -122,11 +124,12 @@ body {
 
 .container {
     padding-top: 50px;
-    width: 100%;
+    width: calc(100% - 380px);
     max-width: 1200px;
     text-align: center;
     display: flex;
     margin: 0 auto;
+    margin-left: 380px;
 }
 
 .gradient {
@@ -138,28 +141,40 @@ body {
 #top-gradient {
     top: 50px;
     background-image: -webkit-gradient(
-            linear, left top, left bottom, from(var(--gradient1)),
-            to(var(--gradient2)));
+  linear, left top, left bottom, from(var(--gradient1)),
+  to(var(--gradient2)));
 }
 
 #bottom-gradient {
     bottom: 50px;
     background-image: -webkit-gradient(
-            linear, left top, left bottom, from(var(--gradient2)),
-            to(var(--gradient1)));
+  linear, left top, left bottom, from(var(--gradient2)),
+  to(var(--gradient1)));
 }
 
 aside {
     min-width: 380px;
     position: fixed;
-    top: 70px;
-    bottom: 70px;
-    left:  -345px;
+    top: 53px;
+    bottom: 51px;
+    left: 0;
     z-index: 2;
     background-color: var(--aside-background);
     transition: 1s;
     display: flex;
     border-radius: 1%;
+    flex-direction: column;
+}
+
+.user-data {
+    color: var(--user-data-text);
+    text-align: center;
+    line-height: 30px;
+    font-size: 1.2em;
+    border: 2px solid var(--user-border-color);
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
 }
 
 nav ul {
@@ -189,9 +204,9 @@ nav ul li:hover {
     border-radius: 2%;
 }
 
-aside:hover {
+/*aside:hover {
     left: 20px;
-}
+}*/
 
 aside:hover li {
     width: 95%;
@@ -212,6 +227,41 @@ aside:hover #menu-description {
     color: var(--menu-vertical-button);
 }
 
+.options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 30vh;
+}
+
+.option {
+    width: 120px;
+    height: 120px;
+    border: 3px solid var(--menu-button-text);
+    margin: 25px;
+    padding-top: 20px;
+    background-color: var(--aside-background);
+    color: var(--menu-button-text);
+    border-radius: 20%;
+    transition: 0.5s;
+}
+
+.option:hover {
+    border-radius: 50%;
+    background-color: var(--menu-button-hover);
+}
+
+.option a {
+    text-decoration: none;
+    display: block;
+    height: 100%;
+    width: 100%;
+    color: var(--menu-button-text);
+}
+
 main, main div, main form {
     width: 100%;
     height: 100%;
@@ -219,6 +269,7 @@ main, main div, main form {
     display: flex;
     align-items: center;
     flex-flow: column;
+    position: relative;
 }
 
 main h2 {
@@ -273,7 +324,7 @@ main tr:nth-child(even) {
 }
 
 main tbody tr:hover {
-    background-color: var(--table-row-background-hover);
+	background-color: var(--table-row-background-hover);
 }
 
 .social-medias {
@@ -341,13 +392,13 @@ main tbody tr:hover {
 
 @media (max-height: 600px) {
     aside {
-        overflow: scroll;
+    	overflow: scroll;
     }
 }
 
 @media (max-width: 768px) {
     .horizontal-bar {
-        flex-flow: column;
+    	flex-flow: column;
     }
 
     header .button {

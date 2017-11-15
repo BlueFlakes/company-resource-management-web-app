@@ -25,13 +25,13 @@ public class ManagerHandler implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
         String response;
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/logged.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
 
         model.with("redirect", redirect(httpExchange));
         model.with("title", "Manager menu");
-        model.with("navigation", "static/snippets/ManagerMenuSnippet.html");
-        model.with("templatePath", "classpath:/templates/empty.twig");
+        model.with("menu_path", "classpath:/templates/snippets/manager-menu-snippet.twig");
+        model.with("content_path", "classpath:/templates/snippets/manager-mentor-actions-inner-menu-snippet.twig");
 
         response = template.render(model);
 
