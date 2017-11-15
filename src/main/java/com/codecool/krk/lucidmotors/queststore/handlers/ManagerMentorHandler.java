@@ -29,7 +29,6 @@ public class ManagerMentorHandler implements HttpHandler {
 
         model.with("redirect", redirect(httpExchange));
         model.with("title", "Manager -> mentor");
-        model.with("navigation", "static/snippets/ManagerMenuSnippet.html");
         try {
             List<List<String>> mentors = new ArrayList<>();
             for (Mentor mentor : this.school.getAllMentors()) {
