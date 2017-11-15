@@ -79,10 +79,10 @@ public class LoginController {
         this.loginView.printLoginMenu();
     }
 
-    public Optional<User> getUser(String login, String password) throws DaoException {
+    public User getUser(String login, String password) throws DaoException {
         User user = this.school.getUser(login, password);
 
-        return Optional.ofNullable(user);
+        return user;
     }
 
     /**

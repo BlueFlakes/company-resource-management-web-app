@@ -14,79 +14,53 @@ import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.util.*;
 
-public class LoginHandler implements HttpHandler {
+public class LoginHandler {
     private School school;
-    private Map<UUID, User> loggedUsers;
+    Map<String, String> formData;
+    private Map<UUID, User> loggedUsers = new HashMap<>();
 
-    public LoginHandler(School school, Map<UUID, User> loggedUsers) {
-        this.loggedUsers = loggedUsers;
+    public LoginHandler(School school, Map<String, String> formData, Map<UUID, User> loggedUsers) {
+        this.formData = formData;
         this.school = school;
+        this.loggedUsers = loggedUsers;
     }
 
-    public void handle(HttpExchange httpExchange) throws IOException {
-        String response;
+    public Activity getActivity(HttpExchange httpExchange) throws IOException {
+        final String defaultValue = "";
+        Activity activity = null;
 
-        String cookieStr =  httpExchange.getRequestHeaders().getFirst("Cookie");
-
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/login.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        String method = httpExchange.getRequestMethod();
-
-        if(cookieStr != null) {
-            HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
-            if (cookie.getName().equals("UUID")) {
-                UUID uuid = UUID.fromString(cookie.getValue());
-                model.with("redirect", redirect(uuid));
-            }
-
-        } else if (method.equals("POST")){
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-
-            Map inputs = parseFormData(formData);
-
-            String login = inputs.get("login").toString();
-            String password = inputs.get("password").toString();
+        if(!this.formData.isEmpty()) {
+            String login = formData.getOrDefault("login", defaultValue);
+            String password = formData.getOrDefault("password", defaultValue);
             try {
-                Optional<User> userOptional = new LoginController(this.school).getUser(login, password);
-                if (userOptional.isPresent()) {
-                    User user = userOptional.get();
+                User user = new LoginController(this.school).getUser(login, password);
+                if (user != null) {
                     UUID uuid = UUID.randomUUID();
                     this.loggedUsers.put(uuid, user);
                     HttpCookie cookie = new HttpCookie("UUID", uuid.toString());
                     httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-                    model.with("redirect", redirect(uuid));
+                    activity = new Activity(302, "/manager");
                 }
             } catch (DaoException e) {
                 e.printStackTrace();
             }
 
+        } else {
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/login.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+            String response = template.render(model);
+            activity = new Activity(200, response);
         }
 
-        response = template.render(model);
-
-        final byte[] finalResponseBytes = response.getBytes("UTF-8");
-        httpExchange.sendResponseHeaders(200, finalResponseBytes.length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(finalResponseBytes);
-        os.close();
+        return activity;
     }
 
     private String redirect(UUID uuid) {
         User user = this.loggedUsers.get(uuid);
         String userUrl = null;
 
-        if (user == null) {
-            userUrl = "/logout";
-        } else if (user instanceof Manager) {
-            userUrl = "/manager";
-        } else if (user instanceof Mentor) {
-            userUrl = "/mentor";
-        } else if (user instanceof Student) {
-            userUrl = "/student";
-        }
+
 
         String content;
         if(userUrl != null) {

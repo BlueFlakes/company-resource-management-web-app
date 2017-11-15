@@ -20,18 +20,11 @@ public class MainController {
 
     private static Integer port = 8000;
 
-    public void start() throws IOException {
+    public void startServer() throws IOException {
 
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
-        Map<UUID, User> loggedUsers = new HashMap<>();
-
-        server.createContext("/", new LoginHandler(this.school, loggedUsers));
-        server.createContext("/manager", new ManagerHandler(this.school, loggedUsers));
-        server.createContext("/manager-mentor", new ManagerMentorHandler(this.school, loggedUsers));
-        server.createContext("/mentor", new MentorHandler(this.school));
-        server.createContext("/student", new StudentHandler(this.school));
-        server.createContext("/logout", new LogoutHandler());
+        server.createContext("/", new MainHandler(this.school));
         server.createContext("/static", new Static());
         server.setExecutor(null); // creates a default executor
 
