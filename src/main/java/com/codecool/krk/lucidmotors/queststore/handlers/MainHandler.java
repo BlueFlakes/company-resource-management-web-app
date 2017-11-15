@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.handlers;
 
 import com.codecool.krk.lucidmotors.queststore.enums.LoginMenuOptions;
+import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -117,6 +118,37 @@ public class MainHandler implements HttpHandler {
         }
 
         return user;
+    }
+
+    private Map<String, String> parseURI (String uri) {
+        Map<String, String> parsedURI = new HashMap<String, String>();
+        String[] uriList = uri.split("/");
+        List<String> roles = Arrays.asList("student", "mentor", "manager");
+
+        if (uriList.length == 2 && roles.contains(uriList[1])) {
+            parsedURI.put("role", uriList[1]);
+            parsedURI.put("action", "");
+        } else if (uriList.length == 3 && roles.contains(uriList[1])) {
+            parsedURI.put("role", uriList[1]);
+            parsedURI.put("data", uriList[2]);
+        } else {
+            parsedURI.put("role", "");
+            parsedURI.put("action", "");
+        }
+
+        return parsedURI;
+    }
+
+    private ManagerOptions getManagerEnumValue(String userAction) {
+        ManagerOptions chosenOption;
+
+        try {
+            chosenOption = ManagerOptions.valueOf(userAction.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            chosenOption = ManagerOptions.DEFAULT;
+        }
+
+        return chosenOption;
     }
 
 }
