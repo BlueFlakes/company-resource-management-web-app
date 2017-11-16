@@ -24,7 +24,7 @@ public class ExperienceLevelsController extends AbstractUserController<Mentor> {
     /**
      * Switches between menu options.
      *
-     * @param choice
+     * @param userChoice
      */
     protected void handleUserRequest(String userChoice) throws DaoException {
         ExperienceLevelsMenuOptions chosenOption = getEnumValue(userChoice);
