@@ -1,9 +1,10 @@
 package com.codecool.krk.lucidmotors.queststore.handlers;
 
-import com.codecool.krk.lucidmotors.queststore.enums.LoginMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
+import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
+import com.codecool.krk.lucidmotors.queststore.views.MentorView;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpCookie;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.util.*;
 
@@ -52,11 +52,11 @@ public class MainHandler implements HttpHandler {
         } else if (!role.equals("")) {
             switch (role) {
                 case "manager":
-                    activity = new ManagerHandler(this.school).getActivity(getManagerEnumValue(action));
+                    activity = new ManagerView(this.school).getActivity(getManagerEnumValue(action));
                     break;
 
                 case "mentor":
-                    activity = new MentorHandler(this.school).getActivity(getMentorEnumValue(action));
+                    activity = new MentorView(this.school).getActivity(getMentorEnumValue(action));
                     break;
             }
         } else {

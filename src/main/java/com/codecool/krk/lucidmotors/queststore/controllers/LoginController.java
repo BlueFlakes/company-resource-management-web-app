@@ -4,16 +4,11 @@ import com.codecool.krk.lucidmotors.queststore.enums.LoginMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
-import com.codecool.krk.lucidmotors.queststore.views.LoginView;
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
-
-import java.util.ArrayList;
-import java.util.Optional;
 
 public class LoginController {
 
-    private final UserInterface userInterface = new UserInterface();
-    private final LoginView loginView = new LoginView();
+    //private final UserInterface userInterface = new UserInterface();
+    //private final LoginView loginView = new LoginView();
     private School school;
 
     public LoginController(School school) {
@@ -30,14 +25,14 @@ public class LoginController {
     public void start() throws DaoException {
 
         String userChoice;
-
-        do {
-            showMenu();
-            userChoice = userInterface.inputs.getInput("What do you want to do: ");
-            userInterface.clearWindow();
-            handleUserRequest(userChoice);
-
-        } while (!userChoice.equals("0"));
+//
+//        do {
+//            showMenu();
+//            //userChoice = //userInterface.inputs.getInput("What do you want to do: ");
+//            //userInterface.clearWindow();
+//            //handleUserRequest(userChoice);
+//
+//        } while (!userChoice.equals("0"));
     }
 
     private void handleUserRequest(String userChoice) throws DaoException {
@@ -50,33 +45,33 @@ public class LoginController {
                 break;
 
             case EXIT:
-                userInterface.println("Have a nice day!");
+                //userInterface.println("Have a nice day!");
                 break;
 
             case DEFAULT:
-                handleNoSuchCommand();
+                //handleNoSuchCommand();
         }
     }
 
     private void handleNoSuchCommand() {
-        userInterface.println("Wrong choice");
-        userInterface.pause();
+//        userInterface.println("Wrong choice");
+//        userInterface.pause();
     }
 
     private LoginMenuOptions getEnumValue(String userChoice) {
-        LoginMenuOptions chosenOption;
+        LoginMenuOptions chosenOption = null;
 
         try {
-            chosenOption = LoginMenuOptions.values()[Integer.parseInt(userChoice)];
+            //chosenOption = LoginMenuOptions.values()[Integer.parseInt(userChoice)];
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            chosenOption = LoginMenuOptions.DEFAULT;
+            //chosenOption = LoginMenuOptions.DEFAULT;
         }
 
         return chosenOption;
     }
 
     private void showMenu() {
-        this.loginView.printLoginMenu();
+        //this.loginView.printLoginMenu();
     }
 
     public User getUser(String login, String password) throws DaoException {
@@ -94,13 +89,13 @@ public class LoginController {
     private void runUserController(User user) throws DaoException {
 
         if (user instanceof Manager) {
-            new ManagerController().startController(user, this.school);
+            //new ManagerController().startController(user, this.school);
 
         } else if (user instanceof Mentor) {
-            new MentorController().startController(user, this.school);
+            //new MentorController().startController(user, this.school);
 
         } else if (user instanceof Student) {
-            new StudentController().startController(user, this.school);
+            //new StudentController().startController(user, this.school);
         }
     }
 }
