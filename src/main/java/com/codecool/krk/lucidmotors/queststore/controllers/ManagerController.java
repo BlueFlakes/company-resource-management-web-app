@@ -301,5 +301,12 @@ public class ManagerController {
 
     }
 
+    public boolean createClass(Map<String, String> formData) throws DaoException {
+        String name = formData.get("classname");
 
+        SchoolClass schoolClass = new SchoolClass(name);
+        schoolClass.save();
+
+        return true;
+    }
 }

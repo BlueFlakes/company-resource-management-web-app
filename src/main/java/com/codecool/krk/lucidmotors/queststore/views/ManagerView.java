@@ -78,6 +78,13 @@ public class ManagerView {
                     model.with("text", "Mentor successfully created");
                 }
                 break;
+
+            case CREATE_CLASS:
+                if(formData.containsKey("classname") && new ManagerController(this.school).createClass(formData)) {
+                    model.with("is_text_available", true);
+                    model.with("text", "Class successfully created");
+                }
+                break;
         }
     }
 
