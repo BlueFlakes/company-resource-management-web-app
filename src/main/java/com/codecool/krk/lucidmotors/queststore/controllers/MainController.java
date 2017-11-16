@@ -30,5 +30,6 @@ public class MainController {
         server.setExecutor(null); // creates a default executor
 
         server.start();
+        System.out.println("Server started");
     }
 }
