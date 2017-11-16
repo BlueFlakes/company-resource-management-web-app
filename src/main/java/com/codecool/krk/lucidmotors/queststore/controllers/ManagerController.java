@@ -224,3 +224,30 @@
 //        new ExperienceLevelsController().startController(this.user, this.school);
 //    }
 //}
+
+package com.codecool.krk.lucidmotors.queststore.controllers;
+
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.models.Mentor;
+import com.codecool.krk.lucidmotors.queststore.models.School;
+import com.codecool.krk.lucidmotors.queststore.models.Student;
+
+import java.util.List;
+
+public class ManagerController {
+    School school;
+
+    public ManagerController(School school) {
+        this.school = school;
+    }
+
+    public List<Student> getMentorClass(Integer mentorId) throws DaoException {
+        Mentor mentor = school.getMentor(mentorId);
+
+        if (mentor == null) {
+            return null;
+        } else {
+            return mentor.getClas().getAllStudents();
+        }
+    }
+}
