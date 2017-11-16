@@ -39,7 +39,7 @@ public class LoginHandler {
                     this.loggedUsers.put(uuid, user);
                     HttpCookie cookie = new HttpCookie("UUID", uuid.toString());
                     httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-                    activity = new Activity(302, "/manager");
+                    activity = MainHandler.switchUser(user);
                 }
             } catch (DaoException e) {
                 e.printStackTrace();
