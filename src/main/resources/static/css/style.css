@@ -122,6 +122,15 @@ body {
     flex: 1;
 }
 
+.login-container {
+    padding-top: 50px;
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    display: flex;
+    margin: 0 auto;
+}
+
 .container {
     padding-top: 50px;
     width: calc(100% - 380px);
