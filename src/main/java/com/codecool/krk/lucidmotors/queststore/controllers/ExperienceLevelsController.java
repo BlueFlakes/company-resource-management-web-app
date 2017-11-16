@@ -128,21 +128,17 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 //    }
 //}
 
-import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.IntStream;
 
 import static java.lang.Integer.parseInt;
 
 public class ExperienceLevelsController {
     private final ExperienceLevelsDao experienceLevelsDao;
-    private final String coinsKey = "experience-level-new-value";
-    private final String levelsKey = "choosen-class";
 
     public ExperienceLevelsController() throws DaoException {
         this.experienceLevelsDao = new ExperienceLevelsDao();
@@ -153,27 +149,38 @@ public class ExperienceLevelsController {
         return experienceLevels.getLevels();
     }
 
-    public void updateLevel(Map<String, String> formData) throws DaoException {
+    public boolean updateLevel(Map<String, String> formData, String coinsKey, String levelsKey) throws DaoException {
         ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
 
-        if (formData.containsKey(coinsKey) && formData.containsKey(levelsKey) && areInputsParseableToInteger(formData)) {
-            int coins = parseInt(formData.get(coinsKey));
-            int level = parseInt(formData.get(levelsKey));
+        int coins = parseInt(formData.get(coinsKey));
+        int level = parseInt(formData.get(levelsKey));
 
-            experienceLevels.updateLevel(coins, level);
+        boolean wasSuccesfullyUpdated = experienceLevels.updateLevel(coins, level);
 
-            if (experienceLevels.getLevels().get(level) == coins) {
-                experienceLevels.updateExperienceLevels();
-            } else {
-                // handle wrong
-            }
+        if (experienceLevels.getLevels().get(level) == coins) {
+            experienceLevels.updateExperienceLevels();
+        } else {
+            // handle wrong
         }
+
+        return wasSuccesfullyUpdated;
     }
 
-    private boolean areInputsParseableToInteger(Map<String, String> formData) {
-        String coins = formData.get(coinsKey).trim();
-        String level = formData.get(levelsKey).trim();
+        public boolean createNewLevel(Map<String, String> formData, String coinsKey) throws DaoException {
 
-        return CustomMatchers.isPositiveInteger(coins) && CustomMatchers.isPositiveInteger(level);
+        ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
+        int coins = parseInt(formData.get(coinsKey));
+
+        Integer nextLevel = experienceLevels.getLevels().size() + 1;
+
+        boolean wasAddSuccesful = experienceLevels.addLevel(coins, nextLevel);
+
+        if (experienceLevels.getLevels().size() == nextLevel) {
+            experienceLevels.updateExperienceLevels();
+        } else {
+            // handle failure
+        }
+
+        return wasAddSuccesful;
     }
 }

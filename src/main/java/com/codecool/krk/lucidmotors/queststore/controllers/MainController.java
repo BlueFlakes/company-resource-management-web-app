@@ -1,14 +1,13 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
-import com.codecool.krk.lucidmotors.queststore.handlers.*;
+
+import com.codecool.krk.lucidmotors.queststore.handlers.LogoutHandler;
+import com.codecool.krk.lucidmotors.queststore.handlers.MainHandler;
+import com.codecool.krk.lucidmotors.queststore.handlers.Static;
 import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class MainController {
 

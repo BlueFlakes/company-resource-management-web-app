@@ -2,7 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.enums;
 
 public enum ManagerOptions {
     MENTORS ("templates/snippets/manager-mentor-actions-inner-menu-snippet.twig"),
-    ADD_MENTOR ("templates/empty.twig"),
+    ADD_MENTOR ("templates/snippets/manager-add-mentor-snippet.twig"),
     EDIT_MENTOR ("templates/snippets/manager-edit-mentor-snippet.twig"),
     SHOW_MENTORS_CLASS ("templates/snippets/manager-show-mentor-class.twig"),
     CREATE_CLASS ("templates/snippets/manager-create-class-snippet.twig"),
@@ -14,7 +14,7 @@ public enum ManagerOptions {
 
     private String path;
 
-    private ManagerOptions(String path) {
+    ManagerOptions(String path) {
         this.path = path;
     }
 

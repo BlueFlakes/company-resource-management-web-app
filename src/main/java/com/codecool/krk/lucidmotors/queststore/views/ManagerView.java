@@ -1,21 +1,20 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
+import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.ManagerController;
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.*;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
+import com.codecool.krk.lucidmotors.queststore.models.Activity;
+import com.codecool.krk.lucidmotors.queststore.models.School;
+import com.codecool.krk.lucidmotors.queststore.models.Student;
+import com.codecool.krk.lucidmotors.queststore.models.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpCookie;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class ManagerView {
     private School school;
@@ -80,10 +79,77 @@ public class ManagerView {
                 break;
 
             case UPDATE_LEVEL:
-                model.with("experience_levels", this.exprienceLevelsController.getLevels());
-                exprienceLevelsController.updateLevel(formData);
+                runUpdateLevel(model, formData);
                 break;
 
+            case CREATE_NEW_LEVEL:
+                runNewLevelCreation(formData, model);
+                break;
+
+            case ADD_MENTOR:
+                model.with("school_classes", this.school.getAllClasses());
+                if(formData.containsKey("class_id") &&
+                        new ManagerController(this.school).addMentor(formData)) {
+                    model.with("is_text_available", true);
+                    model.with("text", "Mentor successfully created");
+                }
+                break;
+
+            case CREATE_CLASS:
+                if(formData.containsKey("classname") && new ManagerController(this.school).createClass(formData)) {
+                    model.with("is_text_available", true);
+                    model.with("text", "Class successfully created");
+                }
+                break;
+
+        }
+    }
+
+    private void runUpdateLevel(JtwigModel model, Map<String, String> formData) throws DaoException {
+        final String coinsKey = "experience-level-new-value";
+        final String levelsKey = "choosen-class";
+
+        model.with("experience_levels", this.exprienceLevelsController.getLevels());
+
+        if (formData.containsKey(coinsKey) && formData.containsKey(levelsKey)
+                && areInputsParseableToInteger(formData, coinsKey, levelsKey))  {
+
+            boolean wasUpdated = exprienceLevelsController.updateLevel(formData, coinsKey, levelsKey);
+            model.with("is_text_available", true);
+
+            String message;
+            if (wasUpdated) {
+                message = "Successfully updated level";
+            } else {
+                message = "Wrong amount of xp points! TOO LOW number";
+            }
+
+            model.with("text", message);
+        }
+    }
+
+    private boolean areInputsParseableToInteger(Map<String, String> formData, String coinsKey, String levelsKey) {
+        String coins = formData.get(coinsKey).trim();
+        String level = formData.get(levelsKey).trim();
+
+        return CustomMatchers.isPositiveInteger(coins) && CustomMatchers.isPositiveInteger(level);
+    }
+
+    private void runNewLevelCreation(Map<String, String> formData, JtwigModel model) throws DaoException {
+        final String coinsKey = "experience-level";
+
+        if (formData.containsKey(coinsKey) && CustomMatchers.isPositiveInteger(formData.get(coinsKey))) {
+            boolean wasUpdated = exprienceLevelsController.createNewLevel(formData, coinsKey);
+            model.with("is_text_available", true);
+
+            String message;
+            if (wasUpdated) {
+                message = "Successfully updated level";
+            } else {
+                message = "Wrong amount of xp points! TOO LOW number";
+            }
+
+            model.with("text", message);
         }
     }
 

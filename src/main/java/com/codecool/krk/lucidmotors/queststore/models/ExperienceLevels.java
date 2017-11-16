@@ -55,13 +55,16 @@ public class ExperienceLevels {
      * @param coins
      * @param level
      */
-    public void addLevel(Integer neededCoins, Integer newLevel) {
+    public boolean addLevel(Integer neededCoins, Integer newLevel) {
         Integer previousLevelCoins = this.levels.get(newLevel - 1);
         previousLevelCoins = (previousLevelCoins == null) ? neededCoins - 1 : previousLevelCoins;
 
         if (!this.levels.containsKey(newLevel) && previousLevelCoins < neededCoins) {
             this.levels.put(newLevel, neededCoins);
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -70,7 +73,7 @@ public class ExperienceLevels {
      * @param coins
      * @param level
      */
-    public void updateLevel(Integer neededCoins, Integer updatedLevel) {
+    public boolean updateLevel(Integer neededCoins, Integer updatedLevel) {
         Integer previousLevelCoins = this.levels.get(updatedLevel - 1);
         previousLevelCoins = (previousLevelCoins == null) ? neededCoins - 1 : previousLevelCoins;
 
@@ -81,7 +84,11 @@ public class ExperienceLevels {
                 previousLevelCoins < neededCoins &&
                 nextLevelCoins > neededCoins) {
             this.levels.put(updatedLevel, neededCoins);
+
+            return true;
         }
+
+        return false;
     }
 
     public TreeMap<Integer, Integer> getLevels() {
