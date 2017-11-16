@@ -52,7 +52,7 @@ public class MainHandler implements HttpHandler {
         } else if (!role.equals("")) {
             switch (role) {
                 case "manager":
-                    activity = new ManagerView(this.school).getActivity(getManagerEnumValue(action));
+                    activity = new ManagerView(this.school, user, formData).getActivity(getManagerEnumValue(action));
                     break;
 
                 case "mentor":

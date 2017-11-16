@@ -1,8 +1,8 @@
 <form method="post">
     <label for="mentor">Mentor:</label>
-    <select id="mentor">
+    <select id="mentor" name="mentor_id">
         {% for mentor in mentors %}
-            <option value="{{mentor.getId()}}">{{mentor.getName()}}</option>
+            <option {% if selected_mentor_id == mentor.getId() %} selected {% endif %} value="{{mentor.getId()}}">{{mentor.getName()}}</option>
         {% endfor %}
     </select>
     <input type="submit" value="choose">
