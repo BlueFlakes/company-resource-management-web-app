@@ -5,11 +5,11 @@ public enum ManagerOptions {
     ADD_MENTOR ("templates/empty.twig"),
     EDIT_MENTOR ("templates/snippets/manager-edit-mentor-snippet.twig"),
     SHOW_MENTORS_CLASS ("templates/snippets/manager-show-mentor-class.twig"),
-    CREATE_CLASS ("templates/manager-create-class-snippet.twig"),
-    EXPERIENCE_LEVELS ("templates/manager-exp-levels-inner-menu-snippet.twig"),
-    CREATE_NEW_LEVEL ("templates/manager-create-new-level.twig"),
-    UPDATE_LEVEL ("templates/manager-update-level.twig"),
-    SHOW_LEVELS ("templates/manager-show-all-levels.twig"),
+    CREATE_CLASS ("templates/snippets/manager-create-class-snippet.twig"),
+    EXPERIENCE_LEVELS ("templates/snippets/manager-exp-levels-inner-menu-snippet.twig"),
+    CREATE_NEW_LEVEL ("templates/snippets/manager-create-new-level.twig"),
+    UPDATE_LEVEL ("templates/snippets/manager-update-level.twig"),
+    SHOW_LEVELS ("templates/snippets/manager-show-all-levels.twig"),
     DEFAULT ("templates/snippets/home-snippet.twig");
 
     private String path;
