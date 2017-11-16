@@ -35,6 +35,7 @@ public class ManagerView {
 
         model.with("title", managerOption.toString());
         model.with("menu_path", "classpath:/templates/snippets/manager-menu-snippet.twig");
+        model.with("is_text_available", false);
         try {
             insertData(managerOption, model, formData);
         } catch (DaoException e) {
@@ -60,6 +61,15 @@ public class ManagerView {
                 }
 
                 model.with("mentors", this.school.getAllMentors());
+                break;
+
+            case EDIT_MENTOR:
+                model.with("mentors", this.school.getAllMentors());
+                if(formData.containsKey("mentor_id") &&
+                        new ManagerController(this.school).editMentor(formData)) {
+                    model.with("is_text_available", true);
+                    model.with("text", "Mentor successfully updated");
+                }
                 break;
         }
     }

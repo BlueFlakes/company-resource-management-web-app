@@ -227,12 +227,16 @@
 
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
+import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ManagerController {
     School school;
@@ -250,4 +254,25 @@ public class ManagerController {
             return mentor.getClas().getAllStudents();
         }
     }
+
+    public boolean editMentor(Map<String, String> formData) throws DaoException {
+        Boolean isUpdated = false;
+
+        Integer mentorId = Integer.valueOf(formData.get("mentor_id"));
+        Mentor mentor = new MentorDao(new ClassDao()).getMentor(mentorId);
+
+        if (mentor != null &&
+                (this.school.isLoginAvailable(formData.get("login")) || formData.get("login").equals(mentor.getLogin()))) {
+            mentor.setName(formData.get("name"));
+            mentor.setLogin(formData.get("login"));
+            mentor.setPassword(formData.get("password"));
+            mentor.setEmail(formData.get("mail"));
+            mentor.update();
+            isUpdated = true;
+        }
+
+        return isUpdated;
+    }
+
+
 }
