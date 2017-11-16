@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class ManagerView {
     private School school;
-    private ExperienceLevelsController exprienceLevelsController;
+    private ExperienceLevelsController experienceLevelsController;
     User user;
     Map<String, String> formData;
 
@@ -26,7 +26,7 @@ public class ManagerView {
         this.school = school;
         this.user = user;
         this.formData = formData;
-        this.exprienceLevelsController = new ExperienceLevelsController();
+        this.experienceLevelsController = new ExperienceLevelsController();
     }
 
     public Activity getActivity(ManagerOptions managerOption) throws IOException {
@@ -39,7 +39,7 @@ public class ManagerView {
         model.with("is_text_available", false);
 
         try {
-            insertData(managerOption, model, formData);
+            insertData(managerOption, model);
         } catch (DaoException e) {
             e.printStackTrace();
         }
@@ -52,51 +52,34 @@ public class ManagerView {
         return new Activity(200, response);
     }
 
-    private void insertData(ManagerOptions managerOption, JtwigModel model, Map<String, String> formData) throws DaoException {
+    private void insertData(ManagerOptions managerOption, JtwigModel model) throws DaoException {
         switch (managerOption) {
             case SHOW_MENTORS_CLASS:
-                if (formData.containsKey("mentor_id")) {
-                    Integer mentorId = Integer.valueOf(formData.get("mentor_id"));
-                    List<Student> studentList = new ManagerController(this.school).getMentorClass(mentorId);
-                    model.with("students", studentList);
-                    model.with("selected_mentor_id", mentorId);
-                }
-
-                model.with("mentors", this.school.getAllMentors());
+                showMentorClass(model);
                 break;
 
             case EDIT_MENTOR:
-                model.with("mentors", this.school.getAllMentors());
-                if(formData.containsKey("mentor_id") &&
-                        new ManagerController(this.school).editMentor(formData)) {
-                    model.with("is_text_available", true);
-                    model.with("text", "Mentor successfully updated");
-                }
+                editMentor(model);
                 break;
 
             case SHOW_LEVELS:
-                model.with("experience_levels", this.exprienceLevelsController.getLevels());
+                model.with("experience_levels", this.experienceLevelsController.getLevels());
                 break;
 
             case UPDATE_LEVEL:
-                runUpdateLevel(model, formData);
+                runUpdateLevel(model);
                 break;
 
             case CREATE_NEW_LEVEL:
-                runNewLevelCreation(formData, model);
+                runNewLevelCreation(model);
                 break;
 
             case ADD_MENTOR:
-                model.with("school_classes", this.school.getAllClasses());
-                if(formData.containsKey("class_id") &&
-                        new ManagerController(this.school).addMentor(formData)) {
-                    model.with("is_text_available", true);
-                    model.with("text", "Mentor successfully created");
-                }
+                add_mentor(model);
                 break;
 
             case CREATE_CLASS:
-                if(formData.containsKey("classname") && new ManagerController(this.school).createClass(formData)) {
+                if(formData.containsKey("classname") && new ManagerController(this.school).createClass(this.formData)) {
                     model.with("is_text_available", true);
                     model.with("text", "Class successfully created");
                 }
@@ -105,16 +88,45 @@ public class ManagerView {
         }
     }
 
-    private void runUpdateLevel(JtwigModel model, Map<String, String> formData) throws DaoException {
+    private void add_mentor(JtwigModel model) throws DaoException {
+        model.with("school_classes", this.school.getAllClasses());
+        if(formData.containsKey("class_id") &&
+                new ManagerController(this.school).addMentor(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Mentor successfully created");
+        }
+    }
+
+    private void editMentor(JtwigModel model) throws DaoException {
+        model.with("mentors", this.school.getAllMentors());
+        if(this.formData.containsKey("mentor_id") &&
+                new ManagerController(this.school).editMentor(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Mentor successfully updated");
+        }
+    }
+
+    private void showMentorClass(JtwigModel model) throws DaoException {
+        if (this.formData.containsKey("mentor_id")) {
+            Integer mentorId = Integer.valueOf(this.formData.get("mentor_id"));
+            List<Student> studentList = new ManagerController(this.school).getMentorClass(mentorId);
+            model.with("students", studentList);
+            model.with("selected_mentor_id", mentorId);
+        }
+
+        model.with("mentors", this.school.getAllMentors());
+    }
+
+    private void runUpdateLevel(JtwigModel model) throws DaoException {
         final String coinsKey = "experience-level-new-value";
         final String levelsKey = "choosen-class";
 
-        model.with("experience_levels", this.exprienceLevelsController.getLevels());
+        model.with("experience_levels", this.experienceLevelsController.getLevels());
 
-        if (formData.containsKey(coinsKey) && formData.containsKey(levelsKey)
-                && areInputsParseableToInteger(formData, coinsKey, levelsKey))  {
+        if (this.formData.containsKey(coinsKey) && this.formData.containsKey(levelsKey)
+                && areInputsParseableToInteger(coinsKey, levelsKey))  {
 
-            boolean wasUpdated = exprienceLevelsController.updateLevel(formData, coinsKey, levelsKey);
+            boolean wasUpdated = experienceLevelsController.updateLevel(this.formData, coinsKey, levelsKey);
             model.with("is_text_available", true);
 
             String message;
@@ -128,18 +140,18 @@ public class ManagerView {
         }
     }
 
-    private boolean areInputsParseableToInteger(Map<String, String> formData, String coinsKey, String levelsKey) {
-        String coins = formData.get(coinsKey).trim();
-        String level = formData.get(levelsKey).trim();
+    private boolean areInputsParseableToInteger(String coinsKey, String levelsKey) {
+        String coins = this.formData.get(coinsKey).trim();
+        String level = this.formData.get(levelsKey).trim();
 
         return CustomMatchers.isPositiveInteger(coins) && CustomMatchers.isPositiveInteger(level);
     }
 
-    private void runNewLevelCreation(Map<String, String> formData, JtwigModel model) throws DaoException {
+    private void runNewLevelCreation(JtwigModel model) throws DaoException {
         final String coinsKey = "experience-level";
 
-        if (formData.containsKey(coinsKey) && CustomMatchers.isPositiveInteger(formData.get(coinsKey))) {
-            boolean wasUpdated = exprienceLevelsController.createNewLevel(formData, coinsKey);
+        if (this.formData.containsKey(coinsKey) && CustomMatchers.isPositiveInteger(this.formData.get(coinsKey))) {
+            boolean wasUpdated = experienceLevelsController.createNewLevel(this.formData, coinsKey);
             model.with("is_text_available", true);
 
             String message;
