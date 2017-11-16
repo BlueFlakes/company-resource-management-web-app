@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
+import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.ManagerController;
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
@@ -18,14 +19,15 @@ import java.util.UUID;
 
 public class ManagerView {
     private School school;
+    private ExperienceLevelsController exprienceLevelsController;
     User user;
     Map<String, String> formData;
 
-    public ManagerView(School school, User user, Map<String, String> formData) {
+    public ManagerView(School school, User user, Map<String, String> formData) throws DaoException {
         this.school = school;
         this.user = user;
         this.formData = formData;
-
+        this.exprienceLevelsController = new ExperienceLevelsController();
     }
 
     public Activity getActivity(ManagerOptions managerOption) throws IOException {
@@ -36,6 +38,7 @@ public class ManagerView {
         model.with("title", managerOption.toString());
         model.with("menu_path", "classpath:/templates/snippets/manager-menu-snippet.twig");
         model.with("is_text_available", false);
+
         try {
             insertData(managerOption, model, formData);
         } catch (DaoException e) {
@@ -71,6 +74,16 @@ public class ManagerView {
                     model.with("text", "Mentor successfully updated");
                 }
                 break;
+
+            case SHOW_LEVELS:
+                model.with("experience_levels", this.exprienceLevelsController.getLevels());
+                break;
+
+            case UPDATE_LEVEL:
+                model.with("experience_levels", this.exprienceLevelsController.getLevels());
+                exprienceLevelsController.updateLevel(formData);
+                break;
+
         }
     }
 

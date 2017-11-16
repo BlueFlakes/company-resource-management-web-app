@@ -1,4 +1,4 @@
-//package com.codecool.krk.lucidmotors.queststore.controllers;
+package com.codecool.krk.lucidmotors.queststore.controllers;
 //
 //import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
 //import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
@@ -127,3 +127,53 @@
 //
 //    }
 //}
+
+import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
+import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
+
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.IntStream;
+
+import static java.lang.Integer.parseInt;
+
+public class ExperienceLevelsController {
+    private final ExperienceLevelsDao experienceLevelsDao;
+    private final String coinsKey = "experience-level-new-value";
+    private final String levelsKey = "choosen-class";
+
+    public ExperienceLevelsController() throws DaoException {
+        this.experienceLevelsDao = new ExperienceLevelsDao();
+    }
+
+    public TreeMap<Integer, Integer> getLevels() throws DaoException {
+        ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
+        return experienceLevels.getLevels();
+    }
+
+    public void updateLevel(Map<String, String> formData) throws DaoException {
+        ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
+
+        if (formData.containsKey(coinsKey) && formData.containsKey(levelsKey) && areInputsParseableToInteger(formData)) {
+            int coins = parseInt(formData.get(coinsKey));
+            int level = parseInt(formData.get(levelsKey));
+
+            experienceLevels.updateLevel(coins, level);
+
+            if (experienceLevels.getLevels().get(level) == coins) {
+                experienceLevels.updateExperienceLevels();
+            } else {
+                // handle wrong
+            }
+        }
+    }
+
+    private boolean areInputsParseableToInteger(Map<String, String> formData) {
+        String coins = formData.get(coinsKey).trim();
+        String level = formData.get(levelsKey).trim();
+
+        return CustomMatchers.isPositiveInteger(coins) && CustomMatchers.isPositiveInteger(level);
+    }
+}

@@ -57,9 +57,7 @@ public class ExperienceLevelsDao {
             } catch (SQLException e) {
                 throw new DaoException(this.getClass().getName() + " class caused a problem!");
             }
-
         }
-
     }
 
     public ExperienceLevels getExperienceLevels() throws DaoException {

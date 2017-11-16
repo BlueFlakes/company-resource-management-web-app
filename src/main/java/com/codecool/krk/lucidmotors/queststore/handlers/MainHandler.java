@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.handlers;
 
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
 import com.codecool.krk.lucidmotors.queststore.views.MentorView;
@@ -29,14 +30,17 @@ public class MainHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         //reading state
 
-        Activity activity = getActivity(httpExchange);
-
+        Activity activity;
+        try {
+            activity = getActivity(httpExchange);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            activity = new Activity(500, e.toString());
+        }
         sendResponse(activity, httpExchange);
-
-
     }
 
-    private Activity getActivity(HttpExchange httpExchange) throws IOException {
+    private Activity getActivity(HttpExchange httpExchange) throws IOException, DaoException {
         Activity activity = null;
 
         Map<String, String> formData = getFormData(httpExchange);
@@ -166,23 +170,32 @@ public class MainHandler implements HttpHandler {
     private void sendResponse(Activity activity, HttpExchange httpExchange) throws IOException {
         if (activity.getHttpStatusCode().equals(200)) {
             String response = activity.getAnswer();
+            writeHttpOutputStream(activity.getHttpStatusCode(), response, httpExchange);
 
-            final byte[] finalResponseBytes = response.getBytes("UTF-8");
-            httpExchange.sendResponseHeaders(200, finalResponseBytes.length);
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(finalResponseBytes);
-            os.close();
         } else if (activity.getHttpStatusCode().equals(302)) {
             String newLocation = activity.getAnswer();
             httpExchange.getResponseHeaders().set("Location", newLocation);
             httpExchange.sendResponseHeaders(302, -1);
+
+        } else if (activity.getHttpStatusCode().equals(500)) {
+            String response = activity.getAnswer();
+            httpExchange.sendResponseHeaders(500, 0);
+
         } else {
             String response = "404 (Not Found)\n";
-            httpExchange.sendResponseHeaders(404, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.toString().getBytes());
-            os.close();
+            int httpStatusCode = 404;
+            writeHttpOutputStream(httpStatusCode, response, httpExchange);
+
         }
+    }
+
+
+    private void writeHttpOutputStream(int httpStatusCode, String response, HttpExchange httpExchange) throws IOException {
+        final byte[] finalResponseBytes = response.getBytes("UTF-8");
+        httpExchange.sendResponseHeaders(httpStatusCode, finalResponseBytes.length);
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(finalResponseBytes);
+        os.close();
     }
 
 }
