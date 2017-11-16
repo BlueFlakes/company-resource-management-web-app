@@ -79,12 +79,16 @@ public class ManagerView {
                 break;
 
             case CREATE_CLASS:
-                if(formData.containsKey("classname") && new ManagerController(this.school).createClass(this.formData)) {
-                    model.with("is_text_available", true);
-                    model.with("text", "Class successfully created");
-                }
+                create_class(model);
                 break;
 
+        }
+    }
+
+    private void create_class(JtwigModel model) throws DaoException {
+        if(formData.containsKey("classname") && new ManagerController(this.school).createClass(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Class successfully created");
         }
     }
 
