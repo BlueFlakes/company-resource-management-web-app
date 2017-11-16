@@ -1,0 +1,11 @@
+<form method="post">
+    <label for="#manager-exp-level-choose-new-class">Choose level</label>
+    <select name="Class" id="#manager-exp-level-choose-new-class">
+        {% for key, value in experienceLevels %}
+                <option value="{{ key }}">Level {{ key }}: {{ value }}</option>
+        {% endfor %}
+    </select>
+    <label for="#manager-new-value-for-exp-level">Add new value for level</label>
+    <input type="text"  name="experience-level" id="#manager-new-value-for-exp-level">
+    <input type="submit" value="Submit">
+</form>
