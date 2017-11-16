@@ -3,18 +3,16 @@ package com.codecool.krk.lucidmotors.queststore.views;
 import com.codecool.krk.lucidmotors.queststore.controllers.ManagerController;
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.*;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
+import com.codecool.krk.lucidmotors.queststore.models.Activity;
+import com.codecool.krk.lucidmotors.queststore.models.School;
+import com.codecool.krk.lucidmotors.queststore.models.Student;
+import com.codecool.krk.lucidmotors.queststore.models.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpCookie;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class ManagerView {
     private School school;
@@ -69,6 +67,15 @@ public class ManagerView {
                         new ManagerController(this.school).editMentor(formData)) {
                     model.with("is_text_available", true);
                     model.with("text", "Mentor successfully updated");
+                }
+                break;
+
+            case ADD_MENTOR:
+                model.with("school_classes", this.school.getAllClasses());
+                if(formData.containsKey("class_id") &&
+                        new ManagerController(this.school).addMentor(formData)) {
+                    model.with("is_text_available", true);
+                    model.with("text", "Mentor successfully created");
                 }
                 break;
         }
