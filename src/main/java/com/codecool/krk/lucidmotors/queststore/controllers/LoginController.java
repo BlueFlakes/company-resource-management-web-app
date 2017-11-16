@@ -1,6 +1,5 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.enums.LoginMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.exceptions.WrongPasswordException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
@@ -35,40 +34,40 @@ public class LoginController {
 //        } while (!userChoice.equals("0"));
     }
 
-    private void handleUserRequest(String userChoice) throws DaoException {
+//    private void handleUserRequest(String userChoice) throws DaoException {
+//
+//        //LoginMenuOptions chosenOption = null;
+//
+//        switch (chosenOption) {
+//            case HANDLE_LOGIN:
+//                //
+//                break;
+//
+//            case EXIT:
+//                //userInterface.println("Have a nice day!");
+//                break;
+//
+//            case DEFAULT:
+//                //handleNoSuchCommand();
+//        }
+//    }
 
-        LoginMenuOptions chosenOption = getEnumValue(userChoice);
+//    private void handleNoSuchCommand() {
+////        userInterface.println("Wrong choice");
+////        userInterface.pause();
+//    }
 
-        switch (chosenOption) {
-            case HANDLE_LOGIN:
-                //
-                break;
-
-            case EXIT:
-                //userInterface.println("Have a nice day!");
-                break;
-
-            case DEFAULT:
-                //handleNoSuchCommand();
-        }
-    }
-
-    private void handleNoSuchCommand() {
-//        userInterface.println("Wrong choice");
-//        userInterface.pause();
-    }
-
-    private LoginMenuOptions getEnumValue(String userChoice) {
-        LoginMenuOptions chosenOption = null;
-
-        try {
-            //chosenOption = LoginMenuOptions.values()[Integer.parseInt(userChoice)];
-        } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            //chosenOption = LoginMenuOptions.DEFAULT;
-        }
-
-        return chosenOption;
-    }
+//    private LoginMenuOptions getEnumValue(String userChoice) {
+//        LoginMenuOptions chosenOption = null;
+//
+//        try {
+//            //chosenOption = LoginMenuOptions.values()[Integer.parseInt(userChoice)];
+//        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+//            //chosenOption = LoginMenuOptions.DEFAULT;
+//        }
+//
+//        return chosenOption;
+//    }
 
     private void showMenu() {
         //this.loginView.printLoginMenu();
