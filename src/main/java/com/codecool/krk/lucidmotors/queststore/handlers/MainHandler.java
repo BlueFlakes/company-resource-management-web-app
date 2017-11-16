@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.handlers;
 
 import com.codecool.krk.lucidmotors.queststore.enums.LoginMenuOptions;
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
+import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -35,7 +36,7 @@ public class MainHandler implements HttpHandler {
 
     }
 
-    public Activity getActivity(HttpExchange httpExchange) throws IOException {
+    private Activity getActivity(HttpExchange httpExchange) throws IOException {
         Activity activity = null;
 
         Map<String, String> formData = getFormData(httpExchange);
@@ -52,6 +53,10 @@ public class MainHandler implements HttpHandler {
             switch (role) {
                 case "manager":
                     activity = new ManagerHandler(this.school).getActivity(getManagerEnumValue(action));
+                    break;
+
+                case "mentor":
+                    activity = new MentorHandler(this.school).getActivity(getMentorEnumValue(action));
                     break;
             }
         } else {
@@ -98,7 +103,7 @@ public class MainHandler implements HttpHandler {
         return user;
     }
 
-    private Activity switchUser(User user) {
+    static Activity switchUser(User user) {
         String userUrl;
 
         if (user instanceof Manager) {
@@ -144,6 +149,19 @@ public class MainHandler implements HttpHandler {
 
         return chosenOption;
     }
+
+    private MentorOptions getMentorEnumValue(String userAction) {
+        MentorOptions chosenOption;
+
+        try {
+            chosenOption = MentorOptions.valueOf(userAction.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            chosenOption = MentorOptions.DEFAULT;
+        }
+
+        return chosenOption;
+    }
+
 
     private void sendResponse(Activity activity, HttpExchange httpExchange) throws IOException {
         if (activity.getHttpStatusCode().equals(200)) {
