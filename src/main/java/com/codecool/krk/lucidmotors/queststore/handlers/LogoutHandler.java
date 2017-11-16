@@ -13,18 +13,8 @@ public class LogoutHandler implements HttpHandler {
         String cookie = "UUID=\"\"; expires=01 Jan 1900;";
         httpExchange.getResponseHeaders().add("Set-Cookie",cookie);
 
-        String response;
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/logged.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        model.with("redirect", "<meta http-equiv=\"refresh\" content=\"0; url=/\" />");
-
-        response = template.render(model);
-
-        final byte[] finalResponseBytes = response.getBytes("UTF-8");
-        httpExchange.sendResponseHeaders(200, finalResponseBytes.length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(finalResponseBytes);
-        os.close();
+        String newLocation = "/";
+        httpExchange.getResponseHeaders().set("Location", newLocation);
+        httpExchange.sendResponseHeaders(302, -1);
     }
 }

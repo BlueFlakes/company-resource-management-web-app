@@ -38,7 +38,7 @@ body {
     margin: 0;
     font-family: 'Droid Sans', sans-serif;
     background-color: var(--main-backgroud);
-    background-image: url("static/images/concrete_seamless.png");
+    background-image: url("/static/images/concrete_seamless.png");
     justify-content: center;
 }
 

@@ -27,60 +27,38 @@ public class MainHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         //reading state
-        Map<String, String> formData = getFormData(httpExchange);
-        User user = getUserByCookie(httpExchange);
 
-        List<String> options = new ArrayList<>();
-        options.add("/manager");
+        Activity activity = getActivity(httpExchange);
 
-        String uri = httpExchange.getRequestURI().getPath();
-
-        Activity activity;
-        if(user == null) {
-            activity = new LoginHandler(this.school, formData, this.loggedUsers).getActivity(httpExchange);
-        } else if (options.contains(uri)) {
-            activity = new Activity(200, "tu bedzie wstawiony jtwig");
-        } else {
-            activity = switchUser(user);
-        }
-
-        if (activity.getHttpStatusCode().equals(200)) {
-            String response = activity.getAnswer();
-
-            final byte[] finalResponseBytes = response.getBytes("UTF-8");
-            httpExchange.sendResponseHeaders(200, finalResponseBytes.length);
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(finalResponseBytes);
-            os.close();
-        } else if (activity.getHttpStatusCode().equals(302)) {
-            String newLocation = activity.getAnswer();
-            httpExchange.getResponseHeaders().set("Location", newLocation);
-            httpExchange.sendResponseHeaders(302, -1);
-        } else {
-            String response = "404 (Not Found)\n";
-            httpExchange.sendResponseHeaders(404, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.toString().getBytes());
-            os.close();
-        }
+        sendResponse(activity, httpExchange);
 
 
     }
 
-    private Activity switchUser(User user) {
-        String userUrl;
+    public Activity getActivity(HttpExchange httpExchange) throws IOException {
+        Activity activity = null;
 
-        if (user instanceof Manager) {
-            userUrl = "/manager";
-        } else if (user instanceof Mentor) {
-            userUrl = "/mentor";
-        } else if (user instanceof Student) {
-            userUrl = "/student";
+        Map<String, String> formData = getFormData(httpExchange);
+        User user = getUserByCookie(httpExchange);
+
+        String uri = httpExchange.getRequestURI().getPath();
+        Map<String, String> parsedURI = parseURI(uri);
+        String role =  parsedURI.get("role");
+        String action = parsedURI.get("action");
+
+        if(user == null) {
+            activity = new LoginHandler(this.school, formData, this.loggedUsers).getActivity(httpExchange);
+        } else if (!role.equals("")) {
+            switch (role) {
+                case "manager":
+                    activity = new ManagerHandler(this.school).getActivity(getManagerEnumValue(action));
+                    break;
+            }
         } else {
-            userUrl = "/";
+            activity = switchUser(user);
         }
 
-        return new Activity(302, userUrl);
+        return activity;
     }
 
     private Map<String,String> getFormData(HttpExchange httpExchange) throws IOException {
@@ -120,17 +98,33 @@ public class MainHandler implements HttpHandler {
         return user;
     }
 
+    private Activity switchUser(User user) {
+        String userUrl;
+
+        if (user instanceof Manager) {
+            userUrl = "/manager";
+        } else if (user instanceof Mentor) {
+            userUrl = "/mentor";
+        } else if (user instanceof Student) {
+            userUrl = "/student";
+        } else {
+            userUrl = "/";
+        }
+
+        return new Activity(302, userUrl);
+    }
+
     private Map<String, String> parseURI (String uri) {
         Map<String, String> parsedURI = new HashMap<String, String>();
         String[] uriList = uri.split("/");
-        List<String> roles = Arrays.asList("student", "mentor", "manager");
+        List<String> roles = Arrays.asList("student", "mentor", "manager", "logout");
 
         if (uriList.length == 2 && roles.contains(uriList[1])) {
             parsedURI.put("role", uriList[1]);
             parsedURI.put("action", "");
         } else if (uriList.length == 3 && roles.contains(uriList[1])) {
             parsedURI.put("role", uriList[1]);
-            parsedURI.put("data", uriList[2]);
+            parsedURI.put("action", uriList[2]);
         } else {
             parsedURI.put("role", "");
             parsedURI.put("action", "");
@@ -149,6 +143,28 @@ public class MainHandler implements HttpHandler {
         }
 
         return chosenOption;
+    }
+
+    private void sendResponse(Activity activity, HttpExchange httpExchange) throws IOException {
+        if (activity.getHttpStatusCode().equals(200)) {
+            String response = activity.getAnswer();
+
+            final byte[] finalResponseBytes = response.getBytes("UTF-8");
+            httpExchange.sendResponseHeaders(200, finalResponseBytes.length);
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(finalResponseBytes);
+            os.close();
+        } else if (activity.getHttpStatusCode().equals(302)) {
+            String newLocation = activity.getAnswer();
+            httpExchange.getResponseHeaders().set("Location", newLocation);
+            httpExchange.sendResponseHeaders(302, -1);
+        } else {
+            String response = "404 (Not Found)\n";
+            httpExchange.sendResponseHeaders(404, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.toString().getBytes());
+            os.close();
+        }
     }
 
 }

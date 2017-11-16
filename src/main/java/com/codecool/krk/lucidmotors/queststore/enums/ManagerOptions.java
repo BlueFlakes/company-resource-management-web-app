@@ -1,14 +1,24 @@
 package com.codecool.krk.lucidmotors.queststore.enums;
 
 public enum ManagerOptions {
-    MENTORS,
-    ADD_MENTOR,
-    EDIT_MENTOR,
-    SHOW_MENTORS_CLASS,
-    CREATE_CLASS,
-    EXPERIENCE_LEVELS,
-    CREATE_NEW_LEVEL,
-    UPDATE_LEVEL,
-    SHOW_LEVELS,
-    DEFAULT
+    MENTORS ("templates/snippets/manager-mentor-actions-inner-menu-snippet.twig"),
+    ADD_MENTOR ("templates/empty.twig"),
+    EDIT_MENTOR ("templates/empty.twig"),
+    SHOW_MENTORS_CLASS ("templates/snippets/manager-mentor-class.twig"),
+    CREATE_CLASS ("templates/empty.twig"),
+    EXPERIENCE_LEVELS ("templates/empty.twig"),
+    CREATE_NEW_LEVEL ("templates/empty.twig"),
+    UPDATE_LEVEL ("templates/empty.twig"),
+    SHOW_LEVELS ("templates/empty.twig"),
+    DEFAULT ("templates/empty.twig");
+
+    private String path;
+
+    private ManagerOptions(String path) {
+        this.path = path;
+    }
+
+    public String getPath() {
+        return this.path;
+    }
 }

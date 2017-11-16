@@ -2,7 +2,7 @@
     <label for="mentor">Mentor:</label>
     <select id="mentor">
         {% for mentor in mentors %}
-            <option value="{{mentor.getLogin()}}">{{mentor.getLogin()}}</option>
+            <option value="{{mentor.getId()}}">{{mentor.getName()}}</option>
         {% endfor %}
     </select>
     <input type="submit" value="choose">

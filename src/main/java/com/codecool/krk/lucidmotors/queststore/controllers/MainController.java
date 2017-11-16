@@ -25,6 +25,7 @@ public class MainController {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
         server.createContext("/", new MainHandler(this.school));
+        server.createContext("/logout", new LogoutHandler());
         server.createContext("/static", new Static());
         server.setExecutor(null); // creates a default executor
 
