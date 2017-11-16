@@ -42,7 +42,7 @@
 		<div class="container">
 			<main>
 			{% if is_text_available == true %}
-				<p>{{ text }}</p>
+				<h1 id="statement">{{ text }}</h1>
 			{% else %}
 			{% include content_path ignore missing %}
 			{% endif %}
