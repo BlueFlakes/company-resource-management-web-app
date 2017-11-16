@@ -40,6 +40,8 @@ public class LoginHandler {
                     HttpCookie cookie = new HttpCookie("UUID", uuid.toString());
                     httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
                     activity = MainHandler.switchUser(user);
+                } else {
+                    activity = new Activity(302, "/");
                 }
             } catch (DaoException e) {
                 e.printStackTrace();
