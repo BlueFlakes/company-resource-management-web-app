@@ -232,6 +232,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.School;
+import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
 import java.util.ArrayList;
@@ -272,6 +273,32 @@ public class ManagerController {
         }
 
         return isUpdated;
+    }
+
+    private SchoolClass chooseProperClass(Integer classId) throws DaoException {
+
+       SchoolClass schoolClass = new ClassDao().getSchoolClass(classId);
+
+        return schoolClass;
+    }
+
+    public boolean addMentor(Map<String, String> formData) throws DaoException {
+        Boolean isAdded = false;
+
+        if (this.school.isLoginAvailable(formData.get("login"))) {
+            String name = formData.get("name");
+            String login = formData.get("login");
+            String password = formData.get("password");
+            String email = formData.get("email");
+            Integer classId = Integer.valueOf(formData.get("class_id"));
+            SchoolClass chosenClass = chooseProperClass(classId);
+            Mentor mentor = new Mentor(name, login, password, email, chosenClass);
+            mentor.save();
+            isAdded = true;
+        }
+
+        return isAdded;
+
     }
 
 

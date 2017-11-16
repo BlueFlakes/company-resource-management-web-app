@@ -33,7 +33,6 @@ public class MainHandler implements HttpHandler {
 
         sendResponse(activity, httpExchange);
 
-
     }
 
     private Activity getActivity(HttpExchange httpExchange) throws IOException {
