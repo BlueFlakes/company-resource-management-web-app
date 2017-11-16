@@ -1,6 +1,6 @@
 <form method="post">
     <label for="#manager-choose-mentor">Choose mentor</label>
-    <select name="mentor" id="#manager-choose-mentor">
+    <select name="mentor_id" id="#manager-choose-mentor">
         {% for mentor in mentors %}
         <option value="{{mentor.getId()}}">{{mentor.getName()}}</option>
         {% endfor %}
