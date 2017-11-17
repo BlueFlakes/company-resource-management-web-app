@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
 public class MainController {
 
     School school;
-
+    HttpServer server;
     public MainController(School school) {
         this.school = school;
     }
@@ -21,7 +21,7 @@ public class MainController {
 
     public void startServer() throws IOException {
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        this.server = HttpServer.create(new InetSocketAddress(port), 0);
 
         server.createContext("/", new MainHandler(this.school));
         server.createContext("/logout", new LogoutHandler());
@@ -30,5 +30,9 @@ public class MainController {
 
         server.start();
         System.out.println("Server started");
+    }
+
+    public void stop() {
+        this.server.stop(0);
     }
 }
