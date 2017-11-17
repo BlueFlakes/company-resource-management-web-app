@@ -14,13 +14,25 @@ class App {
     private static Scanner in = new Scanner(System.in);
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
 
         try {
             School school = new School("Codecool");
             MainController controller = new MainController(school);
             controller.startServer();
             boolean isRunning = true;
+
+            Runtime.getRuntime().addShutdownHook(new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        shutdownServer(controller);
+                    } catch (DaoException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
             while (isRunning) {
                 isRunning = checkServerIsRunning(controller);
@@ -39,12 +51,16 @@ class App {
         String x = in.nextLine().trim();
 
         if (x.equalsIgnoreCase("exit")) {
-            controller.stop();
-            DatabaseConnection.closeConnection();
-            System.out.println("Server closed.");
+            System.exit(0);
             return false;
         }
 
         return true;
+    }
+
+    public static void shutdownServer(MainController controller) throws DaoException {
+        controller.stop();
+        DatabaseConnection.closeConnection();
+        System.out.println("Server closed.");
     }
 }

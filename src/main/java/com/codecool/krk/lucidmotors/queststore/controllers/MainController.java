@@ -17,7 +17,7 @@ public class MainController {
         this.school = school;
     }
 
-    private static Integer port = 8000;
+    private Integer port = 8000;
 
     public void startServer() throws IOException {
 
@@ -29,7 +29,7 @@ public class MainController {
         server.setExecutor(null); // creates a default executor
 
         server.start();
-        System.out.println("Server started");
+        System.out.println("Server started on port: " + this.port);
     }
 
     public void stop() {
