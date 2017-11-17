@@ -10,7 +10,7 @@ import java.io.OutputStream;
 
 public class LogoutHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
-        String cookie = "UUID=\"\"; expires=01 Jan 1900;";
+        String cookie = "UUID=\"\"; max-age=0;";
         httpExchange.getResponseHeaders().add("Set-Cookie",cookie);
 
         String newLocation = "/";
