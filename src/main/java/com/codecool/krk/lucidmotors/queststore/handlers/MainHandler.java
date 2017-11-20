@@ -1,11 +1,14 @@
 package com.codecool.krk.lucidmotors.queststore.handlers;
 
+import com.codecool.krk.lucidmotors.queststore.enums.EnumUtils;
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
+import com.codecool.krk.lucidmotors.queststore.enums.StudentOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
 import com.codecool.krk.lucidmotors.queststore.views.MentorView;
+import com.codecool.krk.lucidmotors.queststore.views.StudentView;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -49,11 +52,12 @@ public class MainHandler implements HttpHandler {
         String uri = httpExchange.getRequestURI().getPath();
         Map<String, String> parsedURI = parseURI(uri);
         String role =  parsedURI.get("role");
-        String action = parsedURI.get("action");
+        String action = parsedURI.get("action").toUpperCase();
 
         if(user == null) {
             activity = new LoginHandler(this.school, formData, this.loggedUsers).getActivity(httpExchange);
         } else if (!role.equals("")) {
+
             switch (role) {
                 case "manager":
                     activity = new ManagerView(this.school, user, formData).getActivity(getManagerEnumValue(action));
@@ -61,6 +65,10 @@ public class MainHandler implements HttpHandler {
 
                 case "mentor":
                     activity = new MentorView(this.school).getActivity(getMentorEnumValue(action));
+                    break;
+
+                case "student":
+                    activity = new StudentView(this.school, user).getActivity(EnumUtils.getValue(StudentOptions.class, action));
                     break;
             }
         } else {
