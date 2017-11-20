@@ -1,5 +1,5 @@
-//package com.codecool.krk.lucidmotors.queststore.controllers;
-//
+package com.codecool.krk.lucidmotors.queststore.controllers;
+
 //import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
 //import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 //import com.codecool.krk.lucidmotors.queststore.enums.MentorStoreMenuOptions;
@@ -159,3 +159,31 @@
 //        this.userInterface.pause();
 //    }
 //}
+
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
+import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
+import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
+import com.codecool.krk.lucidmotors.queststore.models.School;
+
+import java.util.Map;
+
+public class MentorStoreController {
+    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+    private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
+    School school;
+
+    public MentorStoreController(School school) throws DaoException {
+        this.school = school;
+    }
+
+    public boolean addArtifactCategory(Map<String, String> formData) throws DaoException {
+        String name = formData.get("name");
+
+        ArtifactCategory artifactCategory = new ArtifactCategory(name);
+        new ArtifactCategoryDao().save(artifactCategory);
+
+        return true;
+    }
+}

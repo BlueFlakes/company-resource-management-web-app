@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.views;
 import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorController;
+import com.codecool.krk.lucidmotors.queststore.controllers.MentorStoreController;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Activity;
@@ -93,7 +94,7 @@ public class MentorView {
     }
 
     private void addArtifactCategory(JtwigModel model) throws DaoException {
-        if(formData.containsKey("name") && new MentorController(this.school).addArtifactCategory(this.formData)) {
+        if(formData.containsKey("name") && new MentorStoreController(this.school).addArtifactCategory(this.formData)) {
             model.with("is_text_available", true);
             model.with("text", "Artifact category successfully created");
         }

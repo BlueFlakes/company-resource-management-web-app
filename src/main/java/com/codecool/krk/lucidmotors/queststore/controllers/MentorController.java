@@ -436,15 +436,6 @@ public class MentorController {
         this.school = school;
     }
 
-    public boolean addArtifactCategory(Map<String, String> formData) throws DaoException {
-        String name = formData.get("name");
-
-        ArtifactCategory artifactCategory = new ArtifactCategory(name);
-        new ArtifactCategoryDao().save(artifactCategory);
-
-        return true;
-    }
-
     public boolean addStudent(Map<String, String> formData) throws DaoException {
         Boolean isAdded = false;
 
