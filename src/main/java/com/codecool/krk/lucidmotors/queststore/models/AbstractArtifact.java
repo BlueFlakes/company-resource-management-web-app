@@ -45,6 +45,10 @@ public abstract class AbstractArtifact {
         return artifactCategory;
     }
 
+    public String getArtifactCategoryName() {
+        return getArtifactCategory().getName();
+    }
+
     public void setArtifactCategory(ArtifactCategory artifactCategory) {
         this.artifactCategory = artifactCategory;
     }

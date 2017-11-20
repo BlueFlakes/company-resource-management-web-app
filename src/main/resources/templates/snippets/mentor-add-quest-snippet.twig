@@ -1,0 +1,15 @@
+<form method="post">
+    <label for="#mentor-add-quest-quest-category">Choose quest category</label>
+    <select name="choose-quest-category" id="#mentor-add-quest-quest-category">
+        {% for category in quest_categories %}
+            <option value="{{category.getId()}}">{{category.getName()}}</option>
+        {% endfor %}
+    </select>
+    <label for="#mentor-add-quest-quest-name">Quest name</label>
+    <input type="text" name="quest-name" id="#mentor-add-quest-quest-name">
+    <label for="#mentor-add-quest-value">Value</label>
+    <input type="text" name="quest-value" id="#mentor-add-quest-value">
+    <label for="#mentor-add-quest-description">Description</label>
+    <input type="text" name="Description" id="#mentor-add-quest-description">
+    <input type="submit" value="Submit">
+</form>
