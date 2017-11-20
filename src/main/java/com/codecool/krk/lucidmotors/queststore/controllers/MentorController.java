@@ -423,6 +423,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

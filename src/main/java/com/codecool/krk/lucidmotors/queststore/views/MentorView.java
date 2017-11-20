@@ -80,9 +80,13 @@ public class MentorView {
             case ADD_STUDENT:
                 addStudent(model);
                 break;
-//
+
             case ADD_ARTIFACT_CATEGORY:
                 addArtifactCategory(model);
+                break;
+
+            case LIST_STUDENTS_WALLETS:
+                listStudentsWallets(model);
                 break;
 
         }
@@ -103,6 +107,12 @@ public class MentorView {
             model.with("text", "Student successfully created");
         }
     }
+
+    private void listStudentsWallets(JtwigModel model) throws DaoException {
+        List<Student> studentList = this.school.getAllStudents();
+        model.with("students", studentList);
+    }
+
 //
 //    private void editMentor(JtwigModel model) throws DaoException {
 //        model.with("mentors", this.school.getAllMentors());
