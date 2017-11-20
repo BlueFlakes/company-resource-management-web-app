@@ -1,14 +1,14 @@
 <form method="post">
     <label for="#user-creation-name">First name</label>
-    <input type="text" name="firstname" id="#user-creation-name">
-    <label for="#user-creation-lastname">Last name</label>
-    <input type="text" name="lastname" id="#user-creation-lastname">
+    <input type="text" name="name" id="#user-creation-name">
+    <label for="#user-creation-login">Login</label>
+    <input type="text" name="login" id="#user-creation-login">
     <label for="#user-creation-password">Password</label>
     <input type="text" name="password" id="#user-creation-password">
     <label for="#user-creation-email">Email</label>
     <input type="text" name="email" id="#user-creation-email">
     <label for="#user-creation-choose-class">Choose class</label>
-    <select name="Class" id="#user-creation-choose-class">
+    <select name="class_id" id="#user-creation-choose-class">
         {% for school_class in school_classes %}
             <option value="{{school_class.getId()}}">{{school_class.getName()}}</option>
         {% endfor %}
