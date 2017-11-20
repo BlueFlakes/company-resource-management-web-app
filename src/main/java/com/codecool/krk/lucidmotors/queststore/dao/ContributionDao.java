@@ -79,7 +79,7 @@ public class ContributionDao {
         Integer contributionId = contribution.getId();
         Integer studentId = user.getId();
 
-        ArrayList<Student> contributors = getContributors(contributionId);
+        List<Student> contributors = getContributors(contributionId);
 
         if (isStudentAlreadyPartOfContribution(studentId, contributors)) {
             updateContributorCoins(contributionId, studentId, coinsSpent);
@@ -88,7 +88,7 @@ public class ContributionDao {
         }
     }
 
-    private boolean isStudentAlreadyPartOfContribution(Integer studentId, ArrayList<Student> contributors) {
+    private boolean isStudentAlreadyPartOfContribution(Integer studentId, List<Student> contributors) {
         for (Student student : contributors) {
             if (studentId.equals(student.getId())) {
                 return true;
@@ -157,8 +157,8 @@ public class ContributionDao {
         }
     }
 
-    public ArrayList<Student> getContributors(Integer contributionId) throws DaoException {
-        ArrayList<Student> contributors = new ArrayList<>();
+    public List<Student> getContributors(Integer contributionId) throws DaoException {
+        List<Student> contributors = new ArrayList<>();
 
         String sqlQuery = "SELECT student_id FROM contributors WHERE contribution_id = ?";
 
