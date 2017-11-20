@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.handlers;
 import com.codecool.krk.lucidmotors.queststore.controllers.LoginController;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.handlers.helpers.Cookie;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -37,9 +38,8 @@ public class LoginHandler {
                 if (user != null) {
                     UUID uuid = UUID.randomUUID();
                     this.loggedUsers.put(uuid, user);
-                    HttpCookie cookie = new HttpCookie("UUID", uuid.toString());
-                    httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-                    activity = MainHandler.switchUser(user);
+                    Cookie.setCookie(httpExchange, "UUID", uuid.toString());
+                    activity = MainHandler.redirectByUser(user);
                 } else {
                     activity = new Activity(302, "/");
                 }

@@ -5,17 +5,21 @@ import com.codecool.krk.lucidmotors.queststore.dao.DatabaseConnection;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.flywaydb.core.Flyway;
+
+
 import java.io.IOException;
 import java.util.Scanner;
 
 class App {
     private static Scanner in = new Scanner(System.in);
 
-
     public static void main(String[] args) throws InterruptedException {
 
 
         try {
+            DatabaseConnection.migrate();
             School school = new School("Codecool");
             MainController controller = new MainController(school);
             controller.startServer();

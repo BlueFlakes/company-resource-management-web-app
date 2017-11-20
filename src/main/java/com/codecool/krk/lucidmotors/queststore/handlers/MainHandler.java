@@ -5,6 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.enums.StudentOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.handlers.helpers.Cookie;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
 import com.codecool.krk.lucidmotors.queststore.views.MentorView;
@@ -12,6 +13,7 @@ import com.codecool.krk.lucidmotors.queststore.views.StudentView;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import javax.swing.text.html.Option;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -56,8 +58,8 @@ public class MainHandler implements HttpHandler {
 
         if(user == null) {
             activity = new LoginHandler(this.school, formData, this.loggedUsers).getActivity(httpExchange);
-        } else if (!role.equals("")) {
-
+        } else if (isProperUser(role, user)) {
+            Cookie.renewCookie(httpExchange, "UUID");
             switch (role) {
                 case "manager":
                     activity = new ManagerView(this.school, user, formData).getActivity(getManagerEnumValue(action));
@@ -72,11 +74,12 @@ public class MainHandler implements HttpHandler {
                     break;
             }
         } else {
-            activity = switchUser(user);
+            activity = redirectByUser(user);
         }
 
         return activity;
     }
+
 
     private Map<String,String> getFormData(HttpExchange httpExchange) throws IOException {
         Map<String, String> postValues = new HashMap<>();
@@ -99,37 +102,33 @@ public class MainHandler implements HttpHandler {
         return postValues;
     }
 
-    private User getUserByCookie(HttpExchange httpExchange) {
-        User user = null;
 
-        String allCookies = httpExchange.getRequestHeaders().getFirst("Cookie");
-        String[] cookies = allCookies != null ? allCookies.split("; ") : new String[]{};
-        for(String cookie : cookies) {
-            HttpCookie newCookie = HttpCookie.parse(cookie).get(0);
-            if (newCookie.getName().equals("UUID")) {
-                user = loggedUsers.getOrDefault(UUID.fromString(newCookie.getValue()), null);
-
-            }
-        }
-
-        return user;
-    }
-
-    static Activity switchUser(User user) {
+    static String switchUser(User user) {
         String userUrl;
 
         if (user instanceof Manager) {
-            userUrl = "/manager";
+            userUrl = "manager";
         } else if (user instanceof Mentor) {
-            userUrl = "/mentor";
+            userUrl = "mentor";
         } else if (user instanceof Student) {
-            userUrl = "/student";
+            userUrl = "student";
         } else {
-            userUrl = "/";
+            userUrl = "";
         }
+
+        return userUrl;
+    }
+
+    public static Activity redirectByUser(User user) {
+        String userUrl = "/" + switchUser(user);
 
         return new Activity(302, userUrl);
     }
+
+    private boolean isProperUser(String role, User user) {
+        return switchUser(user).equalsIgnoreCase(role);
+    }
+
 
     private Map<String, String> parseURI (String uri) {
         Map<String, String> parsedURI = new HashMap<String, String>();
@@ -193,7 +192,6 @@ public class MainHandler implements HttpHandler {
             String response = "404 (Not Found)\n";
             int httpStatusCode = 404;
             writeHttpOutputStream(httpStatusCode, response, httpExchange);
-
         }
     }
 
@@ -205,5 +203,16 @@ public class MainHandler implements HttpHandler {
         os.write(finalResponseBytes);
         os.close();
     }
+
+    public User getUserByCookie(HttpExchange httpExchange) {
+        User user = null;
+        String uuid = Cookie.getCookieValue(httpExchange, "UUID");
+        if (uuid != null) {
+            user = loggedUsers.getOrDefault(UUID.fromString(uuid), null);
+        }
+
+        return user;
+    }
+
 
 }
