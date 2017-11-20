@@ -60,7 +60,7 @@ public class MainHandler implements HttpHandler {
                     break;
 
                 case "mentor":
-                    activity = new MentorView(this.school).getActivity(getMentorEnumValue(action));
+                    activity = new MentorView(this.school, user, formData).getActivity(getMentorEnumValue(action));
                     break;
             }
         } else {
