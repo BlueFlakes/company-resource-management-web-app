@@ -20,3 +20,13 @@
     {% endfor %}
     </tbody>
 </table>
+<form method="post">
+    <label for="#student-store-buy-artifact">Choose Contribution</label>
+    <select name="choosen-contribution" id="#student-store-buy-artifact">
+        {% for contribution in available_contributions %}
+            <option value="{{ contribution.getId() }}">{{ contribution.getName() }} | Author ~ {{ contribution.getCreator().getName() }} </option>
+        {% endfor %}
+    </select>
+    <input type="text" name="spent-coins-amount" placeholder="amount" required>
+    <input type="submit" value="Submit">
+</form>

@@ -81,6 +81,7 @@ public class StudentView {
             case AVAILABLE_CONTRIBUTIONS:
                 List<Contribution> contributions = studentController.getAvailableContributions();
                 model.with("available_contributions", contributions);
+                studentController.takePartInContribution(formData, user);
                 break;
 
             case CREATE_CONTRIBUTION:

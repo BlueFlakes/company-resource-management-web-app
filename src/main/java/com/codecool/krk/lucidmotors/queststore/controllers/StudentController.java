@@ -72,10 +72,8 @@
 
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ContributionDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
-import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
+import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
+import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 
@@ -161,11 +159,11 @@ public class StudentController {
                             .collect(Collectors.toList());
     }
 
-    public boolean closeUserContribution(Map<String, String> map, User user) throws DaoException {
+    public boolean closeUserContribution(Map<String, String> formData, User user) throws DaoException {
         final String contributionNameKey = "choosen-contribution-to-close";
 
-        if (map.containsKey(contributionNameKey)) {
-            Integer contributionId = parseInt(map.get(contributionNameKey));
+        if (formData.containsKey(contributionNameKey)) {
+            Integer contributionId = parseInt(formData.get(contributionNameKey));
             Contribution contribution = this.contributionDao.getContribution(contributionId);
             contribution.setStatus("closed");
             contribution.update();
@@ -185,4 +183,48 @@ public class StudentController {
         return false;
     }
 
+    public boolean takePartInContribution(Map<String, String> formData, User user) throws DaoException {
+        final String coinsKey = "spent-coins-amount";
+        final String contributionKey = "choosen-contribution";
+
+        if (formData.containsKey(coinsKey) && formData.containsKey(contributionKey)
+                && CustomMatchers.isPositiveInteger(formData.get(coinsKey))) {
+
+            Student student = this.studentDao.getStudent(user.getId());
+            final Integer studentPossessedCoins = student.getPossesedCoins();
+            final Integer givenCoins = parseInt(formData.get(coinsKey));
+
+            if (givenCoins <= studentPossessedCoins) {
+
+                final Integer contributionId = parseInt(formData.get(contributionKey));
+                Contribution contribution = this.contributionDao.getContribution(contributionId);
+                Integer neededCoinsDiff = contribution.getShopArtifact().getPrice() - contribution.getGivenCoins();
+                final Integer takenCoins = neededCoinsDiff >= givenCoins ? givenCoins : givenCoins - neededCoinsDiff;
+
+                student.setPossesedCoins(student.getPossesedCoins() - takenCoins);
+                contribution.addCoins(takenCoins);
+
+                student.update();
+                contribution.update();
+
+                this.contributionDao.saveContributor(user, givenCoins, contribution);
+                checkContributionStatus(contribution);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void checkContributionStatus(Contribution contribution) throws DaoException {
+        if (contribution.getShopArtifact().getPrice().equals(contribution.getGivenCoins())) {
+            contribution.setStatus("closed");
+            List<Student> contributors = contributionDao.getContributors(contribution.getId());
+
+            BoughtArtifact boughtArtifact = new BoughtArtifact(contribution.getShopArtifact());
+            new BoughtArtifactDao().save(boughtArtifact, contributors);
+
+            contribution.update();
+        }
+    }
 }
