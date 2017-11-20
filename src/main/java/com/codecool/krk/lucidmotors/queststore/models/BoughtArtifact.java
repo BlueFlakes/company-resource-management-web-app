@@ -6,6 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BoughtArtifact extends AbstractArtifact {
 
@@ -58,7 +59,7 @@ public class BoughtArtifact extends AbstractArtifact {
         }
     }
 
-    public void save(ArrayList<Student> owners) throws DaoException {
+    public void save(List<Student> owners) throws DaoException {
         boughtArtifactDao.save(this, owners);
     }
 

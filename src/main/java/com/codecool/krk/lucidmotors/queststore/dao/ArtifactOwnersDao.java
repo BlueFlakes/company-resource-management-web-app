@@ -41,7 +41,7 @@ public class ArtifactOwnersDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
 
-                Student owner = new StudentDao(new ClassDao()).getStudent(studentId);
+                Student owner = new StudentDao().getStudent(studentId);
                 owners.add(owner);
             }
 
@@ -104,7 +104,7 @@ public class ArtifactOwnersDao {
 
     }
 
-    public void saveArtifactOwners(Integer artifactId, ArrayList<Student> owners) throws DaoException {
+    public void saveArtifactOwners(Integer artifactId, List<Student> owners) throws DaoException {
 
         for (Student owner : owners) {
             this.saveOwner(artifactId, owner);

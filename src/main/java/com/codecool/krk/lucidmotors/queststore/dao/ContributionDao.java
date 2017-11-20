@@ -169,7 +169,7 @@ public class ContributionDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
 
-                Student student = new StudentDao(new ClassDao()).getStudent(studentId);
+                Student student = new StudentDao().getStudent(studentId);
                 contributors.add(student);
             }
 
@@ -200,7 +200,7 @@ public class ContributionDao {
                 String status = result.getString("status");
 
                 ShopArtifact shopArtifact = new ShopArtifactDao().getArtifact(artifactId);
-                Student creator = new StudentDao(new ClassDao()).getStudent(creatorId);
+                Student creator = new StudentDao().getStudent(creatorId);
 
                 Contribution contribution = new Contribution(contributionName, creator, shopArtifact,
                                                              givenCoins, id, status);
@@ -251,7 +251,7 @@ public class ContributionDao {
         String status = result.getString("status");
 
         ShopArtifact shopArtifact = new ShopArtifactDao().getArtifact(artifactId);
-        Student creator = new StudentDao(new ClassDao()).getStudent(creatorId);
+        Student creator = new StudentDao().getStudent(creatorId);
 
         return new Contribution(contributionName, creator, shopArtifact, givenCoins, id, status);
     }
@@ -270,7 +270,7 @@ public class ContributionDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
                 Integer spentCoins = result.getInt("coins");
-                Student student = new StudentDao(new ClassDao()).getStudent(studentId);
+                Student student = new StudentDao().getStudent(studentId);
 
                 contributorsWithShares.put(student, spentCoins);
             }

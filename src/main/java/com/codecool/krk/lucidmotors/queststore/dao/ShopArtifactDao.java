@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ShopArtifactDao {
 
@@ -80,9 +81,9 @@ public class ShopArtifactDao {
 
     }
 
-    public ArrayList<ShopArtifact> getAllArtifacts() throws DaoException {
+    public List<ShopArtifact> getAllArtifacts() throws DaoException {
 
-        ArrayList<ShopArtifact> shopArtifacts = new ArrayList<>();
+        List<ShopArtifact> shopArtifacts = new ArrayList<>();
         String sqlQuery = "SELECT * FROM shop_artifacts;";
 
         try {

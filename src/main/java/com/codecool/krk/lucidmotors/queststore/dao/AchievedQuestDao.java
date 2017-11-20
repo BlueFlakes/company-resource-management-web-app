@@ -19,7 +19,7 @@ public class AchievedQuestDao {
     private final Connection connection;
     private PreparedStatement stmt = null;
     private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
-    private StudentDao studentDao = new StudentDao(new ClassDao());
+    private StudentDao studentDao = new StudentDao();
 
     public AchievedQuestDao() throws DaoException {
 
