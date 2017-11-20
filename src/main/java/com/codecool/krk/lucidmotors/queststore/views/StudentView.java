@@ -83,6 +83,19 @@ public class StudentView {
                 model.with("available_contributions", contributions);
                 break;
 
+            case CREATE_CONTRIBUTION:
+                List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
+                model.with("shop_artifact", shopArtifacts1);
+                boolean wasSuccesfullyAdded = studentController.addNewContribution(formData, user);
+
+                if (wasSuccesfullyAdded) {
+                    model.with("is_text_available", true);
+                    model.with("text", "Succesfully added contribution!");
+                }
+                break;
+
+            case CLOSE_CONTRIBUTION:
+                break;
         }
     }
 }
