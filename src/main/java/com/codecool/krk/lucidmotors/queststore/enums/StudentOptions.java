@@ -2,7 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.enums;
 
 public enum StudentOptions {
     STORE ("templates/empty.twig"),
-    SHOW_WALLET ("templates/empty.twig"),
+    SHOW_WALLET ("templates/snippets/student-wallet-snippet.twig"),
     SHOW_AVAILABLE_ARTIFACTS ("templates/empty.twig"),
     BUY_ARTIFACT ("templates/empty.twig"),
     CONTRIBUTIONS ("templates/empty.twig"),
