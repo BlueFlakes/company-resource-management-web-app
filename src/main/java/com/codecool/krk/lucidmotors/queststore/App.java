@@ -4,9 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.controllers.MainController;
 import com.codecool.krk.lucidmotors.queststore.dao.DatabaseConnection;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.Scanner;
 
