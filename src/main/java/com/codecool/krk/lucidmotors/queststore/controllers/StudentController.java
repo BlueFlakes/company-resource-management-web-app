@@ -188,7 +188,7 @@ public class StudentController {
         final String contributionKey = "choosen-contribution";
 
         if (formData.containsKey(coinsKey) && formData.containsKey(contributionKey)
-                && CustomMatchers.isPositiveInteger(formData.get(coinsKey))) {
+                && CustomMatchers.isPositiveInteger(formData.get(coinsKey)) && formData.get(coinsKey).length() < 10 ) {
 
             Student student = this.studentDao.getStudent(user.getId());
             final Integer studentPossessedCoins = student.getPossesedCoins();
@@ -199,7 +199,7 @@ public class StudentController {
                 final Integer contributionId = parseInt(formData.get(contributionKey));
                 Contribution contribution = this.contributionDao.getContribution(contributionId);
                 Integer neededCoinsDiff = contribution.getShopArtifact().getPrice() - contribution.getGivenCoins();
-                final Integer takenCoins = neededCoinsDiff >= givenCoins ? givenCoins : givenCoins - neededCoinsDiff;
+                final Integer takenCoins = neededCoinsDiff >= givenCoins ? givenCoins : neededCoinsDiff;
 
                 student.setPossesedCoins(student.getPossesedCoins() - takenCoins);
                 contribution.addCoins(takenCoins);

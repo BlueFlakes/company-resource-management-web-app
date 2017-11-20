@@ -84,7 +84,19 @@ public class StudentView {
             case AVAILABLE_CONTRIBUTIONS:
                 List<Contribution> contributions = studentController.getAvailableContributions();
                 model.with("available_contributions", contributions);
-                studentController.takePartInContribution(formData, user);
+                boolean succesfullyPaid = studentController.takePartInContribution(formData, user);
+
+
+                String message;
+                if (succesfullyPaid) {
+                    model.with("is_text_available", true);
+                    message = "Succesfuly Paid! :)";
+
+                } else {
+                    message = "Sorry but you dont have enough money!";
+                }
+
+                model.with("text", message);
                 break;
 
             case CREATE_CONTRIBUTION:
