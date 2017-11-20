@@ -76,10 +76,12 @@ public class StudentView {
                     List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
                     model.with("shop_artifact", shopArtifacts1);
                 }
+                break;
 
-
-
-
+            case AVAILABLE_CONTRIBUTIONS:
+                List<Contribution> contributions = studentController.getAvailableContributions();
+                model.with("available_contributions", contributions);
+                break;
 
         }
     }

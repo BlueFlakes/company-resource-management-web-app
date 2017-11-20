@@ -73,13 +73,11 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ContributionDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
-import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
-import com.codecool.krk.lucidmotors.queststore.models.Student;
-import com.codecool.krk.lucidmotors.queststore.models.User;
+import com.codecool.krk.lucidmotors.queststore.models.*;
 
 import java.util.*;
 
@@ -90,11 +88,13 @@ public class StudentController {
     private ArtifactOwnersDao artifactOwnersDao;
     private ShopArtifactDao shopArtifactDao;
     private StudentDao studentDao;
+    private ContributionDao contributionDao;
 
     public StudentController() throws DaoException {
         this.shopArtifactDao = new ShopArtifactDao();
         this.artifactOwnersDao = new ArtifactOwnersDao();
         this.studentDao = new StudentDao();
+        this.contributionDao = new ContributionDao();
     }
 
     public List<BoughtArtifact> getWallet(User student) throws DaoException {
@@ -125,5 +125,9 @@ public class StudentController {
         }
 
         return false;
+    }
+
+    public List<Contribution> getAvailableContributions() throws DaoException {
+        return this.contributionDao.getOpenContributions();
     }
 }

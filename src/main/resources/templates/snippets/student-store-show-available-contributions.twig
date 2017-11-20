@@ -1,0 +1,22 @@
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Contribution name</th>
+        <th>Author</th>
+        <th>Collected coins</th>
+        <th>Expected coins</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for contribution in available_contributions %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ contribution.getName() }}</td>
+            <td>{{ contribution.getCreator().getName() }}</td>
+            <td>{{ contribution.getGivenCoins() }}</td>
+            <td>{{ contribution.getShopArtifact().getPrice() }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

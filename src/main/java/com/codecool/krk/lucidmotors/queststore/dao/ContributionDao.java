@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ContributionDao {
 
@@ -182,9 +183,9 @@ public class ContributionDao {
         return contributors;
     }
 
-    public ArrayList<Contribution> getOpenContributions() throws DaoException {
+    public List<Contribution> getOpenContributions() throws DaoException {
 
-        ArrayList<Contribution> openContributions = new ArrayList<>();
+        List<Contribution> openContributions = new ArrayList<>();
         String sqlQuery = "SELECT * FROM contributions";
 
         try {

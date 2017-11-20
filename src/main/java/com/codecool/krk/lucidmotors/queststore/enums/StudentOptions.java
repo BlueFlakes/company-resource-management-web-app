@@ -5,7 +5,7 @@ public enum StudentOptions {
     SHOW_WALLET ("templates/snippets/student-wallet-snippet.twig"),
     SHOW_AVAILABLE_ARTIFACTS ("templates/snippets/student-store-show-available-artifact.twig"),
     BUY_ARTIFACT ("templates/snippets/student-store-buy-artifact.twig"),
-    AVAILABLE_CONTRIBUTIONS ("templates/empty.twig"),
+    AVAILABLE_CONTRIBUTIONS ("templates/snippets/student-store-show-available-contributions.twig"),
     CREATE_CONTRIBUTION ("templates/empty.twig"),
     CLOSE_CONTRIBUTION ("templates/empty.twig"),
     DEFAULT ("templates/snippets/home-snippet.twig");
