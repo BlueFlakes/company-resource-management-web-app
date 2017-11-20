@@ -82,14 +82,53 @@ public class MentorView {
                 addStudent(model);
                 break;
 
-            case ADD_ARTIFACT_CATEGORY:
-                addArtifactCategory(model);
-                break;
-
             case LIST_STUDENTS_WALLETS:
                 listStudentsWallets(model);
                 break;
 
+            case ADD_QUEST:
+
+                break;
+
+            case ADD_QUEST_CATEGORY:
+                addQuestCategory(model);
+                break;
+
+            case UPDATE_QUEST:
+
+                break;
+
+            case MARK_BOUGHT_ARTIFACT_AS_USED:
+
+                break;
+
+            case APPROVE_QUEST_ACHIEVEMENT:
+
+                break;
+
+            case SHOW_AVAILABLE_ARTIFACTS:
+
+                break;
+
+            case ADD_ARTIFACT:
+
+                break;
+
+            case UPDATE_ARTIFACT:
+
+                break;
+
+            case ADD_ARTIFACT_CATEGORY:
+                addArtifactCategory(model);
+                break;
+
+        }
+    }
+
+    private void addQuestCategory(JtwigModel model) throws DaoException {
+        if(formData.containsKey("name") && new MentorController(this.school).addQuestCategory(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Quest category successfully created");
         }
     }
 

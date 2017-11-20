@@ -461,6 +461,15 @@ public class MentorController {
         return schoolClass;
     }
 
+    public boolean addQuestCategory(Map<String, String> formData) throws DaoException {
+        String questCategoryName = formData.get("name");
+
+        QuestCategory questCategory = new QuestCategory(questCategoryName);
+        this.questCategoryDao.save(questCategory);
+
+        return true;
+    }
+
 //
 //    public List<Student> getMentorClass(Integer mentorId) throws DaoException {
 //        Mentor mentor = school.getMentor(mentorId);
