@@ -130,4 +130,24 @@ public class StudentController {
     public List<Contribution> getAvailableContributions() throws DaoException {
         return this.contributionDao.getOpenContributions();
     }
+
+    public boolean addNewContribution(Map<String, String> formData, User user) throws DaoException {
+        final String contributionNameKey = "contribution-name";
+        final String choosenArtifactKey = "choosen-artifact-for-contribution";
+
+        if (formData.containsKey(contributionNameKey) && formData.containsKey(choosenArtifactKey)) {
+            String contributionName = formData.get(contributionNameKey);
+            Integer choosenArtifactId = parseInt(formData.get(choosenArtifactKey));
+
+            ShopArtifact shopArtifact = this.shopArtifactDao.getArtifact(choosenArtifactId);
+            Student student = this.studentDao.getStudent(user.getId());
+            Contribution contribution = new Contribution(contributionName, student, shopArtifact);
+            this.contributionDao.save(contribution);
+
+            return true;
+        }
+
+        return false;
+    }
+
 }
