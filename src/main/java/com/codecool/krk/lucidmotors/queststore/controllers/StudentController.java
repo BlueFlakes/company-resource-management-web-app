@@ -54,18 +54,7 @@
 //    protected void showMenu() {
 //        this.studentView.printStudentMenu();
 //    }
-//
-//    private void showWallet() throws DaoException {
-//
-//        String accountBalance = Integer.toString(this.user.getPossesedCoins());
-//        userInterface.println("Balance: " + accountBalance);
-//        userInterface.print(new ArtifactOwnersDao().getArtifacts(this.user).iterator());
-//        userInterface.println("Achieved quests: ");
-//
-//        userInterface.print(new AchievedQuestDao().getAllQuestsByStudent(this.user).iterator());
-//
-//        this.userInterface.pause();
-//    }
+
 //
 //    private void showLevel() throws DaoException {
 //
@@ -79,3 +68,26 @@
 //        new StudentStoreController().startController(this.user, this.school);
 //    }
 //}
+
+
+package com.codecool.krk.lucidmotors.queststore.controllers;
+
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
+import com.codecool.krk.lucidmotors.queststore.models.User;
+
+import java.util.List;
+
+public class StudentController {
+
+    private ArtifactOwnersDao artifactOwnersDao;
+
+    public StudentController() throws DaoException {
+        this.artifactOwnersDao = new ArtifactOwnersDao();
+    }
+
+    public List<BoughtArtifact> getWallet(User student) throws DaoException {
+        return this.artifactOwnersDao.getArtifacts(student);
+    }
+}
