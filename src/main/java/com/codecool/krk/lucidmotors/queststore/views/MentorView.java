@@ -57,9 +57,9 @@ public class MentorView {
 
     private void insertData(MentorOptions mentorOption, JtwigModel model) throws DaoException {
         switch (mentorOption) {
-            case SHOW_MENTORS_CLASS:
-                showMentorClass(model);
-                break;
+//            case SHOW_MENTORS_CLASS:
+//                showMentorClass(model);
+//                break;
 
 //            case EDIT_MENTOR:
 //                editMentor(model);
@@ -77,32 +77,32 @@ public class MentorView {
 //                runNewLevelCreation(model);
 //                break;
 //
-//            case ADD_MENTOR:
-//                add_mentor(model);
-//                break;
+            case ADD_STUDENT:
+                addStudent(model);
+                break;
 //
-//            case CREATE_CLASS:
-//                create_class(model);
-//                break;
+            case ADD_ARTIFACT_CATEGORY:
+                addArtifactCategory(model);
+                break;
 
         }
     }
 
-//    private void create_class(JtwigModel model) throws DaoException {
-//        if(formData.containsKey("classname") && new ManagerController(this.school).createClass(this.formData)) {
-//            model.with("is_text_available", true);
-//            model.with("text", "Class successfully created");
-//        }
-//    }
-//
-//    private void add_mentor(JtwigModel model) throws DaoException {
-//        model.with("school_classes", this.school.getAllClasses());
-//        if(formData.containsKey("class_id") &&
-//                new ManagerController(this.school).addMentor(this.formData)) {
-//            model.with("is_text_available", true);
-//            model.with("text", "Mentor successfully created");
-//        }
-//    }
+    private void addArtifactCategory(JtwigModel model) throws DaoException {
+        if(formData.containsKey("name") && new MentorController(this.school).addArtifactCategory(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Artifact category successfully created");
+        }
+    }
+
+    private void addStudent(JtwigModel model) throws DaoException {
+        model.with("school_classes", this.school.getAllClasses());
+        if(formData.containsKey("class_id") &&
+                new MentorController(this.school).addStudent(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Student successfully created");
+        }
+    }
 //
 //    private void editMentor(JtwigModel model) throws DaoException {
 //        model.with("mentors", this.school.getAllMentors());
