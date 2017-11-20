@@ -3,23 +3,21 @@ package com.codecool.krk.lucidmotors.queststore.views;
 import com.codecool.krk.lucidmotors.queststore.controllers.StudentController;
 import com.codecool.krk.lucidmotors.queststore.enums.StudentOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.Activity;
-import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.User;
+import com.codecool.krk.lucidmotors.queststore.models.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 public class StudentView {
-    private School school;
     private StudentController studentController;
     private User user;
+    private Map<String, String> formData;
 
-    public StudentView(School school, User user) throws DaoException {
-        this.school = school;
+    public StudentView(User user, Map<String, String> formData) throws DaoException {
         this.user = user;
+        this.formData = formData;
         this.studentController = new StudentController();
     }
 
@@ -52,6 +50,37 @@ public class StudentView {
             case SHOW_WALLET:
                 List<BoughtArtifact> boughtArtifacts = studentController.getWallet(this.user);
                 model.with("bought_artifacts", boughtArtifacts);
+                break;
+
+            case SHOW_AVAILABLE_ARTIFACTS:
+                List<ShopArtifact> shopArtifacts = studentController.getShopArtifacts();
+                model.with("shop_artifacts", shopArtifacts);
+                break;
+
+            case BUY_ARTIFACT:
+
+                if (formData.containsKey("choosen-artifact")) {
+                    boolean wasSuccesfullyBought = studentController.buyArtifact(this.formData, this.user);
+                    model.with("is_text_available", true);
+
+                    String message;
+                    if (wasSuccesfullyBought) {
+                        message = "Artifact succesfuly bought!";
+                    } else {
+                        message = "Sorry but you dont have enough money!";
+                    }
+
+                    model.with("text", message);
+
+                } else {
+                    List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
+                    model.with("shop_artifact", shopArtifacts1);
+                }
+
+
+
+
+
         }
     }
 }

@@ -68,7 +68,7 @@ public class MainHandler implements HttpHandler {
                     break;
 
                 case "student":
-                    activity = new StudentView(this.school, user).getActivity(EnumUtils.getValue(StudentOptions.class, action));
+                    activity = new StudentView(user, formData).getActivity(EnumUtils.getValue(StudentOptions.class, action));
                     break;
             }
         } else {

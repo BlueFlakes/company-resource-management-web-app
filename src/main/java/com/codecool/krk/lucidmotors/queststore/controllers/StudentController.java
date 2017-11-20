@@ -73,21 +73,57 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
+import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
+import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.User;
 
-import java.util.List;
+import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class StudentController {
 
     private ArtifactOwnersDao artifactOwnersDao;
+    private ShopArtifactDao shopArtifactDao;
+    private StudentDao studentDao;
 
     public StudentController() throws DaoException {
+        this.shopArtifactDao = new ShopArtifactDao();
         this.artifactOwnersDao = new ArtifactOwnersDao();
+        this.studentDao = new StudentDao();
     }
 
     public List<BoughtArtifact> getWallet(User student) throws DaoException {
         return this.artifactOwnersDao.getArtifacts(student);
+    }
+
+    public List<ShopArtifact> getShopArtifacts() throws DaoException {
+        return this.shopArtifactDao.getAllArtifacts();
+    }
+
+    public boolean buyArtifact(Map<String, String> formData, User user) throws DaoException {
+        final String key = "choosen-artifact";
+        Integer artifactId = parseInt(formData.get(key));
+
+        Student student = this.studentDao.getStudent(user.getId());
+        ShopArtifact shopArtifact = shopArtifactDao.getArtifact(artifactId);
+
+        Integer artifactPrice = shopArtifact.getPrice();
+        Integer studentPossesedCoins = student.getPossesedCoins();
+
+        if (studentPossesedCoins >= artifactPrice) {
+            student.setPossesedCoins(studentPossesedCoins - artifactPrice);
+
+            new BoughtArtifact(shopArtifact).save(new ArrayList<>(Collections.singletonList(student)));
+            this.studentDao.update(student);
+
+            return true;
+        }
+
+        return false;
     }
 }
