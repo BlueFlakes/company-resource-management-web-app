@@ -7,7 +7,7 @@ public enum StudentOptions {
     BUY_ARTIFACT ("templates/snippets/student-store-buy-artifact.twig"),
     AVAILABLE_CONTRIBUTIONS ("templates/snippets/student-store-show-available-contributions.twig"),
     CREATE_CONTRIBUTION ("templates/snippets/student-store-add-contribution.twig"),
-    CLOSE_CONTRIBUTION ("templates/empty.twig"),
+    CLOSE_CONTRIBUTION ("templates/snippets/student-store-close-contribution.twig"),
     DEFAULT ("templates/snippets/home-snippet.twig");
 
     private String path;
