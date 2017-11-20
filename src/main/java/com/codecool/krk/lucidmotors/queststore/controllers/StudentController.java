@@ -227,4 +227,9 @@ public class StudentController {
             contribution.update();
         }
     }
+
+    public Integer getUserLevel(User user) throws DaoException {
+        ExperienceLevelsDao experienceLevelsDao = new ExperienceLevelsDao();
+        return this.studentDao.getStudent(user.getId()).getLevel(experienceLevelsDao.getExperienceLevels());
+    }
 }

@@ -21,12 +21,15 @@ public class StudentView {
         this.studentController = new StudentController();
     }
 
-    public Activity getActivity(StudentOptions studentOption) {
+    public Activity getActivity(StudentOptions studentOption) throws DaoException{
         System.out.println(studentOption);
         String response;
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
 
+        model.with("user", user);
+        model.with("role", user.getClass().getSimpleName());
+        model.with("level", this.studentController.getUserLevel(user));
         model.with("title", studentOption.toString());
         model.with("menu_path", "classpath:/templates/snippets/student-menu-snippet.twig");
 
