@@ -1,12 +1,16 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import org.flywaydb.core.Flyway;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
+
+    static final String dbUrl = "jdbc:sqlite:data/new_database.db";
+
 
     private static Connection connection = null;
 
@@ -27,7 +31,7 @@ public class DatabaseConnection {
 
     private static void connectWithDatabase() throws DaoException {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:data/Codecool.db");
+            connection = DriverManager.getConnection(DatabaseConnection.dbUrl);
         } catch (SQLException e) {
             throw new DaoException("DatabaseConnection class caused a problem!");
         }
@@ -41,6 +45,12 @@ public class DatabaseConnection {
             throw new DaoException("DatabaseConnection class caused a problem!");
         }
 
+    }
+
+    public static void migrate() {
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(DatabaseConnection.dbUrl, "sa", null);
+        flyway.migrate();
     }
 
 }
