@@ -53,7 +53,7 @@ public class MainHandler implements HttpHandler {
 
         if(user == null) {
             activity = new LoginHandler(this.school, formData, this.loggedUsers).getActivity(httpExchange);
-        } else if (!role.equals("")) {
+        } else if (isProperUser(role, user)) {
             switch (role) {
                 case "manager":
                     activity = new ManagerView(this.school, user, formData).getActivity(getManagerEnumValue(action));
@@ -64,7 +64,7 @@ public class MainHandler implements HttpHandler {
                     break;
             }
         } else {
-            activity = switchUser(user);
+            activity = redirectByUser(user);
         }
 
         return activity;
@@ -107,21 +107,34 @@ public class MainHandler implements HttpHandler {
         return user;
     }
 
-    static Activity switchUser(User user) {
+    static String switchUser(User user) {
         String userUrl;
 
         if (user instanceof Manager) {
-            userUrl = "/manager";
+            userUrl = "manager";
         } else if (user instanceof Mentor) {
-            userUrl = "/mentor";
+            userUrl = "mentor";
         } else if (user instanceof Student) {
-            userUrl = "/student";
+            userUrl = "student";
         } else {
-            userUrl = "/";
+            userUrl = "";
         }
+
+        return userUrl;
+    }
+
+    public static Activity redirectByUser(User user) {
+        Activity activity;
+
+        String userUrl = "/" + switchUser(user);
 
         return new Activity(302, userUrl);
     }
+
+    private boolean isProperUser(String role, User user) {
+        return switchUser(user).equalsIgnoreCase(role);
+    }
+
 
     private Map<String, String> parseURI (String uri) {
         Map<String, String> parsedURI = new HashMap<String, String>();
