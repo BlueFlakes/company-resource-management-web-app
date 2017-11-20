@@ -80,6 +80,8 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 
 import java.util.*;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
@@ -143,6 +145,39 @@ public class StudentController {
             Student student = this.studentDao.getStudent(user.getId());
             Contribution contribution = new Contribution(contributionName, student, shopArtifact);
             this.contributionDao.save(contribution);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public List<Contribution> getAllAuthorContributions(User user) throws DaoException {
+        List<Contribution> contributions = this.contributionDao.getOpenContributions();
+        BiPredicate<Integer, Integer> areEqual = Objects::equals;
+
+        return contributions.stream()
+                            .filter(c -> areEqual.test(c.getCreator().getId(), user.getId()))
+                            .collect(Collectors.toList());
+    }
+
+    public boolean closeUserContribution(Map<String, String> map, User user) throws DaoException {
+        final String contributionNameKey = "choosen-contribution-to-close";
+
+        if (map.containsKey(contributionNameKey)) {
+            Integer contributionId = parseInt(map.get(contributionNameKey));
+            Contribution contribution = this.contributionDao.getContribution(contributionId);
+            contribution.setStatus("closed");
+            contribution.update();
+
+            Map<Student, Integer> contributorsShares = this.contributionDao.getContributorsShares(contributionId);
+
+            for (Map.Entry<Student, Integer> entry : contributorsShares.entrySet()) {
+                Student student = entry.getKey();
+                Integer spentCoinsAmount = entry.getValue();
+                student.setPossesedCoins(student.getPossesedCoins() + spentCoinsAmount);
+                student.update();
+            }
 
             return true;
         }

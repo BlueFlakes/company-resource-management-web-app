@@ -95,6 +95,16 @@ public class StudentView {
                 break;
 
             case CLOSE_CONTRIBUTION:
+                List<Contribution> userContributions = studentController.getAllAuthorContributions(user);
+                model.with("user_contributions", userContributions);
+                boolean wasSuccesfulyClosed = studentController.closeUserContribution(formData, user);
+
+                if (wasSuccesfulyClosed) {
+                    model.with("is_text_available", true);
+                    model.with("text", "Succesfully closed contribution!");
+
+                }
+
                 break;
         }
     }
