@@ -1,0 +1,21 @@
+<form method="post">
+    <label for="#mentor-update-artifact-choose-artifact">Choose artifact to update</label>
+    <select name="artifact" id="#mentor-update-artifact-choose-artifact">
+        {% for artifact in artifacts %}
+            <option value="{{artifact.getId()}}">{{artifact.getName()}}</option>
+        {% endfor %}
+    </select>
+    <label for="#mentor-update-artifact-new-name">New name</label>
+    <input type="text" name="name" id="#mentor-update-artifact-new-name">
+    <label for="#mentor-update-artifact-new-description">New description</label>
+    <input type="text" name="description" id="#mentor-update-artifact-new-description">
+    <label for="#mentor-update-artifact-new-price">New price</label>
+    <input type="text" name="price" id="#mentor-update-artifact-new-price">
+    <label for="#mentor-update-artifact-new-artifact-category">Choose new artifact category</label>
+    <select name="category" id="#mentor-update-artifact-new-artifact-category">
+        {% for category in quest_categories %}
+            <option value="{{category.getId()}}">{{category.getName()}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>

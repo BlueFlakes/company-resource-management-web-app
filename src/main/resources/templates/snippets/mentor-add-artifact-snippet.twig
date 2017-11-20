@@ -1,0 +1,15 @@
+<form method="post">
+    <label for="#mentor-add-artifact-name">Name</label>
+    <input type="text" name="name" id="#mentor-add-artifact-name">
+    <label for="#mentor-add-artifact-description">Description</label>
+    <input type="text" name="description" id="#mentor-add-artifact-description">
+    <label for="#mentor-add-artifact-price">Price</label>
+    <input type="text" name="price" id="#mentor-add-artifact-price">
+    <label for="#mentor-add-artifact-category">Choose artifact category</label>
+    <select name="category" id="#mentor-add-artifact-category">
+        {% for category in quest_categories %}
+            <option value="{{category.getId()}}">{{category.getName()}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>

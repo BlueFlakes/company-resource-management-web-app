@@ -37,7 +37,7 @@ public class ManagerView {
         model.with("title", managerOption.toString());
         model.with("menu_path", "classpath:/templates/snippets/manager-menu-snippet.twig");
         model.with("is_text_available", false);
-        model.with("role", "Mentor");
+        model.with("role", "Manager");
         model.with("user", this.user);
 
         try {
