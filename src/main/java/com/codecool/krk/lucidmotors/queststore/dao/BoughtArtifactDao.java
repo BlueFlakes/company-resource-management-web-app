@@ -35,13 +35,6 @@ public class BoughtArtifactDao {
         return purchaseDate;
     }
 
-    private String convertDateToString(Date purchaseDate) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        String purchaseDateString = dateFormatter.format(purchaseDate);
-
-        return purchaseDateString;
-    }
-
     public BoughtArtifact getArtifact(Integer id) throws DaoException {
 
         BoughtArtifact boughtArtifact = null;
@@ -91,9 +84,8 @@ public class BoughtArtifactDao {
         boolean isUsed = boughtArtifact.isUsed();
         Integer isUsedInteger = (isUsed) ? 1 : 0;
 
-        Date purchaseDate = boughtArtifact.getDate();
 
-        String purchaseDateString = this.convertDateToString(purchaseDate);
+        String purchaseDateString = boughtArtifact.getDate();
 
         String sqlQuery = "UPDATE bought_artifacts "
                 + "SET name = ?, price = ?, category_id = ?, description = ?, purchase_date = ?, is_used = ? "
@@ -172,9 +164,7 @@ public class BoughtArtifactDao {
         boolean isUsed = boughtArtifact.isUsed();
         Integer isUsedInteger = (isUsed) ? 1 : 0;
 
-        Date purchaseDate = boughtArtifact.getDate();
-
-        String purchaseDateString = this.convertDateToString(purchaseDate);
+        String purchaseDateString = boughtArtifact.getDate();
 
         String sqlQuery = "INSERT INTO bought_artifacts "
                 + "(name, price, category_id, purchase_date, is_used, description) "

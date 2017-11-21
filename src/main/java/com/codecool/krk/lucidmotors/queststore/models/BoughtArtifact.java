@@ -38,8 +38,8 @@ public class BoughtArtifact extends AbstractArtifact {
         return this.isUsed;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return convertDateToString(date);
     }
 
     public void setDate(Date date) {
@@ -48,7 +48,7 @@ public class BoughtArtifact extends AbstractArtifact {
 
     @Override
     public String toString() {
-        String dateString = this.convertDateToString(this.getDate());
+        String dateString = this.getDate();
         if (this.isUsed) {
             return String.format("id: %s. name: %s,  date: %s, %s", this.getId(), this.getName(),
                     dateString, "is used");
