@@ -16,11 +16,27 @@ import java.util.List;
 
 public class ContributionDao {
 
+    private static ContributionDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
     public ContributionDao() throws DaoException {
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ContributionDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (ContributionDao.class) {
+
+                if (dao == null) {
+                    dao = new ContributionDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public void save(Contribution contribution) throws DaoException {
