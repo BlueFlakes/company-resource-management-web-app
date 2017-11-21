@@ -11,7 +11,6 @@ public class DatabaseConnection {
 
     static final String dbUrl = "jdbc:sqlite:data/Codecool.db";
 
-
     private static Connection connection = null;
 
     public static Connection getConnection() throws DaoException {

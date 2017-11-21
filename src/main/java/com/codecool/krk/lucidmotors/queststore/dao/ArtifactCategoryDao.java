@@ -10,13 +10,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ArtifactCategoryDao {
-
+    private static ArtifactCategoryDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
-    public ArtifactCategoryDao() throws DaoException {
+    private ArtifactCategoryDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ArtifactCategoryDao getDao() throws DaoException{
+
+        synchronized (ArtifactCategoryDao.class) {
+            if(dao == null) {
+                dao = new ArtifactCategoryDao();
+            }
+        }
+
+        return dao;
     }
 
     public ArtifactCategory getArtifactCategory(Integer id) throws DaoException {

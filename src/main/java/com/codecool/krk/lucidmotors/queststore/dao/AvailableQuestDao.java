@@ -12,13 +12,23 @@ import java.util.ArrayList;
 
 public class AvailableQuestDao {
 
+    private static AvailableQuestDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+    private QuestCategoryDao questCategoryDao = QuestCategoryDao.getDao();
 
-    public AvailableQuestDao() throws DaoException {
+    private AvailableQuestDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static AvailableQuestDao getDao() throws DaoException {
+        synchronized (AvailableQuestDao.class) {
+            if(dao == null) {
+                dao = new AvailableQuestDao();
+            }
+        }
+        return dao;
     }
 
     public AvailableQuest getQuest(Integer id) throws DaoException {

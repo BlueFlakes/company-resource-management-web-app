@@ -18,13 +18,23 @@ import java.util.List;
 
 public class BoughtArtifactDao {
 
+    private static BoughtArtifactDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
+    private ArtifactCategoryDao artifactCategoryDao = ArtifactCategoryDao.getDao();
 
-    public BoughtArtifactDao() throws DaoException {
+    private BoughtArtifactDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static BoughtArtifactDao getDao() throws DaoException {
+        synchronized (BoughtArtifactDao.class) {
+            if(dao == null) {
+                dao = new BoughtArtifactDao();
+            }
+        }
+        return dao;
     }
 
     private Date parseDate(String dateString) throws ParseException {
@@ -152,7 +162,7 @@ public class BoughtArtifactDao {
     public void save(BoughtArtifact boughtArtifact, List<Student> owners) throws DaoException {
         this.saveArtifact(boughtArtifact);
         Integer artifactId = this.getArtifactId();
-        new ArtifactOwnersDao().saveArtifactOwners(artifactId, owners);
+        ArtifactOwnersDao.getDao().saveArtifactOwners(artifactId, owners);
     }
 
     private void saveArtifact(BoughtArtifact boughtArtifact) throws DaoException {

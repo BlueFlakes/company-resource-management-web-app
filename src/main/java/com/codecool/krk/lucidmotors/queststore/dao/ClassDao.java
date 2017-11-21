@@ -13,12 +13,22 @@ import java.sql.SQLException;
 
 public class ClassDao {
 
+    private static ClassDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
-    public ClassDao() throws DaoException {
+    private ClassDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ClassDao getDao() throws DaoException {
+        synchronized (ClassDao.class) {
+            if(dao == null) {
+                dao = new ClassDao();
+            }
+        }
+        return dao;
     }
 
     public SchoolClass getSchoolClass(Integer id) throws DaoException {

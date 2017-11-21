@@ -15,15 +15,24 @@ import java.util.List;
 
 public class ArtifactOwnersDao {
 
+    private static ArtifactOwnersDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
     //private ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
 
-    public ArtifactOwnersDao() throws DaoException {
+    private ArtifactOwnersDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
     }
 
+    public static ArtifactOwnersDao getDao() throws DaoException {
+        synchronized (ArtifactOwnersDao.class) {
+            if(dao == null) {
+                dao = new ArtifactOwnersDao();
+            }
+        }
+        return dao;
+    }
 
     public ArrayList<Student> getOwners(BoughtArtifact boughtArtifact) throws DaoException {
         ArrayList<Student> owners = new ArrayList<>();
@@ -41,7 +50,7 @@ public class ArtifactOwnersDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
 
-                Student owner = new StudentDao().getStudent(studentId);
+                Student owner = StudentDao.getDao().getStudent(studentId);
                 owners.add(owner);
             }
 
@@ -70,7 +79,7 @@ public class ArtifactOwnersDao {
             while (result.next()) {
                 Integer artifactId = result.getInt("artifact_id");
 
-                BoughtArtifact ownedArtifact = new BoughtArtifactDao().getArtifact(artifactId);
+                BoughtArtifact ownedArtifact = BoughtArtifactDao.getDao().getArtifact(artifactId);
                 ownedArtifacts.add(ownedArtifact);
             }
 

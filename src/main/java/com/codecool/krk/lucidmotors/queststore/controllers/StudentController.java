@@ -19,9 +19,10 @@ public class StudentController {
     private ContributionDao contributionDao;
 
     public StudentController() throws DaoException {
-        this.shopArtifactDao = new ShopArtifactDao();
-        this.artifactOwnersDao = new ArtifactOwnersDao();
-        this.studentDao = new StudentDao();
+
+        this.shopArtifactDao = ShopArtifactDao.getDao();
+        this.artifactOwnersDao = ArtifactOwnersDao.getDao();
+        this.studentDao = StudentDao.getDao();
         this.contributionDao = new ContributionDao();
     }
 
@@ -158,7 +159,7 @@ public class StudentController {
             List<Student> contributors = contributionDao.getContributors(contribution.getId());
 
             BoughtArtifact boughtArtifact = new BoughtArtifact(contribution.getShopArtifact());
-            new BoughtArtifactDao().save(boughtArtifact, contributors);
+            BoughtArtifactDao.getDao().save(boughtArtifact, contributors);
 
             contribution.update();
         }
