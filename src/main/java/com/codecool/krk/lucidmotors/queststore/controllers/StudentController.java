@@ -19,9 +19,10 @@ public class StudentController {
     private ContributionDao contributionDao;
 
     public StudentController() throws DaoException {
-        this.shopArtifactDao = new ShopArtifactDao();
+
+        this.shopArtifactDao = ShopArtifactDao.getDao();
         this.artifactOwnersDao = ArtifactOwnersDao.getDao();
-        this.studentDao = new StudentDao();
+        this.studentDao = StudentDao.getDao();
         this.contributionDao = new ContributionDao();
     }
 

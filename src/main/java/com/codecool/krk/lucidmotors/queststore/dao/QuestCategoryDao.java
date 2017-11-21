@@ -11,12 +11,28 @@ import java.util.ArrayList;
 
 public class QuestCategoryDao {
 
+    private static QuestCategoryDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
-    public QuestCategoryDao() throws DaoException {
+    private QuestCategoryDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static QuestCategoryDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (QuestCategoryDao.class) {
+
+                if (dao == null) {
+                    dao = new QuestCategoryDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public QuestCategory getQuestCategory(Integer id) throws DaoException {

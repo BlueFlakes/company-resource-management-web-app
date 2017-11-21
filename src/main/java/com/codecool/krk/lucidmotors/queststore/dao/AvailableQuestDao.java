@@ -15,7 +15,7 @@ public class AvailableQuestDao {
     private static AvailableQuestDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+    private QuestCategoryDao questCategoryDao = QuestCategoryDao.getDao();
 
     private AvailableQuestDao() throws DaoException {
 

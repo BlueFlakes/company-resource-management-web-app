@@ -48,7 +48,7 @@ public class ArtifactOwnersDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
 
-                Student owner = new StudentDao().getStudent(studentId);
+                Student owner = StudentDao.getDao().getStudent(studentId);
                 owners.add(owner);
             }
 

@@ -12,14 +12,30 @@ import java.util.ArrayList;
 
 public class MentorDao {
 
+    private static MentorDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
     private final ClassDao classDao;
 
-    public MentorDao(ClassDao classDao) throws DaoException {
+    private MentorDao(ClassDao classDao) throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
         this.classDao = classDao;
+    }
+
+    public static MentorDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (MentorDao.class) {
+
+                if (dao == null) {
+                    dao = new MentorDao(ClassDao.getDao());
+                }
+            }
+        }
+
+        return dao;
     }
 
     public Mentor getMentor(Integer id) throws DaoException {

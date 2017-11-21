@@ -13,13 +13,29 @@ import java.util.List;
 
 public class ShopArtifactDao {
 
+    private static ShopArtifactDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
     private ArtifactCategoryDao artifactCategoryDao = ArtifactCategoryDao.getDao();
 
-    public ShopArtifactDao() throws DaoException {
+    private ShopArtifactDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ShopArtifactDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (ShopArtifactDao.class) {
+
+                if (dao == null) {
+                    dao = new ShopArtifactDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public ShopArtifact getArtifact(Integer id) throws DaoException {

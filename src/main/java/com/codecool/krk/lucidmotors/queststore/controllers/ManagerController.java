@@ -260,7 +260,7 @@ public class ManagerController {
         Boolean isUpdated = false;
 
         Integer mentorId = Integer.valueOf(formData.get("mentor_id"));
-        Mentor mentor = new MentorDao(ClassDao.getDao()).getMentor(mentorId);
+        Mentor mentor = MentorDao.getDao().getMentor(mentorId);
 
         if (mentor != null &&
                 (this.school.isLoginAvailable(formData.get("login")) || formData.get("login").equals(mentor.getLogin()))) {

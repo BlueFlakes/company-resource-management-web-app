@@ -14,12 +14,28 @@ import java.util.stream.Collectors;
 
 public class ExperienceLevelsDao {
 
+    private static ExperienceLevelsDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
     public ExperienceLevelsDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ExperienceLevelsDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (ExperienceLevelsDao.class) {
+
+                if (dao == null) {
+                    dao = new ExperienceLevelsDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     private void clearTable() throws DaoException {

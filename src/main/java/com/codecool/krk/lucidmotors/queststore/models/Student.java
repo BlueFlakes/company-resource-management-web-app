@@ -11,7 +11,7 @@ public class Student extends User {
     private final ArrayList<BoughtArtifact> ownedArtifacts;
     private final ArrayList<AbstractQuest> achievedQuests;
     private final SchoolClass class_;
-    private final StudentDao studentDao = new StudentDao();
+    private final StudentDao studentDao = StudentDao.getDao();
     private Integer earnedCoins;
     private Integer possesedCoins;
 

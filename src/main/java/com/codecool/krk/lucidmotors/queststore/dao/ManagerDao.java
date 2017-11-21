@@ -10,12 +10,28 @@ import java.sql.SQLException;
 
 public class ManagerDao {
 
+    private static ManagerDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
     public ManagerDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ManagerDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (ManagerDao.class) {
+
+                if (dao == null) {
+                    dao = new ManagerDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public Manager getManager(Integer id) throws DaoException {

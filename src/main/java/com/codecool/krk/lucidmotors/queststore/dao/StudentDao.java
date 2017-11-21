@@ -9,14 +9,29 @@ import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 
 public class StudentDao {
 
+    private static StudentDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
     private final ClassDao classDao;
 
-    public StudentDao() throws DaoException {
-
+    private StudentDao() throws DaoException {
         this.connection = DatabaseConnection.getConnection();
         this.classDao = ClassDao.getDao();
+    }
+
+    public static StudentDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (StudentDao.class) {
+
+                if (dao == null) {
+                    dao = new StudentDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public Student getStudent(Integer id) throws DaoException {

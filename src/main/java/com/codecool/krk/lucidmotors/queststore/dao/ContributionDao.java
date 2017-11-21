@@ -170,7 +170,7 @@ public class ContributionDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
 
-                Student student = new StudentDao().getStudent(studentId);
+                Student student = StudentDao.getDao().getStudent(studentId);
                 contributors.add(student);
             }
 
@@ -200,8 +200,8 @@ public class ContributionDao {
                 Integer givenCoins = result.getInt("given_coins");
                 String status = result.getString("status");
 
-                ShopArtifact shopArtifact = new ShopArtifactDao().getArtifact(artifactId);
-                Student creator = new StudentDao().getStudent(creatorId);
+                ShopArtifact shopArtifact = ShopArtifactDao.getDao().getArtifact(artifactId);
+                Student creator = StudentDao.getDao().getStudent(creatorId);
 
                 Contribution contribution = new Contribution(contributionName, creator, shopArtifact,
                                                              givenCoins, id, status);
@@ -251,8 +251,8 @@ public class ContributionDao {
         Integer id = result.getInt("id");
         String status = result.getString("status");
 
-        ShopArtifact shopArtifact = new ShopArtifactDao().getArtifact(artifactId);
-        Student creator = new StudentDao().getStudent(creatorId);
+        ShopArtifact shopArtifact = ShopArtifactDao.getDao().getArtifact(artifactId);
+        Student creator = StudentDao.getDao().getStudent(creatorId);
 
         return new Contribution(contributionName, creator, shopArtifact, givenCoins, id, status);
     }
@@ -271,7 +271,7 @@ public class ContributionDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
                 Integer spentCoins = result.getInt("coins");
-                Student student = new StudentDao().getStudent(studentId);
+                Student student = StudentDao.getDao().getStudent(studentId);
 
                 contributorsWithShares.put(student, spentCoins);
             }
