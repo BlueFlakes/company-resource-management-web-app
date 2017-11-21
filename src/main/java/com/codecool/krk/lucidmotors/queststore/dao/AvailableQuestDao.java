@@ -23,11 +23,16 @@ public class AvailableQuestDao {
     }
 
     public static AvailableQuestDao getDao() throws DaoException {
-        synchronized (AvailableQuestDao.class) {
-            if(dao == null) {
-                dao = new AvailableQuestDao();
+        if (dao == null) {
+
+            synchronized (AvailableQuestDao.class) {
+
+                if(dao == null) {
+                    dao = new AvailableQuestDao();
+                }
             }
         }
+
         return dao;
     }
 

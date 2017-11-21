@@ -20,10 +20,13 @@ public class ArtifactCategoryDao {
     }
 
     public static ArtifactCategoryDao getDao() throws DaoException{
+        if (dao == null) {
 
-        synchronized (ArtifactCategoryDao.class) {
-            if(dao == null) {
-                dao = new ArtifactCategoryDao();
+            synchronized (ArtifactCategoryDao.class) {
+
+                if(dao == null) {
+                    dao = new ArtifactCategoryDao();
+                }
             }
         }
 

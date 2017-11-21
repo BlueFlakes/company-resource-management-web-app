@@ -28,11 +28,16 @@ public class AchievedQuestDao {
     }
 
     public static AchievedQuestDao getDao() throws DaoException {
-        synchronized (AvailableQuestDao.class) {
-            if(dao == null) {
-                dao = new AchievedQuestDao();
+        if (dao == null) {
+            
+            synchronized (AvailableQuestDao.class) {
+
+                if(dao == null) {
+                    dao = new AchievedQuestDao();
+                }
             }
         }
+
         return dao;
     }
 

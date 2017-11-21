@@ -29,11 +29,16 @@ public class BoughtArtifactDao {
     }
 
     public static BoughtArtifactDao getDao() throws DaoException {
-        synchronized (BoughtArtifactDao.class) {
-            if(dao == null) {
-                dao = new BoughtArtifactDao();
+        if (dao == null) {
+
+            synchronized (BoughtArtifactDao.class) {
+
+                if(dao == null) {
+                    dao = new BoughtArtifactDao();
+                }
             }
         }
+
         return dao;
     }
 
