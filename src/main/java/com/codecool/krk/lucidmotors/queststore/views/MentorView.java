@@ -4,6 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorStoreController;
+import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Activity;
@@ -87,7 +88,7 @@ public class MentorView {
                 break;
 
             case ADD_QUEST:
-
+                addQuest(model);
                 break;
 
             case ADD_QUEST_CATEGORY:
@@ -122,6 +123,15 @@ public class MentorView {
                 addArtifactCategory(model);
                 break;
 
+        }
+    }
+
+    private void addQuest(JtwigModel model) throws DaoException {
+        model.with("quest_categories", new QuestCategoryDao().getAllQuestCategories());
+        if(formData.containsKey("category_id") &&
+                new MentorController(this.school).createNewAvailableQuest(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Quest successfully created");
         }
     }
 

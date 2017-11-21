@@ -436,6 +436,24 @@ public class MentorController {
         this.school = school;
     }
 
+    public boolean createNewAvailableQuest(Map<String, String> formData) throws DaoException {
+        Boolean isAdded = true;
+
+        String name = formData.get("quest_name");
+        QuestCategory questCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(formData.get("category_id")));
+        String description = formData.get("description");
+
+        try {
+            Integer value = Integer.parseInt(formData.get("quest_value"));
+
+            AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
+            questToAdd.save();
+        } catch (NumberFormatException e) {
+            isAdded = false;
+        }
+        return isAdded;
+    }
+
     public boolean addStudent(Map<String, String> formData) throws DaoException {
         Boolean isAdded = false;
 
