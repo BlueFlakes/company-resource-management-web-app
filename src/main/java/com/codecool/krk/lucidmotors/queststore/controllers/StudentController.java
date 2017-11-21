@@ -123,7 +123,7 @@ public class StudentController {
             student.setPossesedCoins(studentPossesedCoins - artifactPrice);
 
             new BoughtArtifact(shopArtifact).save(new ArrayList<>(Collections.singletonList(student)));
-            this.studentDao.update(student);
+            student.update();
 
             return true;
         }
@@ -146,7 +146,7 @@ public class StudentController {
             ShopArtifact shopArtifact = this.shopArtifactDao.getArtifact(choosenArtifactId);
             Student student = this.studentDao.getStudent(user.getId());
             Contribution contribution = new Contribution(contributionName, student, shopArtifact);
-            this.contributionDao.save(contribution);
+            contribution.update();
 
             return true;
         }
@@ -154,7 +154,7 @@ public class StudentController {
         return false;
     }
 
-    public List<Contribution> getAllAuthorContributions(User user) throws DaoException {
+    public List<Contribution> getThisUserContributions(User user) throws DaoException {
         List<Contribution> contributions = this.contributionDao.getOpenContributions();
         BiPredicate<Integer, Integer> areEqual = Objects::equals;
 
@@ -167,24 +167,28 @@ public class StudentController {
         final String contributionNameKey = "choosen-contribution-to-close";
 
         if (formData.containsKey(contributionNameKey)) {
+
             Integer contributionId = parseInt(formData.get(contributionNameKey));
             Contribution contribution = this.contributionDao.getContribution(contributionId);
+
             contribution.setStatus("closed");
             contribution.update();
 
             Map<Student, Integer> contributorsShares = this.contributionDao.getContributorsShares(contributionId);
-
-            for (Map.Entry<Student, Integer> entry : contributorsShares.entrySet()) {
-                Student student = entry.getKey();
-                Integer spentCoinsAmount = entry.getValue();
-                student.setPossesedCoins(student.getPossesedCoins() + spentCoinsAmount);
-                student.update();
-            }
-
+            giveMoneyBackToContributors(contributorsShares);
             return true;
         }
 
         return false;
+    }
+
+    private void giveMoneyBackToContributors(Map<Student, Integer> contributorsShares) throws DaoException {
+        for (Map.Entry<Student, Integer> entry : contributorsShares.entrySet()) {
+            Student student = entry.getKey();
+            Integer spentCoinsAmount = entry.getValue();
+            student.setPossesedCoins(student.getPossesedCoins() + spentCoinsAmount);
+            student.update();
+        }
     }
 
     public boolean takePartInContribution(Map<String, String> formData, User user) throws DaoException {
@@ -203,9 +207,9 @@ public class StudentController {
                 final Integer contributionId = parseInt(formData.get(contributionKey));
                 Contribution contribution = this.contributionDao.getContribution(contributionId);
                 Integer neededCoinsDiff = contribution.getShopArtifact().getPrice() - contribution.getGivenCoins();
-                final Integer takenCoins = neededCoinsDiff >= givenCoins ? givenCoins : neededCoinsDiff;
 
-                student.setPossesedCoins(student.getPossesedCoins() - takenCoins);
+                final Integer takenCoins = neededCoinsDiff >= givenCoins ? givenCoins : neededCoinsDiff;
+                student.setPossesedCoins(studentPossessedCoins - takenCoins);
                 contribution.addCoins(takenCoins);
 
                 student.update();

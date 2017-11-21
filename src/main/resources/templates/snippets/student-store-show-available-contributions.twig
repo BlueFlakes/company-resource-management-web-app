@@ -27,6 +27,6 @@
             <option value="{{ contribution.getId() }}">{{ contribution.getName() }} | Author ~ {{ contribution.getCreator().getName() }} </option>
         {% endfor %}
     </select>
-    <input type="text" name="spent-coins-amount" placeholder="amount" required>
+    <input type="number" min="1" max="{{ max_value }}" name="spent-coins-amount" placeholder="amount" required>
     <input type="submit" value="Submit">
 </form>

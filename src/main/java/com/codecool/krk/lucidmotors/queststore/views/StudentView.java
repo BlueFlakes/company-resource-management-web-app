@@ -121,7 +121,7 @@ public class StudentView {
         } else {
             message = "Sorry but you dont have enough money!";
         }
-
+        model.with("max_value", Integer.MAX_VALUE);
         model.with("text", message);
     }
 
@@ -137,7 +137,7 @@ public class StudentView {
     }
 
     private void handleCloseContribution(JtwigModel model) throws DaoException {
-        List<Contribution> userContributions = studentController.getAllAuthorContributions(user);
+        List<Contribution> userContributions = studentController.getThisUserContributions(user);
         model.with("user_contributions", userContributions);
         boolean wasSuccesfulyClosed = studentController.closeUserContribution(formData, user);
 
