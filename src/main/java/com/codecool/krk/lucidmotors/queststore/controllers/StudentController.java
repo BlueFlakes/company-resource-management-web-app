@@ -74,7 +74,7 @@ public class StudentController {
             ShopArtifact shopArtifact = this.shopArtifactDao.getArtifact(choosenArtifactId);
             Student student = this.studentDao.getStudent(user.getId());
             Contribution contribution = new Contribution(contributionName, student, shopArtifact);
-            contribution.update();
+            this.contributionDao.save(contribution);
 
             return true;
         }
