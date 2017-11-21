@@ -4,6 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorStoreController;
+import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
 import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
@@ -96,7 +97,7 @@ public class MentorView {
                 break;
 
             case UPDATE_QUEST:
-
+                updateQuest(model);
                 break;
 
             case MARK_BOUGHT_ARTIFACT_AS_USED:
@@ -132,6 +133,16 @@ public class MentorView {
                 new MentorController(this.school).createNewAvailableQuest(this.formData)) {
             model.with("is_text_available", true);
             model.with("text", "Quest successfully created");
+        }
+    }
+
+    private void updateQuest(JtwigModel model) throws DaoException {
+        model.with("quests", new AvailableQuestDao().getAllQuests());
+        model.with("quest_categories", new QuestCategoryDao().getAllQuestCategories());
+        if(formData.containsKey("quest_id") &&
+                new MentorController(this.school).changeQuestData(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Quest successfully updated");
         }
     }
 

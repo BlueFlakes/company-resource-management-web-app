@@ -436,6 +436,44 @@ public class MentorController {
         this.school = school;
     }
 
+    private void changeQuestData(ArrayList<String> newQuestInfo) throws DaoException {
+        Integer id = Integer.parseInt(newQuestInfo.get(0));
+        String newName = newQuestInfo.get(1);
+        QuestCategory newQuestCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(newQuestInfo.get(2)));
+        String newDescription = newQuestInfo.get(3);
+        Integer newValue = Integer.valueOf(newQuestInfo.get(4));
+
+        AvailableQuest quest = this.availableQuestDao.getQuest(id);
+        quest.setName(newName);
+        quest.setQuestCategory(newQuestCategory);
+        quest.setDescription(newDescription);
+        quest.setValue(newValue);
+        quest.update();
+    }
+
+    public boolean changeQuestData(Map<String, String> formData) throws DaoException {
+        Boolean isAdded = true;
+
+        Integer id = Integer.parseInt(formData.get("quest_id"));
+        String name = formData.get("quest_name");
+        QuestCategory questCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(formData.get("category_id")));
+        String description = formData.get("description");
+
+        try {
+            Integer value = Integer.parseInt(formData.get("value"));
+
+            AvailableQuest quest = this.availableQuestDao.getQuest(id);
+            quest.setName(name);
+            quest.setQuestCategory(questCategory);
+            quest.setDescription(description);
+            quest.setValue(value);
+            quest.update();
+        } catch (NumberFormatException e) {
+            isAdded = false;
+        }
+        return isAdded;
+    }
+
     public boolean createNewAvailableQuest(Map<String, String> formData) throws DaoException {
         Boolean isAdded = true;
 

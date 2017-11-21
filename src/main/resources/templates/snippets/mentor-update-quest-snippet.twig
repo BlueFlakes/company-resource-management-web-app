@@ -1,18 +1,18 @@
 <form method="post">
     <label for="#mentor-update-quest-choose-quest">Choose quest</label>
-    <select name="quest" id="#mentor-update-quest-choose-quest">
+    <select name="quest_id" id="#mentor-update-quest-choose-quest">
         {% for quest in quests %}
             <option value="{{quest.getId()}}">{{quest.getName()}}</option>
         {% endfor %}
     </select>
     <label for="#mentor-update-quest-new-quest-category">Choose new quest category</label>
-    <select name="category" id="#mentor-update-quest-new-quest-category">
+    <select name="category_id" id="#mentor-update-quest-new-quest-category">
         {% for category in quest_categories %}
             <option value="{{category.getId()}}">{{category.getName()}}</option>
         {% endfor %}
     </select>
     <label for="#mentor-update-quest-new-name">New name</label>
-    <input type="text" name="name" id="#mentor-update-quest-new-name">
+    <input type="text" name="quest_name" id="#mentor-update-quest-new-name">
     <label for="#mentor-update-quest-new-value">New value</label>
     <input type="text" name="value" id="#mentor-update-quest-new-value">
     <label for="#mentor-update-quest-new-description">New description</label>
