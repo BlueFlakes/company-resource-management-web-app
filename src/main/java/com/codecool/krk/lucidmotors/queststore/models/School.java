@@ -26,7 +26,7 @@ public class School {
         this.classDao = new ClassDao();
         this.managerDao = new ManagerDao();
         this.mentorDao = new MentorDao(this.classDao);
-        this.studentDao = new StudentDao(this.classDao);
+        this.studentDao = new StudentDao();
     }
 
     public User getUser(String login) throws DaoException {

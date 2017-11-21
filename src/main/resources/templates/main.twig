@@ -28,9 +28,11 @@
 			<div class="user-data">
 				<i class="fa fa-user fa-3x" aria-hidden="true"></i>
 				<p>Name: {{ user.getName() }}</p>
-				<p>{{ role }}</p>
-				<p>{{ user.getPossesedCoins() }}</p>
-				<p>{{ level }}</p>
+				<p>Role: {{ role }}</p>
+				{% if role.equals("Student") %}
+				<p>Coins: {{ user.getPossesedCoins() }}</p>
+				<p>Level: {{ level }}</p>
+				{% endif %}
 			</div>
 			<nav>
 				<ul>

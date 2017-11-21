@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class BoughtArtifactDao {
 
@@ -156,7 +157,7 @@ public class BoughtArtifactDao {
         return boughtArtifacts;
     }
 
-    public void save(BoughtArtifact boughtArtifact, ArrayList<Student> owners) throws DaoException {
+    public void save(BoughtArtifact boughtArtifact, List<Student> owners) throws DaoException {
         this.saveArtifact(boughtArtifact);
         Integer artifactId = this.getArtifactId();
         new ArtifactOwnersDao().saveArtifactOwners(artifactId, owners);

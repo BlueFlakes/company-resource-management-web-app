@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ContributionDao {
 
@@ -78,7 +79,7 @@ public class ContributionDao {
         Integer contributionId = contribution.getId();
         Integer studentId = user.getId();
 
-        ArrayList<Student> contributors = getContributors(contributionId);
+        List<Student> contributors = getContributors(contributionId);
 
         if (isStudentAlreadyPartOfContribution(studentId, contributors)) {
             updateContributorCoins(contributionId, studentId, coinsSpent);
@@ -87,7 +88,7 @@ public class ContributionDao {
         }
     }
 
-    private boolean isStudentAlreadyPartOfContribution(Integer studentId, ArrayList<Student> contributors) {
+    private boolean isStudentAlreadyPartOfContribution(Integer studentId, List<Student> contributors) {
         for (Student student : contributors) {
             if (studentId.equals(student.getId())) {
                 return true;
@@ -156,8 +157,8 @@ public class ContributionDao {
         }
     }
 
-    public ArrayList<Student> getContributors(Integer contributionId) throws DaoException {
-        ArrayList<Student> contributors = new ArrayList<>();
+    public List<Student> getContributors(Integer contributionId) throws DaoException {
+        List<Student> contributors = new ArrayList<>();
 
         String sqlQuery = "SELECT student_id FROM contributors WHERE contribution_id = ?";
 
@@ -169,7 +170,7 @@ public class ContributionDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
 
-                Student student = new StudentDao(new ClassDao()).getStudent(studentId);
+                Student student = new StudentDao().getStudent(studentId);
                 contributors.add(student);
             }
 
@@ -182,9 +183,9 @@ public class ContributionDao {
         return contributors;
     }
 
-    public ArrayList<Contribution> getOpenContributions() throws DaoException {
+    public List<Contribution> getOpenContributions() throws DaoException {
 
-        ArrayList<Contribution> openContributions = new ArrayList<>();
+        List<Contribution> openContributions = new ArrayList<>();
         String sqlQuery = "SELECT * FROM contributions";
 
         try {
@@ -200,7 +201,7 @@ public class ContributionDao {
                 String status = result.getString("status");
 
                 ShopArtifact shopArtifact = new ShopArtifactDao().getArtifact(artifactId);
-                Student creator = new StudentDao(new ClassDao()).getStudent(creatorId);
+                Student creator = new StudentDao().getStudent(creatorId);
 
                 Contribution contribution = new Contribution(contributionName, creator, shopArtifact,
                                                              givenCoins, id, status);
@@ -251,7 +252,7 @@ public class ContributionDao {
         String status = result.getString("status");
 
         ShopArtifact shopArtifact = new ShopArtifactDao().getArtifact(artifactId);
-        Student creator = new StudentDao(new ClassDao()).getStudent(creatorId);
+        Student creator = new StudentDao().getStudent(creatorId);
 
         return new Contribution(contributionName, creator, shopArtifact, givenCoins, id, status);
     }
@@ -270,7 +271,7 @@ public class ContributionDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
                 Integer spentCoins = result.getInt("coins");
-                Student student = new StudentDao(new ClassDao()).getStudent(studentId);
+                Student student = new StudentDao().getStudent(studentId);
 
                 contributorsWithShares.put(student, spentCoins);
             }

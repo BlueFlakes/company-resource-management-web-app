@@ -13,10 +13,10 @@ public class StudentDao {
     private PreparedStatement stmt = null;
     private final ClassDao classDao;
 
-    public StudentDao(ClassDao classDao) throws DaoException {
+    public StudentDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
-        this.classDao = classDao;
+        this.classDao = new ClassDao();
     }
 
     public Student getStudent(Integer id) throws DaoException {

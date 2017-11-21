@@ -11,7 +11,7 @@ public class Student extends User {
     private final ArrayList<BoughtArtifact> ownedArtifacts;
     private final ArrayList<AbstractQuest> achievedQuests;
     private final SchoolClass class_;
-    private final StudentDao studentDao = new StudentDao(new ClassDao());
+    private final StudentDao studentDao = new StudentDao();
     private Integer earnedCoins;
     private Integer possesedCoins;
 
@@ -37,8 +37,14 @@ public class Student extends User {
 
     }
 
+
+
     public Integer getEarnedCoins() {
         return this.earnedCoins;
+    }
+
+    public void setPossesedCoins(Integer coins) {
+        this.possesedCoins = coins;
     }
 
     public Integer getPossesedCoins() {
@@ -77,10 +83,6 @@ public class Student extends User {
 
     public void returnCoins(Integer amount) {
         this.possesedCoins += amount;
-    }
-
-    public void substractCoins(Integer amount) {
-        this.possesedCoins = (this.possesedCoins - amount >= 0) ? (this.possesedCoins - amount) : possesedCoins;
     }
 
     public void save() throws DaoException {
