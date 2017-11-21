@@ -26,8 +26,10 @@ public class ArtifactOwnersDao {
     }
 
     public static ArtifactOwnersDao getDao() throws DaoException {
-        if(dao == null) {
-            dao = new ArtifactOwnersDao();
+        synchronized (ArtifactOwnersDao.class) {
+            if(dao == null) {
+                dao = new ArtifactOwnersDao();
+            }
         }
         return dao;
     }

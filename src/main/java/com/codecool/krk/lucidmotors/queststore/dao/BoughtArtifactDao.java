@@ -29,8 +29,10 @@ public class BoughtArtifactDao {
     }
 
     public static BoughtArtifactDao getDao() throws DaoException {
-        if(dao == null) {
-            dao = new BoughtArtifactDao();
+        synchronized (BoughtArtifactDao.class) {
+            if(dao == null) {
+                dao = new BoughtArtifactDao();
+            }
         }
         return dao;
     }

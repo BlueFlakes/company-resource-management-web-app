@@ -23,8 +23,10 @@ public class ClassDao {
     }
 
     public static ClassDao getDao() throws DaoException {
-        if(dao == null) {
-            dao = new ClassDao();
+        synchronized (ClassDao.class) {
+            if(dao == null) {
+                dao = new ClassDao();
+            }
         }
         return dao;
     }
