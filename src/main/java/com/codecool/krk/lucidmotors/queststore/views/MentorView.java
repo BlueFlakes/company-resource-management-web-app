@@ -4,10 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorStoreController;
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
-import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
-import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
+import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Activity;
@@ -107,7 +104,7 @@ public class MentorView {
                 break;
 
             case APPROVE_QUEST_ACHIEVEMENT:
-
+                approveQuest(model);
                 break;
 
             case SHOW_AVAILABLE_ARTIFACTS:
@@ -126,6 +123,16 @@ public class MentorView {
                 addArtifactCategory(model);
                 break;
 
+        }
+    }
+
+    private void approveQuest(JtwigModel model) throws DaoException {
+        model.with("students", new StudentDao(new ClassDao()).getAllStudents());
+        model.with("available_quests", new AvailableQuestDao().getAllQuests());
+        if(formData.containsKey("student_id") &&
+                new MentorController(this.school).markQuest(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Quest approved");
         }
     }
 

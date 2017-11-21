@@ -511,46 +511,18 @@ public class MentorController {
         return true;
     }
 
-//
-//    public List<Student> getMentorClass(Integer mentorId) throws DaoException {
-//        Mentor mentor = school.getMentor(mentorId);
-//
-//        if (mentor == null) {
-//            return null;
-//        } else {
-//            return mentor.getClas().getAllStudents();
-//        }
-//    }
-//
-//    public boolean editMentor(Map<String, String> formData) throws DaoException {
-//        Boolean isUpdated = false;
-//
-//        Integer mentorId = Integer.valueOf(formData.get("mentor_id"));
-//        Mentor mentor = new MentorDao(new ClassDao()).getMentor(mentorId);
-//
-//        if (mentor != null &&
-//                (this.school.isLoginAvailable(formData.get("login")) || formData.get("login").equals(mentor.getLogin()))) {
-//            mentor.setName(formData.get("name"));
-//            mentor.setLogin(formData.get("login"));
-//            mentor.setPassword(formData.get("password"));
-//            mentor.setEmail(formData.get("mail"));
-//            mentor.update();
-//            isUpdated = true;
-//        }
-//
-//        return isUpdated;
-//    }
-//
+    public boolean markQuest(Map<String, String> formData) throws DaoException {
+        Integer studentId = Integer.valueOf(formData.get("student_id"));
+        Student student = new StudentDao(new ClassDao()).getStudent(studentId);
+        Integer questId = Integer.parseInt(formData.get("quest_id"));
+        AvailableQuest availableQuest = availableQuestDao.getQuest(questId);
 
-//
+        AchievedQuest achievedQuest = new AchievedQuest(availableQuest, student);
+        achievedQuest.save();
+        student.addCoins(availableQuest.getValue());
+        student.update();
 
-//
-//    public boolean createClass(Map<String, String> formData) throws DaoException {
-//        String name = formData.get("classname");
-//
-//        SchoolClass schoolClass = new SchoolClass(name);
-//        schoolClass.save();
-//
-//        return true;
-//    }
+        return true;
+    }
+
 }
