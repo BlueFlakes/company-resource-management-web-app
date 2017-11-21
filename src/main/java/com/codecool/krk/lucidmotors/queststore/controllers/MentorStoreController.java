@@ -181,6 +181,29 @@ public class MentorStoreController {
         this.school = school;
     }
 
+    public boolean updateArtifact(Map<String, String> formData) throws DaoException {
+        Boolean isAdded = true;
+        Integer id = Integer.parseInt(formData.get("artifact_id"));
+        Integer artifactCategoryId = Integer.parseInt(formData.get("category_id"));
+        ArtifactCategory artifactCategory = new ArtifactCategoryDao().getArtifactCategory(artifactCategoryId);
+        String name = formData.get("name");
+        String description = formData.get("description");
+
+        try {
+            Integer price = Integer.parseInt(formData.get("price"));
+            ShopArtifact artifact = new ShopArtifactDao().getArtifact(id);
+            artifact.setName(name);
+            artifact.setArtifactCategory(artifactCategory);
+            artifact.setDescription(description);
+            artifact.setPrice(price);
+            artifact.update();
+
+        } catch (NumberFormatException e) {
+            isAdded = false;
+        }
+        return isAdded;
+    }
+
     public boolean addArtifact(Map<String, String> formData) throws DaoException {
         Boolean isAdded = true;
         Integer artifactCategoryId = Integer.parseInt(formData.get("category_id"));

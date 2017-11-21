@@ -119,13 +119,23 @@ public class MentorView {
                 break;
 
             case UPDATE_ARTIFACT:
-
+                updateArtifact(model);
                 break;
 
             case ADD_ARTIFACT_CATEGORY:
                 addArtifactCategory(model);
                 break;
 
+        }
+    }
+
+    private void updateArtifact(JtwigModel model) throws DaoException {
+        model.with("artifacts", new ShopArtifactDao().getAllArtifacts());
+        model.with("artifact_categories", new ArtifactCategoryDao().getAllArtifactCategories());
+        if(formData.containsKey("artifact_id") &&
+                new MentorStoreController(this.school).updateArtifact(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Artifact successfully updated");
         }
     }
 
