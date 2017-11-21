@@ -163,10 +163,13 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
 import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
 import com.codecool.krk.lucidmotors.queststore.models.School;
+import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 
+import java.util.List;
 import java.util.Map;
 
 public class MentorStoreController {
@@ -178,6 +181,24 @@ public class MentorStoreController {
         this.school = school;
     }
 
+    public boolean addArtifact(Map<String, String> formData) throws DaoException {
+        Boolean isAdded = true;
+        Integer artifactCategoryId = Integer.parseInt(formData.get("category_id"));
+        ArtifactCategory artifactCategory = new ArtifactCategoryDao().getArtifactCategory(artifactCategoryId);
+        String name = formData.get("name");
+        String description = formData.get("description");
+
+        try {
+            Integer price = Integer.parseInt(formData.get("price"));
+            ShopArtifact shopArtifact = new ShopArtifact(name, price, artifactCategory, description);
+            shopArtifact.save();
+
+        } catch (NumberFormatException e) {
+            isAdded = false;
+        }
+        return isAdded;
+    }
+
     public boolean addArtifactCategory(Map<String, String> formData) throws DaoException {
         String name = formData.get("name");
 
@@ -185,5 +206,9 @@ public class MentorStoreController {
         new ArtifactCategoryDao().save(artifactCategory);
 
         return true;
+    }
+
+    public List<ShopArtifact> getAvailableArtifacts() throws DaoException {
+        return new ShopArtifactDao().getAllArtifacts();
     }
 }

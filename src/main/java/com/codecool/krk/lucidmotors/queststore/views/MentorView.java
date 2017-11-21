@@ -4,8 +4,10 @@ import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorStoreController;
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
 import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Activity;
@@ -109,11 +111,11 @@ public class MentorView {
                 break;
 
             case SHOW_AVAILABLE_ARTIFACTS:
-
+                showArtifacts(model);
                 break;
 
             case ADD_ARTIFACT:
-
+                addArtifact(model);
                 break;
 
             case UPDATE_ARTIFACT:
@@ -125,6 +127,19 @@ public class MentorView {
                 break;
 
         }
+    }
+
+    private void addArtifact(JtwigModel model) throws DaoException {
+        model.with("artifact_categories", new ArtifactCategoryDao().getAllArtifactCategories());
+        if(formData.containsKey("category_id") &&
+                new MentorStoreController(this.school).addArtifact(this.formData)) {
+            model.with("is_text_available", true);
+            model.with("text", "Artifact successfully created");
+        }
+    }
+
+    private void showArtifacts(JtwigModel model) throws DaoException {
+        model.with("available_artifacts", new MentorStoreController(this.school).getAvailableArtifacts());
     }
 
     private void addQuest(JtwigModel model) throws DaoException {
