@@ -97,6 +97,10 @@ public class StudentController {
         this.contributionDao = new ContributionDao();
     }
 
+    public Student getStudent(Integer id) throws DaoException {
+        return this.studentDao.getStudent(id);
+    }
+
     public List<BoughtArtifact> getWallet(User student) throws DaoException {
         return this.artifactOwnersDao.getArtifacts(student);
     }
