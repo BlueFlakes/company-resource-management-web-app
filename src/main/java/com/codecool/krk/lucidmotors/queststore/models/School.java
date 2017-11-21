@@ -23,7 +23,7 @@ public class School {
     public School(String name) throws DaoException {
 
         this.name = name;
-        this.classDao = new ClassDao();
+        this.classDao = ClassDao.getDao();
         this.managerDao = new ManagerDao();
         this.mentorDao = new MentorDao(this.classDao);
         this.studentDao = new StudentDao();

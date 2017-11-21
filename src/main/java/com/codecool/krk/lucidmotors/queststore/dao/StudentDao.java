@@ -16,7 +16,7 @@ public class StudentDao {
     public StudentDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
-        this.classDao = new ClassDao();
+        this.classDao = ClassDao.getDao();
     }
 
     public Student getStudent(Integer id) throws DaoException {

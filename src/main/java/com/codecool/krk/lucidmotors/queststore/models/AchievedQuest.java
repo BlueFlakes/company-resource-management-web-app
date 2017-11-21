@@ -10,7 +10,7 @@ public class AchievedQuest extends AbstractQuest {
 
     private Student owner;
     private Date date;
-    private AchievedQuestDao achievedQuestDao = new AchievedQuestDao();
+    private AchievedQuestDao achievedQuestDao = AchievedQuestDao.getDao();
 
     public AchievedQuest(AvailableQuest availableQuest, Student owner) throws DaoException {
         super(availableQuest.getName(), availableQuest.getQuestCategory(),

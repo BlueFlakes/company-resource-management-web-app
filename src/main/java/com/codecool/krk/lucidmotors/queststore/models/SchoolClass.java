@@ -8,7 +8,7 @@ public class SchoolClass {
 
     private String name;
     private Integer id;
-    private final ClassDao classDao = new ClassDao();
+    private final ClassDao classDao = ClassDao.getDao();
 
 
     public SchoolClass(String name) throws DaoException {

@@ -16,14 +16,22 @@ import java.util.Date;
 
 public class AchievedQuestDao {
 
+    private static AchievedQuestDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
     private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
     private StudentDao studentDao = new StudentDao();
 
-    public AchievedQuestDao() throws DaoException {
+    private AchievedQuestDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static AchievedQuestDao getDao() throws DaoException {
+        if(dao == null) {
+            dao = new AchievedQuestDao();
+        }
+        return dao;
     }
 
     private Date parseDate(String dateString) throws ParseException {
@@ -37,7 +45,7 @@ public class AchievedQuestDao {
     private String convertDateToString(Date achieveDate) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         String achieveDateString = dateFormatter.format(achieveDate);
- 
+
         return achieveDateString;
     }
 

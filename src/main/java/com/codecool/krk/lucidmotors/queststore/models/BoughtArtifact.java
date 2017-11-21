@@ -12,7 +12,7 @@ public class BoughtArtifact extends AbstractArtifact {
 
     private Date date;
     private boolean isUsed;
-    private BoughtArtifactDao boughtArtifactDao = new BoughtArtifactDao();
+    private BoughtArtifactDao boughtArtifactDao = BoughtArtifactDao.getDao();
 
     public BoughtArtifact(ShopArtifact shopArtifact) throws DaoException {
 

@@ -15,7 +15,7 @@ public class ShopArtifactDao {
 
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
+    private ArtifactCategoryDao artifactCategoryDao = ArtifactCategoryDao.getDao();
 
     public ShopArtifactDao() throws DaoException {
 
