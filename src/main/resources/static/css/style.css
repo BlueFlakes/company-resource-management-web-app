@@ -169,7 +169,6 @@ aside {
     left: 0;
     z-index: 2;
     background-color: var(--aside-background);
-    transition: 1s;
     display: flex;
     border-radius: 1%;
     flex-direction: column;
