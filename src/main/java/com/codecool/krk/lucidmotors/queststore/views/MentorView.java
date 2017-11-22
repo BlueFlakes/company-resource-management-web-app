@@ -1,17 +1,12 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
-import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorController;
 import com.codecool.krk.lucidmotors.queststore.controllers.MentorStoreController;
 import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.Activity;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.Student;
-import com.codecool.krk.lucidmotors.queststore.models.Mentor;
-import com.codecool.krk.lucidmotors.queststore.models.User;
+import com.codecool.krk.lucidmotors.queststore.models.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -59,26 +54,7 @@ public class MentorView {
 
     private void insertData(MentorOptions mentorOption, JtwigModel model) throws DaoException {
         switch (mentorOption) {
-//            case SHOW_MENTORS_CLASS:
-//                showMentorClass(model);
-//                break;
 
-//            case EDIT_MENTOR:
-//                editMentor(model);
-//                break;
-//
-//            case SHOW_LEVELS:
-//                model.with("experience_levels", this.experienceLevelsController.getLevels());
-//                break;
-//
-//            case UPDATE_LEVEL:
-//                runUpdateLevel(model);
-//                break;
-//
-//            case CREATE_NEW_LEVEL:
-//                runNewLevelCreation(model);
-//                break;
-//
             case ADD_STUDENT:
                 addStudent(model);
                 break;
@@ -100,7 +76,7 @@ public class MentorView {
                 break;
 
             case MARK_BOUGHT_ARTIFACT_AS_USED:
-
+                markArtifact(model);
                 break;
 
             case APPROVE_QUEST_ACHIEVEMENT:
@@ -123,6 +99,28 @@ public class MentorView {
                 addArtifactCategory(model);
                 break;
 
+        }
+    }
+
+    private void markArtifact(JtwigModel model) throws DaoException {
+        model.with("students", this.school.getAllStudents());
+        model.with("phase", 1);
+
+        if (formData.containsKey("student_id")) {
+            Integer studentId = Integer.parseInt(formData.get("student_id"));
+            List<BoughtArtifact> studentArtifacts = new MentorController(this.school).getStudentsArtifacts(studentId);
+            model.with("artifacts", studentArtifacts);
+            model.with("is_disabled", true);
+            model.with("phase", 2);
+            model.with("selected_student_id", studentId);
+        } else if (formData.containsKey("artifact_id")) {
+            model.with("is_text_available", true);
+
+            if (new MentorController(this.school).markArtifactAsUsed(formData)) {
+                model.with("text", "Artifact marked as used");
+            } else {
+                model.with("text", "Chosen artifact is already used!");
+            }
         }
     }
 
@@ -205,75 +203,5 @@ public class MentorView {
         List<Student> studentList = this.school.getAllStudents();
         model.with("students", studentList);
     }
-
-//
-//    private void editMentor(JtwigModel model) throws DaoException {
-//        model.with("mentors", this.school.getAllMentors());
-//        if(this.formData.containsKey("mentor_id") &&
-//                new ManagerController(this.school).editMentor(this.formData)) {
-//            model.with("is_text_available", true);
-//            model.with("text", "Mentor successfully updated");
-//        }
-//    }
-//
-//    private void showMentorClass(JtwigModel model) throws DaoException {
-//        if (this.formData.containsKey("mentor_id")) {
-//            Integer mentorId = Integer.valueOf(this.formData.get("mentor_id"));
-//            List<Student> studentList = new ManagerController(this.school).getMentorClass(mentorId);
-//            model.with("students", studentList);
-//            model.with("selected_mentor_id", mentorId);
-//        }
-//
-//        model.with("mentors", this.school.getAllMentors());
-//    }
-//
-//    private void runUpdateLevel(JtwigModel model) throws DaoException {
-//        final String coinsKey = "experience-level-new-value";
-//        final String levelsKey = "choosen-class";
-//
-//        model.with("experience_levels", this.experienceLevelsController.getLevels());
-//
-//        if (this.formData.containsKey(coinsKey) && this.formData.containsKey(levelsKey)
-//                && areInputsParseableToInteger(coinsKey, levelsKey))  {
-//
-//            boolean wasUpdated = experienceLevelsController.updateLevel(this.formData, coinsKey, levelsKey);
-//            model.with("is_text_available", true);
-//
-//            String message;
-//            if (wasUpdated) {
-//                message = "Successfully updated level";
-//            } else {
-//                message = "Wrong amount of xp points! TOO LOW number";
-//            }
-//
-//            model.with("text", message);
-//        }
-//    }
-//
-//    private boolean areInputsParseableToInteger(String coinsKey, String levelsKey) {
-//        String coins = this.formData.get(coinsKey).trim();
-//        String level = this.formData.get(levelsKey).trim();
-//
-//        return CustomMatchers.isPositiveInteger(coins) && CustomMatchers.isPositiveInteger(level);
-//    }
-//
-//    private void runNewLevelCreation(JtwigModel model) throws DaoException {
-//        final String coinsKey = "experience-level";
-//
-//        if (this.formData.containsKey(coinsKey) && CustomMatchers.isPositiveInteger(this.formData.get(coinsKey))) {
-//            boolean wasUpdated = experienceLevelsController.createNewLevel(this.formData, coinsKey);
-//            model.with("is_text_available", true);
-//
-//            String message;
-//            if (wasUpdated) {
-//                message = "Successfully updated level";
-//            } else {
-//                message = "Wrong amount of xp points! TOO LOW number";
-//            }
-//
-//            model.with("text", message);
-//        }
-//    }
-
 
 }
