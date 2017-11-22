@@ -1,24 +1,35 @@
 package com.codecool.krk.lucidmotors.queststore.enums;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 public class EnumUtils {
     private static final String defaultValueNameReference = "DEFAULT";
+    private static final Set<Class> approvedClasses = new HashSet<>();
 
     public static <E extends Enum<E>> E getValue(Class<E> givenClass, final String identity) {
-        E[] enumConstants = givenClass.getEnumConstants();
-        isClassValid(enumConstants);
+        optimizedValidation(givenClass);
 
+        E[] enumConstants = givenClass.getEnumConstants();
         E expectedEnum = findEnum(enumConstants, identity);
         Supplier<E> defaultValue = () -> getDefaultValue(enumConstants);
 
         return expectedEnum != null ? expectedEnum : defaultValue.get();
     }
 
-    private static <E extends Enum<E>> void isClassValid(E[] enumConstants) {
-        if (getDefaultValue(enumConstants) == null) {
-            throw new IllegalStateException("Delivered enum class must contain \"DEFAULT\" value");
+    private static <E extends Enum<E>> void optimizedValidation(Class<E> givenClass) {
+        if (!approvedClasses.contains(givenClass)) {
+
+            if (!givenClass.isEnum())
+                throw new IllegalArgumentException("Given class is not enum");
+
+            if (getDefaultValue(givenClass.getEnumConstants()) == null)
+                throw new IllegalStateException("Delivered enum class must contain \"DEFAULT\" value");
+
+            approvedClasses.add(givenClass);
         }
     }
 
