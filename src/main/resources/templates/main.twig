@@ -68,5 +68,8 @@
     	  	</div>
     	</footer>
 		<script src="https://use.fontawesome.com/0dc27d5e41.js"></script>
+		{% if content_path == "classpath:/templates/snippets/home-snippet.twig" %}
+		<script src="/static/js/chat.js"></script>
+	{% endif %}
 	</body>
 </html>
