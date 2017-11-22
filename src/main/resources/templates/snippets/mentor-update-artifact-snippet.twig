@@ -6,11 +6,11 @@
         {% endfor %}
     </select>
     <label for="#mentor-update-artifact-new-name">New name</label>
-    <input type="text" name="name" id="#mentor-update-artifact-new-name">
+    <input type="text" name="name" id="#mentor-update-artifact-new-name" required>
     <label for="#mentor-update-artifact-new-description">New description</label>
     <input type="text" name="description" id="#mentor-update-artifact-new-description">
     <label for="#mentor-update-artifact-new-price">New price</label>
-    <input type="text" name="price" id="#mentor-update-artifact-new-price">
+    <input type="number" name="price" id="#mentor-update-artifact-new-price" required min="0">
     <label for="#mentor-update-artifact-new-artifact-category">Choose new artifact category</label>
     <select name="category_id" id="#mentor-update-artifact-new-artifact-category">
         {% for category in artifact_categories %}

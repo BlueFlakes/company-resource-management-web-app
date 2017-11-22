@@ -12,9 +12,9 @@
         {% endfor %}
     </select>
     <label for="#mentor-update-quest-new-name">New name</label>
-    <input type="text" name="quest_name" id="#mentor-update-quest-new-name">
+    <input type="text" name="quest_name" id="#mentor-update-quest-new-name" required>
     <label for="#mentor-update-quest-new-value">New value</label>
-    <input type="text" name="value" id="#mentor-update-quest-new-value">
+    <input type="number" name="value" id="#mentor-update-quest-new-value" required min="1">
     <label for="#mentor-update-quest-new-description">New description</label>
     <input type="text" name="description" id="#mentor-update-quest-new-description">
     <input type="submit" value="Submit">

@@ -1,12 +1,12 @@
 <form method="post">
     <label for="#user-creation-name">First name</label>
-    <input type="text" name="name" id="#user-creation-name">
+    <input type="text" name="name" id="#user-creation-name" required>
     <label for="#user-creation-login">Login</label>
-    <input type="text" name="login" id="#user-creation-login">
+    <input type="text" name="login" id="#user-creation-login" required>
     <label for="#user-creation-password">Password</label>
-    <input type="text" name="password" id="#user-creation-password">
+    <input type="text" name="password" id="#user-creation-password" required>
     <label for="#user-creation-email">Email</label>
-    <input type="text" name="email" id="#user-creation-email">
+    <input type="email" name="email" id="#user-creation-email">
     <label for="#user-creation-choose-class">Choose class</label>
     <select name="class_id" id="#user-creation-choose-class">
         {% for school_class in school_classes %}
