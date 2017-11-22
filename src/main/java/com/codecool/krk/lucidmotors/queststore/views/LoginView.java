@@ -1,8 +1,9 @@
-package com.codecool.krk.lucidmotors.queststore.handlers;
+package com.codecool.krk.lucidmotors.queststore.views;
 
 import com.codecool.krk.lucidmotors.queststore.controllers.LoginController;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.handlers.MainHandler;
 import com.codecool.krk.lucidmotors.queststore.handlers.helpers.Cookie;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.sun.net.httpserver.HttpExchange;
@@ -15,12 +16,12 @@ import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.util.*;
 
-public class LoginHandler {
+public class LoginView {
     private School school;
     Map<String, String> formData;
     private Map<UUID, User> loggedUsers = new HashMap<>();
 
-    public LoginHandler(School school, Map<String, String> formData, Map<UUID, User> loggedUsers) {
+    public LoginView(School school, Map<String, String> formData, Map<UUID, User> loggedUsers) {
         this.formData = formData;
         this.school = school;
         this.loggedUsers = loggedUsers;
