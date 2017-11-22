@@ -39,8 +39,8 @@ public class ArtifactOwnersDao {
         return dao;
     }
 
-    public ArrayList<Student> getOwners(BoughtArtifact boughtArtifact) throws DaoException {
-        ArrayList<Student> owners = new ArrayList<>();
+    public List<Student> getOwners(BoughtArtifact boughtArtifact) throws DaoException {
+        List<Student> owners = new ArrayList<>();
 
         Integer artifactId = boughtArtifact.getId();
         String sqlQuery = "SELECT * FROM artifact_owners "

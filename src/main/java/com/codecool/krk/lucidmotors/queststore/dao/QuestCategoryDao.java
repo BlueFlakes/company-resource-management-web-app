@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuestCategoryDao {
 
@@ -60,9 +61,9 @@ public class QuestCategoryDao {
         return questCategory;
     }
 
-    public ArrayList<QuestCategory> getAllQuestCategories() throws DaoException {
+    public List<QuestCategory> getAllQuestCategories() throws DaoException {
 
-        ArrayList<QuestCategory> questCategories = new ArrayList<>();
+        List<QuestCategory> questCategories = new ArrayList<>();
         String sqlQuery = "SELECT * FROM quest_categories";
 
         try {

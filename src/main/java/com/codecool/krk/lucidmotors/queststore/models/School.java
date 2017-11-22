@@ -1,16 +1,12 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
-import java.util.ArrayList;
-import java.sql.SQLException;
-import java.util.List;
-
-import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.User;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ManagerDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
-import com.codecool.krk.lucidmotors.queststore.exceptions.LoginInUseException;
+import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+
+import java.util.List;
 
 public class School {
 

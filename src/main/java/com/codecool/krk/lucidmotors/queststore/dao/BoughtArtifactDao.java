@@ -124,9 +124,9 @@ public class BoughtArtifactDao {
 
     }
 
-    public ArrayList<BoughtArtifact> getAllArtifacts() throws DaoException {
+    public List<BoughtArtifact> getAllArtifacts() throws DaoException {
 
-        ArrayList<BoughtArtifact> boughtArtifacts = null;
+        List<BoughtArtifact> boughtArtifacts = null;
         String sqlQuery = "SELECT * FROM bought_artifacts;";
 
         try {

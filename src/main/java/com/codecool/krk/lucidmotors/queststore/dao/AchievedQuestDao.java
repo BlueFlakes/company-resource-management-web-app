@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AchievedQuestDao {
 
@@ -29,7 +30,7 @@ public class AchievedQuestDao {
 
     public static AchievedQuestDao getDao() throws DaoException {
         if (dao == null) {
-            
+
             synchronized (AvailableQuestDao.class) {
 
                 if(dao == null) {
@@ -94,9 +95,9 @@ public class AchievedQuestDao {
 
     }
 
-    public ArrayList<AchievedQuest> getAllQuests() throws DaoException {
+    public List<AchievedQuest> getAllQuests() throws DaoException {
 
-        ArrayList<AchievedQuest> achievedQuests = new ArrayList<>();
+        List<AchievedQuest> achievedQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM achieved_quests;";
 
         try {
@@ -133,10 +134,10 @@ public class AchievedQuestDao {
         return achievedQuests;
     }
 
-    public ArrayList<AchievedQuest> getAllQuestsByStudent(Student student) throws DaoException {
+    public List<AchievedQuest> getAllQuestsByStudent(Student student) throws DaoException {
 
         Integer ownerId = student.getId();
-        ArrayList<AchievedQuest> achievedQuests = new ArrayList<>();
+        List<AchievedQuest> achievedQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM achieved_quests WHERE owner_id = ?;";
 
         try {

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MentorDao {
 
@@ -123,9 +124,9 @@ public class MentorDao {
         return new Mentor(name, login, password, email, schoolClass, id);
     }
 
-    public ArrayList<Mentor> getAllMentors() throws DaoException {
+    public List<Mentor> getAllMentors() throws DaoException {
 
-        ArrayList<Mentor> foundMentors = new ArrayList<>();
+        List<Mentor> foundMentors = new ArrayList<>();
         String sqlQuery = "SELECT * FROM mentors";
 
         try {

@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AvailableQuestDao {
 
@@ -95,9 +96,9 @@ public class AvailableQuestDao {
 
     }
 
-    public ArrayList<AvailableQuest> getAllQuests() throws DaoException {
+    public List<AvailableQuest> getAllQuests() throws DaoException {
 
-        ArrayList<AvailableQuest> availableQuests = new ArrayList<>();
+        List<AvailableQuest> availableQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM available_quests;";
 
         try {

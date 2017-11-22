@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArtifactCategoryDao {
     private static ArtifactCategoryDao dao = null;
@@ -83,9 +84,9 @@ public class ArtifactCategoryDao {
         return artifactCategory;
     }
 
-    public ArrayList<ArtifactCategory> getAllArtifactCategories() throws DaoException {
+    public List<ArtifactCategory> getAllArtifactCategories() throws DaoException {
 
-        ArrayList<ArtifactCategory> artifactCategories = new ArrayList<>();
+        List<ArtifactCategory> artifactCategories = new ArrayList<>();
         String sqlQuery = "SELECT * FROM artifact_categories";
 
         try {

@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
@@ -188,9 +189,9 @@ public class StudentDao {
         return student;
     }
 
-    public ArrayList<Student> getAllStudents() throws DaoException {
+    public List<Student> getAllStudents() throws DaoException {
 
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         String sqlQuery = "SELECT * FROM students;";
 
         try {

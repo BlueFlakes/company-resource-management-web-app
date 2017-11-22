@@ -1,8 +1,9 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
-import java.util.ArrayList;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+
+import java.util.List;
 
 public class SchoolClass {
 
@@ -21,11 +22,11 @@ public class SchoolClass {
         this.id = id;
     }
 
-    public ArrayList<Student> getAllStudents() throws DaoException {
+    public List<Student> getAllStudents() throws DaoException {
         return classDao.getAllStudentsFromClass(this);
     }
 
-    public ArrayList<Mentor> getAllMentors() throws DaoException {
+    public List<Mentor> getAllMentors() throws DaoException {
         return classDao.getAllMentorsFromClass(this);
     }
 

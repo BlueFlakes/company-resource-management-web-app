@@ -235,7 +235,6 @@ import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
