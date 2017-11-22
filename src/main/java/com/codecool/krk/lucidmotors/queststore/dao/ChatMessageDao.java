@@ -66,7 +66,7 @@ public class ChatMessageDao {
             stmt.setString(2, chatMessage.getMessage());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(ChatMessage.class + " class caused a problem!");
+            throw new DaoException(e.getMessage());
         }
     }
 
