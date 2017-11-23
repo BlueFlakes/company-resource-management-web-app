@@ -12,6 +12,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MentorView {
     private School school;
@@ -112,7 +113,10 @@ public class MentorView {
 
         if (formData.containsKey("student_id")) {
             Integer studentId = Integer.parseInt(formData.get("student_id"));
-            List<BoughtArtifact> studentArtifacts = mentorController.getStudentsArtifacts(studentId);
+            List<BoughtArtifact> studentArtifacts = mentorController.getStudentsArtifacts(studentId)
+                                                                    .stream()
+                                                                    .filter(artifact -> !artifact.isUsed())
+                                                                    .collect(Collectors.toList());
             model.with("artifacts", studentArtifacts);
             model.with("is_disabled", true);
             model.with("phase", 2);
