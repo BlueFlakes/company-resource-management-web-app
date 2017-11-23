@@ -77,6 +77,9 @@ public class StudentController {
             Contribution contribution = new Contribution(contributionName, student, shopArtifact);
             this.contributionDao.save(contribution);
 
+            String message = String.format("%s open contribution for %s.", student.getName(), shopArtifact.getName());
+            new ChatMessage("system", message).save();
+
             return true;
         }
 
