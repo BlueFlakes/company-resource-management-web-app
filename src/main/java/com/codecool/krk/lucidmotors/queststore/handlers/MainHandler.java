@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class MainHandler implements HttpHandler {
 
@@ -45,17 +47,15 @@ public class MainHandler implements HttpHandler {
         User user = getUserByCookie(httpExchange);
 
         String uri = httpExchange.getRequestURI().getPath();
-        Map<String, String> parsedURI = parseURI(uri);
-        String role =  parsedURI.get("role");
-        String action = parsedURI.get("action").toUpperCase();
+        URIResponse parsedURI = parseURI(uri);
 
         if(user == null) {
             activity = new LoginView(this.school, formData, this.loggedUsers).getActivity(httpExchange);
-        } else if (isProperUser(role, user)) {
+        } else if (isProperUser(parsedURI.getRole(), user)) {
             Cookie.renewCookie(httpExchange, "UUID");
-            activity = getUserActivity(role, action, formData, user);
+            activity = getUserActivity(parsedURI, formData, user);
         } else {
-            activity = getOtherActivity(role, formData, user);
+            activity = getOtherActivity(parsedURI.getRole(), formData, user);
         }
 
         return activity;
@@ -82,21 +82,21 @@ public class MainHandler implements HttpHandler {
         return postValues;
     }
 
-    private boolean isProperUser(String role, User user) {
-        return switchUser(user).equalsIgnoreCase(role);
+    private boolean isProperUser(Roles role, User user) {
+        return switchUser(user) == role;
     }
 
-    static String switchUser(User user) {
-        String userUrl;
+    static Roles switchUser(User user) {
+        Roles userUrl;
 
         if (user instanceof Manager) {
-            userUrl = "manager";
+            userUrl = Roles.MANAGER;
         } else if (user instanceof Mentor) {
-            userUrl = "mentor";
+            userUrl = Roles.MENTOR;
         } else if (user instanceof Student) {
-            userUrl = "student";
+            userUrl = Roles.STUDENT;
         } else {
-            userUrl = "";
+            userUrl = null;
         }
 
         return userUrl;
@@ -112,54 +112,68 @@ public class MainHandler implements HttpHandler {
         return user;
     }
 
-    private Map<String, String> parseURI (String uri) {
-        Map<String, String> parsedURI = new HashMap<>();
+    private URIResponse parseURI (String uri) {
         String[] uriList = uri.split("/");
+        URIResponse response;
 
         if (uriList.length == 2 && checkIsProperRole(uriList)) {
-            parsedURI.put("role", uriList[1]);
-            parsedURI.put("action", "");
+            Roles role = EnumUtils.getValue(Roles.class, uriList[1].toUpperCase());
+            response = new URIResponse(role, Action.DEFAULT, "");
         } else if (uriList.length == 3 && checkIsProperRole(uriList)) {
-            parsedURI.put("role", uriList[1]);
-            parsedURI.put("action", uriList[2]);
+            Roles role = EnumUtils.getValue(Roles.class, uriList[1].toUpperCase());
+            String request = uriList[2].toUpperCase();
+            response = new URIResponse(role, Action.getUserAction(role), request);
         } else {
-            parsedURI.put("role", "");
-            parsedURI.put("action", "");
+            response = new URIResponse(Roles.DEFAULT, Action.DEFAULT, "");
         }
 
-        return parsedURI;
+        return response;
     }
 
-    public Activity getUserActivity(String role, String action, Map<String, String> formData, User user) throws DaoException, IOException {
-        switch (role) {
-            case "manager":
-                return new ManagerView(this.school, user, formData).getActivity(EnumUtils.getValue(ManagerOptions.class, action));
+    public Activity getUserActivity(URIResponse response, Map<String, String> formData, User user) throws DaoException, IOException {
+        switch (response.getRole()) {
+            case MANAGER:
+                return new ManagerView(this.school, user, formData).getActivity((ManagerOptions) getProperAction(response));
 
-            case "mentor":
-                return new MentorView(this.school).getActivity(EnumUtils.getValue(MentorOptions.class, action));
+            case MENTOR:
+                return new MentorView(this.school).getActivity((MentorOptions) getProperAction(response));
 
-            case "student":
-                return new StudentView(user, formData).getActivity(EnumUtils.getValue(StudentOptions.class, action));
+            case STUDENT:
+                return new StudentView(user, formData).getActivity((StudentOptions) getProperAction(response));
 
         }
         return null;
     }
 
-    private Activity getOtherActivity(String role, Map<String, String> formData, User user) throws DaoException {
+    private Enum getProperAction(URIResponse uriResponse) {
+        Action action = uriResponse.getAction();
+        String command = uriResponse.getCommand();
+
+        return action.prepareCommand(uriResponse.getRole(), command);
+    }
+
+    private Activity getOtherActivity(Roles role, Map<String, String> formData, User user) throws DaoException {
+//        TODO: mam wrażenie że action powinno byc zamiast role
         switch (role) {
-            case "logout":
+            case LOGOUT:
                 return new LogoutView().getActivity();
 
-            case "chat":
+            case CHAT:
                 return new ChatView(formData).getActivity();
 
-            default:
+            case DEFAULT:
                 return redirectByUser(user);
         }
+
+        return null;
     }
 
     public static Activity redirectByUser(User user) {
-        String userUrl = "/" + switchUser(user);
+        String userUrl = "/";
+
+        if (switchUser(user) != null) {
+            userUrl = "/" + switchUser(user).toString().toLowerCase();
+        }
 
         return new Activity(302, userUrl);
     }

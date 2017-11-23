@@ -5,5 +5,6 @@ public enum Roles {
     MANAGER,
     MENTOR,
     LOGOUT,
-    CHAT
+    CHAT,
+    DEFAULT
 }
