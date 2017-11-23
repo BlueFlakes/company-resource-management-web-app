@@ -1,4 +1,4 @@
-package com.codecool.krk.lucidmotors.queststore.Matchers;
+package com.codecool.krk.lucidmotors.queststore.matchers;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
