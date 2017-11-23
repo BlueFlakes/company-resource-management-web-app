@@ -3,6 +3,8 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codecool.krk.lucidmotors.queststore.dao.AchievedQuestDao;
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
@@ -10,7 +12,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 public class Student extends User {
 
     private final List<BoughtArtifact> ownedArtifacts;
-    private final List<AbstractQuest> achievedQuests;
+    private final List<AchievedQuest> achievedQuests;
     private final SchoolClass class_;
     private final StudentDao studentDao = StudentDao.getDao();
     private Integer earnedCoins;
@@ -32,8 +34,8 @@ public class Student extends User {
       super(name, login, password, email, id);
     	this.earnedCoins = earnedCoins;
 	  	this.possesedCoins = possesedCoins;
-	  	this.ownedArtifacts = new ArrayList<>();
-	  	this.achievedQuests = new ArrayList<>();
+	  	this.ownedArtifacts = ArtifactOwnersDao.getDao().getArtifacts(this);
+	  	this.achievedQuests = AchievedQuestDao.getDao().getAllQuestsByStudent(this);
 	  	this.class_ = class_;
 
     }
@@ -56,7 +58,7 @@ public class Student extends User {
         return this.ownedArtifacts;
     }
 
-    public List<AbstractQuest> getAchievedQuests() {
+    public List<AchievedQuest> getAchievedQuests() {
         return this.achievedQuests;
     }
 
