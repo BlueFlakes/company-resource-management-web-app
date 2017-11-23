@@ -1,6 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
-import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
+import com.codecool.krk.lucidmotors.queststore.matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.ManagerController;
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
