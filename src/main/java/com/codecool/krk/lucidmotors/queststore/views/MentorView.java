@@ -18,9 +18,9 @@ public class MentorView {
     private MentorController mentorController = new MentorController(this.school);
     private MentorStoreController mentorStoreController = new MentorStoreController(this.school);
 
-    private ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
-    private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
-    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+    private ArtifactCategoryDao artifactCategoryDao = ArtifactCategoryDao.getDao();
+    private AvailableQuestDao availableQuestDao = AvailableQuestDao.getDao();
+    private QuestCategoryDao questCategoryDao = QuestCategoryDao.getDao();
 
     User user;
     Map<String, String> formData;

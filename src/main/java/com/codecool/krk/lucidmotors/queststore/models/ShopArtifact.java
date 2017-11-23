@@ -32,7 +32,7 @@ public class ShopArtifact extends AbstractArtifact {
     }
 
     public void update() throws DaoException {
-        new ShopArtifactDao().updateArtifact(this);
+        ShopArtifactDao.getDao().updateArtifact(this);
     }
 
 

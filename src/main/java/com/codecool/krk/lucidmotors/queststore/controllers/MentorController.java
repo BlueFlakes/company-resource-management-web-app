@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MentorController {
-    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
-    private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
+    private QuestCategoryDao questCategoryDao = QuestCategoryDao.getDao();
+    private AvailableQuestDao availableQuestDao = AvailableQuestDao.getDao();
     School school;
 
     public MentorController(School school) throws DaoException {
@@ -77,7 +77,7 @@ public class MentorController {
 
     private SchoolClass chooseProperClass(Integer classId) throws DaoException {
 
-        SchoolClass schoolClass = new ClassDao().getSchoolClass(classId);
+        SchoolClass schoolClass = ClassDao.getDao().getSchoolClass(classId);
 
         return schoolClass;
     }
@@ -92,14 +92,14 @@ public class MentorController {
     }
 
     public List<BoughtArtifact> getStudentsArtifacts(Integer studentId) throws DaoException {
-        Student student = new StudentDao(new ClassDao()).getStudent(studentId);
-        List<BoughtArtifact> studentArtifacts = new ArtifactOwnersDao().getArtifacts(student);
+        Student student = StudentDao.getDao().getStudent(studentId);
+        List<BoughtArtifact> studentArtifacts = ArtifactOwnersDao.getDao().getArtifacts(student);
         return studentArtifacts;
     }
 
     public boolean markQuest(Map<String, String> formData) throws DaoException {
         Integer studentId = Integer.valueOf(formData.get("student_id"));
-        Student student = new StudentDao(new ClassDao()).getStudent(studentId);
+        Student student = StudentDao.getDao().getStudent(studentId);
         Integer questId = Integer.parseInt(formData.get("quest_id"));
         AvailableQuest availableQuest = availableQuestDao.getQuest(questId);
 
@@ -112,7 +112,7 @@ public class MentorController {
     }
 
     public boolean markArtifactAsUsed(Map<String, String> formData) throws DaoException {
-        BoughtArtifactDao boughtArtifactDao = new BoughtArtifactDao();
+        BoughtArtifactDao boughtArtifactDao = BoughtArtifactDao.getDao();
 
         Integer artifactId = Integer.parseInt(formData.get("artifact_id"));
         BoughtArtifact chosenArtifact = boughtArtifactDao.getArtifact(artifactId);

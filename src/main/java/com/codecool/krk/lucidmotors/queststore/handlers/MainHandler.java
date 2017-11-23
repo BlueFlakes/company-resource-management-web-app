@@ -136,7 +136,7 @@ public class MainHandler implements HttpHandler {
                 return new ManagerView(this.school, user, formData).getActivity(EnumUtils.getValue(ManagerOptions.class, action));
 
             case "mentor":
-                return new MentorView(this.school).getActivity(EnumUtils.getValue(MentorOptions.class, action));
+                return new MentorView(this.school, user, formData).getActivity(EnumUtils.getValue(MentorOptions.class, action));
 
             case "student":
                 return new StudentView(user, formData).getActivity(EnumUtils.getValue(StudentOptions.class, action));

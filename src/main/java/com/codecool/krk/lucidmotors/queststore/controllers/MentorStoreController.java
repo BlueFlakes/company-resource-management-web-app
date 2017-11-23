@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MentorStoreController {
-    private ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
-    private ShopArtifactDao shopArtifactDao = new ShopArtifactDao();
+    private ArtifactCategoryDao artifactCategoryDao = ArtifactCategoryDao.getDao();
+    private ShopArtifactDao shopArtifactDao = ShopArtifactDao.getDao();
     School school;
 
     public MentorStoreController(School school) throws DaoException {
@@ -72,6 +72,6 @@ public class MentorStoreController {
     }
 
     public List<ShopArtifact> getAvailableArtifacts() throws DaoException {
-        return new ShopArtifactDao().getAllArtifacts();
+        return ShopArtifactDao.getDao().getAllArtifacts();
     }
 }
