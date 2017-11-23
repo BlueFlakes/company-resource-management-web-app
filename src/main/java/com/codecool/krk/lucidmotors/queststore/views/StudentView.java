@@ -121,7 +121,7 @@ public class StudentView {
         } else {
             message = "Sorry but you dont have enough money!";
         }
-        model.with("max_value", Integer.MAX_VALUE);
+        
         model.with("text", message);
     }
 
