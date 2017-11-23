@@ -1,0 +1,25 @@
+<form method="post">
+    <label for="mentor">Mentor:</label>
+    <select id="mentor" name="mentor_id">
+        {% for mentor in mentors %}
+            <option {% if selected_mentor_id == mentor.getId() %} selected {% endif %} value="{{mentor.getId()}}">{{mentor.getName()}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="choose">
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for student in students %}
+    <tr>
+        <td>{{ student.getId() }}</td>
+        <td>{{ student.getName() }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

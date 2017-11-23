@@ -10,15 +10,31 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ClassDao {
 
+    private static ClassDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
-    public ClassDao() throws DaoException {
+    private ClassDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ClassDao getDao() throws DaoException {
+        if (dao == null) {
+
+            synchronized (ClassDao.class) {
+
+                if(dao == null) {
+                    dao = new ClassDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public SchoolClass getSchoolClass(Integer id) throws DaoException {
@@ -72,9 +88,9 @@ public class ClassDao {
         return schoolClass;
     }
 
-    public ArrayList<SchoolClass> getAllClasses() throws DaoException {
+    public List<SchoolClass> getAllClasses() throws DaoException {
 
-        ArrayList<SchoolClass> schoolClasses = new ArrayList<>();
+        List<SchoolClass> schoolClasses = new ArrayList<>();
         String sqlQuery = "SELECT * FROM classes";
 
         try {
@@ -97,9 +113,9 @@ public class ClassDao {
         return schoolClasses;
     }
 
-    public ArrayList<Student> getAllStudentsFromClass(SchoolClass schoolClass) throws DaoException {
+    public List<Student> getAllStudentsFromClass(SchoolClass schoolClass) throws DaoException {
 
-        ArrayList<Student> foundStudents = new ArrayList<>();
+        List<Student> foundStudents = new ArrayList<>();
         Integer classId = schoolClass.getId();
 
         String sqlQuery = "SELECT * FROM students WHERE class_id = ?;";
@@ -132,9 +148,9 @@ public class ClassDao {
         return foundStudents;
     }
 
-    public ArrayList<Mentor> getAllMentorsFromClass(SchoolClass schoolClass) throws DaoException {
+    public List<Mentor> getAllMentorsFromClass(SchoolClass schoolClass) throws DaoException {
 
-        ArrayList<Mentor> foundMentors = new ArrayList<>();
+        List<Mentor> foundMentors = new ArrayList<>();
         Integer classId = schoolClass.getId();
 
         String sqlQuery = "SELECT * FROM mentors WHERE class_id = ?;";

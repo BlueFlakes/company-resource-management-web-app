@@ -14,16 +14,32 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class BoughtArtifactDao {
 
+    private static BoughtArtifactDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
+    private ArtifactCategoryDao artifactCategoryDao = ArtifactCategoryDao.getDao();
 
-    public BoughtArtifactDao() throws DaoException {
+    private BoughtArtifactDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static BoughtArtifactDao getDao() throws DaoException {
+        if (dao == null) {
+
+            synchronized (BoughtArtifactDao.class) {
+
+                if(dao == null) {
+                    dao = new BoughtArtifactDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     private Date parseDate(String dateString) throws ParseException {
@@ -32,13 +48,6 @@ public class BoughtArtifactDao {
         Date purchaseDate = dateFormatter.parse(dateString);
 
         return purchaseDate;
-    }
-
-    private String convertDateToString(Date purchaseDate) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        String purchaseDateString = dateFormatter.format(purchaseDate);
-
-        return purchaseDateString;
     }
 
     public BoughtArtifact getArtifact(Integer id) throws DaoException {
@@ -90,9 +99,8 @@ public class BoughtArtifactDao {
         boolean isUsed = boughtArtifact.isUsed();
         Integer isUsedInteger = (isUsed) ? 1 : 0;
 
-        Date purchaseDate = boughtArtifact.getDate();
 
-        String purchaseDateString = this.convertDateToString(purchaseDate);
+        String purchaseDateString = boughtArtifact.getDate();
 
         String sqlQuery = "UPDATE bought_artifacts "
                 + "SET name = ?, price = ?, category_id = ?, description = ?, purchase_date = ?, is_used = ? "
@@ -116,9 +124,9 @@ public class BoughtArtifactDao {
 
     }
 
-    public ArrayList<BoughtArtifact> getAllArtifacts() throws DaoException {
+    public List<BoughtArtifact> getAllArtifacts() throws DaoException {
 
-        ArrayList<BoughtArtifact> boughtArtifacts = null;
+        List<BoughtArtifact> boughtArtifacts = null;
         String sqlQuery = "SELECT * FROM bought_artifacts;";
 
         try {
@@ -156,10 +164,10 @@ public class BoughtArtifactDao {
         return boughtArtifacts;
     }
 
-    public void save(BoughtArtifact boughtArtifact, ArrayList<Student> owners) throws DaoException {
+    public void save(BoughtArtifact boughtArtifact, List<Student> owners) throws DaoException {
         this.saveArtifact(boughtArtifact);
         Integer artifactId = this.getArtifactId();
-        new ArtifactOwnersDao().saveArtifactOwners(artifactId, owners);
+        ArtifactOwnersDao.getDao().saveArtifactOwners(artifactId, owners);
     }
 
     private void saveArtifact(BoughtArtifact boughtArtifact) throws DaoException {
@@ -171,9 +179,7 @@ public class BoughtArtifactDao {
         boolean isUsed = boughtArtifact.isUsed();
         Integer isUsedInteger = (isUsed) ? 1 : 0;
 
-        Date purchaseDate = boughtArtifact.getDate();
-
-        String purchaseDateString = this.convertDateToString(purchaseDate);
+        String purchaseDateString = boughtArtifact.getDate();
 
         String sqlQuery = "INSERT INTO bought_artifacts "
                 + "(name, price, category_id, purchase_date, is_used, description) "

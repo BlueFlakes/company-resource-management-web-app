@@ -1,0 +1,435 @@
+:root {
+    --main-backgroud: #d3efff;
+    --shop-name-color: #fcce07;
+    --bar-backgroud: #1D2731;
+    --button-border: black;
+    --aside-background: #1D2731;
+    --menu-vertical-button: #fcce07;
+    --menu-button-hover: #273442;
+    --menu-button-text: #fcce07;
+    --user-data-text: #fcce07;
+    --user-border-color: #fcce07;
+    --gradient1: rgba(248, 238, 231, 0);
+    --gradient2: rgba(248, 238, 231, 0);
+    --page-title: black;
+    --table-border: black;
+    --table-title-background: grey;
+    --table-row-even-background: lightgrey;
+    --table-row-background-hover: lightblue;
+    --table-text: black;
+    --social-media-background: #1D2731;
+    --social-media-color: #fcce07;
+    --social-media-color-hover: #fff;
+    --facebook-color: #3B5998;
+    --google-color: #DB5A3C;
+    --twitter-color: #00aced;
+    --instagram-color: #9b6954;
+    --youtube-color: #E62117;
+    --horizontal-bar-p-color: #fcce07;
+    --logout-button-color: #fcce07;
+    --logout-button-hover: #273442;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Droid Sans', sans-serif;
+    background-color: var(--main-backgroud);
+    background-image: url("/static/images/concrete_seamless.png");
+    justify-content: center;
+}
+
+#hidden {
+    visibility: hidden;
+}
+
+.horizontal-bar {
+    background-color: var(--bar-backgroud);
+    min-height: 50px;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    font-family: Lato, sans-serif;
+    z-index: 100;
+}
+
+.horizontal-bar h1 {
+    font-size: 1.8em;
+    color: var(--shop-name-color);
+    font-weight: bold;
+    position: relative;
+    left: 35px;
+}
+
+.horizontal-bar figure {
+    height: 50px;
+}
+
+.horizontal-bar p {
+    display: block;
+    color: var(--horizontal-bar-p-color);
+    position: relative;
+    left: 20px;
+}
+
+.horizontal-bar div p {
+   display: block;
+}
+
+.horizontal-bar img {
+    display: block;
+    height: 100%;
+}
+
+#top-bar {
+    top: 0;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px 0px 4px 4px;
+    border-radius: 0px 0px 4px 4px;
+}
+
+#bottom-bar {
+    bottom: 0;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 4px 4px 0px 0px;
+    border-radius: 3px 3px 0px 0px;
+}
+
+.button {
+    height: 38px;
+    width: 100px;
+    margin: 7px 10px;
+    line-height: 25px;
+    padding: 5px;
+    font-family: Lato, sans-serif;
+    color: var(--logout-button-color);
+    border: 1px solid var(--shop-name-color);
+    border-radius: 4%;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: var(--logout-button-hover);
+    border-radius: 4%;
+}
+
+.bar-member {
+    flex: 1;
+}
+
+.login-container {
+    padding-top: 50px;
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    display: flex;
+    margin: 0 auto;
+}
+
+.container {
+    padding-top: 50px;
+    width: calc(100% - 380px);
+    max-width: 1200px;
+    text-align: center;
+    display: flex;
+    margin: 0 auto;
+    margin-left: 380px;
+}
+
+.gradient {
+    position: fixed;
+    height: 20px;
+    width: 100%;
+}
+
+#top-gradient {
+    top: 50px;
+    background-image: -webkit-gradient(
+  linear, left top, left bottom, from(var(--gradient1)),
+  to(var(--gradient2)));
+}
+
+#bottom-gradient {
+    bottom: 50px;
+    background-image: -webkit-gradient(
+  linear, left top, left bottom, from(var(--gradient2)),
+  to(var(--gradient1)));
+}
+
+aside {
+    min-width: 380px;
+    position: fixed;
+    top: 53px;
+    bottom: 51px;
+    left: 0;
+    z-index: 2;
+    background-color: var(--aside-background);
+    display: flex;
+    border-radius: 1%;
+    flex-direction: column;
+}
+
+.user-data {
+    color: var(--user-data-text);
+    text-align: center;
+    line-height: 30px;
+    font-size: 1.2em;
+    border: 2px solid var(--user-border-color);
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+}
+
+nav ul {
+    width: 100%;
+}
+
+nav ul li {
+    width: 89%;
+    height: 50px;
+    margin: 10px auto;
+    text-align: center;
+    line-height: 50px;
+}
+
+nav ul li a, .button a {
+    text-decoration: none;
+    color: var(--menu-button-text);
+}
+
+nav ul li a {
+    font-size: 1.2em;
+}
+
+nav ul li:hover {
+    width: 80%;
+    background-color: var(--menu-button-hover);
+    border-radius: 2%;
+}
+
+/*aside:hover {
+    left: 20px;
+}*/
+
+aside:hover li {
+    width: 95%;
+}
+
+aside nav {
+    flex: 1;
+}
+
+aside:hover #menu-description {
+    display: none;
+}
+
+#menu-description {
+    writing-mode: tb-rl;
+    max-width: 20px;
+    text-align: center;
+    color: var(--menu-vertical-button);
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 30vh;
+}
+
+.option {
+    width: 120px;
+    height: 120px;
+    border: 3px solid var(--menu-button-text);
+    margin: 25px;
+    padding-top: 20px;
+    background-color: var(--aside-background);
+    color: var(--menu-button-text);
+    border-radius: 20%;
+    transition: 0.5s;
+}
+
+.option:hover {
+    border-radius: 50%;
+    background-color: var(--menu-button-hover);
+}
+
+.option a {
+    text-decoration: none;
+    display: block;
+    height: 100%;
+    width: 100%;
+    color: var(--menu-button-text);
+}
+
+main, main div, main form {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    position: relative;
+}
+
+#statement {
+    margin-top: 25%;
+    font-size: 2em;
+}
+
+main h2 {
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: var(--page-title);
+    font-weight: bold;
+}
+
+main form label, main form input[type="submit"] {
+    margin-top: 27px;
+    margin-bottom: 5px;
+}
+
+main form input[type="submit"] {
+    width: 80px;
+}
+
+form input {
+    width: 80%;
+    max-width: 400px;
+}
+
+#login-submit-button {
+    margin-top: 20px;
+}
+
+table {
+    border: 1px solid var(--table-border);
+    color: var(--table-text);
+}
+
+table th, table td {
+    border-left: 1px solid var(--table-border);
+    border-right: 1px solid var(--table-border);
+}
+
+main form, main table {
+    margin: 40px;
+}
+
+main table th, main table td {
+    padding: 10px 15px;
+}
+
+main table thead {
+    background-color: var(--table-title-background);
+}
+
+main tr:nth-child(even) {
+    background-color: var(--table-row-even-background);
+}
+
+main tbody tr:hover {
+	background-color: var(--table-row-background-hover);
+}
+
+.social-medias {
+    display: flex;
+    align-items: center;
+}
+
+.icon-btn {
+    background-color: var(--social-media-background);
+    border: none;
+    border-radius: 5%;
+    color: var(--social-media-color);
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0 5px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+}
+
+.icon-btn:hover {
+    color: var(--social-media-color-hover);
+    transform: scale(1.1);
+}
+
+.facebook:hover {
+    background-color: var(--facebook-color);
+}
+
+.twitter:hover {
+    background-color: var(--twitter-color);
+}
+
+.google:hover {
+    background-color: var(--google-color);
+}
+
+.instagram:hover {
+    background-color: var(--instagram-color);
+}
+
+.youtube:hover {
+    background-color: var(--youtube-color);
+}
+
+.mail-icon {
+    margin-right: 0.6em;
+}
+
+#lucid-motors-logo {
+    width: 400px;
+    height: auto;
+    animation-name: floating;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes floating {
+    from { transform: translate(0,  0px); }
+    33%  { transform: translate(0, 10px); }
+    66%  { transform: translate(0, -10px); }
+    to   { transform: translate(0, -0px); }
+}
+
+@media (max-height: 600px) {
+    aside {
+    	overflow: scroll;
+    }
+}
+
+@media (max-width: 768px) {
+    .horizontal-bar {
+    	flex-flow: column;
+    }
+
+    header .button {
+        width: calc(100% - 35px);
+    }
+
+    header figure, header h1, .social-medias {
+        display: none;
+    }
+
+    main form, main table {
+        width: calc(100% - 100px);
+        margin: 15px;
+    }
+
+    form select, form input {
+        font-size: 1.3em;
+    }
+
+}

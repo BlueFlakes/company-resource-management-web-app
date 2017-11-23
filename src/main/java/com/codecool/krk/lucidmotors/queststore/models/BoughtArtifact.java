@@ -6,12 +6,13 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BoughtArtifact extends AbstractArtifact {
 
     private Date date;
     private boolean isUsed;
-    private BoughtArtifactDao boughtArtifactDao = new BoughtArtifactDao();
+    private BoughtArtifactDao boughtArtifactDao = BoughtArtifactDao.getDao();
 
     public BoughtArtifact(ShopArtifact shopArtifact) throws DaoException {
 
@@ -37,8 +38,8 @@ public class BoughtArtifact extends AbstractArtifact {
         return this.isUsed;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return convertDateToString(date);
     }
 
     public void setDate(Date date) {
@@ -47,7 +48,7 @@ public class BoughtArtifact extends AbstractArtifact {
 
     @Override
     public String toString() {
-        String dateString = this.convertDateToString(this.getDate());
+        String dateString = this.getDate();
         if (this.isUsed) {
             return String.format("id: %s. name: %s,  date: %s, %s", this.getId(), this.getName(),
                     dateString, "is used");
@@ -58,7 +59,7 @@ public class BoughtArtifact extends AbstractArtifact {
         }
     }
 
-    public void save(ArrayList<Student> owners) throws DaoException {
+    public void save(List<Student> owners) throws DaoException {
         boughtArtifactDao.save(this, owners);
     }
 

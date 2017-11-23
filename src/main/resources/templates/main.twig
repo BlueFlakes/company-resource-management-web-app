@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Codecool store for students">
+		<meta name="keywords" content="quest, artifact, store, coin, codecool">
+		<meta name="author" content="Lucidmotors">
+		<title>{{ title }}</title>
+		<link rel="stylesheet" href="/static/css/reset.css">
+		<link rel="stylesheet" href="/static/css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Droid+Sans|Lato" rel="stylesheet">
+	</head>
+	<body>
+		<header>
+			<div class="horizontal-bar" id="top-bar">
+				<figure>
+					<img src="/static/images/codecool_kolkoxD.png" alt="codecool logo">
+				</figure>
+				<h1 id="shop-name">Queststore</h1>
+				<div class="button">
+					<i class="fa fa-sign-out" aria-hidden="true"></i>
+					<a href="/logout">Logout</a>
+				</div>
+			</div>
+		</header>
+		<aside>
+			<div class="user-data">
+				<i class="fa fa-user fa-3x" aria-hidden="true"></i>
+				<p>Name: {{ user.getName() }}</p>
+				<p>Role: {{ role }}</p>
+				{% if role.equals("Student") %}
+				<p>Coins: {{ user.getPossesedCoins() }}</p>
+				<p>Level: {{ level }}</p>
+				{% endif %}
+			</div>
+			<nav>
+				<ul>
+					{% include menu_path ignore missing %}
+				</ul>
+			</nav>
+		</aside>
+		<div class="gradient" id="top-gradient"></div>
+		<div class="container">
+			<main>
+			{% if is_text_available == true %}
+				<h1 id="statement">{{ text }}</h1>
+			{% else %}
+			{% include content_path ignore missing %}
+			{% endif %}
+			</main>
+		</div>
+		<div class="gradient" id="bottom-gradient"></div>
+		<!-- SECTION FOOTER-->
+ 	   	<footer >
+    	  	<div class="horizontal-bar" id="bottom-bar">
+				<div>
+					<p><i class="fa fa-envelope-open-o mail-icon" aria-hidden="true"></i>lucidmotors@gmail.com</p>
+				</div>
+				<p>Lucid Motors sp. z o .o. <i class="fa fa-copyright" aria-hidden="true"></i></p>
+				<div class="social-medias">
+					<button class="icon-btn facebook"><i class="fa fa-facebook"></i></button>
+					<button class="icon-btn twitter"><i class="fa fa-twitter"></i></button>
+					<button class="icon-btn google"><i class="fa fa-google-plus"></i></button>
+					<button class="icon-btn instagram"><i class="fa fa-instagram"></i></button>
+					<button class="icon-btn youtube"><i class="fa fa-youtube"></i></button>
+				</div>
+    	  	</div>
+    	</footer>
+		<script src="https://use.fontawesome.com/0dc27d5e41.js"></script>
+		{% if content_path == "classpath:/templates/snippets/home-snippet.twig" %}
+		<script src="/static/js/chat.js"></script>
+		{% endif %}
+	</body>
+</html>

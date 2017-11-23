@@ -9,16 +9,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AvailableQuestDao {
 
+    private static AvailableQuestDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+    private QuestCategoryDao questCategoryDao = QuestCategoryDao.getDao();
 
-    public AvailableQuestDao() throws DaoException {
+    private AvailableQuestDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static AvailableQuestDao getDao() throws DaoException {
+        if (dao == null) {
+
+            synchronized (AvailableQuestDao.class) {
+
+                if(dao == null) {
+                    dao = new AvailableQuestDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public AvailableQuest getQuest(Integer id) throws DaoException {
@@ -80,9 +96,9 @@ public class AvailableQuestDao {
 
     }
 
-    public ArrayList<AvailableQuest> getAllQuests() throws DaoException {
+    public List<AvailableQuest> getAllQuests() throws DaoException {
 
-        ArrayList<AvailableQuest> availableQuests = new ArrayList<>();
+        List<AvailableQuest> availableQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM available_quests;";
 
         try {

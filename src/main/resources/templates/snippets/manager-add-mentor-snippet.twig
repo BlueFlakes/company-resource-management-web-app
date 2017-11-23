@@ -1,0 +1,17 @@
+<form method="post">
+    <label for="#edit-mentor-new-name">New first name</label>
+    <input type="text" name="name" id="#edit-mentor-new-name">
+    <label for="#edit-mentor-new-login">New login</label>
+    <input type="text" name="login" id="#edit-mentor-new-login">
+    <label for="#edit-mentor-new-password">New password</label>
+    <input type="text" name="password" id="#edit-mentor-new-password">
+    <label for="#edit-mentor-new-email">New email</label>
+    <input type="text" name="email" id="#edit-mentor-new-email">
+    <input type="submit" value="Submit">
+    <label for="#manager-choose-mentor">Choose class</label>
+    <select name="class_id" id="#manager-choose-class">
+        {% for school_class in school_classes %}
+            <option value="{{school_class.getId()}}">{{school_class.getName()}}</option>
+        {% endfor %}
+    </select>
+</form>

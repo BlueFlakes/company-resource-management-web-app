@@ -1,0 +1,5 @@
+CREATE TABLE "chat" (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `name` TEXT,
+  `message` TEXT
+)

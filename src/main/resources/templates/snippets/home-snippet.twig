@@ -1,0 +1,19 @@
+<div class="chat">
+    <table class="chat-messages">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody id="chat">
+        </tbody>
+    </table>
+
+    <form method="post" action="/chat">
+        <label for="#chat-post-message">Message</label>
+        <input type="hidden" name="chat-user" value="{{ user.getName() }}">
+        <input type="text" name="chat-message" id="#chat-post-message" autofocus>
+        <input type="submit" value="Submit">
+    </form>
+</div>

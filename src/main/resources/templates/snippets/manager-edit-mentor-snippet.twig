@@ -1,0 +1,17 @@
+<form method="post">
+    <label for="#manager-choose-mentor">Choose mentor</label>
+    <select name="mentor_id" id="#manager-choose-mentor">
+        {% for mentor in mentors %}
+        <option value="{{mentor.getId()}}">{{mentor.getName()}}</option>
+        {% endfor %}
+    </select>
+    <label for="#edit-mentor-new-login">New login</label>
+    <input type="text" name="login" id="#edit-mentor-new-login">
+    <label for="#edit-mentor-new-password">New password</label>
+    <input type="text" name="password" id="#edit-mentor-new-password">
+    <label for="#edit-mentor-new-last-name">New name</label>
+    <input type="text" name="name" id="#edit-mentor-new-last-name">
+    <label for="#edit-mentor-new-email">New email</label>
+    <input type="text" name="email" id="#edit-mentor-new-email">
+    <input type="submit" value="Submit">
+</form>

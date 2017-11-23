@@ -5,7 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
 public class AvailableQuest extends AbstractQuest {
 
-    private AvailableQuestDao availableQuestDao = new AvailableQuestDao();
+    private AvailableQuestDao availableQuestDao = AvailableQuestDao.getDao();
 
     public AvailableQuest(String name, QuestCategory questCategory, String description,
                           Integer value) throws DaoException {
