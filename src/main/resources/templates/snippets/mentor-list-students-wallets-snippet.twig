@@ -19,8 +19,8 @@
                         <p>{{ artifact }}</p>
                     {% endfor %}
                 </div>
-                <div id="{{ student.getId() }}-show" onclick="show('{{ student.getId() }}')" style="display: block">show</div>
-                <div id="{{ student.getId() }}-hide" onclick="hide('{{ student.getId() }}')" style="display: none">hide</div>
+                <div id="{{ student.getId() }}-show" onclick="show('{{ student.getId() }}')" style="color:green;display: block">show</div>
+                <div id="{{ student.getId() }}-hide" onclick="hide('{{ student.getId() }}')" style="color: green;display: none">hide</div>
             </td>
         </tr>
         {% endfor %}
