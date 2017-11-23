@@ -114,19 +114,15 @@ public class MainHandler implements HttpHandler {
 
     private URIResponse parseURI (String uri) {
         String[] uriList = uri.split("/");
-        URIResponse response = null;
+        URIResponse response;
 
-        if (uriList.length > 1 && checkIsProperRole(uriList)) {
+        if (uriList.length == 2 && checkIsProperRole(uriList)) {
             Roles role = EnumUtils.getValue(Roles.class, uriList[1].toUpperCase());
-
-            if (uriList.length == 2) {
-                response = new URIResponse(role, Action.DEFAULT, "");
-            }
-
-            if (uriList.length == 3) {
-                String request = uriList[2].toUpperCase();
-                response = new URIResponse(role, Action.getUserAction(role), request);
-            }
+            response = new URIResponse(role, Action.DEFAULT, "");
+        } else if (uriList.length == 3 && checkIsProperRole(uriList)) {
+            Roles role = EnumUtils.getValue(Roles.class, uriList[1].toUpperCase());
+            String request = uriList[2].toUpperCase();
+            response = new URIResponse(role, Action.getUserAction(role), request);
         } else {
             response = new URIResponse(Roles.DEFAULT, Action.DEFAULT, "");
         }
