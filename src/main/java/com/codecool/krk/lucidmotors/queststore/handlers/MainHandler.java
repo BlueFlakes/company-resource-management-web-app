@@ -156,7 +156,7 @@ public class MainHandler implements HttpHandler {
 //        TODO: mam wrażenie że action powinno byc zamiast role
         switch (role) {
             case LOGOUT:
-                return new LogoutView().getActivity();
+                return new LogoutView(user, loggedUsers).getActivity();
 
             case CHAT:
                 return new ChatView(formData).getActivity();
