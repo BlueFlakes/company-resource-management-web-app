@@ -31,5 +31,9 @@ public class ShopArtifact extends AbstractArtifact {
         ShopArtifactDao.getDao().save(this);
     }
 
+    public void update() throws DaoException {
+        ShopArtifactDao.getDao().updateArtifact(this);
+    }
+
 
 }

@@ -82,4 +82,8 @@ public class School {
         return this.mentorDao.getAllMentors();
     }
 
+    public List<Student> getAllStudents() throws DaoException {
+        return this.studentDao.getAllStudents();
+    }
+
 }

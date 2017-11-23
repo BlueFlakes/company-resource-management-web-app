@@ -1,0 +1,15 @@
+<form method="post">
+    <label for="#mentor-mark-bought-artifact-choose-student">Choose Student</label>
+    <select {% if phase == 2 %} disabled {% endif %} name="student_id" id="#mentor-mark-bought-artifact-choose-student">
+        {% for student in students %}
+            <option {% if selected_student_id == student.getId() %} selected {% endif %} value="{{student.getId()}}">{{student.getName()}}</option>
+        {% endfor %}
+    </select>
+    <label for="#mentor-mark-bought-artifact-choose-artifact">Choose student artifact</label>
+    <select {% if phase == 1 %} disabled {% endif %} name="artifact_id" id="#mentor-mark-bought-artifact-choose-artifact">
+        {% for artifact in artifacts %}
+            <option value="{{artifact.getId()}}">{{artifact.getName()}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>

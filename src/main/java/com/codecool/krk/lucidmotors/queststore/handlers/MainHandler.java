@@ -136,8 +136,8 @@ public class MainHandler implements HttpHandler {
                 return new ManagerView(this.school, user, formData).getActivity((ManagerOptions) getProperAction(response));
 
             case MENTOR:
-                return new MentorView(this.school).getActivity((MentorOptions) getProperAction(response));
-
+                return new MentorView(this.school, user, formData).getActivity((MentorOptions) getProperAction(response));
+          
             case STUDENT:
                 return new StudentView(user, formData).getActivity((StudentOptions) getProperAction(response));
 
