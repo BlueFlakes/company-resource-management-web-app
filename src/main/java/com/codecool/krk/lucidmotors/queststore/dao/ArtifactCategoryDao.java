@@ -8,15 +8,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArtifactCategoryDao {
-
+    private static ArtifactCategoryDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
-    public ArtifactCategoryDao() throws DaoException {
+    private ArtifactCategoryDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ArtifactCategoryDao getDao() throws DaoException{
+        if (dao == null) {
+
+            synchronized (ArtifactCategoryDao.class) {
+
+                if(dao == null) {
+                    dao = new ArtifactCategoryDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public ArtifactCategory getArtifactCategory(Integer id) throws DaoException {
@@ -69,9 +84,9 @@ public class ArtifactCategoryDao {
         return artifactCategory;
     }
 
-    public ArrayList<ArtifactCategory> getAllArtifactCategories() throws DaoException {
+    public List<ArtifactCategory> getAllArtifactCategories() throws DaoException {
 
-        ArrayList<ArtifactCategory> artifactCategories = new ArrayList<>();
+        List<ArtifactCategory> artifactCategories = new ArrayList<>();
         String sqlQuery = "SELECT * FROM artifact_categories";
 
         try {

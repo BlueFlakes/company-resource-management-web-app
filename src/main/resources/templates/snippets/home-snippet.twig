@@ -6,49 +6,14 @@
             <th>Message</th>
         </tr>
         </thead>
-        <tbody>
-        {# after implementing all chat functionality, replace with this for loop
-            {% for message in messages %}
-            <tr>
-                <td>{{ message.getAuthor() }}</td>
-                <td>{{ message.getContent() }}</td>
-            </tr>
-        {% endfor %}
-        #}
-        <tr>
-            <td>Jakub Janiszewski</td>
-            <td>No jak tam twój chat zrogowaciały</td>
-        </tr>
-        <tr>
-            <td>Maciej Nowak</td>
-            <td>Kuba weź trochę spoważniej co..........</td>
-        </tr>
-        <tr>
-            <td>Ewa Kopacz</td>
-            <td>WYSOKA IZBO PROSZĘ O CISZĘ</td>
-        </tr>
-        <tr>
-            <td>Zbigniew Stonoga</td>
-            <td>TO JEST DRAMAT...</td>
-        </tr>
-        <tr>
-            <td>Zbigniew Stonoga</td>
-            <td>ZA BRAME</td>
-        </tr>
-        <tr>
-            <td>Jakub Skiba</td>
-            <td>Ej chłopaki patrzcie jaki super artykuł napisałem</td>
-        </tr>
-        <tr>
-            <td>Jakub Skiba</td>
-            <td>https://www.wykop.pl/link/2003052/czy-sa-dowody-na-to-ze-hitler-wiedzial-o-holokauscie/</td>
-        </tr>
+        <tbody id="chat">
         </tbody>
     </table>
 
-    <form method="post">
+    <form method="post" action="/chat">
         <label for="#chat-post-message">Message</label>
-        <input type="text" name="chat-message" id="#chat-post-message">
+        <input type="hidden" name="chat-user" value="{{ user.getName() }}">
+        <input type="text" name="chat-message" id="#chat-post-message" autofocus>
         <input type="submit" value="Submit">
     </form>
 </div>

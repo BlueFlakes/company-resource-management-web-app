@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.dao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
+import com.codecool.krk.lucidmotors.queststore.models.User;
 
 import java.util.ArrayList;
 
@@ -10,21 +11,36 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ArtifactOwnersDao {
 
+    private static ArtifactOwnersDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
     //private ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
 
-    public ArtifactOwnersDao() throws DaoException {
+    private ArtifactOwnersDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
     }
 
+    public static ArtifactOwnersDao getDao() throws DaoException {
+        if (dao == null) {
 
-    public ArrayList<Student> getOwners(BoughtArtifact boughtArtifact) throws DaoException {
-        ArrayList<Student> owners = new ArrayList<>();
+            synchronized (ArtifactOwnersDao.class) {
+
+                if(dao == null) {
+                    dao = new ArtifactOwnersDao();
+                }
+            }
+        }
+
+        return dao;
+    }
+
+    public List<Student> getOwners(BoughtArtifact boughtArtifact) throws DaoException {
+        List<Student> owners = new ArrayList<>();
 
         Integer artifactId = boughtArtifact.getId();
         String sqlQuery = "SELECT * FROM artifact_owners "
@@ -39,7 +55,7 @@ public class ArtifactOwnersDao {
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
 
-                Student owner = new StudentDao(new ClassDao()).getStudent(studentId);
+                Student owner = StudentDao.getDao().getStudent(studentId);
                 owners.add(owner);
             }
 
@@ -52,8 +68,8 @@ public class ArtifactOwnersDao {
         return owners;
     }
 
-    public ArrayList<BoughtArtifact> getArtifacts(Student student) throws DaoException {
-        ArrayList<BoughtArtifact> ownedArtifacts = new ArrayList<>();
+    public List<BoughtArtifact> getArtifacts(User student) throws DaoException {
+        List<BoughtArtifact> ownedArtifacts = new ArrayList<>();
 
         Integer studentId = student.getId();
         String sqlQuery = "SELECT * FROM artifact_owners "
@@ -68,7 +84,7 @@ public class ArtifactOwnersDao {
             while (result.next()) {
                 Integer artifactId = result.getInt("artifact_id");
 
-                BoughtArtifact ownedArtifact = new BoughtArtifactDao().getArtifact(artifactId);
+                BoughtArtifact ownedArtifact = BoughtArtifactDao.getDao().getArtifact(artifactId);
                 ownedArtifacts.add(ownedArtifact);
             }
 
@@ -102,7 +118,7 @@ public class ArtifactOwnersDao {
 
     }
 
-    public void saveArtifactOwners(Integer artifactId, ArrayList<Student> owners) throws DaoException {
+    public void saveArtifactOwners(Integer artifactId, List<Student> owners) throws DaoException {
 
         for (Student owner : owners) {
             this.saveOwner(artifactId, owner);

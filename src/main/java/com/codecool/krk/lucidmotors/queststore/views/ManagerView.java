@@ -19,8 +19,8 @@ import java.util.Map;
 public class ManagerView {
     private School school;
     private ExperienceLevelsController experienceLevelsController;
-    User user;
-    Map<String, String> formData;
+    private User user;
+    private Map<String, String> formData;
 
     public ManagerView(School school, User user, Map<String, String> formData) throws DaoException {
         this.school = school;

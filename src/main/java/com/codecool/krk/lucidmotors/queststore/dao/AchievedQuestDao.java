@@ -13,17 +13,33 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AchievedQuestDao {
 
+    private static AchievedQuestDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
-    private StudentDao studentDao = new StudentDao(new ClassDao());
+    private QuestCategoryDao questCategoryDao = QuestCategoryDao.getDao();
+    private StudentDao studentDao = StudentDao.getDao();
 
-    public AchievedQuestDao() throws DaoException {
+    private AchievedQuestDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static AchievedQuestDao getDao() throws DaoException {
+        if (dao == null) {
+
+            synchronized (AvailableQuestDao.class) {
+
+                if(dao == null) {
+                    dao = new AchievedQuestDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     private Date parseDate(String dateString) throws ParseException {
@@ -79,9 +95,9 @@ public class AchievedQuestDao {
 
     }
 
-    public ArrayList<AchievedQuest> getAllQuests() throws DaoException {
+    public List<AchievedQuest> getAllQuests() throws DaoException {
 
-        ArrayList<AchievedQuest> achievedQuests = new ArrayList<>();
+        List<AchievedQuest> achievedQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM achieved_quests;";
 
         try {
@@ -118,10 +134,10 @@ public class AchievedQuestDao {
         return achievedQuests;
     }
 
-    public ArrayList<AchievedQuest> getAllQuestsByStudent(Student student) throws DaoException {
+    public List<AchievedQuest> getAllQuestsByStudent(Student student) throws DaoException {
 
         Integer ownerId = student.getId();
-        ArrayList<AchievedQuest> achievedQuests = new ArrayList<>();
+        List<AchievedQuest> achievedQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM achieved_quests WHERE owner_id = ?;";
 
         try {

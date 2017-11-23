@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
@@ -9,14 +10,29 @@ import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 
 public class StudentDao {
 
+    private static StudentDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
     private final ClassDao classDao;
 
-    public StudentDao(ClassDao classDao) throws DaoException {
-
+    private StudentDao() throws DaoException {
         this.connection = DatabaseConnection.getConnection();
-        this.classDao = classDao;
+        this.classDao = ClassDao.getDao();
+    }
+
+    public static StudentDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (StudentDao.class) {
+
+                if (dao == null) {
+                    dao = new StudentDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public Student getStudent(Integer id) throws DaoException {
@@ -173,9 +189,9 @@ public class StudentDao {
         return student;
     }
 
-    public ArrayList<Student> getAllStudents() throws DaoException {
+    public List<Student> getAllStudents() throws DaoException {
 
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         String sqlQuery = "SELECT * FROM students;";
 
         try {

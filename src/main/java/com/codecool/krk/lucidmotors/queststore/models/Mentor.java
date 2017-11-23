@@ -8,7 +8,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 public class Mentor extends User {
     
     private final SchoolClass class_;
-    private final MentorDao mentorDao = new MentorDao(new ClassDao());
+    private final MentorDao mentorDao = MentorDao.getDao();
 
 
     public Mentor(String name, String login, String password, String email, SchoolClass class_) throws DaoException {

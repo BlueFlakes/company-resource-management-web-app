@@ -1,11 +1,10 @@
 package com.codecool.krk.lucidmotors.queststore.handlers;
 
-import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
-import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
+import com.codecool.krk.lucidmotors.queststore.enums.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.handlers.helpers.Cookie;
 import com.codecool.krk.lucidmotors.queststore.models.*;
-import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
-import com.codecool.krk.lucidmotors.queststore.views.MentorView;
+import com.codecool.krk.lucidmotors.queststore.views.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -13,7 +12,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.util.*;
 
@@ -41,7 +39,7 @@ public class MainHandler implements HttpHandler {
     }
 
     private Activity getActivity(HttpExchange httpExchange) throws IOException, DaoException {
-        Activity activity = null;
+        Activity activity;
 
         Map<String, String> formData = getFormData(httpExchange);
         User user = getUserByCookie(httpExchange);
@@ -49,22 +47,15 @@ public class MainHandler implements HttpHandler {
         String uri = httpExchange.getRequestURI().getPath();
         Map<String, String> parsedURI = parseURI(uri);
         String role =  parsedURI.get("role");
-        String action = parsedURI.get("action");
+        String action = parsedURI.get("action").toUpperCase();
 
         if(user == null) {
-            activity = new LoginHandler(this.school, formData, this.loggedUsers).getActivity(httpExchange);
-        } else if (!role.equals("")) {
-            switch (role) {
-                case "manager":
-                    activity = new ManagerView(this.school, user, formData).getActivity(getManagerEnumValue(action));
-                    break;
-
-                case "mentor":
-                    activity = new MentorView(this.school, user, formData).getActivity(getMentorEnumValue(action));
-                    break;
-            }
+            activity = new LoginView(this.school, formData, this.loggedUsers).getActivity(httpExchange);
+        } else if (isProperUser(role, user)) {
+            Cookie.renewCookie(httpExchange, "UUID");
+            activity = getUserActivity(role, action, formData, user);
         } else {
-            activity = switchUser(user);
+            activity = getOtherActivity(role, formData, user);
         }
 
         return activity;
@@ -91,47 +82,44 @@ public class MainHandler implements HttpHandler {
         return postValues;
     }
 
-    private User getUserByCookie(HttpExchange httpExchange) {
+    private boolean isProperUser(String role, User user) {
+        return switchUser(user).equalsIgnoreCase(role);
+    }
+
+    static String switchUser(User user) {
+        String userUrl;
+
+        if (user instanceof Manager) {
+            userUrl = "manager";
+        } else if (user instanceof Mentor) {
+            userUrl = "mentor";
+        } else if (user instanceof Student) {
+            userUrl = "student";
+        } else {
+            userUrl = "";
+        }
+
+        return userUrl;
+    }
+
+    public User getUserByCookie(HttpExchange httpExchange) {
         User user = null;
-
-        String allCookies = httpExchange.getRequestHeaders().getFirst("Cookie");
-        String[] cookies = allCookies != null ? allCookies.split("; ") : new String[]{};
-        for(String cookie : cookies) {
-            HttpCookie newCookie = HttpCookie.parse(cookie).get(0);
-            if (newCookie.getName().equals("UUID")) {
-                user = loggedUsers.getOrDefault(UUID.fromString(newCookie.getValue()), null);
-
-            }
+        String uuid = Cookie.getCookieValue(httpExchange, "UUID");
+        if (uuid != null) {
+            user = loggedUsers.getOrDefault(UUID.fromString(uuid), null);
         }
 
         return user;
     }
 
-    static Activity switchUser(User user) {
-        String userUrl;
-
-        if (user instanceof Manager) {
-            userUrl = "/manager";
-        } else if (user instanceof Mentor) {
-            userUrl = "/mentor";
-        } else if (user instanceof Student) {
-            userUrl = "/student";
-        } else {
-            userUrl = "/";
-        }
-
-        return new Activity(302, userUrl);
-    }
-
     private Map<String, String> parseURI (String uri) {
-        Map<String, String> parsedURI = new HashMap<String, String>();
+        Map<String, String> parsedURI = new HashMap<>();
         String[] uriList = uri.split("/");
-        List<String> roles = Arrays.asList("student", "mentor", "manager", "logout");
 
-        if (uriList.length == 2 && roles.contains(uriList[1])) {
+        if (uriList.length == 2 && checkIsProperRole(uriList)) {
             parsedURI.put("role", uriList[1]);
             parsedURI.put("action", "");
-        } else if (uriList.length == 3 && roles.contains(uriList[1])) {
+        } else if (uriList.length == 3 && checkIsProperRole(uriList)) {
             parsedURI.put("role", uriList[1]);
             parsedURI.put("action", uriList[2]);
         } else {
@@ -142,32 +130,57 @@ public class MainHandler implements HttpHandler {
         return parsedURI;
     }
 
-    private ManagerOptions getManagerEnumValue(String userAction) {
-        ManagerOptions chosenOption;
+    public Activity getUserActivity(String role, String action, Map<String, String> formData, User user) throws DaoException, IOException {
+        switch (role) {
+            case "manager":
+                return new ManagerView(this.school, user, formData).getActivity(EnumUtils.getValue(ManagerOptions.class, action));
 
-        try {
-            chosenOption = ManagerOptions.valueOf(userAction.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            chosenOption = ManagerOptions.DEFAULT;
+            case "mentor":
+                return new MentorView(this.school).getActivity(EnumUtils.getValue(MentorOptions.class, action));
+
+            case "student":
+                return new StudentView(user, formData).getActivity(EnumUtils.getValue(StudentOptions.class, action));
+
         }
-
-        return chosenOption;
+        return null;
     }
 
-    private MentorOptions getMentorEnumValue(String userAction) {
-        MentorOptions chosenOption;
+    private Activity getOtherActivity(String role, Map<String, String> formData, User user) throws DaoException {
+        switch (role) {
+            case "logout":
+                return new LogoutView().getActivity();
 
-        try {
-            chosenOption = MentorOptions.valueOf(userAction.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            chosenOption = MentorOptions.DEFAULT;
+            case "chat":
+                return new ChatView(formData).getActivity();
+
+            default:
+                return redirectByUser(user);
         }
-
-        return chosenOption;
     }
 
+    public static Activity redirectByUser(User user) {
+        String userUrl = "/" + switchUser(user);
+
+        return new Activity(302, userUrl);
+    }
+
+    private Boolean checkIsProperRole(String[] uriList) {
+        Boolean isProperRole;
+        try {
+            Roles.valueOf(uriList[1].toUpperCase());
+            isProperRole = true;
+        } catch (IllegalArgumentException e) {
+            isProperRole = false;
+        }
+
+        return isProperRole;
+    }
 
     private void sendResponse(Activity activity, HttpExchange httpExchange) throws IOException {
+        if (activity.hasHeader()) {
+            httpExchange.getResponseHeaders().add(activity.getHeaderName(), activity.getHeaderContent());
+        }
+
         if (activity.getHttpStatusCode().equals(200)) {
             String response = activity.getAnswer();
             writeHttpOutputStream(activity.getHttpStatusCode(), response, httpExchange);
@@ -178,17 +191,14 @@ public class MainHandler implements HttpHandler {
             httpExchange.sendResponseHeaders(302, -1);
 
         } else if (activity.getHttpStatusCode().equals(500)) {
-            String response = activity.getAnswer();
             httpExchange.sendResponseHeaders(500, 0);
 
         } else {
             String response = "404 (Not Found)\n";
             int httpStatusCode = 404;
             writeHttpOutputStream(httpStatusCode, response, httpExchange);
-
         }
     }
-
 
     private void writeHttpOutputStream(int httpStatusCode, String response, HttpExchange httpExchange) throws IOException {
         final byte[] finalResponseBytes = response.getBytes("UTF-8");
@@ -197,5 +207,4 @@ public class MainHandler implements HttpHandler {
         os.write(finalResponseBytes);
         os.close();
     }
-
 }

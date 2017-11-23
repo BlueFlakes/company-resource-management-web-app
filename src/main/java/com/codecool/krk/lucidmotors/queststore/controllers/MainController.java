@@ -1,6 +1,5 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.handlers.LogoutHandler;
 import com.codecool.krk.lucidmotors.queststore.handlers.MainHandler;
 import com.codecool.krk.lucidmotors.queststore.handlers.Static;
 import com.codecool.krk.lucidmotors.queststore.models.School;
@@ -24,7 +23,6 @@ public class MainController {
         this.server = HttpServer.create(new InetSocketAddress(port), 0);
 
         server.createContext("/", new MainHandler(this.school));
-        server.createContext("/logout", new LogoutHandler());
         server.createContext("/static", new Static());
         server.setExecutor(null); // creates a default executor
 

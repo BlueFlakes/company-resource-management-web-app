@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
@@ -8,10 +9,10 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
 public class Student extends User {
 
-    private final ArrayList<BoughtArtifact> ownedArtifacts;
-    private final ArrayList<AbstractQuest> achievedQuests;
+    private final List<BoughtArtifact> ownedArtifacts;
+    private final List<AbstractQuest> achievedQuests;
     private final SchoolClass class_;
-    private final StudentDao studentDao = new StudentDao(new ClassDao());
+    private final StudentDao studentDao = StudentDao.getDao();
     private Integer earnedCoins;
     private Integer possesedCoins;
 
@@ -37,19 +38,25 @@ public class Student extends User {
 
     }
 
+
+
     public Integer getEarnedCoins() {
         return this.earnedCoins;
+    }
+
+    public void setPossesedCoins(Integer coins) {
+        this.possesedCoins = coins;
     }
 
     public Integer getPossesedCoins() {
         return this.possesedCoins;
     }
 
-    public ArrayList<BoughtArtifact> getOwnedArtifacts() {
+    public List<BoughtArtifact> getOwnedArtifacts() {
         return this.ownedArtifacts;
     }
 
-    public ArrayList<AbstractQuest> getAchievedQuests() {
+    public List<AbstractQuest> getAchievedQuests() {
         return this.achievedQuests;
     }
 
@@ -77,10 +84,6 @@ public class Student extends User {
 
     public void returnCoins(Integer amount) {
         this.possesedCoins += amount;
-    }
-
-    public void substractCoins(Integer amount) {
-        this.possesedCoins = (this.possesedCoins - amount >= 0) ? (this.possesedCoins - amount) : possesedCoins;
     }
 
     public void save() throws DaoException {

@@ -235,7 +235,6 @@ import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -260,7 +259,7 @@ public class ManagerController {
         Boolean isUpdated = false;
 
         Integer mentorId = Integer.valueOf(formData.get("mentor_id"));
-        Mentor mentor = new MentorDao(new ClassDao()).getMentor(mentorId);
+        Mentor mentor = MentorDao.getDao().getMentor(mentorId);
 
         if (mentor != null &&
                 (this.school.isLoginAvailable(formData.get("login")) || formData.get("login").equals(mentor.getLogin()))) {
@@ -277,7 +276,7 @@ public class ManagerController {
 
     private SchoolClass chooseProperClass(Integer classId) throws DaoException {
 
-       SchoolClass schoolClass = new ClassDao().getSchoolClass(classId);
+       SchoolClass schoolClass = ClassDao.getDao().getSchoolClass(classId);
 
         return schoolClass;
     }
