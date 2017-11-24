@@ -1,5 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import org.json.JSONObject;
+
 public abstract class User {
 
     private String name;
@@ -70,5 +72,17 @@ public abstract class User {
     @Override
     public String toString() {
         return this.login;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject jsonUser = new JSONObject();
+
+        jsonUser.put("name", this.name);
+        jsonUser.put("login", this.login);
+        jsonUser.put("password", this.password);
+        jsonUser.put("email", this.email);
+        jsonUser.put("id", this.id.toString());
+
+        return jsonUser;
     }
 }

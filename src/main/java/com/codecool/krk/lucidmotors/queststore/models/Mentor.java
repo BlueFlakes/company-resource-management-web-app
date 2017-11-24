@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Mentor extends User {
     
@@ -51,6 +53,13 @@ public class Mentor extends User {
 
     public void update() throws DaoException {
         mentorDao.update(this);
+    }
+
+    public JSONObject toJSON() {
+        JSONObject mentorJson = super.toJSON();
+        mentorJson.put("class_id", this.class_.getId());
+        mentorJson.put("class_name", this.class_.getName());
+        return mentorJson;
     }
 
 }
