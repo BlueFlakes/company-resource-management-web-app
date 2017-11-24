@@ -102,4 +102,37 @@ public class ExperienceLevelsDao {
         return experienceLevels;
     }
 
+    public Integer getHighestLevelCoins() throws DaoException {
+        Integer neededCoins = 0;
+        String sqlQuery = "SELECT MAX(coins_needed) as `coins` FROM experience_levels;";
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if(resultSet.next()) {
+                neededCoins = resultSet.getInt("coins");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return neededCoins;
+    }
+
+    public Integer getHighestLevelID() throws DaoException {
+        Integer id = 0;
+        String sqlQuery = "SELECT MAX(id) as `ID` FROM experience_levels;";
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if(resultSet.next()) {
+                id = resultSet.getInt("ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
 }

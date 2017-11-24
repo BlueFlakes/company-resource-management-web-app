@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
@@ -172,6 +173,11 @@ public class ManagerView {
 
     private void runNewLevelCreation(JtwigModel model) throws DaoException {
         final String coinsKey = "experience-level";
+        ExperienceLevelsDao experienceLevelsDao = ExperienceLevelsDao.getDao();
+        Integer nextLevel = experienceLevelsDao.getHighestLevelID() + 1;
+        Integer nextLevelNeededCoins = experienceLevelsDao.getHighestLevelCoins() + 1;
+        model.with("next_level", nextLevel);
+        model.with("next_level_min_value", nextLevelNeededCoins);
 
         if (this.formData.containsKey(coinsKey) && CustomMatchers.isPositiveInteger(this.formData.get(coinsKey))) {
             boolean wasUpdated = experienceLevelsController.createNewLevel(this.formData, coinsKey);
