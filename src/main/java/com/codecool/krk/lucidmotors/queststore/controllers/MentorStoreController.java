@@ -6,6 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.QuestCategoryDao;
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
+import com.codecool.krk.lucidmotors.queststore.models.ChatMessage;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 
@@ -55,6 +56,8 @@ public class MentorStoreController {
             Integer price = Integer.parseInt(formData.get("price"));
             ShopArtifact shopArtifact = new ShopArtifact(name, price, artifactCategory, description);
             shopArtifact.save();
+            String message = String.format("New artifact available: %s for only %d cc.", shopArtifact.getName(), shopArtifact.getPrice());
+            new ChatMessage("system", message).save();
 
         } catch (NumberFormatException e) {
             isAdded = false;
