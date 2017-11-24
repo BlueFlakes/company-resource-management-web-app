@@ -42,6 +42,7 @@ public class MentorView {
         model.with("is_text_available", false);
         model.with("role", "Mentor");
         model.with("user", this.user);
+        model.with("json", "");
 
         try {
             insertData(mentorOption, model);
