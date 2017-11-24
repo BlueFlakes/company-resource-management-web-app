@@ -93,7 +93,6 @@ public class ManagerView {
         if(this.formData.containsKey("mentor_id")) {
             try {
                 Integer mentorId = Integer.valueOf(this.formData.get("mentor_id"));
-                System.out.println(mentorId);
                 JSONObject mentor = MentorDao.getDao().getMentor(mentorId).toJSON();
 
                 model.with("json", mentor.toString());
