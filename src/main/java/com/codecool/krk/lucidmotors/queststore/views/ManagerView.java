@@ -121,6 +121,7 @@ public class ManagerView {
 
     private void editMentor(JtwigModel model) throws DaoException {
         model.with("mentors", this.school.getAllMentors());
+        model.with("school_classes", this.school.getAllClasses());
         if(this.formData.containsKey("mentor_id") &&
                 new ManagerController(this.school).editMentor(this.formData)) {
             model.with("is_text_available", true);

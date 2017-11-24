@@ -14,6 +14,13 @@
     <input type="text" name="name" id="#edit-mentor-new-last-name" required>
     <label for="#edit-mentor-new-email">Email</label>
     <input type="email" name="email" id="#edit-mentor-new-email" required>
+    <label for="#manager-choose-mentor">Class</label>
+    <select name="class_id" id="#manager-choose-class" required>
+        <option disabled selected value> choose class </option>
+        {% for school_class in school_classes %}
+            <option value="{{school_class.getId()}}">{{school_class.getName()}}</option>
+        {% endfor %}
+    </select>
     <input type="submit" value="Submit">
 </form>
 
@@ -50,5 +57,6 @@
         document.getElementById("#edit-mentor-new-password").value = mentor.password;
         document.getElementById("#edit-mentor-new-last-name").value = mentor.name;
         document.getElementById("#edit-mentor-new-email").value = mentor.email;
+        document.getElementById("#manager-choose-class").value = mentor.class_id;
     }
 </script>
