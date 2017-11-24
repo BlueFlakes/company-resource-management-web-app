@@ -39,7 +39,9 @@ public class ManagerController {
             mentor.setName(formData.get("name"));
             mentor.setLogin(formData.get("login"));
             mentor.setPassword(formData.get("password"));
-            mentor.setEmail(formData.get("mail"));
+            mentor.setEmail(formData.get("email"));
+            Integer classID = Integer.valueOf(formData.get("class_id"));
+            mentor.setSchoolClass(ClassDao.getDao().getSchoolClass(classID));
             mentor.update();
             isUpdated = true;
         }

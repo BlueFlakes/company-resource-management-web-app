@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class Mentor extends User {
     
-    private final SchoolClass class_;
+    private SchoolClass class_;
     private final MentorDao mentorDao = MentorDao.getDao();
 
 
@@ -28,6 +28,10 @@ public class Mentor extends User {
 
     public SchoolClass getClas() {
         return this.class_;
+    }
+
+    public void setSchoolClass(SchoolClass class_) {
+        this.class_ = class_;
     }
 
     public String getMentorSaveString() {

@@ -132,6 +132,7 @@ public class ManagerView {
         if (this.formData.containsKey("mentor_id")) {
             Integer mentorId = Integer.valueOf(this.formData.get("mentor_id"));
             List<Student> studentList = new ManagerController(this.school).getMentorClass(mentorId);
+            model.with("mentor_data", MentorDao.getDao().getMentor(mentorId));
             model.with("students", studentList);
             model.with("selected_mentor_id", mentorId);
         }
