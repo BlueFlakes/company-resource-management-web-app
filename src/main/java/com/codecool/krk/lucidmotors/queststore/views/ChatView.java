@@ -47,7 +47,7 @@ public class ChatView {
     public Activity receiveData() throws DaoException {
         new ChatMessage(formData.get("chat-user"), formData.get("chat-message")).save();
 
-        return new Activity(302, "/");
+        return new Activity(200, "");
     }
 
     private Boolean isProperMessage() {

@@ -1,17 +1,62 @@
 <form method="post">
     <label for="#manager-choose-mentor">Choose mentor</label>
-    <select name="mentor_id" id="#manager-choose-mentor">
+    <select name="mentor_id" id="#manager-choose-mentor" onchange="fillFields()" autofocus required>
+        <option disabled selected value> choose mentor </option>
         {% for mentor in mentors %}
         <option value="{{mentor.getId()}}">{{mentor.getName()}}</option>
         {% endfor %}
     </select>
-    <label for="#edit-mentor-new-login">New login</label>
+    <label for="#edit-mentor-new-login">Login</label>
     <input type="text" name="login" id="#edit-mentor-new-login" required>
-    <label for="#edit-mentor-new-password">New password</label>
-    <input type="text" name="password" id="#edit-mentor-new-password" required>
-    <label for="#edit-mentor-new-last-name">New name</label>
+    <label for="#edit-mentor-new-password">Password</label>
+    <input type="password" name="password" id="#edit-mentor-new-password" onmouseover="showPassword()" onmouseleave="hidePassword()" required>
+    <label for="#edit-mentor-new-last-name">Name</label>
     <input type="text" name="name" id="#edit-mentor-new-last-name" required>
-    <label for="#edit-mentor-new-email">New email</label>
+    <label for="#edit-mentor-new-email">Email</label>
     <input type="email" name="email" id="#edit-mentor-new-email" required>
+    <label for="#manager-choose-mentor">Class</label>
+    <select name="class_id" id="#manager-choose-class" required>
+        <option disabled selected value> choose class </option>
+        {% for school_class in school_classes %}
+            <option value="{{school_class.getId()}}">{{school_class.getName()}}</option>
+        {% endfor %}
+    </select>
     <input type="submit" value="Submit">
 </form>
+
+<script>
+    function showPassword() {
+        document.getElementById("#edit-mentor-new-password").setAttribute("type", "input");
+    }
+
+    function hidePassword() {
+        document.getElementById("#edit-mentor-new-password").setAttribute("type", "password");
+    }
+
+    function fillFields() {
+        var mentor_id = document.getElementById("#manager-choose-mentor").value;
+
+        var http = new XMLHttpRequest();
+        var url = "/manager/get_mentor";
+        var params = "mentor_id=" + mentor_id;
+        http.open("POST", url, true);
+
+        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        http.onreadystatechange = function() {
+            if(http.readyState == 4 && http.status == 200) {
+                var mentor = JSON.parse(this.responseText);
+                injectMentorData(mentor);
+            }
+        }
+        http.send(params);
+    }
+
+    function injectMentorData(mentor) {
+        document.getElementById("#edit-mentor-new-login").value = mentor.login;
+        document.getElementById("#edit-mentor-new-password").value = mentor.password;
+        document.getElementById("#edit-mentor-new-last-name").value = mentor.name;
+        document.getElementById("#edit-mentor-new-email").value = mentor.email;
+        document.getElementById("#manager-choose-class").value = mentor.class_id;
+    }
+</script>

@@ -1,14 +1,14 @@
 package com.codecool.krk.lucidmotors.queststore.views;
 
-import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
+import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
+import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
+import com.codecool.krk.lucidmotors.queststore.matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.ManagerController;
 import com.codecool.krk.lucidmotors.queststore.enums.ManagerOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.models.Activity;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.Student;
-import com.codecool.krk.lucidmotors.queststore.models.User;
+import com.codecool.krk.lucidmotors.queststore.models.*;
+import org.json.JSONObject;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -39,6 +39,7 @@ public class ManagerView {
         model.with("is_text_available", false);
         model.with("role", "Manager");
         model.with("user", this.user);
+        model.with("json", "");
 
         try {
             insertData(managerOption, model);
@@ -84,6 +85,21 @@ public class ManagerView {
                 create_class(model);
                 break;
 
+            case GET_MENTOR:
+                getMentorData(model);
+        }
+    }
+
+    private void getMentorData(JtwigModel model) throws DaoException {
+        if(this.formData.containsKey("mentor_id")) {
+            try {
+                Integer mentorId = Integer.valueOf(this.formData.get("mentor_id"));
+                JSONObject mentor = MentorDao.getDao().getMentor(mentorId).toJSON();
+
+                model.with("json", mentor.toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -105,6 +121,7 @@ public class ManagerView {
 
     private void editMentor(JtwigModel model) throws DaoException {
         model.with("mentors", this.school.getAllMentors());
+        model.with("school_classes", this.school.getAllClasses());
         if(this.formData.containsKey("mentor_id") &&
                 new ManagerController(this.school).editMentor(this.formData)) {
             model.with("is_text_available", true);
@@ -116,6 +133,7 @@ public class ManagerView {
         if (this.formData.containsKey("mentor_id")) {
             Integer mentorId = Integer.valueOf(this.formData.get("mentor_id"));
             List<Student> studentList = new ManagerController(this.school).getMentorClass(mentorId);
+            model.with("mentor_data", MentorDao.getDao().getMentor(mentorId));
             model.with("students", studentList);
             model.with("selected_mentor_id", mentorId);
         }
@@ -155,6 +173,11 @@ public class ManagerView {
 
     private void runNewLevelCreation(JtwigModel model) throws DaoException {
         final String coinsKey = "experience-level";
+        ExperienceLevelsDao experienceLevelsDao = ExperienceLevelsDao.getDao();
+        Integer nextLevel = experienceLevelsDao.getHighestLevelID() + 1;
+        Integer nextLevelNeededCoins = experienceLevelsDao.getHighestLevelCoins() + 1;
+        model.with("next_level", nextLevel);
+        model.with("next_level_min_value", nextLevelNeededCoins);
 
         if (this.formData.containsKey(coinsKey) && CustomMatchers.isPositiveInteger(this.formData.get(coinsKey))) {
             boolean wasUpdated = experienceLevelsController.createNewLevel(this.formData, coinsKey);

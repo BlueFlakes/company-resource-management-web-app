@@ -10,10 +10,9 @@
         </tbody>
     </table>
 
-    <form method="post" action="/chat">
-        <label for="#chat-post-message">Message</label>
-        <input type="hidden" name="chat-user" value="{{ user.getName() }}">
-        <input type="text" name="chat-message" id="#chat-post-message" autofocus required>
+    <form onsubmit="return send()">
+        <input type="hidden" name="chat-user" value="{{ user.getName() }}" id="name">
+        <input type="text" name="chat-message" id="message" autofocus required>
         <input type="submit" value="Submit">
     </form>
 </div>

@@ -41,6 +41,7 @@ public class StudentView {
         model.with("level", this.studentController.getUserLevel(student));
         model.with("title", studentOption.toString());
         model.with("menu_path", "classpath:/templates/snippets/student-menu-snippet.twig");
+        model.with("json", "");
 
         String contentPath = "classpath:/" + studentOption.getPath();
         model.with("content_path", contentPath);

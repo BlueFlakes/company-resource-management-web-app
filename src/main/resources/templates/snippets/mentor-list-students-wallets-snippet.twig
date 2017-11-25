@@ -4,6 +4,7 @@
             <th>Student id</th>
             <th>Name</th>
             <th>Balance</th>
+            <th>Artifacts</th>
         </tr>
     </thead>
     <tbody>
@@ -12,7 +13,36 @@
             <td>{{ student.getId() }}</td>
             <td>{{ student.getName() }}</td>
             <td>{{ student.getPossesedCoins() }}</td>
+            <td>
+                <div id="{{ student.getId() }}-student-artifacts" style="display: none">
+                    {% for artifact in student.getOwnedArtifacts() %}
+                        <p>{{ artifact }}</p>
+                    {% endfor %}
+                </div>
+                <div id="{{ student.getId() }}-show" onclick="show('{{ student.getId() }}')" style="color:green;display: block">show</div>
+                <div id="{{ student.getId() }}-hide" onclick="hide('{{ student.getId() }}')" style="color: green;display: none">hide</div>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+<script>
+    function show(id) {
+        var artifacts_id = id + '-student-artifacts';
+        var show_id = id + '-show';
+        var hide_id = id + '-hide';
+        document.getElementById(artifacts_id).style.display = 'block';
+        document.getElementById(show_id).style.display = 'none';
+        document.getElementById(hide_id).style.display = 'block';
+    }
+
+    function hide(id) {
+        var artifacts_id = id + '-student-artifacts';
+        var show_id = id + '-show';
+        var hide_id = id + '-hide';
+        document.getElementById(artifacts_id).style.display = 'none';
+        document.getElementById(show_id).style.display = 'block';
+        document.getElementById(hide_id).style.display = 'none';
+    }
+</script>

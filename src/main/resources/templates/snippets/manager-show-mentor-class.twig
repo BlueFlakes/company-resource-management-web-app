@@ -1,12 +1,27 @@
 <form method="post">
-    <label for="mentor">Mentor:</label>
-    <select id="mentor" name="mentor_id">
+    <label for="mentor">Mentor name:</label>
+    <select id="mentor" name="mentor_id" onchange="this.form.submit()" autofocus required>
+        <option disabled selected value> choose mentor </option>
         {% for mentor in mentors %}
             <option {% if selected_mentor_id == mentor.getId() %} selected {% endif %} value="{{mentor.getId()}}">{{mentor.getName()}}</option>
         {% endfor %}
     </select>
-    <input type="submit" value="choose">
 </form>
+{% if mentor_data != null %}
+<p>Mentor info:</p>
+<table>
+    <thead>
+    <tr>
+        <th>Login</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+        <td>{{ mentor_data.getLogin() }}</td>
+        <td>{{ mentor_data.getEmail() }}</td>
+    </tbody>
+</table>
+<p>Mentor class - {{ mentor_data.getClas().getName() }}:</p>
 <table>
     <thead>
     <tr>
@@ -23,3 +38,4 @@
     {% endfor %}
     </tbody>
 </table>
+{% endif %}

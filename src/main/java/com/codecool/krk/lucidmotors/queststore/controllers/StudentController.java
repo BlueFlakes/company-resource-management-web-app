@@ -1,6 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.Matchers.CustomMatchers;
+import com.codecool.krk.lucidmotors.queststore.matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
@@ -76,6 +76,9 @@ public class StudentController {
             Student student = this.studentDao.getStudent(user.getId());
             Contribution contribution = new Contribution(contributionName, student, shopArtifact);
             this.contributionDao.save(contribution);
+
+            String message = String.format("%s open contribution for %s.", student.getName(), shopArtifact.getName());
+            new ChatMessage("system", message).save();
 
             return true;
         }

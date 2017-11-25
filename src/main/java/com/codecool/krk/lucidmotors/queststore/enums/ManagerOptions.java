@@ -10,7 +10,8 @@ public enum ManagerOptions {
     CREATE_NEW_LEVEL ("templates/snippets/manager-create-new-level.twig"),
     UPDATE_LEVEL ("templates/snippets/manager-update-level.twig"),
     SHOW_LEVELS ("templates/snippets/manager-show-all-levels.twig"),
-    DEFAULT ("templates/snippets/home-snippet.twig");
+    DEFAULT ("templates/snippets/home-snippet.twig"),
+    GET_MENTOR ("templates/empty.twig");
 
     private String path;
 

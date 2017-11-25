@@ -1,3 +1,4 @@
+{% if json.isEmpty() %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -73,3 +74,6 @@
 		{% endif %}
 	</body>
 </html>
+{% else %}
+	{{ json }}
+{% endif %}
