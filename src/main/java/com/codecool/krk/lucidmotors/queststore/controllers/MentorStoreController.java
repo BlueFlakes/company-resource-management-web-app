@@ -10,6 +10,7 @@ import com.codecool.krk.lucidmotors.queststore.models.ChatMessage;
 import com.codecool.krk.lucidmotors.queststore.models.School;
 import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class MentorStoreController {
         String description = formData.get("description");
 
         try {
-            Integer price = Integer.parseInt(formData.get("price"));
+            BigInteger price = new BigInteger(formData.get("price"));
             ShopArtifact artifact = shopArtifactDao.getArtifact(id);
             artifact.setName(name);
             artifact.setArtifactCategory(artifactCategory);
@@ -53,7 +54,7 @@ public class MentorStoreController {
         String description = formData.get("description");
 
         try {
-            Integer price = Integer.parseInt(formData.get("price"));
+            BigInteger price = new BigInteger(formData.get("price"));
             ShopArtifact shopArtifact = new ShopArtifact(name, price, artifactCategory, description);
             shopArtifact.save();
             String message = String.format("New artifact available: %s for only %d cc.", shopArtifact.getName(), shopArtifact.getPrice());

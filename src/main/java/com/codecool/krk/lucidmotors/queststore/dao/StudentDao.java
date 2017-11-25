@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,8 +116,8 @@ public class StudentDao {
         String password = student.getPassword();
         String email = student.getEmail();
         Integer classId = student.getClas().getId();
-        Integer earnedCoins = student.getEarnedCoins();
-        Integer possessedCoins = student.getPossesedCoins();
+        BigInteger earnedCoins = student.getEarnedCoins();
+        BigInteger possessedCoins = student.getPossesedCoins();
 
         String sqlQuery = "INSERT INTO students "
                 + "(name, login, password, email, class_id, earned_coins, possesed_coins) "
@@ -130,8 +131,8 @@ public class StudentDao {
             stmt.setString(3, password);
             stmt.setString(4, email);
             stmt.setInt(5, classId);
-            stmt.setInt(6, earnedCoins);
-            stmt.setInt(7, possessedCoins);
+            stmt.setString(6, earnedCoins.toString());
+            stmt.setString(7, possessedCoins.toString());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -148,8 +149,8 @@ public class StudentDao {
         String password = student.getPassword();
         String email = student.getEmail();
         Integer classId = student.getClas().getId();
-        Integer earnedCoins = student.getEarnedCoins();
-        Integer possessedCoins = student.getPossesedCoins();
+        BigInteger earnedCoins = student.getEarnedCoins();
+        BigInteger possessedCoins = student.getPossesedCoins();
 
         String sqlQuery = "UPDATE students "
                 + "SET name = ?, login = ?, password = ?, email = ?, class_id = ?, earned_coins = ?, possesed_coins = ? "
@@ -163,8 +164,8 @@ public class StudentDao {
             stmt.setString(3, password);
             stmt.setString(4, email);
             stmt.setInt(5, classId);
-            stmt.setInt(6, earnedCoins);
-            stmt.setInt(7, possessedCoins);
+            stmt.setString(6, earnedCoins.toString());
+            stmt.setString(7, possessedCoins.toString());
             stmt.setInt(8, studentId);
 
             stmt.executeUpdate();
@@ -180,8 +181,8 @@ public class StudentDao {
         String email = result.getString("email");
         String login = result.getString("login");
         Integer classId = result.getInt("class_id");
-        Integer earnedCoins = result.getInt("earned_coins");
-        Integer possessedCoins = result.getInt("possesed_coins");
+        BigInteger earnedCoins = new BigInteger(result.getString("earned_coins"));
+        BigInteger possessedCoins = new BigInteger(result.getString("possesed_coins"));
         SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
         Integer id = result.getInt("id");
         Student student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);

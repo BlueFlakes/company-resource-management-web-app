@@ -1,21 +1,23 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import java.math.BigInteger;
+
 public abstract class AbstractQuest {
 
     private Integer id;
     private String name;
     private QuestCategory questCategory;
     private String description;
-    private Integer value;
+    private BigInteger value;
 
-    public AbstractQuest(String name, QuestCategory questCategory, String description, Integer value) {
+    public AbstractQuest(String name, QuestCategory questCategory, String description, BigInteger value) {
         this.name = name;
         this.questCategory = questCategory;
         this.description = description;
         this.value = value;
     }
 
-    public AbstractQuest(String name, QuestCategory questCategory, String description, Integer value, Integer id) {
+    public AbstractQuest(String name, QuestCategory questCategory, String description, BigInteger value, Integer id) {
         this.id = id;
         this.name = name;
         this.questCategory = questCategory;
@@ -47,11 +49,11 @@ public abstract class AbstractQuest {
         this.description = description;
     }
 
-    public Integer getValue() {
+    public BigInteger getValue() {
         return this.value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(BigInteger value) {
         this.value = value;
     }
 

@@ -5,6 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -132,8 +133,8 @@ public class ClassDao {
                 String login = result.getString("login");
                 String password = result.getString("password");
                 String email = result.getString("email");
-                Integer earnedCoins = result.getInt("earned_coins");
-                Integer possessedCoins = result.getInt("possesed_coins");
+                BigInteger earnedCoins = new BigInteger(result.getString("earned_coins"));
+                BigInteger possessedCoins = new BigInteger(result.getString("possesed_coins"));
 
                 Student student = new Student(name, login, password, email, schoolClass, id, earnedCoins, possessedCoins);
                 foundStudents.add(student);

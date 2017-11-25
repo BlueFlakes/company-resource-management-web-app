@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.AchievedQuestDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ public class AchievedQuest extends AbstractQuest {
         this.owner = owner;
     }
 
-    public AchievedQuest(String name, QuestCategory questCategory, String description, Integer value, Integer id,
+    public AchievedQuest(String name, QuestCategory questCategory, String description, BigInteger value, Integer id,
                          Date date, Student owner) throws DaoException {
         super(name, questCategory, description, value, id);
         this.date = date;

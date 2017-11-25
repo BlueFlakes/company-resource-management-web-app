@@ -4,6 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class MentorController {
         String description = formData.get("description");
 
         try {
-            Integer value = Integer.parseInt(formData.get("value"));
+            BigInteger value = new BigInteger(formData.get("value"));
 
             AvailableQuest quest = this.availableQuestDao.getQuest(id);
             quest.setName(name);
@@ -47,7 +48,7 @@ public class MentorController {
         String description = formData.get("description");
 
         try {
-            Integer value = Integer.parseInt(formData.get("quest_value"));
+            BigInteger value = new BigInteger(formData.get("quest_value"));
 
             AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
             questToAdd.save();

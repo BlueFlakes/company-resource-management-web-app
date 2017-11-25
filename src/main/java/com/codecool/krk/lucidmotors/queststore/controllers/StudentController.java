@@ -1,14 +1,19 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
+import com.codecool.krk.lucidmotors.queststore.matchers.Compare;
 import com.codecool.krk.lucidmotors.queststore.matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 
+import java.math.BigInteger;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isHigherOrEqual;
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isLowerOrEqual;
 import static java.lang.Integer.parseInt;
 
 public class StudentController {
@@ -45,11 +50,11 @@ public class StudentController {
         Student student = this.studentDao.getStudent(user.getId());
         ShopArtifact shopArtifact = shopArtifactDao.getArtifact(artifactId);
 
-        Integer artifactPrice = shopArtifact.getPrice();
-        Integer studentPossesedCoins = student.getPossesedCoins();
+        BigInteger artifactPrice = shopArtifact.getPrice();
+        BigInteger studentPossesedCoins = student.getPossesedCoins();
 
-        if (studentPossesedCoins >= artifactPrice) {
-            student.setPossesedCoins(studentPossesedCoins - artifactPrice);
+        if (isHigherOrEqual(studentPossesedCoins, artifactPrice)) {
+            student.setPossesedCoins(studentPossesedCoins.subtract(artifactPrice));
 
             new BoughtArtifact(shopArtifact).save(new ArrayList<>(Collections.singletonList(student)));
             student.update();
@@ -106,7 +111,7 @@ public class StudentController {
             contribution.setStatus("closed");
             contribution.update();
 
-            Map<Student, Integer> contributorsShares = this.contributionDao.getContributorsShares(contributionId);
+            Map<Student, BigInteger> contributorsShares = this.contributionDao.getContributorsShares(contributionId);
             giveMoneyBackToContributors(contributorsShares);
             return true;
         }
@@ -114,11 +119,11 @@ public class StudentController {
         return false;
     }
 
-    private void giveMoneyBackToContributors(Map<Student, Integer> contributorsShares) throws DaoException {
-        for (Map.Entry<Student, Integer> entry : contributorsShares.entrySet()) {
+    private void giveMoneyBackToContributors(Map<Student, BigInteger> contributorsShares) throws DaoException {
+        for (Map.Entry<Student, BigInteger> entry : contributorsShares.entrySet()) {
             Student student = entry.getKey();
-            Integer spentCoinsAmount = entry.getValue();
-            student.setPossesedCoins(student.getPossesedCoins() + spentCoinsAmount);
+            BigInteger spentCoinsAmount = entry.getValue();
+            student.setPossesedCoins(student.getPossesedCoins().add(spentCoinsAmount));
             student.update();
         }
     }
@@ -131,17 +136,18 @@ public class StudentController {
                 && CustomMatchers.isPositiveInteger(formData.get(coinsKey)) && formData.get(coinsKey).length() < 10 ) {
 
             Student student = this.studentDao.getStudent(user.getId());
-            final Integer studentPossessedCoins = student.getPossesedCoins();
-            final Integer givenCoins = parseInt(formData.get(coinsKey));
+            final BigInteger studentPossessedCoins = student.getPossesedCoins();
+            final BigInteger givenCoins = new BigInteger(formData.get(coinsKey));
 
-            if (givenCoins <= studentPossessedCoins) {
+            if (isLowerOrEqual(givenCoins, studentPossessedCoins)) {
 
                 final Integer contributionId = parseInt(formData.get(contributionKey));
                 Contribution contribution = this.contributionDao.getContribution(contributionId);
-                Integer neededCoinsDiff = contribution.getShopArtifact().getPrice() - contribution.getGivenCoins();
+                BigInteger neededCoinsDiff = getNeededCoinsDiff(contribution);
 
-                final Integer takenCoins = neededCoinsDiff >= givenCoins ? givenCoins : neededCoinsDiff;
-                student.setPossesedCoins(studentPossessedCoins - takenCoins);
+
+                final BigInteger takenCoins = isHigherOrEqual(neededCoinsDiff, givenCoins) ? givenCoins : neededCoinsDiff;
+                student.setPossesedCoins(studentPossessedCoins.subtract(takenCoins));
                 contribution.addCoins(takenCoins);
 
                 student.update();
@@ -154,6 +160,13 @@ public class StudentController {
         }
 
         return false;
+    }
+
+    private BigInteger getNeededCoinsDiff(Contribution contribution) {
+        BigInteger artifactPrice = contribution.getShopArtifact().getPrice();
+        BigInteger collectedCoins = contribution.getGivenCoins();
+
+        return artifactPrice.subtract(collectedCoins);
     }
 
     private void checkContributionStatus(Contribution contribution) throws DaoException {

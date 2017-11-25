@@ -6,6 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.User;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -44,7 +45,7 @@ public class ContributionDao {
         String name = contribution.getName();
         Integer creatorId = contribution.getCreator().getId();
         Integer artifactId = contribution.getShopArtifact().getId();
-        Integer givenCoins = contribution.getGivenCoins();
+        BigInteger givenCoins = contribution.getGivenCoins();
         String status = contribution.getStatus();
 
         String sqlQuery = "INSERT INTO contributions "
@@ -56,7 +57,7 @@ public class ContributionDao {
             stmt.setString(1, name);
             stmt.setInt(2, creatorId);
             stmt.setInt(3, artifactId);
-            stmt.setInt(4, givenCoins);
+            stmt.setString(4, givenCoins.toString());
             stmt.setString(5, status);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -68,7 +69,7 @@ public class ContributionDao {
         String contributionName = contribution.getName();
         Integer creatorId = contribution.getCreator().getId();
         Integer artifactId = contribution.getShopArtifact().getId();
-        Integer givenCoins = contribution.getGivenCoins();
+        BigInteger givenCoins = contribution.getGivenCoins();
         Integer contributionId = contribution.getId();
         String status = contribution.getStatus();
 
@@ -81,7 +82,7 @@ public class ContributionDao {
             stmt.setString(1, contributionName);
             stmt.setInt(2, creatorId);
             stmt.setInt(3, artifactId);
-            stmt.setInt(4, givenCoins);
+            stmt.setString(4, givenCoins.toString());
             stmt.setString(5, status);
             stmt.setInt(6, contributionId);
 
@@ -91,7 +92,7 @@ public class ContributionDao {
         }
     }
 
-    public void saveContributor(User user, Integer coinsSpent, Contribution contribution) throws DaoException {
+    public void saveContributor(User user, BigInteger coinsSpent, Contribution contribution) throws DaoException {
         Integer contributionId = contribution.getId();
         Integer studentId = user.getId();
 
@@ -114,15 +115,15 @@ public class ContributionDao {
         return false;
     }
 
-    private void updateContributorCoins(Integer contributionId, Integer studentId, Integer coinsSpent) throws DaoException {
+    private void updateContributorCoins(Integer contributionId, Integer studentId, BigInteger coinsSpent) throws DaoException {
         String sqlQuery = "UPDATE contributors "
                         + "SET coins = ? "
                         + "WHERE student_id = ? AND contribution_id = ?;";
 
         try {
-            Integer newCoinsAmount = getContributorSpentCoins(studentId, contributionId) + coinsSpent;
+            BigInteger newCoinsAmount = getContributorSpentCoins(studentId, contributionId).add(coinsSpent);
             stmt = connection.prepareStatement(sqlQuery);
-            stmt.setInt(1, newCoinsAmount);
+            stmt.setString(1, newCoinsAmount.toString());
             stmt.setInt(2, studentId);
             stmt.setInt(3, contributionId);
 
@@ -132,9 +133,9 @@ public class ContributionDao {
         }
     }
 
-    private Integer getContributorSpentCoins(Integer studentId, Integer contributionId) throws DaoException {
+    private BigInteger getContributorSpentCoins(Integer studentId, Integer contributionId) throws DaoException {
 
-        Integer coins = 0;
+        BigInteger coins = new BigInteger("0");
         String sqlQuery = "SELECT coins FROM contributors WHERE contribution_id = ? AND student_id = ?";
 
         try {
@@ -145,7 +146,7 @@ public class ContributionDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                coins = result.getInt("coins");
+                coins = new BigInteger(result.getString("coins"));
             }
 
             result.close();
@@ -157,7 +158,7 @@ public class ContributionDao {
         return coins;
     }
 
-    private void saveNewContributor(Integer contributionId, Integer studentId, Integer coinsSpent) throws DaoException {
+    private void saveNewContributor(Integer contributionId, Integer studentId, BigInteger coinsSpent) throws DaoException {
         String sqlQuery = "INSERT INTO contributors "
                         + "(contribution_id, student_id, coins)"
                         + "VALUES (?, ?, ?);";
@@ -166,7 +167,7 @@ public class ContributionDao {
             stmt = connection.prepareStatement(sqlQuery);
             stmt.setInt(1, contributionId);
             stmt.setInt(2, studentId);
-            stmt.setInt(3, coinsSpent);
+            stmt.setString(3, coinsSpent.toString());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(this.getClass().getName() + " class caused a problem!");
@@ -213,7 +214,7 @@ public class ContributionDao {
                 String contributionName = result.getString("contribution_name");
                 Integer creatorId = result.getInt("creator_id");
                 Integer artifactId = result.getInt("artifact_id");
-                Integer givenCoins = result.getInt("given_coins");
+                BigInteger givenCoins = new BigInteger(result.getString("given_coins"));
                 String status = result.getString("status");
 
                 ShopArtifact shopArtifact = ShopArtifactDao.getDao().getArtifact(artifactId);
@@ -263,7 +264,7 @@ public class ContributionDao {
         String contributionName = result.getString("contribution_name");
         Integer creatorId = result.getInt("creator_id");
         Integer artifactId = result.getInt("artifact_id");
-        Integer givenCoins = result.getInt("given_coins");
+        BigInteger givenCoins = new BigInteger(result.getString("given_coins"));
         Integer id = result.getInt("id");
         String status = result.getString("status");
 
@@ -273,9 +274,9 @@ public class ContributionDao {
         return new Contribution(contributionName, creator, shopArtifact, givenCoins, id, status);
     }
 
-    public HashMap<Student, Integer> getContributorsShares(Integer contributionId) throws DaoException {
+    public HashMap<Student, BigInteger> getContributorsShares(Integer contributionId) throws DaoException {
 
-        HashMap<Student, Integer> contributorsWithShares = new HashMap<>();
+        HashMap<Student, BigInteger> contributorsWithShares = new HashMap<>();
 
         String sqlQuery = "SELECT * FROM contributors WHERE contribution_id = ?";
 
@@ -286,7 +287,7 @@ public class ContributionDao {
 
             while (result.next()) {
                 Integer studentId = result.getInt("student_id");
-                Integer spentCoins = result.getInt("coins");
+                BigInteger spentCoins = new BigInteger(result.getString("coins"));
                 Student student = StudentDao.getDao().getStudent(studentId);
 
                 contributorsWithShares.put(student, spentCoins);

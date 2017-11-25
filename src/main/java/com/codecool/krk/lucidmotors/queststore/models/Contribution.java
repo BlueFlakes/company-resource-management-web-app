@@ -3,13 +3,15 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.ContributionDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.math.BigInteger;
+
 public class Contribution {
 
     private Integer id;
     private String name;
     private Student creator;
     private ShopArtifact shopArtifact;
-    private Integer givenCoins;
+    private BigInteger givenCoins;
     private String status;
 
     private final ContributionDao contributionDao = new ContributionDao();
@@ -18,12 +20,12 @@ public class Contribution {
         this.name = name;
         this.creator = creator;
         this.shopArtifact = shopArtifact;
-        this.givenCoins = 0;
+        this.givenCoins = new BigInteger("0");
         this.status = "open";
     }
 
     public Contribution(String name, Student creator, ShopArtifact shopArtifact,
-                        Integer givenCoins, Integer id, String status) throws DaoException {
+                        BigInteger givenCoins, Integer id, String status) throws DaoException {
         this.id = id;
         this.name = name;
         this.creator = creator;
@@ -41,14 +43,13 @@ public class Contribution {
     }
 
     public String toString() {
-        String toReturn = String.format("%d. %s, creator: %s, goal: %s, %s/%s",
+        return String.format("%d. %s, creator: %s, goal: %s, %s/%s",
                                         this.id, this.name, this.creator.getId(), this.shopArtifact.getName(),
                                         this.givenCoins, this.shopArtifact.getPrice());
-        return toReturn;
     }
 
-    public void addCoins(Integer coins) {
-        this.givenCoins += coins;
+    public void addCoins(BigInteger coins) {
+        this.givenCoins = this.givenCoins.add(coins);
     }
 
     public Integer getId() {
@@ -63,7 +64,7 @@ public class Contribution {
         return creator;
     }
 
-    public Integer getGivenCoins() {
+    public BigInteger getGivenCoins() {
         return givenCoins;
     }
 
