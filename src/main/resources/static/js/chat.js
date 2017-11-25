@@ -37,13 +37,18 @@ function refresh() {
 }
 
 function myFunction(arr) {
-    var out = "";
-    var i;
-    for(i = 0 ; i < arr.length; i++) {
-        out += '<tr>'
-        out += '<td>' + arr[i].user +' </td>';
-        out += '<td>' + arr[i].message +' </td>';
-        out += '</td>';
+    document.getElementById("chat").innerHTML = '';
+
+    for(var i = 0; i < arr.length; i++) {
+        var tr = document.createElement('tr');
+
+        var attributes = ["user", "message"];
+        for(var attribute of attributes) {
+            var td = document.createElement('td');
+            td.innerHTML = arr[i][attribute];
+            tr.appendChild(td);
+        }
+    
+        document.getElementById("chat").appendChild(tr);
     }
-    document.getElementById("chat").innerHTML = out;
 }
