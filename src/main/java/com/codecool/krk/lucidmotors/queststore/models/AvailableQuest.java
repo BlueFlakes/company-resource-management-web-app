@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.models;
 
 import com.codecool.krk.lucidmotors.queststore.dao.AvailableQuestDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import org.json.JSONObject;
 
 public class AvailableQuest extends AbstractQuest {
 
@@ -35,6 +36,18 @@ public class AvailableQuest extends AbstractQuest {
         Integer value = this.getValue();
 
         return ("\t" + id + ". " + name + ": " + description + "; value: " + value);
+    }
+
+    public JSONObject toJson() {
+        JSONObject jsonQuest = new JSONObject();
+        jsonQuest.put("id", this.getId().toString());
+        jsonQuest.put("name", this.getName());
+        jsonQuest.put("value", this.getValue());
+        jsonQuest.put("description", this.getDescription());
+        jsonQuest.put("categoryId", this.getQuestCategory().getId());
+        jsonQuest.put("categoryName", this.getQuestCategory().getName());
+
+        return jsonQuest;
     }
 
 }
