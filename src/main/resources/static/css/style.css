@@ -321,6 +321,29 @@ table th, table td {
     border-right: 1px solid var(--table-border);
 }
 
+.chat-messages tbody{
+    display: block;
+    height: 300px;
+    width: 100%;
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+}
+
+.chat-messages thead, .chat-messages tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;/* even columns width , fix width of table too*/
+}
+
+.chat-messages thead {
+    position: sticky;
+}
+
+.chat-messages .user {
+    width: 200px;
+}
+
+
 main form, main table {
     margin: 40px;
 }

@@ -1,3 +1,4 @@
+var lastMessageId = 0;
 refresh();
 window.setInterval(function(){
     refresh();
@@ -28,27 +29,53 @@ function refresh() {
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            myFunction(myArr);
+            var newMessages = JSON.parse(this.responseText);
+            appendTable(newMessages);
+            if(newMessages.length != 0) {
+                scrollDown();
+            }
         }
     };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+    var params = "from=" + lastMessageId;
+    xmlhttp.open("POST", url, true);
+    xmlhttp.send(params);
 }
 
-function myFunction(arr) {
-    document.getElementById("chat").innerHTML = '';
+function appendTable(arr) {
 
     for(var i = 0; i < arr.length; i++) {
         var tr = document.createElement('tr');
 
-        var attributes = ["user", "message"];
-        for(var attribute of attributes) {
-            var td = document.createElement('td');
-            td.innerHTML = arr[i][attribute];
-            tr.appendChild(td);
-        }
+        updateLastMessageId(arr[i]["id"]);
+        createUser(tr, arr[i]["user"]);
+        createMessage(tr, arr[i]["message"]);
     
         document.getElementById("chat").appendChild(tr);
     }
+}
+
+function updateLastMessageId(id) {
+    var currentId = parseInt(id);
+    if(currentId > window.lastMessageId) {
+        window.lastMessageId = currentId;
+    }
+}
+
+function createUser(tr, user) {
+    var td = document.createElement('td');
+    td.setAttribute("class", "user");
+    td.innerHTML = user;
+    tr.appendChild(td);
+}
+
+function createMessage(tr, message) {
+    var td = document.createElement('td');
+    td.setAttribute("class", "message");
+    td.innerHTML = message;
+    tr.appendChild(td);
+}
+
+function scrollDown() {
+    var chatWindow = document.getElementById("chat");
+    chatWindow.scrollTop = chatWindow.scrollHeight;
 }

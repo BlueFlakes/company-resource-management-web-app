@@ -23,6 +23,9 @@ public class ChatView {
         Activity activity;
         if(isProperMessage()) {
             activity = receiveData();
+        } else if (formData.containsKey("from")) {
+            Integer from = Integer.valueOf(formData.get("from"));
+            activity = sendJson(from);
         } else {
             activity = sendJson();
         }
@@ -35,6 +38,19 @@ public class ChatView {
         List<ChatMessage> chatMessages = ChatMessageDao.getDao().getMessages();
         JSONArray jsonArray = new JSONArray();
         for (int i = chatMessages.size()-1; i >= chatMessages.size() - ChatView.CHAT_SIZE && i >= 0; i--) {
+            ChatMessage message = chatMessages.get(i);
+            jsonArray.put(message.toJson());
+        }
+
+        String response = jsonArray.toString();
+
+        return new Activity(200, response, "Content-Type", "application/json");
+    }
+
+    public Activity sendJson(Integer from) throws DaoException {
+        List<ChatMessage> chatMessages = ChatMessageDao.getDao().getMessages(from);
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < chatMessages.size(); i++) {
             ChatMessage message = chatMessages.get(i);
             jsonArray.put(message.toJson());
         }

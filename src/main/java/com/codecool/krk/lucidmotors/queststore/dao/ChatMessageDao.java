@@ -42,9 +42,36 @@ public class ChatMessageDao {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
+                Integer id = result.getInt("id");
                 String name = result.getString("name");
                 String message = result.getString("message");
-                ChatMessage chatMessage = new ChatMessage(name, message);
+                ChatMessage chatMessage = new ChatMessage(id, name, message);
+                chatMessages.add(chatMessage);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return chatMessages;
+    }
+
+    public List<ChatMessage> getMessages(Integer from) throws DaoException {
+        ArrayList<ChatMessage> chatMessages = new ArrayList<>();
+        String sqlQuery = "SELECT * FROM chat WHERE id > ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setInt(1, from);
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Integer id = result.getInt("id");
+                String name = result.getString("name");
+                String message = result.getString("message");
+                ChatMessage chatMessage = new ChatMessage(id, name, message);
                 chatMessages.add(chatMessage);
             }
 
