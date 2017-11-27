@@ -133,7 +133,7 @@ body {
 }
 
 .container {
-    padding-top: 50px;
+    padding: 100px 0px;
     width: calc(100% - 380px);
     max-width: 1200px;
     text-align: center;
@@ -281,6 +281,15 @@ main, main div, main form {
     position: relative;
 }
 
+main form, main table {
+    margin: 0px 40px;
+}
+
+.chat form input {
+    max-width: none;
+    width: calc(100% - 80px);
+}
+
 #statement {
     margin-top: 25%;
     font-size: 2em;
@@ -343,10 +352,6 @@ table th, table td {
     width: 200px;
 }
 
-
-main form, main table {
-    margin: 40px;
-}
 
 main table th, main table td {
     padding: 10px 15px;

@@ -8,16 +8,19 @@ public class ChatMessage {
     Integer id;
     String user;
     String message;
+    String roomName;
 
-    public ChatMessage(String user, String message) {
+    public ChatMessage(String user, String message, String roomName) {
         this.user = user;
         this.message = message;
+        this.roomName = roomName;
     }
 
-    public ChatMessage(Integer id, String user, String message) {
+    public ChatMessage(Integer id, String user, String message, String roomName) {
         this.id = id;
         this.user = user;
         this.message = message;
+        this.roomName = roomName;
     }
 
     public String getUser() {
@@ -26,6 +29,10 @@ public class ChatMessage {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getRoomName() {
+        return roomName;
     }
 
     public JSONObject toJson() {

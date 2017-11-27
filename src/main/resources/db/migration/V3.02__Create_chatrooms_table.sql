@@ -1,0 +1,4 @@
+CREATE TABLE `chat_rooms` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `name` TEXT
+);
