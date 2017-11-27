@@ -6,13 +6,13 @@
         <option value="{{artifact.getId()}}">{{artifact.getName()}}</option>
         {% endfor %}
     </select>
-    <label for="#mentor-update-artifact-new-name">New name</label>
+    <label for="#mentor-update-artifact-new-name">Name</label>
     <input type="text" name="name" id="#mentor-update-artifact-new-name" required>
-    <label for="#mentor-update-artifact-new-description">New description</label>
+    <label for="#mentor-update-artifact-new-description">Description</label>
     <input type="text" name="description" id="#mentor-update-artifact-new-description" required>
-    <label for="#mentor-update-artifact-new-price">New price</label>
+    <label for="#mentor-update-artifact-new-price">Price</label>
     <input type="number" name="price" id="#mentor-update-artifact-new-price" required min="0">
-    <label for="#mentor-update-artifact-new-artifact-category">Choose new artifact category</label>
+    <label for="#mentor-update-artifact-new-artifact-category">Artifact category</label>
     <select name="category_id" id="#mentor-update-artifact-new-artifact-category">
         <option disabled selected value> choose category </option>
         {% for category in artifact_categories %}
