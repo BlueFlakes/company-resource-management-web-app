@@ -15,7 +15,8 @@ public enum MentorOptions {
     ADD_ARTIFACT ("templates/snippets/mentor-add-artifact-snippet.twig"),
     UPDATE_ARTIFACT ("templates/snippets/mentor-update-artifact-snippet.twig"),
     ADD_ARTIFACT_CATEGORY ("templates/snippets/mentor-add-artifact-category-snippet.twig"),
-    DEFAULT ("templates/snippets/home-snippet.twig");
+    DEFAULT ("templates/snippets/home-snippet.twig"),
+    GET_ARTIFACT ("templates/empty.twig");
 
     private String path;
 
