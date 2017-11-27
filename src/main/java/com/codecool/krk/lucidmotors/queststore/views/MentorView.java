@@ -109,6 +109,9 @@ public class MentorView {
             case GET_ARTIFACT:
                 getArtifactData(model);
 
+            case GET_QUEST:
+                getQuestData(model);
+
         }
     }
 
@@ -119,6 +122,19 @@ public class MentorView {
                 JSONObject artifact = ShopArtifactDao.getDao().getArtifact(artifactId).toJson();
 
                 model.with("json", artifact.toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void getQuestData(JtwigModel model) throws DaoException {
+        if(this.formData.containsKey("quest_id")) {
+            try {
+                Integer questId = Integer.valueOf(this.formData.get("quest_id"));
+                JSONObject quest = AvailableQuestDao.getDao().getQuest(questId).toJson();
+
+                model.with("json", quest.toString());
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
