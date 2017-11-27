@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.models;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ShopArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import org.json.JSONObject;
 
 
 public class ShopArtifact extends AbstractArtifact {
@@ -35,5 +36,16 @@ public class ShopArtifact extends AbstractArtifact {
         ShopArtifactDao.getDao().updateArtifact(this);
     }
 
+    public JSONObject toJson() {
+        JSONObject jsonArtifact = new JSONObject();
+        jsonArtifact.put("id", this.getId().toString());
+        jsonArtifact.put("name", this.getName());
+        jsonArtifact.put("price", this.getPrice());
+        jsonArtifact.put("description", this.getDescription());
+        jsonArtifact.put("categoryId", this.getArtifactCategory().getId());
+        jsonArtifact.put("categoryName", this.getArtifactCategory().getName());
+
+        return jsonArtifact;
+    }
 
 }

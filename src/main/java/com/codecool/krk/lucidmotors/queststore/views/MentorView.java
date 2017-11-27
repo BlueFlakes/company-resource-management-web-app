@@ -6,6 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
+import org.json.JSONObject;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -105,6 +106,22 @@ public class MentorView {
                 addArtifactCategory(model);
                 break;
 
+            case GET_ARTIFACT:
+                getArtifactData(model);
+
+        }
+    }
+
+    private void getArtifactData(JtwigModel model) throws DaoException {
+        if(this.formData.containsKey("artifact_id")) {
+            try {
+                Integer artifactId = Integer.valueOf(this.formData.get("artifact_id"));
+                JSONObject artifact = ShopArtifactDao.getDao().getArtifact(artifactId).toJson();
+
+                model.with("json", artifact.toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
 
