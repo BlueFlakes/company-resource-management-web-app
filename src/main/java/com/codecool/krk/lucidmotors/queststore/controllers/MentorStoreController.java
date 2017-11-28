@@ -57,7 +57,7 @@ public class MentorStoreController {
             ShopArtifact shopArtifact = new ShopArtifact(name, price, artifactCategory, description);
             shopArtifact.save();
             String message = String.format("New artifact available: %s for only %d cc.", shopArtifact.getName(), shopArtifact.getPrice());
-            new ChatMessage("system", message).save();
+            new ChatMessage("system", message, "System messages").save();
 
         } catch (NumberFormatException e) {
             isAdded = false;

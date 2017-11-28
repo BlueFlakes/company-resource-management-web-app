@@ -53,6 +53,7 @@ public class ManagerView {
         response = template.render(model);
 
         return new Activity(200, response);
+
     }
 
     private void insertData(ManagerOptions managerOption, JtwigModel model) throws DaoException {

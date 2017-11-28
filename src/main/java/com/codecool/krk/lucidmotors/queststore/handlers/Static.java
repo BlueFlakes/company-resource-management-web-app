@@ -31,7 +31,12 @@ public class Static implements HttpHandler {
             send404(httpExchange);
         } else {
             // Object exists and is a file: accept with response code 200.
-            sendFile(httpExchange, fileURL);
+            try {
+                sendFile(httpExchange, fileURL);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                send404(httpExchange);
+            }
         }
 
     }
