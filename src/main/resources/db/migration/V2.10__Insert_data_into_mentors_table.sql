@@ -8,5 +8,3 @@ INSERT INTO mentors (id,name,login,password,email,class_id) VALUES (
 4,'Przemysław Ciąćka','przemo','paczuszka','ciacka@codecool.pl',1);
 INSERT INTO mentors (id,name,login,password,email,class_id) VALUES (
 5,'Marcin Izworski','sharp','beef','marcin@codecool.pl',1);
-INSERT INTO mentors (id,name,login,password,email,class_id) VALUES (
-10,'namename','jebac','frontend','hgd',3);
