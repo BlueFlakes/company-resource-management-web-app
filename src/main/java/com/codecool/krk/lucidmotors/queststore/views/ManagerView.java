@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.views;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
+import com.codecool.krk.lucidmotors.queststore.exceptions.IncorrectStateException;
 import com.codecool.krk.lucidmotors.queststore.matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.controllers.ExperienceLevelsController;
 import com.codecool.krk.lucidmotors.queststore.controllers.ManagerController;
@@ -13,6 +14,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +31,7 @@ public class ManagerView {
         this.experienceLevelsController = new ExperienceLevelsController();
     }
 
-    public Activity getActivity(ManagerOptions managerOption) throws IOException {
+    public Activity getActivity(ManagerOptions managerOption) throws IOException, IncorrectStateException {
         String response;
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
@@ -56,7 +58,7 @@ public class ManagerView {
 
     }
 
-    private void insertData(ManagerOptions managerOption, JtwigModel model) throws DaoException {
+    private void insertData(ManagerOptions managerOption, JtwigModel model) throws DaoException, IncorrectStateException {
         switch (managerOption) {
             case SHOW_MENTORS_CLASS:
                 showMentorClass(model);
@@ -142,7 +144,7 @@ public class ManagerView {
         model.with("mentors", this.school.getAllMentors());
     }
 
-    private void runUpdateLevel(JtwigModel model) throws DaoException {
+    private void runUpdateLevel(JtwigModel model) throws DaoException, IncorrectStateException {
         final String coinsKey = "experience-level-new-value";
         final String levelsKey = "choosen-class";
 
@@ -151,17 +153,9 @@ public class ManagerView {
         if (this.formData.containsKey(coinsKey) && this.formData.containsKey(levelsKey)
                 && areInputsParseableToInteger(coinsKey, levelsKey))  {
 
-            boolean wasUpdated = experienceLevelsController.updateLevel(this.formData, coinsKey, levelsKey);
+            OperationScore operationScore = experienceLevelsController.updateLevel(this.formData, coinsKey, levelsKey);
             model.with("is_text_available", true);
-
-            String message;
-            if (wasUpdated) {
-                message = "Successfully updated level";
-            } else {
-                message = "Wrong amount of xp points! TOO LOW number";
-            }
-
-            model.with("text", message);
+            model.with("text", operationScore.getMessage());
         }
     }
 
@@ -169,14 +163,15 @@ public class ManagerView {
         String coins = this.formData.get(coinsKey).trim();
         String level = this.formData.get(levelsKey).trim();
 
-        return CustomMatchers.isPositiveInteger(coins) && CustomMatchers.isPositiveInteger(level);
+        return CustomMatchers.isNonNegativeInteger(coins) && CustomMatchers.isNonNegativeInteger(level);
     }
 
     private void runNewLevelCreation(JtwigModel model) throws DaoException {
         final String coinsKey = "experience-level";
         ExperienceLevelsDao experienceLevelsDao = ExperienceLevelsDao.getDao();
         Integer nextLevel = experienceLevelsDao.getHighestLevelID() + 1;
-        Integer nextLevelNeededCoins = experienceLevelsDao.getHighestLevelCoins() + 1;
+        BigInteger nextLevelNeededCoins = experienceLevelsDao.getHighestLevelCoins().add(new BigInteger("1"));
+
         model.with("next_level", nextLevel);
         model.with("next_level_min_value", nextLevelNeededCoins);
 

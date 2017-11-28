@@ -9,8 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExperienceLevelsDao {
@@ -103,37 +102,50 @@ public class ExperienceLevelsDao {
         return experienceLevels;
     }
 
-    public Integer getHighestLevelCoins() throws DaoException {
-        Integer neededCoins = 0;
-        String sqlQuery = "SELECT MAX(coins_needed) as `coins` FROM experience_levels;";
+    public BigInteger getHighestLevelCoins() throws DaoException {
+        String sqlQuery = "SELECT coins_needed as `coins` FROM experience_levels;";
+        List<BigInteger> coinsForEachLevel = new ArrayList<>();
+
         try {
             stmt = connection.prepareStatement(sqlQuery);
             ResultSet resultSet = stmt.executeQuery();
 
-            if(resultSet.next()) {
-                neededCoins = resultSet.getInt("coins");
+            while (resultSet.next()) {
+                BigInteger coinsForLevel = new BigInteger(resultSet.getString("coins"));
+                coinsForEachLevel.add(coinsForLevel);
             }
+
+            return coinsForEachLevel.stream()
+                                    .max(BigInteger::compareTo)
+                                    .orElse(new BigInteger("0"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return neededCoins;
+        return new BigInteger("0");
     }
 
     public Integer getHighestLevelID() throws DaoException {
-        Integer id = 0;
-        String sqlQuery = "SELECT MAX(id) as `ID` FROM experience_levels;";
+        String sqlQuery = "SELECT id as `ID` FROM experience_levels;";
+        List<Integer> lvlsId = new ArrayList<>();
+
         try {
             stmt = connection.prepareStatement(sqlQuery);
             ResultSet resultSet = stmt.executeQuery();
 
-            if(resultSet.next()) {
-                id = resultSet.getInt("ID");
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("ID");
+                lvlsId.add(id);
             }
+
+            return lvlsId.stream()
+                         .max(Integer::compareTo)
+                         .orElse(0);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return id;
+        return 0;
     }
 }
