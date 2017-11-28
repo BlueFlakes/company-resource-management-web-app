@@ -12,6 +12,14 @@ public class CustomMatchers {
         return matcher.matches();
     }
 
+    public static boolean isNonNegativeInteger(String value) {
+        Matcher matcher = Pattern.compile("^\\d*$")
+                                 .matcher(value);
+
+        return matcher.matches();
+    }
+
+
     public static boolean isPositiveInteger(String value) {
         Matcher matcher = Pattern.compile("^[1-9]\\d*$")
                                  .matcher(value);
