@@ -354,6 +354,8 @@ table th, table td {
 
 
 main table th, main table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     padding: 10px 15px;
 }
 
