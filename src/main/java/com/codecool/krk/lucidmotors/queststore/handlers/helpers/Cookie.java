@@ -36,6 +36,15 @@ public class Cookie {
         httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
     }
 
+    public static void setCookieNoMaxAge(HttpExchange httpExchange, String name, String value) {
+        StringBuilder cookie = new StringBuilder();
+
+        cookie.append(generateCookieAttribute(name, value));
+        cookie.append(generateCookieAttribute("path", "/"));
+
+        httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+    }
+
     private static String generateCookieAttribute(String name, String value) {
         return name + "=" + value + ";";
     }
