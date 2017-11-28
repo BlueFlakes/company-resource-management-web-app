@@ -52,7 +52,7 @@ public class MentorController {
             AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
             questToAdd.save();
             String message = String.format("Take the new quest: %s. You can get %d cc!", questToAdd.getName(), questToAdd.getValue());
-            new ChatMessage("system", message).save();
+            new ChatMessage("system", message, "System messages").save();
         } catch (NumberFormatException e) {
             isAdded = false;
         }

@@ -19,22 +19,28 @@ public class ChatView {
         this.formData = formData;
     }
 
-    public Activity getActivity() throws DaoException{
+    public Activity getActivity() throws DaoException {
         Activity activity;
         if(isProperMessage()) {
             activity = receiveData();
+        } else if (formData.containsKey("from") && formData.containsKey("room")) {
+            Integer from = Integer.valueOf(formData.get("from"));
+            String room = formData.get("room");
+            activity = sendJson(from, room);
+        } else if (formData.containsKey("get_rooms")) {
+            activity = getAvailableRooms();
         } else {
-            activity = sendJson();
+            activity = new Activity(302, "/");
         }
 
         return activity;
 
     }
 
-    public Activity sendJson() throws DaoException {
-        List<ChatMessage> chatMessages = ChatMessageDao.getDao().getMessages();
+    public Activity sendJson(Integer from, String room) throws DaoException {
+        List<ChatMessage> chatMessages = ChatMessageDao.getDao().getMessages(from, room);
         JSONArray jsonArray = new JSONArray();
-        for (int i = chatMessages.size()-1; i >= chatMessages.size() - ChatView.CHAT_SIZE && i >= 0; i--) {
+        for (int i = 0; i < chatMessages.size(); i++) {
             ChatMessage message = chatMessages.get(i);
             jsonArray.put(message.toJson());
         }
@@ -45,13 +51,26 @@ public class ChatView {
     }
 
     public Activity receiveData() throws DaoException {
-        new ChatMessage(formData.get("chat-user"), formData.get("chat-message")).save();
+        new ChatMessage(formData.get("chat-user"), formData.get("chat-message"), formData.get("room")).save();
 
         return new Activity(200, "");
     }
 
+    public Activity getAvailableRooms() throws DaoException {
+        List<String> availableRooms = ChatMessageDao.getDao().getRoomNames();
+        JSONArray jsonArray = new JSONArray();
+        for(String room : availableRooms) {
+            jsonArray.put(room);
+        }
+
+        String response = jsonArray.toString();
+
+        return new Activity(200, response, "Content-Type", "application/json");
+    }
+
     private Boolean isProperMessage() {
-        return (formData.containsKey("chat-message") && formData.containsKey("chat-user"));
+        return (formData.containsKey("chat-message") && formData.containsKey("chat-user") &&
+        formData.containsKey("room"));
     }
 
 
