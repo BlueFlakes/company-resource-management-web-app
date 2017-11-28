@@ -197,4 +197,25 @@ public class ClassDao {
 
     }
 
+    public boolean isGivenClassNameUnique(String name) throws DaoException {
+        String sqlQuery = "SELECT * FROM classes WHERE name LIKE ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                return false;
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return true;
+    }
 }
