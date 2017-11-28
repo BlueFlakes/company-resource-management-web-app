@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class BoughtArtifact extends AbstractArtifact {
         this.isUsed = false;
     }
 
-    public BoughtArtifact(String name, Integer price, ArtifactCategory artifactCategory, String description,
+    public BoughtArtifact(String name, BigInteger price, ArtifactCategory artifactCategory, String description,
                           Integer id, Date date, boolean isUsed) throws DaoException {
 
         super(name, price, artifactCategory, description, id);

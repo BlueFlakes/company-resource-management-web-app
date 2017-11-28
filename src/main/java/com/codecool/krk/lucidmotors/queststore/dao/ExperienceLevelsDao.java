@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.dao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -53,7 +54,7 @@ public class ExperienceLevelsDao {
 
     public void updateExperienceLevels(ExperienceLevels experienceLevels) throws DaoException {
 
-        TreeMap<Integer, Integer> levels = experienceLevels.getLevels();
+        TreeMap<Integer, BigInteger> levels = experienceLevels.getLevels();
 
         this.clearTable();
 
@@ -67,7 +68,7 @@ public class ExperienceLevelsDao {
                 stmt = connection.prepareStatement(sqlQuery);
 
                 stmt.setInt(1, level);
-                stmt.setInt(2, levels.get(level));
+                stmt.setString(2, levels.get(level).toString());
 
                 stmt.executeUpdate();
             } catch (SQLException e) {
@@ -88,7 +89,7 @@ public class ExperienceLevelsDao {
 
             while (result.next()) {
                 Integer level = result.getInt("id");
-                Integer coinsNeeded = result.getInt("coins_needed");
+                BigInteger coinsNeeded = new BigInteger(result.getString("coins_needed"));
 
                 experienceLevels.addLevel(coinsNeeded, level);
             }

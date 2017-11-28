@@ -4,6 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.QuestCategory;
 import com.codecool.krk.lucidmotors.queststore.models.AvailableQuest;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,7 +51,7 @@ public class AvailableQuestDao {
 
             if (result.next()) {
                 String name = result.getString("name");
-                Integer value = result.getInt("value");
+                BigInteger value = new BigInteger(result.getString("value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
 
@@ -71,7 +72,7 @@ public class AvailableQuestDao {
     public void updateQuest(AvailableQuest availableQuest) throws DaoException {
 
         String name = availableQuest.getName();
-        Integer value = availableQuest.getValue();
+        BigInteger value = availableQuest.getValue();
         Integer categoryId = availableQuest.getQuestCategory().getId();
         String description = availableQuest.getDescription();
         Integer questId = availableQuest.getId();
@@ -84,7 +85,7 @@ public class AvailableQuestDao {
             stmt = connection.prepareStatement(sqlQuery);
 
             stmt.setString(1, name);
-            stmt.setInt(2, value);
+            stmt.setString(2, value.toString());
             stmt.setInt(3, categoryId);
             stmt.setString(4, description);
             stmt.setInt(5, questId);
@@ -108,7 +109,7 @@ public class AvailableQuestDao {
 
             while (result.next()) {
                 String name = result.getString("name");
-                Integer value = result.getInt("value");
+                BigInteger value = new BigInteger(result.getString("value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 Integer questId = result.getInt("id");
@@ -131,7 +132,7 @@ public class AvailableQuestDao {
     public void save(AvailableQuest availableQuest) throws DaoException {
 
         String name = availableQuest.getName();
-        Integer value = availableQuest.getValue();
+        BigInteger value = availableQuest.getValue();
         Integer categoryId = availableQuest.getQuestCategory().getId();
         String description = availableQuest.getDescription();
         Integer questId = availableQuest.getId();
@@ -145,7 +146,7 @@ public class AvailableQuestDao {
 
             stmt.setString(1, name);
             stmt.setString(2, description);
-            stmt.setInt(3, value);
+            stmt.setString(3, value.toString());
             stmt.setInt(4, categoryId);
 
             stmt.executeUpdate();

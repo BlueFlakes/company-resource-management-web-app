@@ -5,6 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
 import com.codecool.krk.lucidmotors.queststore.models.BoughtArtifact;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -15,9 +16,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.function.Function;
 
 public class BoughtArtifactDao {
-
     private static BoughtArtifactDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
@@ -63,7 +64,7 @@ public class BoughtArtifactDao {
 
             if (result.next()) {
                 String name = result.getString("name");
-                Integer price = result.getInt("price");
+                BigInteger price = new BigInteger(result.getString("price"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 Integer isUsedInteger = result.getInt("is_used");
@@ -91,14 +92,13 @@ public class BoughtArtifactDao {
     public void updateArtifact(BoughtArtifact boughtArtifact) throws DaoException {
 
         String name = boughtArtifact.getName();
-        Integer price = boughtArtifact.getPrice();
+        BigInteger price = boughtArtifact.getPrice();
         Integer categoryId = boughtArtifact.getArtifactCategory().getId();
         String description = boughtArtifact.getDescription();
         Integer artifactId = boughtArtifact.getId();
 
         boolean isUsed = boughtArtifact.isUsed();
         Integer isUsedInteger = (isUsed) ? 1 : 0;
-
 
         String purchaseDateString = boughtArtifact.getDate();
 
@@ -110,7 +110,7 @@ public class BoughtArtifactDao {
             stmt = connection.prepareStatement(sqlQuery);
 
             stmt.setString(1, name);
-            stmt.setInt(2, price);
+            stmt.setString(2, price.toString());
             stmt.setInt(3, categoryId);
             stmt.setString(4, description);
             stmt.setString(5, purchaseDateString);
@@ -137,7 +137,7 @@ public class BoughtArtifactDao {
             while (result.next()) {
                 Integer id = result.getInt("id");
                 String name = result.getString("name");
-                Integer price = result.getInt("price");
+                BigInteger price = new BigInteger(result.getString("price"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 Integer isUsedInteger = result.getInt("is_used");
@@ -172,7 +172,7 @@ public class BoughtArtifactDao {
 
     private void saveArtifact(BoughtArtifact boughtArtifact) throws DaoException {
         String name = boughtArtifact.getName();
-        Integer price = boughtArtifact.getPrice();
+        BigInteger price = boughtArtifact.getPrice();
         Integer categoryId = boughtArtifact.getArtifactCategory().getId();
         String description = boughtArtifact.getDescription();
 
@@ -189,7 +189,7 @@ public class BoughtArtifactDao {
             stmt = connection.prepareStatement(sqlQuery);
 
             stmt.setString(1, name);
-            stmt.setInt(2, price);
+            stmt.setString(2, price.toString());
             stmt.setInt(3, categoryId);
             stmt.setString(6, description);
             stmt.setString(4, purchaseDateString);

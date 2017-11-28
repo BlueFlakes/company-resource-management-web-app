@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,21 +16,21 @@ public class Student extends User {
     private final List<AchievedQuest> achievedQuests;
     private final SchoolClass class_;
     private final StudentDao studentDao = StudentDao.getDao();
-    private Integer earnedCoins;
-    private Integer possesedCoins;
+    private BigInteger earnedCoins;
+    private BigInteger possesedCoins;
 
     public Student(String name, String login, String password, String email, SchoolClass class_) throws DaoException {
 
         super(name, login, password, email);
-        this.earnedCoins = 0;
-        this.possesedCoins = 0;
+        this.earnedCoins = new BigInteger("0");
+        this.possesedCoins = new BigInteger("0");
         this.ownedArtifacts = new ArrayList<>();
         this.achievedQuests = new ArrayList<>();
         this.class_ = class_;
     }
 
 	public Student(String name, String login, String password, String email, SchoolClass class_, 
-                 Integer id, Integer earnedCoins, Integer possesedCoins) throws DaoException {
+                 Integer id, BigInteger earnedCoins, BigInteger possesedCoins) throws DaoException {
   
       super(name, login, password, email, id);
     	this.earnedCoins = earnedCoins;
@@ -42,15 +43,15 @@ public class Student extends User {
 
 
 
-    public Integer getEarnedCoins() {
+    public BigInteger getEarnedCoins() {
         return this.earnedCoins;
     }
 
-    public void setPossesedCoins(Integer coins) {
+    public void setPossesedCoins(BigInteger coins) {
         this.possesedCoins = coins;
     }
 
-    public Integer getPossesedCoins() {
+    public BigInteger getPossesedCoins() {
         return this.possesedCoins;
     }
 
@@ -79,13 +80,13 @@ public class Student extends User {
         return String.format("id: %d. %s", this.getId(), this.getName());
     }
 
-    public void addCoins(Integer ammount) {
-        this.earnedCoins += ammount;
-        this.possesedCoins += ammount;
+    public void addCoins(BigInteger ammount) {
+        this.earnedCoins = this.earnedCoins.add(ammount);
+        this.possesedCoins = this.possesedCoins.add(ammount);
     }
 
-    public void returnCoins(Integer amount) {
-        this.possesedCoins += amount;
+    public void returnCoins(BigInteger amount) {
+        this.possesedCoins = this.possesedCoins.add(amount);
     }
 
     public void save() throws DaoException {

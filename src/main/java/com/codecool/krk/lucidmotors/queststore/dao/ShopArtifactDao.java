@@ -4,6 +4,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
 import com.codecool.krk.lucidmotors.queststore.models.ShopArtifact;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,7 +52,7 @@ public class ShopArtifactDao {
 
             if (result.next()) {
                 String name = result.getString("name");
-                Integer price = result.getInt("price");
+                BigInteger price = new BigInteger(result.getString("price"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
 
@@ -72,7 +73,7 @@ public class ShopArtifactDao {
     public void updateArtifact(ShopArtifact shopArtifact) throws DaoException {
 
         String name = shopArtifact.getName();
-        Integer price = shopArtifact.getPrice();
+        BigInteger price = shopArtifact.getPrice();
         Integer categoryId = shopArtifact.getArtifactCategory().getId();
         String description = shopArtifact.getDescription();
         Integer artifactId = shopArtifact.getId();
@@ -85,7 +86,7 @@ public class ShopArtifactDao {
             stmt = connection.prepareStatement(sqlQuery);
 
             stmt.setString(1, name);
-            stmt.setInt(2, price);
+            stmt.setString(2, price.toString());
             stmt.setInt(3, categoryId);
             stmt.setString(4, description);
             stmt.setInt(5, artifactId);
@@ -109,7 +110,7 @@ public class ShopArtifactDao {
 
             while (result.next()) {
                 String name = result.getString("name");
-                Integer price = result.getInt("price");
+                BigInteger price = new BigInteger(result.getString("price"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 Integer id = result.getInt("id");
@@ -132,7 +133,7 @@ public class ShopArtifactDao {
     public void save(ShopArtifact shopArtifact) throws DaoException {
 
         String name = shopArtifact.getName();
-        Integer price = shopArtifact.getPrice();
+        BigInteger price = shopArtifact.getPrice();
         Integer categoryId = shopArtifact.getArtifactCategory().getId();
         String description = shopArtifact.getDescription();
 
@@ -144,7 +145,7 @@ public class ShopArtifactDao {
             stmt = connection.prepareStatement(sqlQuery);
 
             stmt.setString(1, name);
-            stmt.setInt(2, price);
+            stmt.setString(2, price.toString());
             stmt.setInt(3, categoryId);
             stmt.setString(4, description);
 

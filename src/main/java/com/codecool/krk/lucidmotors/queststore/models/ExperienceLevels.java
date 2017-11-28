@@ -2,11 +2,17 @@ package com.codecool.krk.lucidmotors.queststore.models;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.matchers.Compare;
 
+import java.math.BigInteger;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isHigher;
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isHigherOrEqual;
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isLower;
 
 /**
  * Treemap<Integer, Integer> levels:
@@ -15,17 +21,17 @@ import java.util.stream.Collectors;
  */
 public class ExperienceLevels {
 
-    private TreeMap<Integer, Integer> levels;
+    private TreeMap<Integer, BigInteger> levels;
 
     public ExperienceLevels() {
         this.levels = new TreeMap<>();
     }
 
-    public ExperienceLevels(TreeMap<Integer, Integer> levels) {
+    public ExperienceLevels(TreeMap<Integer, BigInteger> levels) {
         this.levels = levels;
     }
 
-    public Integer computeStudentLevel(Integer userCoins) {
+    public Integer computeStudentLevel(BigInteger userCoins) {
 
         Integer level;
 
@@ -37,8 +43,8 @@ public class ExperienceLevels {
 
             try {
                 level = this.levels.entrySet().stream()
-                        .filter(entry -> (userCoins >= entry.getValue()))
-                        .map(entry -> entry.getKey())
+                        .filter(entry -> isHigherOrEqual(userCoins, entry.getValue()))
+                        .map(Map.Entry::getKey)
                         .max(Integer::compareTo)
                         .get();
             } catch (NoSuchElementException e) {
@@ -55,11 +61,11 @@ public class ExperienceLevels {
      * @param coins
      * @param level
      */
-    public boolean addLevel(Integer neededCoins, Integer newLevel) {
-        Integer previousLevelCoins = this.levels.get(newLevel - 1);
-        previousLevelCoins = (previousLevelCoins == null) ? neededCoins - 1 : previousLevelCoins;
+    public boolean addLevel(BigInteger neededCoins, Integer newLevel) {
+        BigInteger previousLevelCoins = this.levels.get(newLevel - 1);
+        previousLevelCoins = (previousLevelCoins == null) ? neededCoins.subtract(new BigInteger("1")) : previousLevelCoins;
 
-        if (!this.levels.containsKey(newLevel) && previousLevelCoins < neededCoins) {
+        if (!this.levels.containsKey(newLevel) && isLower(previousLevelCoins, neededCoins)) {
             this.levels.put(newLevel, neededCoins);
             return true;
         }
@@ -73,16 +79,16 @@ public class ExperienceLevels {
      * @param coins
      * @param level
      */
-    public boolean updateLevel(Integer neededCoins, Integer updatedLevel) {
-        Integer previousLevelCoins = this.levels.get(updatedLevel - 1);
-        previousLevelCoins = (previousLevelCoins == null) ? neededCoins - 1 : previousLevelCoins;
+    public boolean updateLevel(BigInteger neededCoins, Integer updatedLevel) {
+        BigInteger previousLevelCoins = this.levels.get(updatedLevel - 1);
+        previousLevelCoins = (previousLevelCoins == null) ? neededCoins.subtract(new BigInteger("1")) : previousLevelCoins;
 
-        Integer nextLevelCoins = this.levels.get(updatedLevel + 1);
-        nextLevelCoins = (nextLevelCoins == null) ? neededCoins + 1 : nextLevelCoins;
+        BigInteger nextLevelCoins = this.levels.get(updatedLevel + 1);
+        nextLevelCoins = (nextLevelCoins == null) ? neededCoins.add(new BigInteger("1")) : nextLevelCoins;
 
         if(this.levels.containsKey(updatedLevel) &&
-                previousLevelCoins < neededCoins &&
-                nextLevelCoins > neededCoins) {
+                isLower(previousLevelCoins, neededCoins) &&
+                isHigher(nextLevelCoins, neededCoins)) {
             this.levels.put(updatedLevel, neededCoins);
 
             return true;
@@ -91,7 +97,7 @@ public class ExperienceLevels {
         return false;
     }
 
-    public TreeMap<Integer, Integer> getLevels() {
+    public TreeMap<Integer, BigInteger> getLevels() {
         return levels;
     }
 
