@@ -46,9 +46,8 @@
 			<main>
 			{% if is_text_available == true %}
 				<h1 id="statement">{{ text }}</h1>
-			{% else %}
-			{% include content_path ignore missing %}
 			{% endif %}
+            {% include content_path ignore missing %}
 			</main>
 		</div>
 		<div class="gradient" id="bottom-gradient"></div>
