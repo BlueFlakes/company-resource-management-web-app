@@ -29,8 +29,6 @@ public class ManagerController {
     }
 
     public boolean editMentor(Map<String, String> formData) throws DaoException {
-        Boolean isUpdated = false;
-
         Integer mentorId = Integer.valueOf(formData.get("mentor_id"));
         Mentor mentor = MentorDao.getDao().getMentor(mentorId);
 
@@ -43,10 +41,11 @@ public class ManagerController {
             Integer classID = Integer.valueOf(formData.get("class_id"));
             mentor.setSchoolClass(ClassDao.getDao().getSchoolClass(classID));
             mentor.update();
-            isUpdated = true;
+
+            return true;
         }
 
-        return isUpdated;
+        return false;
     }
 
     private SchoolClass chooseProperClass(Integer classId) throws DaoException {
