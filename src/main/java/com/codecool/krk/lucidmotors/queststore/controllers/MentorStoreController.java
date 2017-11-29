@@ -69,10 +69,13 @@ public class MentorStoreController {
     public boolean addArtifactCategory(Map<String, String> formData) throws DaoException {
         String name = formData.get("name");
 
-        ArtifactCategory artifactCategory = new ArtifactCategory(name);
-        artifactCategoryDao.save(artifactCategory);
+        if (artifactCategoryDao.getArtifactByName(name) == null) {
+            ArtifactCategory artifactCategory = new ArtifactCategory(name);
+            artifactCategoryDao.save(artifactCategory);
+            return true;
+        }
 
-        return true;
+        return false;
     }
 
     public List<ShopArtifact> getAvailableArtifacts() throws DaoException {

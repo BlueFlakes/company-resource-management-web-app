@@ -88,10 +88,13 @@ public class MentorController {
     public boolean addQuestCategory(Map<String, String> formData) throws DaoException {
         String questCategoryName = formData.get("name");
 
-        QuestCategory questCategory = new QuestCategory(questCategoryName);
-        this.questCategoryDao.save(questCategory);
+        if (questCategoryDao.getQuestByName(questCategoryName) == null) {
+            QuestCategory questCategory = new QuestCategory(questCategoryName);
+            this.questCategoryDao.save(questCategory);
+            return true;
+        }
 
-        return true;
+        return false;
     }
 
     public List<BoughtArtifact> getStudentsArtifacts(Integer studentId) throws DaoException {

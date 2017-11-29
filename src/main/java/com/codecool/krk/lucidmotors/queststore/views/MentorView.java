@@ -224,16 +224,28 @@ public class MentorView {
     }
 
     private void addQuestCategory(JtwigModel model) throws DaoException {
-        if(formData.containsKey("name") && mentorController.addQuestCategory(this.formData)) {
+        if(formData.containsKey("name")) {
+            boolean wasSuccessfully = mentorController.addQuestCategory(this.formData);
             model.with("is_text_available", true);
-            model.with("text", "Quest category successfully created");
+
+            if (wasSuccessfully) {
+                model.with("text", "Quest category successfully created");
+            } else {
+                model.with("text", "Quest category name is already in use.");
+            }
         }
     }
 
     private void addArtifactCategory(JtwigModel model) throws DaoException {
-        if(formData.containsKey("name") && mentorStoreController.addArtifactCategory(this.formData)) {
+        if(formData.containsKey("name")) {
+            boolean wasSuccessfully = mentorStoreController.addArtifactCategory(this.formData);
             model.with("is_text_available", true);
-            model.with("text", "Artifact category successfully created");
+
+            if (wasSuccessfully) {
+                model.with("text", "Artifact category successfully created");
+            } else {
+                model.with("text", "This name is already used.");
+            }
         }
     }
 
