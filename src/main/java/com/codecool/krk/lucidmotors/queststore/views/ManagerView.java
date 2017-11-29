@@ -113,10 +113,16 @@ public class ManagerView {
 
     private void add_mentor(JtwigModel model) throws DaoException {
         model.with("school_classes", this.school.getAllClasses());
-        if(formData.containsKey("class_id") &&
-                new ManagerController(this.school).addMentor(this.formData)) {
+
+        if(formData.containsKey("class_id")) {
+            boolean wasSuccessfully = new ManagerController(this.school).addMentor(this.formData);
             model.with("is_text_available", true);
-            model.with("text", "Mentor successfully created");
+
+            if (wasSuccessfully) {
+                model.with("text", "Mentor successfully created");
+            } else {
+                model.with("text", "Sorry, used login is already occupied.");
+            }
         }
     }
 

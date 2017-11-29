@@ -57,7 +57,6 @@ public class ManagerController {
     }
 
     public boolean addMentor(Map<String, String> formData) throws DaoException {
-        Boolean isAdded = false;
 
         if (this.school.isLoginAvailable(formData.get("login"))) {
             String name = formData.get("name");
@@ -68,11 +67,11 @@ public class ManagerController {
             SchoolClass chosenClass = chooseProperClass(classId);
             Mentor mentor = new Mentor(name, login, password, email, chosenClass);
             mentor.save();
-            isAdded = true;
+
+            return true;
         }
 
-        return isAdded;
-
+        return false;
     }
 
     public boolean createClass(Map<String, String> formData) throws DaoException {
