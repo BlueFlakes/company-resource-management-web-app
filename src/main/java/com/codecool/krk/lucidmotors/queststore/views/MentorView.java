@@ -143,6 +143,9 @@ public class MentorView {
     }
 
     private void markArtifact(JtwigModel model) throws DaoException {
+        model.with("students", this.school.getAllStudents());
+        model.with("phase", 1);
+
         if (formData.containsKey("student_id")) {
             Integer studentId = Integer.parseInt(formData.get("student_id"));
             List<BoughtArtifact> studentArtifacts = mentorController.getStudentsArtifacts(studentId)
@@ -162,9 +165,6 @@ public class MentorView {
                 model.with("text", "Chosen artifact is already used!");
             }
         }
-
-        model.with("students", this.school.getAllStudents());
-        model.with("phase", 1);
     }
 
     private void approveQuest(JtwigModel model) throws DaoException {
