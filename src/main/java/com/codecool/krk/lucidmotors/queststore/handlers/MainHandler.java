@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.handlers;
 
 import com.codecool.krk.lucidmotors.queststore.enums.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.exceptions.IncorrectStateException;
 import com.codecool.krk.lucidmotors.queststore.handlers.helpers.Cookie;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import com.codecool.krk.lucidmotors.queststore.views.*;
@@ -36,11 +37,17 @@ public class MainHandler implements HttpHandler {
         } catch (DaoException e) {
             e.printStackTrace();
             activity = new Activity(500, e.toString());
+        } catch (IncorrectStateException e) {
+            e.printStackTrace();
+            activity = new Activity(302, "/");
         }
+
         sendResponse(activity, httpExchange);
     }
 
-    private Activity getActivity(HttpExchange httpExchange) throws IOException, DaoException {
+    private Activity getActivity(HttpExchange httpExchange)
+            throws IOException, DaoException, IncorrectStateException {
+
         Activity activity;
 
         Map<String, String> formData = getFormData(httpExchange);
@@ -130,7 +137,9 @@ public class MainHandler implements HttpHandler {
         return response;
     }
 
-    public Activity getUserActivity(URIResponse response, Map<String, String> formData, User user) throws DaoException, IOException {
+    public Activity getUserActivity(URIResponse response, Map<String, String> formData, User user)
+            throws DaoException, IOException, IncorrectStateException {
+
         switch (response.getRole()) {
             case MANAGER:
                 return new ManagerView(this.school, user, formData).getActivity((ManagerOptions) getProperAction(response));
