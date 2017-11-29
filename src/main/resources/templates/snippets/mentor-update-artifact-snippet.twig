@@ -1,6 +1,6 @@
 <form method="post">
     <label for="#mentor-update-artifact-choose-artifact">Choose artifact to update</label>
-    <select name="artifact_id" id="#mentor-update-artifact-choose-artifact" onchange="fillFields()" autofocus>
+    <select name="artifact_id" id="#mentor-update-artifact-choose-artifact" autofocus>
         <option disabled selected value> choose artifact </option>
         {% for artifact in artifacts %}
         <option value="{{artifact.getId()}}">{{artifact.getName()}}</option>
@@ -22,30 +22,4 @@
     <input type="submit" value="Submit">
 </form>
 
-<script>
-    function fillFields() {
-        var artifact_id = document.getElementById("#mentor-update-artifact-choose-artifact").value;
-
-        var http = new XMLHttpRequest();
-        var url = "/mentor/get_artifact";
-        var params = "artifact_id=" + artifact_id;
-        http.open("POST", url, true);
-
-        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-        http.onreadystatechange = function() {
-            if(http.readyState == 4 && http.status == 200) {
-                var artifact = JSON.parse(this.responseText);
-                injectArtifactData(artifact);
-            }
-        }
-        http.send(params);
-    }
-
-    function injectArtifactData(artifact) {
-        document.getElementById("#mentor-update-artifact-new-name").value = artifact.name;
-        document.getElementById("#mentor-update-artifact-new-description").value = artifact.description;
-        document.getElementById("#mentor-update-artifact-new-price").value = artifact.price;
-        document.getElementById("#mentor-update-artifact-new-artifact-category").value = artifact.categoryId;
-    }
-</script>
+<script src="/static/js/update_artifact.js"></script>
