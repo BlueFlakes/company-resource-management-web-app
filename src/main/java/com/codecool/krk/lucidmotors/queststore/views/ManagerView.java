@@ -105,9 +105,15 @@ public class ManagerView {
     }
 
     private void create_class(JtwigModel model) throws DaoException {
-        if(formData.containsKey("classname") && new ManagerController(this.school).createClass(this.formData)) {
+        if(formData.containsKey("classname") ) {
+            boolean wasSuccessfully = new ManagerController(this.school).createClass(this.formData);
             model.with("is_text_available", true);
-            model.with("text", "Class successfully created");
+
+            if (wasSuccessfully) {
+                model.with("text", "Class successfully created");
+            } else {
+                model.with("text", "Sorry but given name is already occupied.");
+            }
         }
     }
 

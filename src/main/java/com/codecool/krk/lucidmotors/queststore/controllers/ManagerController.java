@@ -76,10 +76,14 @@ public class ManagerController {
 
     public boolean createClass(Map<String, String> formData) throws DaoException {
         String name = formData.get("classname");
+        ClassDao dao = ClassDao.getDao();
 
-        SchoolClass schoolClass = new SchoolClass(name);
-        schoolClass.save();
+        if (dao.isGivenClassNameUnique(name)) {
+            SchoolClass schoolClass = new SchoolClass(name);
+            schoolClass.save();
+            return true;
+        }
 
-        return true;
+        return false;
     }
 }
