@@ -142,9 +142,6 @@ public class MentorView {
     }
 
     private void markArtifact(JtwigModel model) throws DaoException {
-        model.with("students", this.school.getAllStudents());
-        model.with("phase", 1);
-
         if (formData.containsKey("student_id")) {
             Integer studentId = Integer.parseInt(formData.get("student_id"));
             List<BoughtArtifact> studentArtifacts = mentorController.getStudentsArtifacts(studentId)
@@ -164,35 +161,41 @@ public class MentorView {
                 model.with("text", "Chosen artifact is already used!");
             }
         }
+
+        model.with("students", this.school.getAllStudents());
+        model.with("phase", 1);
     }
 
     private void approveQuest(JtwigModel model) throws DaoException {
-        model.with("students", this.school.getAllStudents());
-        model.with("available_quests", availableQuestDao.getAllQuests());
         if(formData.containsKey("student_id") &&
                 mentorController.markQuest(this.formData)) {
             model.with("is_text_available", true);
             model.with("text", "Quest approved");
         }
+
+        model.with("students", this.school.getAllStudents());
+        model.with("available_quests", availableQuestDao.getAllQuests());
     }
 
     private void updateArtifact(JtwigModel model) throws DaoException {
-        model.with("artifacts", mentorStoreController.getAvailableArtifacts());
-        model.with("artifact_categories", artifactCategoryDao.getAllArtifactCategories());
         if(formData.containsKey("artifact_id") &&
                 mentorStoreController.updateArtifact(this.formData)) {
             model.with("is_text_available", true);
             model.with("text", "Artifact successfully updated");
         }
+
+        model.with("artifacts", mentorStoreController.getAvailableArtifacts());
+        model.with("artifact_categories", artifactCategoryDao.getAllArtifactCategories());
     }
 
     private void addArtifact(JtwigModel model) throws DaoException {
-        model.with("artifact_categories", artifactCategoryDao.getAllArtifactCategories());
         if(formData.containsKey("category_id") &&
                 mentorStoreController.addArtifact(this.formData)) {
             model.with("is_text_available", true);
             model.with("text", "Artifact successfully created");
         }
+
+        model.with("artifact_categories", artifactCategoryDao.getAllArtifactCategories());
     }
 
     private void showArtifacts(JtwigModel model) throws DaoException {
@@ -200,22 +203,24 @@ public class MentorView {
     }
 
     private void addQuest(JtwigModel model) throws DaoException {
-        model.with("quest_categories", questCategoryDao.getAllQuestCategories());
         if(formData.containsKey("category_id") &&
                 mentorController.createNewAvailableQuest(this.formData)) {
             model.with("is_text_available", true);
             model.with("text", "Quest successfully created");
         }
+
+        model.with("quest_categories", questCategoryDao.getAllQuestCategories());
     }
 
     private void updateQuest(JtwigModel model) throws DaoException {
-        model.with("quests", availableQuestDao.getAllQuests());
-        model.with("quest_categories", questCategoryDao.getAllQuestCategories());
         if(formData.containsKey("quest_id") &&
                 mentorController.changeQuestData(this.formData)) {
             model.with("is_text_available", true);
             model.with("text", "Quest successfully updated");
         }
+
+        model.with("quests", availableQuestDao.getAllQuests());
+        model.with("quest_categories", questCategoryDao.getAllQuestCategories());
     }
 
     private void addQuestCategory(JtwigModel model) throws DaoException {
@@ -233,12 +238,13 @@ public class MentorView {
     }
 
     private void addStudent(JtwigModel model) throws DaoException {
-        model.with("school_classes", this.school.getAllClasses());
         if(formData.containsKey("class_id") &&
                 new MentorController(this.school).addStudent(this.formData)) {
             model.with("is_text_available", true);
             model.with("text", "Student successfully created");
         }
+
+        model.with("school_classes", this.school.getAllClasses());
     }
 
     private void listStudentsWallets(JtwigModel model) throws DaoException {
