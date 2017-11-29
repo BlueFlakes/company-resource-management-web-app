@@ -47,16 +47,13 @@ public class MentorController {
         QuestCategory questCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(formData.get("category_id")));
         String description = formData.get("description");
 
-        try {
-            BigInteger value = new BigInteger(formData.get("quest_value"));
+        BigInteger value = new BigInteger(formData.get("quest_value"));
 
-            AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
-            questToAdd.save();
-            String message = String.format("Take the new quest: %s. You can get %d cc!", questToAdd.getName(), questToAdd.getValue());
-            new ChatMessage("system", message, "System messages").save();
-        } catch (NumberFormatException e) {
-            isAdded = false;
-        }
+        AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
+        questToAdd.save();
+        String message = String.format("Take the new quest: %s. You can get %d cc!", questToAdd.getName(), questToAdd.getValue());
+        new ChatMessage("system", message, "System messages").save();
+
         return isAdded;
     }
 

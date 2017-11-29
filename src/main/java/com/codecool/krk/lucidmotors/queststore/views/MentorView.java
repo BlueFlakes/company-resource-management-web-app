@@ -6,6 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.json.JSONObject;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -203,8 +204,9 @@ public class MentorView {
     }
 
     private void addQuest(JtwigModel model) throws DaoException {
-        if(formData.containsKey("category_id") &&
-                mentorController.createNewAvailableQuest(this.formData)) {
+        //        TODO -> REPAIR AND VALIDATION
+        if(formData.containsKey("category_id")) {
+            boolean wasSuccessfully = mentorController.createNewAvailableQuest(this.formData);
             model.with("is_text_available", true);
             model.with("text", "Quest successfully created");
         }
@@ -213,10 +215,16 @@ public class MentorView {
     }
 
     private void updateQuest(JtwigModel model) throws DaoException {
-        if(formData.containsKey("quest_id") &&
-                mentorController.changeQuestData(this.formData)) {
+        //        TODO -> REPAIR AND VALIDATION
+        if(formData.containsKey("quest_id")) {
+            boolean wasSuccesfully = mentorController.changeQuestData(this.formData);
             model.with("is_text_available", true);
-            model.with("text", "Quest successfully updated");
+
+            if (wasSuccesfully) {
+                model.with("text", "Quest successfully updated");
+            } else {
+                model.with("text", "Incorrect data delivered.");
+            }
         }
 
         model.with("quests", availableQuestDao.getAllQuests());

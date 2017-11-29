@@ -156,4 +156,34 @@ public class AvailableQuestDao {
 
     }
 
+    public AvailableQuest getAvailableQuestByName(String name) throws DaoException {
+        String sqlQuery = "SELECT * FROM available_quests WHERE name LIKE ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                String foundName = result.getString("name");
+                BigInteger value = new BigInteger(result.getString("value"));
+                Integer categoryId = result.getInt("category_id");
+                String description = result.getString("description");
+                Integer questId = result.getInt("id");
+
+                QuestCategory questCategory = questCategoryDao.getQuestCategory(categoryId);
+
+                return new AvailableQuest(foundName, questCategory, description, value, questId);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return null;
+    }
+
 }
