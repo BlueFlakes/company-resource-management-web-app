@@ -135,8 +135,9 @@ public class ArtifactCategoryDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
+                String foundName = result.getString("name");
                 Integer id = result.getInt("id");
-                return new ArtifactCategory(name, id);
+                return new ArtifactCategory(foundName, id);
             }
 
             result.close();

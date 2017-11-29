@@ -111,8 +111,9 @@ public class QuestCategoryDao {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
+                String foundName = result.getString("name");
                 Integer id = result.getInt("id");
-                return new QuestCategory(name, id);
+                return new QuestCategory(foundName, id);
             }
 
             result.close();
