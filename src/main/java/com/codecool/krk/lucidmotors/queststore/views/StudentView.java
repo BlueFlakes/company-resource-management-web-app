@@ -103,10 +103,10 @@ public class StudentView {
 
             model.with("text", message);
 
-        } else {
-            List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
-            model.with("shop_artifact", shopArtifacts1);
         }
+
+        List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
+        model.with("shop_artifact", shopArtifacts1);
     }
 
     private void handleJoinContribution(JtwigModel model) throws DaoException {
