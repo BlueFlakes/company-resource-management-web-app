@@ -10,6 +10,8 @@ import org.jtwig.JtwigTemplate;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 public class StudentView {
     private StudentController studentController;
     private User user;
@@ -127,11 +129,10 @@ public class StudentView {
     }
 
     private void handleCreateContribution(JtwigModel model) throws DaoException {
-        boolean wasSuccesfullyAdded = studentController.addNewContribution(formData, user);
-
-        if (wasSuccesfullyAdded) {
+        if (formData.containsKey("contribution-name") && formData.containsKey("choosen-artifact-for-contribution")) {
+            String message = studentController.addNewContribution(formData, user);
             model.with("is_text_available", true);
-            model.with("text", "Succesfully added contribution!");
+            model.with("text", message);
         }
 
         List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
