@@ -104,11 +104,10 @@ public class StudentController {
                             .collect(Collectors.toList());
     }
 
-    public boolean closeUserContribution(Map<String, String> formData, User user) throws DaoException {
+    public boolean closeUserContribution(Map<String, String> formData) throws DaoException {
         final String contributionNameKey = "choosen-contribution-to-close";
 
         if (formData.containsKey(contributionNameKey)) {
-
             Integer contributionId = parseInt(formData.get(contributionNameKey));
             Contribution contribution = this.contributionDao.getContribution(contributionId);
 
