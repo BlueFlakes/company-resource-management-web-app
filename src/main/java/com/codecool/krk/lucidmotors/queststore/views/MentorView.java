@@ -168,8 +168,8 @@ public class MentorView {
     }
 
     private void approveQuest(JtwigModel model) throws DaoException {
-        if(formData.containsKey("student_id") &&
-                mentorController.markQuest(this.formData)) {
+        if(formData.containsKey("student_id")) {
+            mentorController.markQuest(this.formData);
             model.with("is_text_available", true);
             model.with("text", "Quest approved");
         }
@@ -179,10 +179,15 @@ public class MentorView {
     }
 
     private void updateArtifact(JtwigModel model) throws DaoException {
-        if(formData.containsKey("artifact_id") &&
-                mentorStoreController.updateArtifact(this.formData)) {
+        if(formData.containsKey("artifact_id")) {
+            boolean wasSuccessfully = mentorStoreController.updateArtifact(this.formData);
             model.with("is_text_available", true);
-            model.with("text", "Artifact successfully updated");
+
+            if (wasSuccessfully) {
+                model.with("text", "Artifact successfully created");
+            } else {
+                model.with("text", "Given artifact name is already occupied.");
+            }
         }
 
         model.with("artifacts", mentorStoreController.getAvailableArtifacts());
@@ -190,10 +195,15 @@ public class MentorView {
     }
 
     private void addArtifact(JtwigModel model) throws DaoException {
-        if(formData.containsKey("category_id") &&
-                mentorStoreController.addArtifact(this.formData)) {
+        if(formData.containsKey("category_id")) {
+            boolean wasSuccessfully = mentorStoreController.addArtifact(this.formData);
             model.with("is_text_available", true);
-            model.with("text", "Artifact successfully created");
+
+            if (wasSuccessfully) {
+                model.with("text", "Artifact successfully created");
+            } else {
+                model.with("text", "Given artifact name is already occupied.");
+            }
         }
 
         model.with("artifact_categories", artifactCategoryDao.getAllArtifactCategories());
@@ -204,9 +214,8 @@ public class MentorView {
     }
 
     private void addQuest(JtwigModel model) throws DaoException {
-        //        TODO -> REPAIR AND VALIDATION
         if(formData.containsKey("category_id")) {
-            boolean wasSuccessfully = mentorController.createNewAvailableQuest(this.formData);
+            mentorController.createNewAvailableQuest(this.formData);
             model.with("is_text_available", true);
             model.with("text", "Quest successfully created");
         }
@@ -215,16 +224,10 @@ public class MentorView {
     }
 
     private void updateQuest(JtwigModel model) throws DaoException {
-        //        TODO -> REPAIR AND VALIDATION
         if(formData.containsKey("quest_id")) {
-            boolean wasSuccesfully = mentorController.changeQuestData(this.formData);
+            mentorController.changeQuestData(this.formData);
             model.with("is_text_available", true);
-
-            if (wasSuccesfully) {
-                model.with("text", "Quest successfully updated");
-            } else {
-                model.with("text", "Incorrect data delivered.");
-            }
+            model.with("text", "Quest successfully updated");
         }
 
         model.with("quests", availableQuestDao.getAllQuests());

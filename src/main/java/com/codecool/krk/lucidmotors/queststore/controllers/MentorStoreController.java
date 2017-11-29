@@ -24,14 +24,15 @@ public class MentorStoreController {
     }
 
     public boolean updateArtifact(Map<String, String> formData) throws DaoException {
-        Boolean isAdded = true;
-        Integer id = Integer.parseInt(formData.get("artifact_id"));
-        Integer artifactCategoryId = Integer.parseInt(formData.get("category_id"));
-        ArtifactCategory artifactCategory = artifactCategoryDao.getArtifactCategory(artifactCategoryId);
         String name = formData.get("name");
-        String description = formData.get("description");
+        Integer id = Integer.parseInt(formData.get("artifact_id"));
+        String chosenArtifactName = shopArtifactDao.getArtifact(id).getName();
 
-        try {
+        if (shopArtifactDao.getArtifactByName(name) == null || name.equalsIgnoreCase(chosenArtifactName)) {
+            Integer artifactCategoryId = Integer.parseInt(formData.get("category_id"));
+            ArtifactCategory artifactCategory = artifactCategoryDao.getArtifactCategory(artifactCategoryId);
+            String description = formData.get("description");
+
             BigInteger price = new BigInteger(formData.get("price"));
             ShopArtifact artifact = shopArtifactDao.getArtifact(id);
             artifact.setName(name);
@@ -39,31 +40,30 @@ public class MentorStoreController {
             artifact.setDescription(description);
             artifact.setPrice(price);
             artifact.update();
-
-        } catch (NumberFormatException e) {
-            isAdded = false;
+            return true;
         }
-        return isAdded;
+
+        return false;
     }
 
     public boolean addArtifact(Map<String, String> formData) throws DaoException {
-        Boolean isAdded = true;
-        Integer artifactCategoryId = Integer.parseInt(formData.get("category_id"));
-        ArtifactCategory artifactCategory = artifactCategoryDao.getArtifactCategory(artifactCategoryId);
         String name = formData.get("name");
-        String description = formData.get("description");
 
-        try {
+        if (shopArtifactDao.getArtifactByName(name) == null) {
+            Integer artifactCategoryId = Integer.parseInt(formData.get("category_id"));
+            ArtifactCategory artifactCategory = artifactCategoryDao.getArtifactCategory(artifactCategoryId);
+            String description = formData.get("description");
+
             BigInteger price = new BigInteger(formData.get("price"));
             ShopArtifact shopArtifact = new ShopArtifact(name, price, artifactCategory, description);
             shopArtifact.save();
             String message = String.format("New artifact available: %s for only %d cc.", shopArtifact.getName(), shopArtifact.getPrice());
             new ChatMessage("system", message, "System messages").save();
 
-        } catch (NumberFormatException e) {
-            isAdded = false;
+            return true;
         }
-        return isAdded;
+
+        return false;
     }
 
     public boolean addArtifactCategory(Map<String, String> formData) throws DaoException {
