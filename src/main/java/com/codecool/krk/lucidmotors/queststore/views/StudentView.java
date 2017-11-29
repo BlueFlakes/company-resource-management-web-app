@@ -140,7 +140,7 @@ public class StudentView {
     }
 
     private void handleCloseContribution(JtwigModel model) throws DaoException {
-        boolean wasSuccesfulyClosed = studentController.closeUserContribution(formData, user);
+        boolean wasSuccesfulyClosed = studentController.closeUserContribution(formData);
 
         if (wasSuccesfulyClosed) {
             model.with("is_text_available", true);
