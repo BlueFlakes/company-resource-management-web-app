@@ -110,8 +110,6 @@ public class StudentView {
     }
 
     private void handleJoinContribution(JtwigModel model) throws DaoException {
-        List<Contribution> contributions = studentController.getAvailableContributions();
-        model.with("available_contributions", contributions);
         boolean succesfullyPaid = studentController.takePartInContribution(formData, user);
 
         String message;
@@ -122,30 +120,33 @@ public class StudentView {
         } else {
             message = "Sorry but you dont have enough money!";
         }
-        
+
+        List<Contribution> contributions = studentController.getAvailableContributions();
+        model.with("available_contributions", contributions);
         model.with("text", message);
     }
 
     private void handleCreateContribution(JtwigModel model) throws DaoException {
-        List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
-        model.with("shop_artifact", shopArtifacts1);
         boolean wasSuccesfullyAdded = studentController.addNewContribution(formData, user);
 
         if (wasSuccesfullyAdded) {
             model.with("is_text_available", true);
             model.with("text", "Succesfully added contribution!");
         }
+
+        List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
+        model.with("shop_artifact", shopArtifacts1);
     }
 
     private void handleCloseContribution(JtwigModel model) throws DaoException {
-        List<Contribution> userContributions = studentController.getThisUserContributions(user);
-        model.with("user_contributions", userContributions);
         boolean wasSuccesfulyClosed = studentController.closeUserContribution(formData, user);
 
         if (wasSuccesfulyClosed) {
             model.with("is_text_available", true);
             model.with("text", "Succesfully closed contribution!");
-
         }
+
+        List<Contribution> userContributions = studentController.getThisUserContributions(user);
+        model.with("user_contributions", userContributions);
     }
 }
