@@ -1,11 +1,31 @@
 <form method="post">
     <label for="#manager-exp-level-choose-new-class">Choose level</label>
-    <select name="choosen-class" id="#manager-exp-level-choose-new-class">
+    <select name="choosen-class" id="#manager-exp-level-choose-new-class" onchange="fillForm()" autofocus>
+        <option disabled selected value> choose level </option>
         {% for key, value in experience_levels %}
-                <option value="{{ key }}">Level {{ key }}: {{ value }}</option>
+        <option value="{{ key }}">Level {{ key }}: {{ value }}</option>
         {% endfor %}
     </select>
     <label for="#manager-new-value-for-exp-level">Add new value for level</label>
     <input type="number"  name="experience-level-new-value" id="#manager-new-value-for-exp-level" required min="0">
     <input type="submit" value="Submit">
 </form>
+
+<script>
+    function fillForm() {
+        var optionText = getDatafield("#manager-exp-level-choose-new-class");
+        var levelValue = optionText.split(": ")[1];
+
+        document.getElementById("#manager-new-value-for-exp-level").value = levelValue;
+    }
+
+    function getDatafield(elementId) {
+        var elt = document.getElementById(elementId);
+
+        if (elt.selectedIndex == -1)
+            return null;
+
+        return elt.options[elt.selectedIndex].innerHTML;
+    }
+
+</script>
