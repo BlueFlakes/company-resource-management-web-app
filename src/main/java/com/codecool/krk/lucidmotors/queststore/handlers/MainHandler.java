@@ -78,11 +78,13 @@ public class MainHandler implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-            String[] pairs = formData.split("&");
-            for(String pair : pairs){
-                String[] keyValue = pair.split("=");
-                String value = (keyValue.length > 1) ? URLDecoder.decode(keyValue[1], "UTF-8") : "";
-                postValues.put(keyValue[0], value);
+            if (formData != null) {
+                String[] pairs = formData.split("&");
+                for(String pair : pairs){
+                    String[] keyValue = pair.split("=");
+                    String value = (keyValue.length > 1) ? URLDecoder.decode(keyValue[1], "UTF-8") : "";
+                    postValues.put(keyValue[0], value);
+                }
             }
         }
 
