@@ -181,9 +181,6 @@ public class ManagerView {
 
     private void runNewLevelCreation(JtwigModel model) throws DaoException {
         final String coinsKey = "experience-level";
-        ExperienceLevelsDao experienceLevelsDao = ExperienceLevelsDao.getDao();
-        Integer nextLevel = experienceLevelsDao.getHighestLevelID() + 1;
-        BigInteger nextLevelNeededCoins = experienceLevelsDao.getHighestLevelCoins().add(new BigInteger("1"));
 
         if (this.formData.containsKey(coinsKey) && CustomMatchers.isPositiveInteger(this.formData.get(coinsKey))) {
             boolean wasUpdated = experienceLevelsController.createNewLevel(this.formData, coinsKey);
@@ -198,7 +195,10 @@ public class ManagerView {
 
             model.with("text", message);
         }
-
+        
+        ExperienceLevelsDao experienceLevelsDao = ExperienceLevelsDao.getDao();
+        Integer nextLevel = experienceLevelsDao.getHighestLevelID() + 1;
+        BigInteger nextLevelNeededCoins = experienceLevelsDao.getHighestLevelCoins().add(new BigInteger("1"));
         model.with("next_level", nextLevel);
         model.with("next_level_min_value", nextLevelNeededCoins);
     }
