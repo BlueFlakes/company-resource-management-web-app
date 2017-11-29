@@ -17,47 +17,32 @@ public class MentorController {
         this.school = school;
     }
 
-    public boolean changeQuestData(Map<String, String> formData) throws DaoException {
-        Boolean isAdded = true;
-
+    public void changeQuestData(Map<String, String> formData) throws DaoException {
         Integer id = Integer.parseInt(formData.get("quest_id"));
         String name = formData.get("quest_name");
         QuestCategory questCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(formData.get("category_id")));
         String description = formData.get("description");
 
-        try {
-            BigInteger value = new BigInteger(formData.get("value"));
-
-            AvailableQuest quest = this.availableQuestDao.getQuest(id);
-            quest.setName(name);
-            quest.setQuestCategory(questCategory);
-            quest.setDescription(description);
-            quest.setValue(value);
-            quest.update();
-        } catch (NumberFormatException e) {
-            isAdded = false;
-        }
-        return isAdded;
+        BigInteger value = new BigInteger(formData.get("value"));
+        AvailableQuest quest = this.availableQuestDao.getQuest(id);
+        quest.setName(name);
+        quest.setQuestCategory(questCategory);
+        quest.setDescription(description);
+        quest.setValue(value);
+        quest.update();
     }
 
-    public boolean createNewAvailableQuest(Map<String, String> formData) throws DaoException {
-        Boolean isAdded = true;
-
+    public void createNewAvailableQuest(Map<String, String> formData) throws DaoException {
         String name = formData.get("quest_name");
         QuestCategory questCategory = this.questCategoryDao.getQuestCategory(Integer.parseInt(formData.get("category_id")));
         String description = formData.get("description");
 
-        try {
-            BigInteger value = new BigInteger(formData.get("quest_value"));
+        BigInteger value = new BigInteger(formData.get("quest_value"));
 
-            AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
-            questToAdd.save();
-            String message = String.format("Take the new quest: %s. You can get %d cc!", questToAdd.getName(), questToAdd.getValue());
-            new ChatMessage("system", message, "System messages").save();
-        } catch (NumberFormatException e) {
-            isAdded = false;
-        }
-        return isAdded;
+        AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
+        questToAdd.save();
+        String message = String.format("Take the new quest: %s. You can get %d cc!", questToAdd.getName(), questToAdd.getValue());
+        new ChatMessage("system", message, "System messages").save();
     }
 
     public boolean addStudent(Map<String, String> formData) throws DaoException {
@@ -88,10 +73,13 @@ public class MentorController {
     public boolean addQuestCategory(Map<String, String> formData) throws DaoException {
         String questCategoryName = formData.get("name");
 
-        QuestCategory questCategory = new QuestCategory(questCategoryName);
-        this.questCategoryDao.save(questCategory);
+        if (questCategoryDao.getQuestByName(questCategoryName) == null) {
+            QuestCategory questCategory = new QuestCategory(questCategoryName);
+            this.questCategoryDao.save(questCategory);
+            return true;
+        }
 
-        return true;
+        return false;
     }
 
     public List<BoughtArtifact> getStudentsArtifacts(Integer studentId) throws DaoException {
@@ -100,7 +88,7 @@ public class MentorController {
         return studentArtifacts;
     }
 
-    public boolean markQuest(Map<String, String> formData) throws DaoException {
+    public void markQuest(Map<String, String> formData) throws DaoException {
         Integer studentId = Integer.valueOf(formData.get("student_id"));
         Student student = StudentDao.getDao().getStudent(studentId);
         Integer questId = Integer.parseInt(formData.get("quest_id"));
@@ -110,8 +98,6 @@ public class MentorController {
         achievedQuest.save();
         student.addCoins(availableQuest.getValue());
         student.update();
-
-        return true;
     }
 
     public boolean markArtifactAsUsed(Map<String, String> formData) throws DaoException {

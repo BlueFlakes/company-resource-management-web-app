@@ -260,6 +260,28 @@ public class ContributionDao {
         return contribution;
     }
 
+    public Contribution getContributionByName(String name) throws DaoException {
+        String sqlQuery = "SELECT * FROM contributions WHERE contribution_name LIKE ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                return createContributionInstance(result);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return null;
+    }
+
     private Contribution createContributionInstance(ResultSet result) throws DaoException, SQLException {
         String contributionName = result.getString("contribution_name");
         Integer creatorId = result.getInt("creator_id");

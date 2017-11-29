@@ -120,8 +120,6 @@ public class ManagerView {
     }
 
     private void add_mentor(JtwigModel model) throws DaoException {
-        model.with("school_classes", this.school.getAllClasses());
-
         if(formData.containsKey("class_id")) {
             boolean wasSuccessfully = new ManagerController(this.school).addMentor(this.formData);
             model.with("is_text_available", true);
@@ -132,16 +130,24 @@ public class ManagerView {
                 model.with("text", "Sorry, used login is already occupied.");
             }
         }
+
+        model.with("school_classes", this.school.getAllClasses());
     }
 
     private void editMentor(JtwigModel model) throws DaoException {
+        if(this.formData.containsKey("mentor_id")) {
+            boolean wasSuccessfully = new ManagerController(this.school).editMentor(this.formData);
+            model.with("is_text_available", true);
+
+            if (wasSuccessfully) {
+                model.with("text", "Mentor successfully updated");
+            } else {
+                model.with("text", "Login is already used.");
+            }
+        }
+
         model.with("mentors", this.school.getAllMentors());
         model.with("school_classes", this.school.getAllClasses());
-        if(this.formData.containsKey("mentor_id") &&
-                new ManagerController(this.school).editMentor(this.formData)) {
-            model.with("is_text_available", true);
-            model.with("text", "Mentor successfully updated");
-        }
     }
 
     private void showMentorClass(JtwigModel model) throws DaoException {
@@ -160,8 +166,6 @@ public class ManagerView {
         final String coinsKey = "experience-level-new-value";
         final String levelsKey = "choosen-class";
 
-        model.with("experience_levels", this.experienceLevelsController.getLevels());
-
         if (this.formData.containsKey(coinsKey) && this.formData.containsKey(levelsKey)
                 && areInputsParseableToInteger(coinsKey, levelsKey))  {
 
@@ -169,6 +173,8 @@ public class ManagerView {
             model.with("is_text_available", true);
             model.with("text", operationScore.getMessage());
         }
+
+        model.with("experience_levels", this.experienceLevelsController.getLevels());
     }
 
     private boolean areInputsParseableToInteger(String coinsKey, String levelsKey) {
@@ -180,12 +186,6 @@ public class ManagerView {
 
     private void runNewLevelCreation(JtwigModel model) throws DaoException {
         final String coinsKey = "experience-level";
-        ExperienceLevelsDao experienceLevelsDao = ExperienceLevelsDao.getDao();
-        Integer nextLevel = experienceLevelsDao.getHighestLevelID() + 1;
-        BigInteger nextLevelNeededCoins = experienceLevelsDao.getHighestLevelCoins().add(new BigInteger("1"));
-
-        model.with("next_level", nextLevel);
-        model.with("next_level_min_value", nextLevelNeededCoins);
 
         if (this.formData.containsKey(coinsKey) && CustomMatchers.isPositiveInteger(this.formData.get(coinsKey))) {
             boolean wasUpdated = experienceLevelsController.createNewLevel(this.formData, coinsKey);
@@ -200,6 +200,12 @@ public class ManagerView {
 
             model.with("text", message);
         }
+        
+        ExperienceLevelsDao experienceLevelsDao = ExperienceLevelsDao.getDao();
+        Integer nextLevel = experienceLevelsDao.getHighestLevelID() + 1;
+        BigInteger nextLevelNeededCoins = experienceLevelsDao.getHighestLevelCoins().add(new BigInteger("1"));
+        model.with("next_level", nextLevel);
+        model.with("next_level_min_value", nextLevelNeededCoins);
     }
 
 

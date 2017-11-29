@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
 import com.codecool.krk.lucidmotors.queststore.models.QuestCategory;
 
 import java.sql.Connection;
@@ -101,4 +102,26 @@ public class QuestCategoryDao {
 
     }
 
+    public QuestCategory getQuestByName(String name) throws DaoException {
+        String sqlQuery = "SELECT * FROM quest_categories WHERE name LIKE ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                String foundName = result.getString("name");
+                Integer id = result.getInt("id");
+                return new QuestCategory(foundName, id);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return null;
+    }
 }

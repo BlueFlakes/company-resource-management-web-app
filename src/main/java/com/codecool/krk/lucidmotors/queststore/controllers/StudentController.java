@@ -69,14 +69,11 @@ public class StudentController {
         return this.contributionDao.getOpenContributions();
     }
 
-    public boolean addNewContribution(Map<String, String> formData, User user) throws DaoException {
-        final String contributionNameKey = "contribution-name";
-        final String choosenArtifactKey = "choosen-artifact-for-contribution";
+    public String addNewContribution(Map<String, String> formData, User user) throws DaoException {
+        String contributionName = formData.get("contribution-name");
+        Integer choosenArtifactId = parseInt(formData.get("choosen-artifact-for-contribution"));
 
-        if (formData.containsKey(contributionNameKey) && formData.containsKey(choosenArtifactKey)) {
-            String contributionName = formData.get(contributionNameKey);
-            Integer choosenArtifactId = parseInt(formData.get(choosenArtifactKey));
-
+        if (this.contributionDao.getContributionByName(contributionName) == null) {
             ShopArtifact shopArtifact = this.shopArtifactDao.getArtifact(choosenArtifactId);
             Student student = this.studentDao.getStudent(user.getId());
             Contribution contribution = new Contribution(contributionName, student, shopArtifact);
@@ -85,10 +82,17 @@ public class StudentController {
             String message = String.format("%s open contribution for %s.", student.getName(), shopArtifact.getName());
             new ChatMessage("system", message, "System messages").save();
 
-            return true;
+            return "Succesfully added new contribution!";
+        } else {
+            return "Sorry but this name is already used.";
         }
+    }
 
-        return false;
+
+
+    public enum AddContribution {
+        FAILED,
+        SUCCESSFULLY
     }
 
     public List<Contribution> getThisUserContributions(User user) throws DaoException {
@@ -100,11 +104,10 @@ public class StudentController {
                             .collect(Collectors.toList());
     }
 
-    public boolean closeUserContribution(Map<String, String> formData, User user) throws DaoException {
+    public boolean closeUserContribution(Map<String, String> formData) throws DaoException {
         final String contributionNameKey = "choosen-contribution-to-close";
 
         if (formData.containsKey(contributionNameKey)) {
-
             Integer contributionId = parseInt(formData.get(contributionNameKey));
             Contribution contribution = this.contributionDao.getContribution(contributionId);
 

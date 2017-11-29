@@ -2,6 +2,7 @@ package com.codecool.krk.lucidmotors.queststore.dao;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
+import com.codecool.krk.lucidmotors.queststore.models.Contribution;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -124,4 +125,27 @@ public class ArtifactCategoryDao {
 
     }
 
+    public ArtifactCategory getArtifactByName(String name) throws DaoException {
+        String sqlQuery = "SELECT * FROM artifact_categories WHERE name LIKE ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                String foundName = result.getString("name");
+                Integer id = result.getInt("id");
+                return new ArtifactCategory(foundName, id);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return null;
+    }
 }
