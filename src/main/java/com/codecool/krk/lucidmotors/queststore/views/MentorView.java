@@ -238,10 +238,15 @@ public class MentorView {
     }
 
     private void addStudent(JtwigModel model) throws DaoException {
-        if(formData.containsKey("class_id") &&
-                new MentorController(this.school).addStudent(this.formData)) {
+        if(formData.containsKey("class_id")) {
+            boolean wasSuccessfully = new MentorController(this.school).addStudent(this.formData);
             model.with("is_text_available", true);
-            model.with("text", "Student successfully created");
+
+            if (wasSuccessfully) {
+                model.with("text", "Student successfully created");
+            } else {
+                model.with("text", "Used login is already occupied.");
+            }
         }
 
         model.with("school_classes", this.school.getAllClasses());
