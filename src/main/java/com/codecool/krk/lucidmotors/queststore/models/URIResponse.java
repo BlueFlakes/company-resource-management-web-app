@@ -16,4 +16,9 @@ public class URIResponse {
         this.action = action;
         this.command = command;
     }
+
+    @Override
+    public String toString( ) {
+        return "role: " + this.role.toString() + " | action: " + this.action.toString() + " | command: " + this.command;
+    }
 }
