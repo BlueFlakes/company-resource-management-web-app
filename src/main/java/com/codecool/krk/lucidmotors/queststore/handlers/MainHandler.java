@@ -141,7 +141,6 @@ public class MainHandler implements HttpHandler {
 
     public Activity getUserActivity(URIResponse response, Map<String, String> formData, User user)
             throws DaoException, IOException, IncorrectStateException {
-
         switch (response.getRole()) {
             case MANAGER:
                 return new ManagerView(this.school, user, formData).getActivity((ManagerOptions) getProperAction(response));
@@ -164,7 +163,6 @@ public class MainHandler implements HttpHandler {
     }
 
     private Activity getOtherActivity(Roles role, Map<String, String> formData, User user) throws DaoException {
-//        TODO: mam wrażenie że action powinno byc zamiast role
         switch (role) {
             case LOGOUT:
                 return new LogoutView(user, loggedUsers).getActivity();
@@ -172,11 +170,9 @@ public class MainHandler implements HttpHandler {
             case CHAT:
                 return new ChatView(formData).getActivity();
 
-            case DEFAULT:
+            default:
                 return redirectByUser(user);
         }
-
-        return null;
     }
 
     public static Activity redirectByUser(User user) {
