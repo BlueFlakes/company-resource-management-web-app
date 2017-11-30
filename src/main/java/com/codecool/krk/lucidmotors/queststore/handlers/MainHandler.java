@@ -51,6 +51,8 @@ public class MainHandler implements HttpHandler {
         Activity activity;
 
         Map<String, String> formData = getFormData(httpExchange);
+        formData = preventHtmlInjection(formData);
+
         User user = getUserByCookie(httpExchange);
 
         String uri = httpExchange.getRequestURI().getPath();
@@ -66,6 +68,18 @@ public class MainHandler implements HttpHandler {
         }
 
         return activity;
+    }
+
+    private Map<String , String> preventHtmlInjection(Map<String , String> formData) {
+
+        for (String key : formData.keySet()) {
+            if (formData.get(key).toLowerCase().contains("<script>")) {
+                String safeValue = formData.get(key).replace("<", "&lt;").replace(">", "&gt;");
+                formData.put(key, safeValue);
+            }
+        }
+
+        return formData;
     }
 
     private Map<String,String> getFormData(HttpExchange httpExchange) throws IOException {
