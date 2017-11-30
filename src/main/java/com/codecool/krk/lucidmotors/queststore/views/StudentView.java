@@ -7,11 +7,8 @@ import com.codecool.krk.lucidmotors.queststore.models.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.lang.Integer.parseInt;
-import static org.mockito.Mockito.mock;
+import java.util.List;
+import java.util.Map;
 
 public class StudentView {
     private StudentController studentController;
