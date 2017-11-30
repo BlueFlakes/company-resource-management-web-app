@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.codecool.krk.lucidmotors.queststore.enums.Roles.SETTINGS;
+
 public class MainHandler implements HttpHandler {
 
     private Map<UUID, User> loggedUsers = new HashMap<>();
@@ -59,24 +61,33 @@ public class MainHandler implements HttpHandler {
         URIResponse parsedURI = parseURI(uri);
 
         if(user == null) {
-            activity = new LoginView(this.school, formData, this.loggedUsers).getActivity(httpExchange);
+            activity = getUnloggedActivity(parsedURI, httpExchange, formData);
         } else if (isProperUser(parsedURI.getRole(), user)) {
             Cookie.renewCookie(httpExchange, "UUID");
             activity = getUserActivity(parsedURI, formData, user);
         } else {
-            activity = getOtherActivity(parsedURI.getRole(), formData, user);
+            activity = getOtherActivity(parsedURI.getRole(), formData, user, httpExchange);
         }
 
         return activity;
     }
 
+    private Activity getUnloggedActivity(URIResponse parsedURI, HttpExchange httpExchange, Map<String, String> formData) throws IOException, DaoException {
+        switch (parsedURI.getRole()) {
+            case SETTINGS:
+                return new SettingsView(formData, httpExchange).getActivity();
+
+            default:
+                return new LoginView(this.school, formData, this.loggedUsers).getActivity(httpExchange);
+        }
+
+    }
+
     private Map<String , String> preventHtmlInjection(Map<String , String> formData) {
 
         for (String key : formData.keySet()) {
-            if (formData.get(key).toLowerCase().contains("<script>")) {
-                String safeValue = formData.get(key).replace("<", "&lt;").replace(">", "&gt;");
-                formData.put(key, safeValue);
-            }
+            String safeValue = formData.get(key).replace("<", "&lt;").replace(">", "&gt;");
+            formData.put(key, safeValue);
         }
 
         return formData;
@@ -176,7 +187,8 @@ public class MainHandler implements HttpHandler {
         return action.prepareCommand(uriResponse.getRole(), command);
     }
 
-    private Activity getOtherActivity(Roles role, Map<String, String> formData, User user) throws DaoException {
+    private Activity getOtherActivity(Roles role, Map<String, String> formData, User user, HttpExchange httpExchange) throws DaoException {
+
         switch (role) {
             case LOGOUT:
                 return new LogoutView(user, loggedUsers).getActivity();
@@ -184,8 +196,12 @@ public class MainHandler implements HttpHandler {
             case CHAT:
                 return new ChatView(formData).getActivity();
 
+            case SETTINGS:
+                return new SettingsView(formData, httpExchange).getActivity();
+
             default:
                 return redirectByUser(user);
+
         }
     }
 
