@@ -1,7 +1,7 @@
+getMinMaxById();
 document.getElementById("#mentor-approve-assignment-choose-assignment").addEventListener("change", getMinMaxById);
 document.getElementById("#mentor-approve-assignment-value").addEventListener("change", setValueLabel);
 document.getElementById("#mentor-approve-assignment-value-label").addEventListener("change", setLabelValue);
-document.getElementById("#mentor-approve-assignment-value-label").style.display = 'none';
 
 function getMinMaxById() {
     var quest_id = document.getElementById("#mentor-approve-assignment-choose-assignment").value;
@@ -27,7 +27,7 @@ function injectQuestData(quest) {
     var label = document.getElementById("#mentor-approve-assignment-value-label");
 
     if(quest.maxValue == 0) {
-        label.style.display = 'none';
+        label.disabled = true;
         label.setAttribute("min", quest.value);
         label.setAttribute("max", quest.value);
         label.value = quest.value;
@@ -37,7 +37,7 @@ function injectQuestData(quest) {
         value.setAttribute("max", quest.value);
         value.value = quest.value;
     } else {
-        label.style.display = 'block';
+        label.disabled = false;
         label.setAttribute("min", quest.value);
         label.setAttribute("max", quest.maxValue);
         label.value = quest.value;
