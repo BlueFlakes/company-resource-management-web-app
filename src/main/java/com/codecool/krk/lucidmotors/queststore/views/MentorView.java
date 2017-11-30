@@ -148,10 +148,11 @@ public class MentorView {
         if (formData.containsKey("student_id")) {
             Integer studentId = Integer.parseInt(formData.get("student_id"));
             List<BoughtArtifact> boughtArtifacts = mentorController.getStudentsArtifacts(studentId);
-            List<StackedBoughtArtifact> stacked = StackedBoughtArtifact.getUserStackedBoughtArtifacts(boughtArtifacts);
-            List<StackedBoughtArtifact> stackedAvailable = stacked.stream()
-                                                                  .filter(o -> !o.isUsed())
-                                                                  .collect(Collectors.toList());
+
+            List<StackedBoughtArtifact> stackedBoughtArtifacts =
+                    StackedBoughtArtifact.getUserStackedBoughtArtifacts(boughtArtifacts);
+            List<StackedBoughtArtifact> stackedAvailable =
+                    StackedBoughtArtifact.getUserAvailableStackedArtifacts(stackedBoughtArtifacts);
 
             model.with("artifacts", stackedAvailable);
             model.with("is_disabled", true);

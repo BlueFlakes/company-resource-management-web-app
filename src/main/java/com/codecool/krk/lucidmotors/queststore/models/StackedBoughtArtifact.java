@@ -53,4 +53,10 @@ public class StackedBoughtArtifact extends BoughtArtifact {
 
         return countedArtifacts;
     }
+
+    public static List<StackedBoughtArtifact> getUserAvailableStackedArtifacts(List<StackedBoughtArtifact> stackedBoughtArtifacts) {
+        return stackedBoughtArtifacts.stream()
+                                     .filter(o -> !o.isUsed())
+                                     .collect(Collectors.toList());
+    }
 }

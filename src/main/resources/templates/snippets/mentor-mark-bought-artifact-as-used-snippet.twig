@@ -9,7 +9,7 @@
     <label for="#mentor-mark-bought-artifact-choose-artifact">Choose student artifact</label>
     <select name="artifact_id" id="#mentor-mark-bought-artifact-choose-artifact" required>
         {% for artifact in artifacts %}
-            <option value="{{artifact.getId()}}">{{artifact.getName()}}</option>
+            <option value="{{artifact.getId()}}">{{ artifact.getAmount() }} : {{artifact.getName()}}</option>
         {% endfor %}
     </select>
     {% endif %}
