@@ -73,7 +73,13 @@ public class StudentController {
         String contributionName = formData.get("contribution-name");
         Integer choosenArtifactId = parseInt(formData.get("choosen-artifact-for-contribution"));
 
-        if (this.contributionDao.getContributionByName(contributionName) == null) {
+        List<Contribution> openedContributionsByName = this.contributionDao.getContributionByName(contributionName)
+                                                                     .stream()
+                                                                     .filter(contribution -> contribution.getStatus().equals("open"))
+                                                                     .collect(Collectors.toList());
+
+
+        if (openedContributionsByName.isEmpty()) {
             ShopArtifact shopArtifact = this.shopArtifactDao.getArtifact(choosenArtifactId);
             Student student = this.studentDao.getStudent(user.getId());
             Contribution contribution = new Contribution(contributionName, student, shopArtifact);

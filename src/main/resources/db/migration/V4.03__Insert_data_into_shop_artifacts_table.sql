@@ -1,8 +1,6 @@
 ﻿INSERT INTO shop_artifacts (id,name,price,category_id,description) VALUES (
 1,'Combat training',50,1,'Private mentoring');
 INSERT INTO shop_artifacts (id,name,price,category_id,description) VALUES (
-2,'d',20,1,'pop');
-INSERT INTO shop_artifacts (id,name,price,category_id,description) VALUES (
 3,'Time Travel',500,1,'extend SI week assignment deadline by one day');
 INSERT INTO shop_artifacts (id,name,price,category_id,description) VALUES (
 4,'Circle of Sorcery',1000,2,'60 min workshop by a mentor(s) of the chosen topic');

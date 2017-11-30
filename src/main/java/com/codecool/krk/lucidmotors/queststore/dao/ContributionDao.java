@@ -260,26 +260,26 @@ public class ContributionDao {
         return contribution;
     }
 
-    public Contribution getContributionByName(String name) throws DaoException {
+    public List<Contribution> getContributionByName(String name) throws DaoException {
         String sqlQuery = "SELECT * FROM contributions WHERE contribution_name LIKE ?;";
-
+        List<Contribution> contributions = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sqlQuery);
             stmt.setString(1, name);
 
             ResultSet result = stmt.executeQuery();
 
-            if (result.next()) {
-                return createContributionInstance(result);
+            while (result.next()) {
+                contributions.add(createContributionInstance(result));
             }
 
             result.close();
             stmt.close();
+
+            return contributions;
         } catch (SQLException e) {
             throw new DaoException(this.getClass().getName() + " class caused a problem!");
         }
-
-        return null;
     }
 
     private Contribution createContributionInstance(ResultSet result) throws DaoException, SQLException {
