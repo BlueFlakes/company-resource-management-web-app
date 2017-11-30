@@ -1,15 +1,20 @@
 <form method="post">
     <label for="#mentor-approve-assignment-choose-students">Choose student</label>
-    <select name="student_id" id="#mentor-approve-assignment-choose-students">
+    <select name="student_id" id="#mentor-approve-assignment-choose-students" required>
         {% for student in students %}
             <option value="{{student.getId()}}">{{student.getName()}}</option>
         {% endfor %}
     </select>
     <label for="#mentor-approve-assignment-choose-assignment">Choose done assignment</label>
-    <select name="quest_id" id="#mentor-approve-assignment-choose-assignment">
+    <select name="quest_id" id="#mentor-approve-assignment-choose-assignment" required>
         {% for quest in available_quests %}
             <option value="{{quest.getId()}}">{{quest.getName()}}</option>
         {% endfor %}
     </select>
+    <label for="#mentor-approve-assignment-value-label">Value</label>
+    <input type="number" id="#mentor-approve-assignment-value-label" disabled>
+    <input type="range" name="value" id="#mentor-approve-assignment-value" hidden>
     <input type="submit" value="Submit">
 </form>
+
+<script src="/static/js/approve-quest.js"></script>

@@ -10,8 +10,6 @@ import org.jtwig.JtwigTemplate;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Integer.parseInt;
-
 public class StudentView {
     private StudentController studentController;
     private User user;
@@ -83,7 +81,11 @@ public class StudentView {
 
     private void showWallet(JtwigModel model) throws DaoException {
         List<BoughtArtifact> boughtArtifacts = studentController.getWallet(this.user);
-        model.with("bought_artifacts", boughtArtifacts);
+
+        List<StackedBoughtArtifact> stackedBoughtArtifacts =
+                StackedBoughtArtifact.getUserStackedBoughtArtifacts(boughtArtifacts);
+
+        model.with("stacked_bought_artifacts", stackedBoughtArtifacts);
     }
 
     private void showAvailableArtifacts(JtwigModel model) throws DaoException {

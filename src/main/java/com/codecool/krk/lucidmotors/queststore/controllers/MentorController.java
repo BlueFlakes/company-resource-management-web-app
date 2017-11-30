@@ -24,11 +24,18 @@ public class MentorController {
         String description = formData.get("description");
 
         BigInteger value = new BigInteger(formData.get("value"));
+        BigInteger maxValue = null;
+        if(formData.containsKey("max_value")) {
+            maxValue = new BigInteger(formData.get("max_value"));
+        }
         AvailableQuest quest = this.availableQuestDao.getQuest(id);
         quest.setName(name);
         quest.setQuestCategory(questCategory);
         quest.setDescription(description);
         quest.setValue(value);
+        if(formData.containsKey("max_value")) {
+            quest.setMaxValue(maxValue);
+        }
         quest.update();
     }
 
@@ -39,7 +46,13 @@ public class MentorController {
 
         BigInteger value = new BigInteger(formData.get("quest_value"));
 
-        AvailableQuest questToAdd = new AvailableQuest(name, questCategory, description, value);
+        AvailableQuest questToAdd;
+        if(formData.containsKey("max_value")) {
+            BigInteger maxValue = new BigInteger(formData.get("max_value"));
+            questToAdd = new AvailableQuest(name, questCategory, description, value, maxValue);
+        } else {
+            questToAdd = new AvailableQuest(name, questCategory, description, value);
+        }
         questToAdd.save();
         String message = String.format("Take the new quest: %s. You can get %d cc!", questToAdd.getName(), questToAdd.getValue());
         new ChatMessage("system", message, "System messages").save();
@@ -92,11 +105,14 @@ public class MentorController {
         Integer studentId = Integer.valueOf(formData.get("student_id"));
         Student student = StudentDao.getDao().getStudent(studentId);
         Integer questId = Integer.parseInt(formData.get("quest_id"));
+        BigInteger value = new BigInteger(formData.get("value"));
         AvailableQuest availableQuest = availableQuestDao.getQuest(questId);
 
         AchievedQuest achievedQuest = new AchievedQuest(availableQuest, student);
+        achievedQuest.setValue(value);
+
         achievedQuest.save();
-        student.addCoins(availableQuest.getValue());
+        student.addCoins(achievedQuest.getValue());
         student.update();
     }
 

@@ -1,6 +1,6 @@
 <form method="post">
     <label for="#mentor-mark-bought-artifact-choose-student">{% if phase == 1 %}Choose{% endif %} Student</label>
-    <select {% if phase == 2 %} disabled {% endif %} name="student_id" id="#mentor-mark-bought-artifact-choose-student">
+    <select {% if phase == 2 %} disabled {% endif %} name="student_id" id="#mentor-mark-bought-artifact-choose-student" required>
         {% for student in students %}
             <option {% if selected_student_id == student.getId() %} selected {% endif %} value="{{student.getId()}}">{{student.getName()}}</option>
         {% endfor %}
@@ -9,7 +9,7 @@
     <label for="#mentor-mark-bought-artifact-choose-artifact">Choose student artifact</label>
     <select name="artifact_id" id="#mentor-mark-bought-artifact-choose-artifact" required>
         {% for artifact in artifacts %}
-            <option value="{{artifact.getId()}}">{{artifact.getName()}}</option>
+            <option value="{{artifact.getId()}}">{{ artifact.getAmount() }} : {{artifact.getName()}}</option>
         {% endfor %}
     </select>
     {% endif %}
