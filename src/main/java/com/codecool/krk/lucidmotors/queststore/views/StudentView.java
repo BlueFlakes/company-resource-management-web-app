@@ -3,6 +3,7 @@ package com.codecool.krk.lucidmotors.queststore.views;
 import com.codecool.krk.lucidmotors.queststore.controllers.StudentController;
 import com.codecool.krk.lucidmotors.queststore.enums.StudentOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.matchers.CustomMatchers;
 import com.codecool.krk.lucidmotors.queststore.models.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -114,20 +115,24 @@ public class StudentView {
     }
 
     private void handleJoinContribution(JtwigModel model) throws DaoException {
-        boolean succesfullyPaid = studentController.takePartInContribution(formData, user);
+        if (formData.containsKey("spent-coins-amount") && formData.containsKey("choosen-contribution")
+                && CustomMatchers.isPositiveInteger(formData.get("spent-coins-amount"))) {
 
-        String message;
-        if (succesfullyPaid) {
             model.with("is_text_available", true);
-            message = "Succesfuly Paid! :)";
+            boolean succesfullyPaid = studentController.takePartInContribution(formData, user);
 
-        } else {
-            message = "Sorry but you dont have enough money!";
+            String message;
+            if (succesfullyPaid) {
+                message = "Succesfuly Paid! :)";
+            } else {
+                message = "Sorry but you dont have enough money!";
+            }
+
+            model.with("text", message);
         }
 
         List<Contribution> contributions = studentController.getAvailableContributions();
         model.with("available_contributions", contributions);
-        model.with("text", message);
     }
 
     private void handleCreateContribution(JtwigModel model) throws DaoException {
