@@ -104,7 +104,7 @@ public class MainHandler implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-
+            
             if (formData != null) {
                 String[] pairs = clearDeliveredFormData(formData);
 
