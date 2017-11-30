@@ -186,7 +186,7 @@ public class MentorView {
             model.with("is_text_available", true);
 
             if (wasSuccessfully) {
-                model.with("text", "Artifact successfully created");
+                model.with("text", "Artifact successfully updated");
             } else {
                 model.with("text", "Given artifact name is already occupied.");
             }
