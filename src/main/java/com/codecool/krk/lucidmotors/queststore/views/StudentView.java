@@ -7,10 +7,11 @@ import com.codecool.krk.lucidmotors.queststore.models.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
+import static org.mockito.Mockito.mock;
 
 public class StudentView {
     private StudentController studentController;
@@ -83,7 +84,11 @@ public class StudentView {
 
     private void showWallet(JtwigModel model) throws DaoException {
         List<BoughtArtifact> boughtArtifacts = studentController.getWallet(this.user);
-        model.with("bought_artifacts", boughtArtifacts);
+
+        List<StackedBoughtArtifact> stackedBoughtArtifacts =
+                StackedBoughtArtifact.getUserStackedBoughtArtifacts(boughtArtifacts);
+
+        model.with("stacked_bought_artifacts", stackedBoughtArtifacts);
     }
 
     private void showAvailableArtifacts(JtwigModel model) throws DaoException {
