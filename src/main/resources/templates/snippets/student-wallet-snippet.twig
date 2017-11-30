@@ -4,7 +4,6 @@
         <th>Id</th>
         <th>Amount</th>
         <th>Name</th>
-        <th>Date</th>
         <th>State</th>
     </tr>
     </thead>
@@ -14,7 +13,6 @@
             <td>{{ loop.index }}</td>
             <td>{{ artifact.getAmount() }}</td>
             <td>{{ artifact.getName() }}</td>
-            <td>{{ artifact.getDate() }}</td>
 
             {%  if artifact.isUsed() %}
                 <td>used</td>
