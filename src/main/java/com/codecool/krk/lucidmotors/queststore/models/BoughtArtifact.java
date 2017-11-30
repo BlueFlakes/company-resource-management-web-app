@@ -39,6 +39,10 @@ public class BoughtArtifact extends AbstractArtifact {
         return this.isUsed;
     }
 
+    public Date getRealDate() {
+        return this.date;
+    }
+
     public String getDate() {
         return convertDateToString(date);
     }

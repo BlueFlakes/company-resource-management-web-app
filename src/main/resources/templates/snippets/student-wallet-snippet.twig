@@ -2,15 +2,17 @@
     <thead>
     <tr>
         <th>Id</th>
+        <th>Amount</th>
         <th>Name</th>
         <th>Date</th>
         <th>State</th>
     </tr>
     </thead>
     <tbody>
-    {% for artifact in bought_artifacts %}
+    {% for artifact in stacked_bought_artifacts %}
         <tr>
             <td>{{ loop.index }}</td>
+            <td>{{ artifact.getAmount() }}</td>
             <td>{{ artifact.getName() }}</td>
             <td>{{ artifact.getDate() }}</td>
 
