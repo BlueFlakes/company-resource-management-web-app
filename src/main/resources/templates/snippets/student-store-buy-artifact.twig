@@ -2,7 +2,7 @@
     <label for="#student-store-buy-artifact">Choose artifact</label>
     <select name="choosen-artifact" id="#student-store-buy-artifact" required>
         {% for artifact in shop_artifact %}
-            <option value="{{ artifact.getId() }}">Level {{ artifact.getName() }}: {{ artifact.getPrice() }}</option>
+            <option value="{{ artifact.getId() }}">{{ artifact.getName() }}: {{ artifact.getPrice() }}</option>
         {% endfor %}
     </select>
     <input type="submit" value="Buy">
