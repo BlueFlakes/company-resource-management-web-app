@@ -88,13 +88,6 @@ public class StudentController {
         }
     }
 
-
-
-    public enum AddContribution {
-        FAILED,
-        SUCCESSFULLY
-    }
-
     public List<Contribution> getThisUserContributions(User user) throws DaoException {
         List<Contribution> contributions = this.contributionDao.getOpenContributions();
         BiPredicate<Integer, Integer> areEqual = Objects::equals;
@@ -136,7 +129,7 @@ public class StudentController {
         final String contributionKey = "choosen-contribution";
 
         if (formData.containsKey(coinsKey) && formData.containsKey(contributionKey)
-                && CustomMatchers.isPositiveInteger(formData.get(coinsKey)) && formData.get(coinsKey).length() < 10 ) {
+                && CustomMatchers.isPositiveInteger(formData.get(coinsKey))) {
 
             Student student = this.studentDao.getStudent(user.getId());
             final BigInteger studentPossessedCoins = student.getPossesedCoins();
@@ -147,7 +140,6 @@ public class StudentController {
                 final Integer contributionId = parseInt(formData.get(contributionKey));
                 Contribution contribution = this.contributionDao.getContribution(contributionId);
                 BigInteger neededCoinsDiff = getNeededCoinsDiff(contribution);
-
 
                 final BigInteger takenCoins = isHigherOrEqual(neededCoinsDiff, givenCoins) ? givenCoins : neededCoinsDiff;
                 student.setPossesedCoins(studentPossessedCoins.subtract(takenCoins));
