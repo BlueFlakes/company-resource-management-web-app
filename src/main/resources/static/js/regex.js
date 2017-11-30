@@ -1,8 +1,8 @@
 var inputs = document.getElementsByTagName("input");
 for(var i = 0; i < inputs.length; i++){
     if(inputs[i].type == 'text') {
-        inputs[i].setAttribute("pattern", "^[0-9\\w]+[0-9\\w \\-]*$");
+        inputs[i].setAttribute("pattern", "^[a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-\\?]+[a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ \\-]*$");
     }
 
-    document.getElementById("message").setAttribute("pattern", "^[0-9\\w\\-\\?]+[0-9\\w \\-\\?]*$");
+    document.getElementById("message").setAttribute("pattern", "^[a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-\\?]+[a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ \\-\\?]*$");
 }
