@@ -16,7 +16,7 @@
 		<header>
 			<div class="horizontal-bar" id="top-bar">
 				<figure>
-					<a href="/settings"><img src="static/images/codecool_kolkoxD.png" alt="codecool logo"></a>
+					<a href="/settings"><img src="/static/images/codecool_kolkoxD.png" alt="codecool logo"></a>
 				</figure>
 				<h1 id="shop-name">Queststore</h1>
 				<div class="button">
@@ -46,9 +46,8 @@
 			<main>
 			{% if is_text_available == true %}
 				<h1 id="statement">{{ text }}</h1>
-			{% else %}
-			{% include content_path ignore missing %}
 			{% endif %}
+            {% include content_path ignore missing %}
 			</main>
 		</div>
 		<div class="gradient" id="bottom-gradient"></div>

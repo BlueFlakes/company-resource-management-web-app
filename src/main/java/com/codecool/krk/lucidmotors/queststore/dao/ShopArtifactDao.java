@@ -156,4 +156,33 @@ public class ShopArtifactDao {
 
     }
 
+    public ShopArtifact getArtifactByName(String name) throws DaoException {
+        String sqlQuery = "SELECT * FROM shop_artifacts WHERE name LIKE ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                String foundName = result.getString("name");
+                BigInteger price = new BigInteger(result.getString("price"));
+                Integer categoryId = result.getInt("category_id");
+                String description = result.getString("description");
+                Integer id = result.getInt("id");
+
+                ArtifactCategory artifactCategory = artifactCategoryDao.getArtifactCategory(categoryId);
+
+                return new ShopArtifact(foundName, price, artifactCategory, description, id);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return null;
+    }
 }

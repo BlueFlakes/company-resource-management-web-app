@@ -10,6 +10,8 @@ import org.jtwig.JtwigTemplate;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 public class StudentView {
     private StudentController studentController;
     private User user;
@@ -103,15 +105,13 @@ public class StudentView {
 
             model.with("text", message);
 
-        } else {
-            List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
-            model.with("shop_artifact", shopArtifacts1);
         }
+
+        List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
+        model.with("shop_artifact", shopArtifacts1);
     }
 
     private void handleJoinContribution(JtwigModel model) throws DaoException {
-        List<Contribution> contributions = studentController.getAvailableContributions();
-        model.with("available_contributions", contributions);
         boolean succesfullyPaid = studentController.takePartInContribution(formData, user);
 
         String message;
@@ -122,30 +122,32 @@ public class StudentView {
         } else {
             message = "Sorry but you dont have enough money!";
         }
-        
+
+        List<Contribution> contributions = studentController.getAvailableContributions();
+        model.with("available_contributions", contributions);
         model.with("text", message);
     }
 
     private void handleCreateContribution(JtwigModel model) throws DaoException {
+        if (formData.containsKey("contribution-name") && formData.containsKey("choosen-artifact-for-contribution")) {
+            String message = studentController.addNewContribution(formData, user);
+            model.with("is_text_available", true);
+            model.with("text", message);
+        }
+
         List<ShopArtifact> shopArtifacts1 = studentController.getShopArtifacts();
         model.with("shop_artifact", shopArtifacts1);
-        boolean wasSuccesfullyAdded = studentController.addNewContribution(formData, user);
-
-        if (wasSuccesfullyAdded) {
-            model.with("is_text_available", true);
-            model.with("text", "Succesfully added contribution!");
-        }
     }
 
     private void handleCloseContribution(JtwigModel model) throws DaoException {
-        List<Contribution> userContributions = studentController.getThisUserContributions(user);
-        model.with("user_contributions", userContributions);
-        boolean wasSuccesfulyClosed = studentController.closeUserContribution(formData, user);
+        boolean wasSuccesfulyClosed = studentController.closeUserContribution(formData);
 
         if (wasSuccesfulyClosed) {
             model.with("is_text_available", true);
             model.with("text", "Succesfully closed contribution!");
-
         }
+
+        List<Contribution> userContributions = studentController.getThisUserContributions(user);
+        model.with("user_contributions", userContributions);
     }
 }
