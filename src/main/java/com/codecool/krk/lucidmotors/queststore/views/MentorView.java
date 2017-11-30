@@ -6,7 +6,6 @@ import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.enums.MentorOptions;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.*;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.json.JSONObject;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -148,11 +147,13 @@ public class MentorView {
 
         if (formData.containsKey("student_id")) {
             Integer studentId = Integer.parseInt(formData.get("student_id"));
-            List<BoughtArtifact> studentArtifacts = mentorController.getStudentsArtifacts(studentId)
-                                                                    .stream()
-                                                                    .filter(artifact -> !artifact.isUsed())
-                                                                    .collect(Collectors.toList());
-            model.with("artifacts", studentArtifacts);
+            List<BoughtArtifact> boughtArtifacts = mentorController.getStudentsArtifacts(studentId);
+            List<StackedBoughtArtifact> stacked = StackedBoughtArtifact.getUserStackedBoughtArtifacts(boughtArtifacts);
+            List<StackedBoughtArtifact> stackedAvailable = stacked.stream()
+                                                                  .filter(o -> !o.isUsed())
+                                                                  .collect(Collectors.toList());
+
+            model.with("artifacts", stackedAvailable);
             model.with("is_disabled", true);
             model.with("phase", 2);
             model.with("selected_student_id", studentId);
