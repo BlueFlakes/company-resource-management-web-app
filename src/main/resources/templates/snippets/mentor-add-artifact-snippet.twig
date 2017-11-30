@@ -6,7 +6,7 @@
     <label for="#mentor-add-artifact-price">Price</label>
     <input type="number" name="price" id="#mentor-add-artifact-price" required min="0">
     <label for="#mentor-add-artifact-category">Choose artifact category</label>
-    <select name="category_id" id="#mentor-add-artifact-category">
+    <select name="category_id" id="#mentor-add-artifact-category" required>
         {% for category in artifact_categories %}
         <option value="{{category.getId()}}">{{category.getName()}}</option>
         {% endfor %}

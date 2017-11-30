@@ -1,6 +1,6 @@
 <form method="post">
     <label for="#manager-exp-level-choose-new-class">Choose level</label>
-    <select name="choosen-class" id="#manager-exp-level-choose-new-class" autofocus>
+    <select name="choosen-class" id="#manager-exp-level-choose-new-class" autofocus required>
         <option disabled selected value> choose level </option>
         {% for key, value in experience_levels %}
         <option value="{{ key }}">Level {{ key }}: {{ value }}</option>

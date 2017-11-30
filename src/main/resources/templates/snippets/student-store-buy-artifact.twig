@@ -1,6 +1,6 @@
 <form method="post">
     <label for="#student-store-buy-artifact">Choose artifact</label>
-    <select name="choosen-artifact" id="#student-store-buy-artifact">
+    <select name="choosen-artifact" id="#student-store-buy-artifact" required>
         {% for artifact in shop_artifact %}
             <option value="{{ artifact.getId() }}">Level {{ artifact.getName() }}: {{ artifact.getPrice() }}</option>
         {% endfor %}

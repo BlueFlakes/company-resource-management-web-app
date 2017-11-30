@@ -1,6 +1,6 @@
 <form method="post">
     <label for="#mentor-add-quest-quest-category">Choose quest category</label>
-    <select name="category_id" id="#mentor-add-quest-quest-category">
+    <select name="category_id" id="#mentor-add-quest-quest-category" required>
         {% for category in quest_categories %}
             <option value="{{category.getId()}}">{{category.getName()}}</option>
         {% endfor %}

@@ -8,7 +8,7 @@
     <label for="#user-creation-email">Email</label>
     <input type="email" name="email" id="#user-creation-email" required>
     <label for="#user-creation-choose-class">Choose class</label>
-    <select name="class_id" id="#user-creation-choose-class">
+    <select name="class_id" id="#user-creation-choose-class" required>
         {% for school_class in school_classes %}
             <option value="{{school_class.getId()}}">{{school_class.getName()}}</option>
         {% endfor %}

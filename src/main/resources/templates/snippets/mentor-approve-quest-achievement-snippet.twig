@@ -1,12 +1,12 @@
 <form method="post">
     <label for="#mentor-approve-assignment-choose-students">Choose student</label>
-    <select name="student_id" id="#mentor-approve-assignment-choose-students">
+    <select name="student_id" id="#mentor-approve-assignment-choose-students" required>
         {% for student in students %}
             <option value="{{student.getId()}}">{{student.getName()}}</option>
         {% endfor %}
     </select>
     <label for="#mentor-approve-assignment-choose-assignment">Choose done assignment</label>
-    <select name="quest_id" id="#mentor-approve-assignment-choose-assignment">
+    <select name="quest_id" id="#mentor-approve-assignment-choose-assignment" required>
         {% for quest in available_quests %}
             <option value="{{quest.getId()}}">{{quest.getName()}}</option>
         {% endfor %}
