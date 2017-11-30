@@ -55,11 +55,11 @@ public class BoughtArtifact extends AbstractArtifact {
     public String toString() {
         String dateString = this.getDate();
         if (this.isUsed) {
-            return String.format("name: %s,  date: %s, %s", this.getName(),
+            return String.format("%s,  date: %s, %s", this.getName(),
                     dateString, "is used");
             
         } else {
-            return String.format("name: %s,  date: %s, %s", this.getName(),
+            return String.format("%s,  date: %s, %s", this.getName(),
                     dateString, "isn't used");
         }
     }
