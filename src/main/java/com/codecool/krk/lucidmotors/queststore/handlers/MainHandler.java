@@ -14,9 +14,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import static com.codecool.krk.lucidmotors.queststore.enums.Roles.SETTINGS;
 
@@ -104,16 +106,28 @@ public class MainHandler implements HttpHandler {
             String formData = br.readLine();
 
             if (formData != null) {
-                String[] pairs = formData.split("&");
-                for(String pair : pairs){
-                    String[] keyValue = pair.split("=");
-                    String value = (keyValue.length > 1) ? URLDecoder.decode(keyValue[1], "UTF-8") : "";
-                    postValues.put(keyValue[0], value);
+                String[] pairs = clearDeliveredFormData(formData);
+
+                for (String pair : pairs) {
+                    String[] splitedPair = pair.split("=");
+                    String key = splitedPair[0];
+                    String value = (splitedPair.length > 1) ? URLDecoder.decode(splitedPair[1], "UTF-8") : "";
+                    postValues.put(key, value);
                 }
             }
         }
 
         return postValues;
+    }
+
+    private String[] clearDeliveredFormData(String array) {
+        Predicate<String> isBuiltJustByWhiteSpaces = s -> s.chars().allMatch(c -> c == ' ');
+        Predicate<String> containsJustOneEqualSign = s -> 1 == s.chars().filter(c -> c == '=').count();
+
+        return Arrays.stream(array.split("&")).filter(s -> !s.isEmpty())
+                                                    .filter(s -> !isBuiltJustByWhiteSpaces.test(s))
+                                                    .filter(containsJustOneEqualSign)
+                                                    .toArray(String[]::new);
     }
 
     private boolean isProperUser(Roles role, User user) {
