@@ -52,12 +52,13 @@ public class AvailableQuestDao {
             if (result.next()) {
                 String name = result.getString("name");
                 BigInteger value = new BigInteger(result.getString("value"));
+                BigInteger maxValue = new BigInteger(result.getString("max_value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
 
                 QuestCategory questCategory = questCategoryDao.getQuestCategory(categoryId);
 
-                availableQuest = new AvailableQuest(name, questCategory, description, value, id);
+                availableQuest = new AvailableQuest(name, questCategory, description, value, id, maxValue);
             }
 
             result.close();
@@ -73,12 +74,13 @@ public class AvailableQuestDao {
 
         String name = availableQuest.getName();
         BigInteger value = availableQuest.getValue();
+        BigInteger maxValue = availableQuest.getMaxValue();
         Integer categoryId = availableQuest.getQuestCategory().getId();
         String description = availableQuest.getDescription();
         Integer questId = availableQuest.getId();
 
         String sqlQuery = "UPDATE available_quests "
-                + "SET name = ?, value = ?, category_id = ?, description = ? "
+                + "SET name = ?, value = ?, category_id = ?, description = ?, max_value = ? "
                 + "WHERE id = ?;";
 
         try {
@@ -88,7 +90,8 @@ public class AvailableQuestDao {
             stmt.setString(2, value.toString());
             stmt.setInt(3, categoryId);
             stmt.setString(4, description);
-            stmt.setInt(5, questId);
+            stmt.setString(5, maxValue.toString());
+            stmt.setInt(6, questId);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -110,13 +113,14 @@ public class AvailableQuestDao {
             while (result.next()) {
                 String name = result.getString("name");
                 BigInteger value = new BigInteger(result.getString("value"));
+                BigInteger maxValue = new BigInteger(result.getString("max_value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 Integer questId = result.getInt("id");
 
                 QuestCategory questCategory = questCategoryDao.getQuestCategory(categoryId);
 
-                AvailableQuest availableQuest = new AvailableQuest(name, questCategory, description, value, questId);
+                AvailableQuest availableQuest = new AvailableQuest(name, questCategory, description, value, questId, maxValue);
                 availableQuests.add(availableQuest);
             }
 
@@ -133,13 +137,14 @@ public class AvailableQuestDao {
 
         String name = availableQuest.getName();
         BigInteger value = availableQuest.getValue();
+        BigInteger maxValue = availableQuest.getMaxValue();
         Integer categoryId = availableQuest.getQuestCategory().getId();
         String description = availableQuest.getDescription();
         Integer questId = availableQuest.getId();
 
         String sqlQuery = "INSERT INTO available_quests "
-                + "(name, description, value, category_id) "
-                + "VALUES (?, ?, ?, ?);";
+                + "(name, description, value, category_id, max_value) "
+                + "VALUES (?, ?, ?, ?, ?);";
 
         try {
             stmt = connection.prepareStatement(sqlQuery);
@@ -148,6 +153,7 @@ public class AvailableQuestDao {
             stmt.setString(2, description);
             stmt.setString(3, value.toString());
             stmt.setInt(4, categoryId);
+            stmt.setString(5, maxValue.toString());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
