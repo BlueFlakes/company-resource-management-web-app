@@ -128,13 +128,11 @@ public class StudentController {
         Student student = this.studentDao.getStudent(user.getId());
         final BigInteger studentPossessedCoins = student.getPossesedCoins();
         final BigInteger givenCoins = new BigInteger(formData.get("spent-coins-amount"));
-
-        if (isLowerOrEqual(givenCoins, studentPossessedCoins)) {
-
-            final Integer contributionId = parseInt(formData.get("choosen-contribution"));
-            Contribution contribution = this.contributionDao.getContribution(contributionId);
-            BigInteger neededCoinsDiff = getNeededCoinsDiff(contribution);
-
+        final Integer contributionId = parseInt(formData.get("choosen-contribution"));
+        Contribution contribution = this.contributionDao.getContribution(contributionId);
+        BigInteger neededCoinsDiff = getNeededCoinsDiff(contribution);
+        
+        if (isLowerOrEqual(givenCoins, studentPossessedCoins) || isLowerOrEqual(neededCoinsDiff, studentPossessedCoins)) {
             final BigInteger takenCoins = isHigherOrEqual(neededCoinsDiff, givenCoins) ? givenCoins : neededCoinsDiff;
             student.setPossesedCoins(studentPossessedCoins.subtract(takenCoins));
             contribution.addCoins(takenCoins);
