@@ -8,5 +8,5 @@ for(var i = 0; i < inputs.length; i++){
     if(chatMessage != null) {
         chatMessage.setAttribute("pattern", "^[a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-\\?]+[a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ \\-\\?]*$");
     }
-    
+
 }
