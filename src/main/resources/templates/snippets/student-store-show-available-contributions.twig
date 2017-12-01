@@ -1,6 +1,7 @@
 <table>
     <thead>
     <tr>
+        <th>Item</th>
         <th>Contribution name</th>
         <th>Author</th>
         <th>Collected coins</th>
@@ -10,6 +11,7 @@
     <tbody>
     {% for contribution in available_contributions %}
         <tr>
+            <td>{{ contribution.getShopArtifact().getName() }}</td>
             <td>{{ contribution.getName() }}</td>
             <td>{{ contribution.getCreator().getName() }}</td>
             <td>{{ contribution.getGivenCoins() }}</td>
