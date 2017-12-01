@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Random;
 
 public class MainController {
 
@@ -17,7 +18,9 @@ public class MainController {
         this.school = school;
     }
 
-    private Integer port = 8000;
+    private final Integer START_PORT = 8000;
+    private final Integer RANGE = 2000;
+    private Integer port = new Random().nextInt(RANGE) + START_PORT;
 
     public void startServer() throws IOException {
 
