@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
 import com.codecool.krk.lucidmotors.queststore.dao.BoughtArtifactDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
@@ -62,6 +63,10 @@ public class BoughtArtifact extends AbstractArtifact {
             return String.format("name: %s,  date: %s, %s", this.getName(),
                     dateString, "isn't used");
         }
+    }
+
+    public List<Student> getOwners() throws DaoException {
+        return ArtifactOwnersDao.getDao().getOwners(this);
     }
 
     public void save(List<Student> owners) throws DaoException {

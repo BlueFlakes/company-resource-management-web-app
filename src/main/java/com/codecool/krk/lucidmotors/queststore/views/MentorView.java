@@ -154,7 +154,7 @@ public class MentorView {
             List<StackedBoughtArtifact> stackedAvailable =
                     StackedBoughtArtifact.getUserAvailableStackedArtifacts(stackedBoughtArtifacts);
 
-            model.with("artifacts", stackedAvailable);
+            model.with("artifacts", boughtArtifacts);
             model.with("is_disabled", true);
             model.with("phase", 2);
             model.with("selected_student_id", studentId);
