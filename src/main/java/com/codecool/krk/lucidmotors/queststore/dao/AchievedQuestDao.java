@@ -5,6 +5,7 @@ import com.codecool.krk.lucidmotors.queststore.models.QuestCategory;
 import com.codecool.krk.lucidmotors.queststore.models.AchievedQuest;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,17 +14,33 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AchievedQuestDao {
 
+    private static AchievedQuestDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
-    private StudentDao studentDao = new StudentDao(new ClassDao());
+    private QuestCategoryDao questCategoryDao = QuestCategoryDao.getDao();
+    private StudentDao studentDao = StudentDao.getDao();
 
-    public AchievedQuestDao() throws DaoException {
+    private AchievedQuestDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static AchievedQuestDao getDao() throws DaoException {
+        if (dao == null) {
+
+            synchronized (AvailableQuestDao.class) {
+
+                if(dao == null) {
+                    dao = new AchievedQuestDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     private Date parseDate(String dateString) throws ParseException {
@@ -54,7 +71,7 @@ public class AchievedQuestDao {
 
             if (result.next()) {
                 String name = result.getString("name");
-                Integer value = result.getInt("value");
+                BigInteger value = new BigInteger(result.getString("value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 Integer ownerId = result.getInt("owner_id");
@@ -79,9 +96,9 @@ public class AchievedQuestDao {
 
     }
 
-    public ArrayList<AchievedQuest> getAllQuests() throws DaoException {
+    public List<AchievedQuest> getAllQuests() throws DaoException {
 
-        ArrayList<AchievedQuest> achievedQuests = new ArrayList<>();
+        List<AchievedQuest> achievedQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM achieved_quests;";
 
         try {
@@ -92,7 +109,7 @@ public class AchievedQuestDao {
             while (result.next()) {
                 Integer id = result.getInt("id");
                 String name = result.getString("name");
-                Integer value = result.getInt("value");
+                BigInteger value = new BigInteger(result.getString("value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 Integer ownerId = result.getInt("owner_id");
@@ -118,10 +135,10 @@ public class AchievedQuestDao {
         return achievedQuests;
     }
 
-    public ArrayList<AchievedQuest> getAllQuestsByStudent(Student student) throws DaoException {
+    public List<AchievedQuest> getAllQuestsByStudent(Student student) throws DaoException {
 
         Integer ownerId = student.getId();
-        ArrayList<AchievedQuest> achievedQuests = new ArrayList<>();
+        List<AchievedQuest> achievedQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM achieved_quests WHERE owner_id = ?;";
 
         try {
@@ -133,7 +150,7 @@ public class AchievedQuestDao {
             while (result.next()) {
                 Integer id = result.getInt("id");
                 String name = result.getString("name");
-                Integer value = result.getInt("value");
+                BigInteger value = new BigInteger(result.getString("value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 String achieveDateString = result.getString("date");
@@ -160,7 +177,7 @@ public class AchievedQuestDao {
 
     public void saveQuest(AchievedQuest achievedQuest) throws DaoException {
         String name = achievedQuest.getName();
-        Integer value = achievedQuest.getValue();
+        BigInteger value = achievedQuest.getValue();
         Integer categoryId = achievedQuest.getQuestCategory().getId();
         String description = achievedQuest.getDescription();
         Integer ownerId = achievedQuest.getOwner().getId();
@@ -178,7 +195,7 @@ public class AchievedQuestDao {
 
             stmt.setString(1, name);
             stmt.setString(2, description);
-            stmt.setInt(3, value);
+            stmt.setString(3, value.toString());
             stmt.setInt(4, ownerId);
             stmt.setString(5, achieveDateString);
             stmt.setInt(6, categoryId);

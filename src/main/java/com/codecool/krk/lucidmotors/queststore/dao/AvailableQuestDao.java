@@ -4,21 +4,38 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.QuestCategory;
 import com.codecool.krk.lucidmotors.queststore.models.AvailableQuest;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AvailableQuestDao {
 
+    private static AvailableQuestDao dao;
     private final Connection connection;
     private PreparedStatement stmt = null;
-    private QuestCategoryDao questCategoryDao = new QuestCategoryDao();
+    private QuestCategoryDao questCategoryDao = QuestCategoryDao.getDao();
 
-    public AvailableQuestDao() throws DaoException {
+    private AvailableQuestDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static AvailableQuestDao getDao() throws DaoException {
+        if (dao == null) {
+
+            synchronized (AvailableQuestDao.class) {
+
+                if(dao == null) {
+                    dao = new AvailableQuestDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public AvailableQuest getQuest(Integer id) throws DaoException {
@@ -34,13 +51,14 @@ public class AvailableQuestDao {
 
             if (result.next()) {
                 String name = result.getString("name");
-                Integer value = result.getInt("value");
+                BigInteger value = new BigInteger(result.getString("value"));
+                BigInteger maxValue = new BigInteger(result.getString("max_value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
 
                 QuestCategory questCategory = questCategoryDao.getQuestCategory(categoryId);
 
-                availableQuest = new AvailableQuest(name, questCategory, description, value, id);
+                availableQuest = new AvailableQuest(name, questCategory, description, value, id, maxValue);
             }
 
             result.close();
@@ -55,23 +73,25 @@ public class AvailableQuestDao {
     public void updateQuest(AvailableQuest availableQuest) throws DaoException {
 
         String name = availableQuest.getName();
-        Integer value = availableQuest.getValue();
+        BigInteger value = availableQuest.getValue();
+        BigInteger maxValue = availableQuest.getMaxValue();
         Integer categoryId = availableQuest.getQuestCategory().getId();
         String description = availableQuest.getDescription();
         Integer questId = availableQuest.getId();
 
         String sqlQuery = "UPDATE available_quests "
-                + "SET name = ?, value = ?, category_id = ?, description = ? "
+                + "SET name = ?, value = ?, category_id = ?, description = ?, max_value = ? "
                 + "WHERE id = ?;";
 
         try {
             stmt = connection.prepareStatement(sqlQuery);
 
             stmt.setString(1, name);
-            stmt.setInt(2, value);
+            stmt.setString(2, value.toString());
             stmt.setInt(3, categoryId);
             stmt.setString(4, description);
-            stmt.setInt(5, questId);
+            stmt.setString(5, maxValue.toString());
+            stmt.setInt(6, questId);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -80,9 +100,9 @@ public class AvailableQuestDao {
 
     }
 
-    public ArrayList<AvailableQuest> getAllQuests() throws DaoException {
+    public List<AvailableQuest> getAllQuests() throws DaoException {
 
-        ArrayList<AvailableQuest> availableQuests = new ArrayList<>();
+        List<AvailableQuest> availableQuests = new ArrayList<>();
         String sqlQuery = "SELECT * FROM available_quests;";
 
         try {
@@ -92,14 +112,15 @@ public class AvailableQuestDao {
 
             while (result.next()) {
                 String name = result.getString("name");
-                Integer value = result.getInt("value");
+                BigInteger value = new BigInteger(result.getString("value"));
+                BigInteger maxValue = new BigInteger(result.getString("max_value"));
                 Integer categoryId = result.getInt("category_id");
                 String description = result.getString("description");
                 Integer questId = result.getInt("id");
 
                 QuestCategory questCategory = questCategoryDao.getQuestCategory(categoryId);
 
-                AvailableQuest availableQuest = new AvailableQuest(name, questCategory, description, value, questId);
+                AvailableQuest availableQuest = new AvailableQuest(name, questCategory, description, value, questId, maxValue);
                 availableQuests.add(availableQuest);
             }
 
@@ -115,22 +136,24 @@ public class AvailableQuestDao {
     public void save(AvailableQuest availableQuest) throws DaoException {
 
         String name = availableQuest.getName();
-        Integer value = availableQuest.getValue();
+        BigInteger value = availableQuest.getValue();
+        BigInteger maxValue = availableQuest.getMaxValue();
         Integer categoryId = availableQuest.getQuestCategory().getId();
         String description = availableQuest.getDescription();
         Integer questId = availableQuest.getId();
 
         String sqlQuery = "INSERT INTO available_quests "
-                + "(name, description, value, category_id) "
-                + "VALUES (?, ?, ?, ?);";
+                + "(name, description, value, category_id, max_value) "
+                + "VALUES (?, ?, ?, ?, ?);";
 
         try {
             stmt = connection.prepareStatement(sqlQuery);
 
             stmt.setString(1, name);
             stmt.setString(2, description);
-            stmt.setInt(3, value);
+            stmt.setString(3, value.toString());
             stmt.setInt(4, categoryId);
+            stmt.setString(5, maxValue.toString());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -138,5 +161,4 @@ public class AvailableQuestDao {
         }
 
     }
-
 }

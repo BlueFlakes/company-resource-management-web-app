@@ -1,0 +1,32 @@
+<table>
+    <thead>
+    <tr>
+        <th>Item</th>
+        <th>Contribution name</th>
+        <th>Author</th>
+        <th>Collected coins</th>
+        <th>Expected coins</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for contribution in available_contributions %}
+        <tr>
+            <td>{{ contribution.getShopArtifact().getName() }}</td>
+            <td>{{ contribution.getName() }}</td>
+            <td>{{ contribution.getCreator().getName() }}</td>
+            <td>{{ contribution.getGivenCoins() }}</td>
+            <td>{{ contribution.getShopArtifact().getPrice() }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<form method="post">
+    <label for="#student-store-buy-artifact">Choose Contribution</label>
+    <select name="choosen-contribution" id="#student-store-buy-artifact" required>
+        {% for contribution in available_contributions %}
+            <option value="{{ contribution.getId() }}">{{ contribution.getName() }}</option>
+        {% endfor %}
+    </select>
+    <input type="number" min="1" name="spent-coins-amount" placeholder="amount" required>
+    <input type="submit" value="Submit">
+</form>

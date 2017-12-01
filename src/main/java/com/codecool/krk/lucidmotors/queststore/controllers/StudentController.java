@@ -1,90 +1,180 @@
 package com.codecool.krk.lucidmotors.queststore.controllers;
 
-import com.codecool.krk.lucidmotors.queststore.dao.AchievedQuestDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ArtifactOwnersDao;
-import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
-import com.codecool.krk.lucidmotors.queststore.dao.StudentDao;
-import com.codecool.krk.lucidmotors.queststore.enums.StudentControllerMenuOptions;
+import com.codecool.krk.lucidmotors.queststore.matchers.Compare;
+import com.codecool.krk.lucidmotors.queststore.matchers.CustomMatchers;
+import com.codecool.krk.lucidmotors.queststore.dao.*;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
-import com.codecool.krk.lucidmotors.queststore.interfaces.UserController;
-import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
-import com.codecool.krk.lucidmotors.queststore.models.School;
-import com.codecool.krk.lucidmotors.queststore.models.Student;
-import com.codecool.krk.lucidmotors.queststore.models.User;
-import com.codecool.krk.lucidmotors.queststore.views.StudentView;
-import com.codecool.krk.lucidmotors.queststore.views.UserInterface;
+import com.codecool.krk.lucidmotors.queststore.models.*;
 
-import java.sql.SQLException;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
+
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isHigherOrEqual;
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isLowerOrEqual;
+import static java.lang.Integer.parseInt;
+
+public class StudentController {
+
+    private ArtifactOwnersDao artifactOwnersDao;
+    private ShopArtifactDao shopArtifactDao;
+    private StudentDao studentDao;
+    private ContributionDao contributionDao;
+
+    public StudentController() throws DaoException {
+
+        this.shopArtifactDao = ShopArtifactDao.getDao();
+        this.artifactOwnersDao = ArtifactOwnersDao.getDao();
+        this.studentDao = StudentDao.getDao();
+        this.contributionDao = new ContributionDao();
+    }
+
+    public Student getStudent(Integer id) throws DaoException {
+        return this.studentDao.getStudent(id);
+    }
+
+    public List<BoughtArtifact> getWallet(User student) throws DaoException {
+        return this.artifactOwnersDao.getArtifacts(student);
+    }
+
+    public List<ShopArtifact> getShopArtifacts() throws DaoException {
+        return this.shopArtifactDao.getAllArtifacts();
+    }
+
+    public boolean buyArtifact(Map<String, String> formData, User user) throws DaoException {
+        final String key = "choosen-artifact";
+        Integer artifactId = parseInt(formData.get(key));
+
+        Student student = this.studentDao.getStudent(user.getId());
+        ShopArtifact shopArtifact = shopArtifactDao.getArtifact(artifactId);
+
+        BigInteger artifactPrice = shopArtifact.getPrice();
+        BigInteger studentPossesedCoins = student.getPossesedCoins();
+
+        if (isHigherOrEqual(studentPossesedCoins, artifactPrice)) {
+            student.setPossesedCoins(studentPossesedCoins.subtract(artifactPrice));
+
+            new BoughtArtifact(shopArtifact).save(new ArrayList<>(Collections.singletonList(student)));
+            student.update();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public List<Contribution> getAvailableContributions() throws DaoException {
+        return this.contributionDao.getOpenContributions();
+    }
+
+    public String addNewContribution(Map<String, String> formData, User user) throws DaoException {
+        String contributionName = formData.get("contribution-name");
+        Integer choosenArtifactId = parseInt(formData.get("choosen-artifact-for-contribution"));
+
+        List<Contribution> openedContributionsByName = this.contributionDao.getContributionByName(contributionName)
+                                                                     .stream()
+                                                                     .filter(contribution -> contribution.getStatus().equals("open"))
+                                                                     .collect(Collectors.toList());
 
 
-public class StudentController extends AbstractUserController<Student> {
+        if (openedContributionsByName.isEmpty()) {
+            ShopArtifact shopArtifact = this.shopArtifactDao.getArtifact(choosenArtifactId);
+            Student student = this.studentDao.getStudent(user.getId());
+            Contribution contribution = new Contribution(contributionName, student, shopArtifact);
+            this.contributionDao.save(contribution);
 
-    private final StudentView studentView = new StudentView();
+            String message = String.format("%s open contribution for %s.", student.getName(), shopArtifact.getName());
+            new ChatMessage("system", message, "System messages").save();
 
-    protected void handleUserRequest(String userChoice) throws DaoException {
-
-        StudentControllerMenuOptions chosenOption = getEnumValue(userChoice);
-
-        switch (chosenOption) {
-
-            case START_STORE_CONTROLLER:
-                startStoreController();
-                break;
-
-            case SHOW_LEVEL:
-                showLevel();
-                break;
-
-            case SHOW_WALLET:
-                showWallet();
-                break;
-
-            case EXIT:
-                break;
-
-            case DEFAULT:
-                handleNoSuchCommand();
-                break;
+            return "Succesfully added new contribution!";
+        } else {
+            return "Sorry but this name is already used.";
         }
     }
 
-    private StudentControllerMenuOptions getEnumValue(String userChoice) {
-        StudentControllerMenuOptions chosenOption;
+    public List<Contribution> getThisUserContributions(User user) throws DaoException {
+        List<Contribution> contributions = this.contributionDao.getOpenContributions();
+        BiPredicate<Integer, Integer> areEqual = Objects::equals;
 
-        try {
-            chosenOption = StudentControllerMenuOptions.values()[Integer.parseInt(userChoice)];
-        } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            chosenOption = StudentControllerMenuOptions.DEFAULT;
+        return contributions.stream()
+                            .filter(c -> areEqual.test(c.getCreator().getId(), user.getId()))
+                            .collect(Collectors.toList());
+    }
+
+    public boolean closeUserContribution(Map<String, String> formData) throws DaoException {
+        final String contributionNameKey = "choosen-contribution-to-close";
+
+        if (formData.containsKey(contributionNameKey)) {
+            Integer contributionId = parseInt(formData.get(contributionNameKey));
+            Contribution contribution = this.contributionDao.getContribution(contributionId);
+
+            contribution.setStatus("closed");
+            contribution.update();
+
+            Map<Student, BigInteger> contributorsShares = this.contributionDao.getContributorsShares(contributionId);
+            giveMoneyBackToContributors(contributorsShares);
+            return true;
         }
 
-        return chosenOption;
+        return false;
     }
 
-    protected void showMenu() {
-        this.studentView.printStudentMenu();
+    private void giveMoneyBackToContributors(Map<Student, BigInteger> contributorsShares) throws DaoException {
+        for (Map.Entry<Student, BigInteger> entry : contributorsShares.entrySet()) {
+            Student student = entry.getKey();
+            BigInteger spentCoinsAmount = entry.getValue();
+            student.setPossesedCoins(student.getPossesedCoins().add(spentCoinsAmount));
+            student.update();
+        }
     }
 
-    private void showWallet() throws DaoException {
+    public boolean takePartInContribution(Map<String, String> formData, User user) throws DaoException {
+        Student student = this.studentDao.getStudent(user.getId());
+        final BigInteger studentPossessedCoins = student.getPossesedCoins();
+        final BigInteger givenCoins = new BigInteger(formData.get("spent-coins-amount"));
+        final Integer contributionId = parseInt(formData.get("choosen-contribution"));
+        Contribution contribution = this.contributionDao.getContribution(contributionId);
+        BigInteger neededCoinsDiff = getNeededCoinsDiff(contribution);
+        
+        if (isLowerOrEqual(givenCoins, studentPossessedCoins) || isLowerOrEqual(neededCoinsDiff, studentPossessedCoins)) {
+            final BigInteger takenCoins = isHigherOrEqual(neededCoinsDiff, givenCoins) ? givenCoins : neededCoinsDiff;
+            student.setPossesedCoins(studentPossessedCoins.subtract(takenCoins));
+            contribution.addCoins(takenCoins);
 
-        String accountBalance = Integer.toString(this.user.getPossesedCoins());
-        userInterface.println("Balance: " + accountBalance);
-        userInterface.print(new ArtifactOwnersDao().getArtifacts(this.user).iterator());
-        userInterface.println("Achieved quests: ");
+            student.update();
+            contribution.update();
 
-        userInterface.print(new AchievedQuestDao().getAllQuestsByStudent(this.user).iterator());
+            this.contributionDao.saveContributor(user, givenCoins, contribution);
+            checkContributionStatus(contribution);
+            return true;
+        }
 
-        this.userInterface.pause();
+        return false;
     }
 
-    private void showLevel() throws DaoException {
+    private BigInteger getNeededCoinsDiff(Contribution contribution) {
+        BigInteger artifactPrice = contribution.getShopArtifact().getPrice();
+        BigInteger collectedCoins = contribution.getGivenCoins();
 
-        Integer level = new ExperienceLevelsDao().getExperienceLevels().computeStudentLevel(this.user.getEarnedCoins());
-        this.userInterface.println(String.format("Your level: %d", level));
-        this.userInterface.pause();
+        return artifactPrice.subtract(collectedCoins);
     }
 
-    private void startStoreController() throws DaoException {
+    private void checkContributionStatus(Contribution contribution) throws DaoException {
+        if (contribution.getShopArtifact().getPrice().equals(contribution.getGivenCoins())) {
+            contribution.setStatus("closed");
+            List<Student> contributors = contributionDao.getContributors(contribution.getId());
 
-        new StudentStoreController().startController(this.user, this.school);
+            BoughtArtifact boughtArtifact = new BoughtArtifact(contribution.getShopArtifact());
+            BoughtArtifactDao.getDao().save(boughtArtifact, contributors);
+
+            contribution.update();
+        }
+    }
+
+    public Integer getUserLevel(User user) throws DaoException {
+        ExperienceLevelsDao experienceLevelsDao = new ExperienceLevelsDao();
+        return this.studentDao.getStudent(user.getId()).getLevel(experienceLevelsDao.getExperienceLevels());
     }
 }

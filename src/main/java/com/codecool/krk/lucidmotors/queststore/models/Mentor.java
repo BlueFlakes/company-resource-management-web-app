@@ -4,11 +4,13 @@ import java.sql.SQLException;
 import com.codecool.krk.lucidmotors.queststore.dao.ClassDao;
 import com.codecool.krk.lucidmotors.queststore.dao.MentorDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Mentor extends User {
     
-    private final SchoolClass class_;
-    private final MentorDao mentorDao = new MentorDao(new ClassDao());
+    private SchoolClass class_;
+    private final MentorDao mentorDao = MentorDao.getDao();
 
 
     public Mentor(String name, String login, String password, String email, SchoolClass class_) throws DaoException {
@@ -26,6 +28,10 @@ public class Mentor extends User {
 
     public SchoolClass getClas() {
         return this.class_;
+    }
+
+    public void setSchoolClass(SchoolClass class_) {
+        this.class_ = class_;
     }
 
     public String getMentorSaveString() {
@@ -51,6 +57,13 @@ public class Mentor extends User {
 
     public void update() throws DaoException {
         mentorDao.update(this);
+    }
+
+    public JSONObject toJSON() {
+        JSONObject mentorJson = super.toJSON();
+        mentorJson.put("class_id", this.class_.getId());
+        mentorJson.put("class_name", this.class_.getName());
+        return mentorJson;
     }
 
 }

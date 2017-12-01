@@ -2,21 +2,37 @@ package com.codecool.krk.lucidmotors.queststore.dao;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
+import com.codecool.krk.lucidmotors.queststore.models.Contribution;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArtifactCategoryDao {
-
+    private static ArtifactCategoryDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
-    public ArtifactCategoryDao() throws DaoException {
+    private ArtifactCategoryDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static ArtifactCategoryDao getDao() throws DaoException{
+        if (dao == null) {
+
+            synchronized (ArtifactCategoryDao.class) {
+
+                if(dao == null) {
+                    dao = new ArtifactCategoryDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public ArtifactCategory getArtifactCategory(Integer id) throws DaoException {
@@ -69,9 +85,9 @@ public class ArtifactCategoryDao {
         return artifactCategory;
     }
 
-    public ArrayList<ArtifactCategory> getAllArtifactCategories() throws DaoException {
+    public List<ArtifactCategory> getAllArtifactCategories() throws DaoException {
 
-        ArrayList<ArtifactCategory> artifactCategories = new ArrayList<>();
+        List<ArtifactCategory> artifactCategories = new ArrayList<>();
         String sqlQuery = "SELECT * FROM artifact_categories";
 
         try {
@@ -109,4 +125,27 @@ public class ArtifactCategoryDao {
 
     }
 
+    public ArtifactCategory getArtifactByName(String name) throws DaoException {
+        String sqlQuery = "SELECT * FROM artifact_categories WHERE name LIKE ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                String foundName = result.getString("name");
+                Integer id = result.getInt("id");
+                return new ArtifactCategory(foundName, id);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return null;
+    }
 }

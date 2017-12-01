@@ -1,0 +1,26 @@
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Amount</th>
+        <th>Name</th>
+        <th>State</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for artifact in stacked_bought_artifacts %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ artifact.getAmount() }}</td>
+            <td>{{ artifact.getName() }}</td>
+
+            {%  if artifact.isUsed() %}
+                <td>used</td>
+            {% else %}
+                <td>available</td>
+            {% endif %}
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

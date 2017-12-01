@@ -1,0 +1,58 @@
+<form method="post">
+    <label for="#mentor-mark-bought-artifact-choose-student">{% if phase == 1 %}Choose{% endif %} Student</label>
+    <select {% if phase == 2 %} disabled {% endif %} name="student_id" id="#mentor-mark-bought-artifact-choose-student" required>
+        {% for student in students %}
+            <option {% if selected_student_id == student.getId() %} selected {% endif %} value="{{student.getId()}}">{{student.getName()}}</option>
+        {% endfor %}
+    </select>
+    {% if phase == 2 %}
+    <label for="#mentor-mark-bought-artifact-choose-artifact">Choose student artifact</label>
+    <select name="artifact_id" id="#mentor-mark-bought-artifact-choose-artifact" required>
+        {% for artifact in artifacts %}
+            <option value="{{artifact.getId()}}">{% if artifact.getOwners().size() > 1 %}C -> {% endif %}{{artifact.getName()}}</option>
+        {% endfor %}
+    </select>
+    {% endif %}
+    <input type="submit" value="Submit">
+</form>
+{% if phase == 2 %}
+    <p id="#artifact-owners-label">Owners: </p>
+    {% for artifact in artifacts %}
+        <table name="#artifact-owners-tables" id="#artfact-{{ artifact.getId() }}-owner">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody id="#artifact-{{ artifact.getId() }}-owners-list">
+        {% for owner in artifact.getOwners() %}
+            <tr>
+                <td>{{ owner.getName() }}</td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endif %}
+
+<script>
+    document.getElementById("#mentor-mark-bought-artifact-choose-artifact").addEventListener("change", showTable);
+    showTable();
+    function showTable() {
+        var tables = document.getElementsByName("#artifact-owners-tables");
+        for(var i = 0; i < tables.length; i++) {
+            tables[i].style.display = 'none';
+        }
+        document.getElementById("#artifact-owners-label").style.display = 'none';
+
+        var id = document.getElementById("#mentor-mark-bought-artifact-choose-artifact").value;
+        var tableId = "#artfact-" + id + "-owner";
+
+        var ownersAmount = document.getElementById("#artifact-" + id +"-owners-list").childElementCount;
+        if(ownersAmount > 1) {
+            document.getElementById(tableId).style.display = 'block';
+            document.getElementById("#artifact-owners-label").style.display = 'block';
+        }
+
+    }
+</script>

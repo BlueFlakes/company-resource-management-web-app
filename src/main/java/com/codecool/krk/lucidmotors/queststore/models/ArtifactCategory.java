@@ -6,7 +6,7 @@ import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 public class ArtifactCategory {
     private String name;
     private Integer id;
-    ArtifactCategoryDao artifactCategoryDao = new ArtifactCategoryDao();
+    ArtifactCategoryDao artifactCategoryDao = ArtifactCategoryDao.getDao();
 
     public ArtifactCategory(String name) throws DaoException {
         this.name = name;

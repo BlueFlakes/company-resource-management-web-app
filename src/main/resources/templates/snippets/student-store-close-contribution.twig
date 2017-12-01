@@ -1,0 +1,9 @@
+<form method="post">
+    <label for="#student-store-buy-artifact">Which contribution I should close</label>
+    <select name="choosen-contribution-to-close" id="#student-store-buy-artifact" required>
+        {% for contribution in user_contributions %}
+            <option value="{{ contribution.getId() }}">{{ contribution.getName() }} <> Artifact:  {{ contribution.getShopArtifact().getName() }} <> Collected coins: {{ contribution.getGivenCoins() }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>

@@ -1,4 +1,7 @@
 Store Menu
 List all artifacts
 Buy artifact
+Spend your coins in contribution
+Create new contribution
+Close your contribution
 Exit

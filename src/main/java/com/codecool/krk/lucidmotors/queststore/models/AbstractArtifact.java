@@ -1,14 +1,16 @@
 package com.codecool.krk.lucidmotors.queststore.models;
 
+import java.math.BigInteger;
+
 public abstract class AbstractArtifact {
 
     private String name;
-    private Integer price;
+    private BigInteger price;
     private ArtifactCategory artifactCategory;
     private String description;
     private Integer id;
 
-    public AbstractArtifact(String name, Integer price, ArtifactCategory artifactCategory, String description) {
+    public AbstractArtifact(String name, BigInteger price, ArtifactCategory artifactCategory, String description) {
 
         this.name = name;
         this.price = price;
@@ -16,7 +18,7 @@ public abstract class AbstractArtifact {
         this.description = description;
     }
 
-    public AbstractArtifact(String name, Integer price, ArtifactCategory artifactCategory, String description, Integer id) {
+    public AbstractArtifact(String name, BigInteger price, ArtifactCategory artifactCategory, String description, Integer id) {
 
         this.name = name;
         this.price = price;
@@ -33,16 +35,20 @@ public abstract class AbstractArtifact {
         this.name = name;
     }
 
-    public Integer getPrice() {
+    public BigInteger getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigInteger price) {
         this.price = price;
     }
 
     public ArtifactCategory getArtifactCategory() {
         return artifactCategory;
+    }
+
+    public String getArtifactCategoryName() {
+        return getArtifactCategory().getName();
     }
 
     public void setArtifactCategory(ArtifactCategory artifactCategory) {

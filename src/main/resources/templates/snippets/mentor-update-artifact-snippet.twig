@@ -1,0 +1,25 @@
+<form method="post">
+    <label for="#mentor-update-artifact-choose-artifact">Choose artifact to update</label>
+    <select name="artifact_id" id="#mentor-update-artifact-choose-artifact" autofocus required>
+        <option disabled selected value> choose artifact </option>
+        {% for artifact in artifacts %}
+        <option value="{{artifact.getId()}}">{{artifact.getName()}}</option>
+        {% endfor %}
+    </select>
+    <label for="#mentor-update-artifact-new-name">Name</label>
+    <input type="text" name="name" id="#mentor-update-artifact-new-name" required>
+    <label for="#mentor-update-artifact-new-description">Description</label>
+    <textarea name="description" id="#mentor-update-artifact-new-description" required></textarea>
+    <label for="#mentor-update-artifact-new-price">Price</label>
+    <input type="number" name="price" id="#mentor-update-artifact-new-price" required min="0">
+    <label for="#mentor-update-artifact-new-artifact-category">Artifact category</label>
+    <select name="category_id" id="#mentor-update-artifact-new-artifact-category" required>
+        <option disabled selected value> choose category </option>
+        {% for category in artifact_categories %}
+        <option value={{category.getId()}}>{{category.getName()}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>
+
+<script src="/static/js/update_artifact.js"></script>

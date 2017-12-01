@@ -1,6 +1,7 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.models.ArtifactCategory;
 import com.codecool.krk.lucidmotors.queststore.models.QuestCategory;
 
 import java.sql.Connection;
@@ -8,15 +9,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuestCategoryDao {
 
+    private static QuestCategoryDao dao = null;
     private final Connection connection;
     private PreparedStatement stmt = null;
 
-    public QuestCategoryDao() throws DaoException {
+    private QuestCategoryDao() throws DaoException {
 
         this.connection = DatabaseConnection.getConnection();
+    }
+
+    public static QuestCategoryDao getDao() throws DaoException {
+
+        if (dao == null) {
+
+            synchronized (QuestCategoryDao.class) {
+
+                if (dao == null) {
+                    dao = new QuestCategoryDao();
+                }
+            }
+        }
+
+        return dao;
     }
 
     public QuestCategory getQuestCategory(Integer id) throws DaoException {
@@ -44,9 +62,9 @@ public class QuestCategoryDao {
         return questCategory;
     }
 
-    public ArrayList<QuestCategory> getAllQuestCategories() throws DaoException {
+    public List<QuestCategory> getAllQuestCategories() throws DaoException {
 
-        ArrayList<QuestCategory> questCategories = new ArrayList<>();
+        List<QuestCategory> questCategories = new ArrayList<>();
         String sqlQuery = "SELECT * FROM quest_categories";
 
         try {
@@ -84,4 +102,26 @@ public class QuestCategoryDao {
 
     }
 
+    public QuestCategory getQuestByName(String name) throws DaoException {
+        String sqlQuery = "SELECT * FROM quest_categories WHERE name LIKE ?;";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, name);
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                String foundName = result.getString("name");
+                Integer id = result.getInt("id");
+                return new QuestCategory(foundName, id);
+            }
+
+            result.close();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new DaoException(this.getClass().getName() + " class caused a problem!");
+        }
+
+        return null;
+    }
 }

@@ -1,0 +1,20 @@
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for artifact in shop_artifacts %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ artifact.getName() }}</td>
+            <td>{{ artifact.getDescription() }}</td>
+            <td>{{ artifact.getPrice() }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -2,132 +2,80 @@ package com.codecool.krk.lucidmotors.queststore.controllers;
 
 import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
+import com.codecool.krk.lucidmotors.queststore.exceptions.IncorrectStateException;
 import com.codecool.krk.lucidmotors.queststore.models.ExperienceLevels;
-import com.codecool.krk.lucidmotors.queststore.enums.ExperienceLevelsMenuOptions;
-import com.codecool.krk.lucidmotors.queststore.models.Mentor;
-import com.codecool.krk.lucidmotors.queststore.views.ManagerView;
+import com.codecool.krk.lucidmotors.queststore.models.OperationScore;
 
-import java.util.ArrayList;
+import java.math.BigInteger;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
-public class ExperienceLevelsController extends AbstractUserController<Mentor> {
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isHigherOrEqual;
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.isLowerOrEqual;
+import static java.lang.Integer.parseInt;
 
-    private ExperienceLevelsDao experienceLevelsDao = new ExperienceLevelsDao();
-    private final ManagerView managerView = new ManagerView();
+public class ExperienceLevelsController {
+    private final ExperienceLevelsDao experienceLevelsDao;
 
     public ExperienceLevelsController() throws DaoException {
-
+        this.experienceLevelsDao = new ExperienceLevelsDao();
     }
 
-    /**
-     * Switches between menu options.
-     *
-     * @param choice
-     */
-    protected void handleUserRequest(String userChoice) throws DaoException {
-        ExperienceLevelsMenuOptions chosenOption = getEnumValue(userChoice);
-        switch (chosenOption) {
+    public TreeMap<Integer, BigInteger> getLevels() throws DaoException {
+        ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
+        return experienceLevels.getLevels();
+    }
 
-            case CREATE_NEW_LEVEL:
-                createNewLevel();
-                break;
+    public OperationScore<ExperienceLevels.UpdateLevel> updateLevel
+            (Map<String, String> formData, String coinsKey, String levelsKey)
+            throws DaoException, IncorrectStateException {
 
-            case UPDATE_LEVEL:
-                updateLevel();
-                break;
+        ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
 
-            case SHOW_LEVELS:
-                showLevels();
-                break;
+        BigInteger coins = new BigInteger(formData.get(coinsKey));
+        int level = parseInt(formData.get(levelsKey));
+        ExperienceLevels.UpdateLevel status = experienceLevels.updateLevel(coins, level);
 
-            case EXIT:
-                break;
+        return chooseProperState(status, experienceLevels);
+    }
 
-            case DEFAULT:
-                handleNoSuchCommand();
-                break;
+    private OperationScore<ExperienceLevels.UpdateLevel> chooseProperState
+            (ExperienceLevels.UpdateLevel status, ExperienceLevels experienceLevels)
+            throws DaoException, IncorrectStateException {
+
+        if (status.equals(ExperienceLevels.UpdateLevel.SUCCESSFULLY)) {
+            experienceLevels.updateExperienceLevels();
+            String message = "Succesfully updated level. Great!";
+            return new OperationScore<>(ExperienceLevels.UpdateLevel.SUCCESSFULLY, message);
+
+        } else if (status.equals(ExperienceLevels.UpdateLevel.TOO_HIGH)) {
+            String message = "Delivered coins number is too big.";
+            return new OperationScore<>(ExperienceLevels.UpdateLevel.TOO_HIGH, message);
+
+        } else if (status.equals(ExperienceLevels.UpdateLevel.TOO_LOW)) {
+            String message = "Delivered too low amount of coins.";
+            return new OperationScore<>(ExperienceLevels.UpdateLevel.TOO_LOW, message);
+
+        } else {
+            throw new IncorrectStateException("ERROR ~ Update levels failed.");
         }
-
-        this.userInterface.pause();
     }
 
-    protected void showMenu() {
-        this.managerView.printExperienceLevelsMenu();
-    }
+    public boolean createNewLevel(Map<String, String> formData, String coinsKey) throws DaoException {
 
-    private ExperienceLevelsMenuOptions getEnumValue(String userChoice) {
-        ExperienceLevelsMenuOptions chosenOption;
-
-        try {
-            chosenOption = ExperienceLevelsMenuOptions.values()[Integer.parseInt(userChoice)];
-        } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            chosenOption = ExperienceLevelsMenuOptions.DEFAULT;
-        }
-
-        return chosenOption;
-    }
-
-    /**
-     * Gathers data about new level and insert it into database.
-     */
-    private void createNewLevel() throws DaoException {
-        this.showLevels();
-
-        ExperienceLevels experienceLevels = this.experienceLevelsDao
-                                   .getExperienceLevels();
-
+        ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
+        BigInteger coins = new BigInteger(formData.get(coinsKey));
 
         Integer nextLevel = experienceLevels.getLevels().size() + 1;
 
-        this.userInterface.println(String.format("Provide coins amount for level %d%n", nextLevel));
-        String[] questions = {"needed coins: "};
-        String[] types = {"integer"};
-        Integer coins = Integer.parseInt(this.userInterface.inputs.getValidatedInputs(questions, types).get(0));
+        boolean wasAddSuccesful = experienceLevels.addLevel(coins, nextLevel);
 
-        experienceLevels.addLevel(coins, nextLevel);
-        if(experienceLevels.getLevels().size() == nextLevel) {
-
+        if (experienceLevels.getLevels().size() == nextLevel) {
             experienceLevels.updateExperienceLevels();
-            this.userInterface.println("Level added");
         } else {
-            this.userInterface.println("Level addition failure!");
+            // handle failure
         }
 
-
-    }
-
-    /**
-     * Gathers new data about level and update it in database.
-     */
-    private void updateLevel() throws DaoException {
-        ExperienceLevels experienceLevels = this.experienceLevelsDao.getExperienceLevels();
-
-        this.showLevels();
-
-        String[] questions = {"which level you want to update: ", "needed coins: "};
-        String[] types = {"integer", "integer"};
-        ArrayList<String> answers = this.userInterface.inputs.getValidatedInputs(questions, types);
-
-        Integer level = Integer.parseInt(answers.get(0));
-        Integer coins = Integer.parseInt(answers.get(1));
-
-
-        experienceLevels.updateLevel(coins, level);
-
-        if (experienceLevels.getLevels().get(level) == coins) {
-            experienceLevels.updateExperienceLevels();
-            this.userInterface.println("Level updated");
-        } else {
-            this.userInterface.println("Level update failure!");
-        }
-
-    }
-
-    private void showLevels() throws DaoException {
-
-        this.userInterface.println(this.experienceLevelsDao.getExperienceLevels().toString());
-
+        return wasAddSuccesful;
     }
 }

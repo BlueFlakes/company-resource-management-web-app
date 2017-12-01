@@ -3,10 +3,13 @@ package com.codecool.krk.lucidmotors.queststore.models;
 import com.codecool.krk.lucidmotors.queststore.dao.ExperienceLevelsDao;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 
+import java.math.BigInteger;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.codecool.krk.lucidmotors.queststore.matchers.Compare.*;
 
 /**
  * Treemap<Integer, Integer> levels:
@@ -15,17 +18,17 @@ import java.util.stream.Collectors;
  */
 public class ExperienceLevels {
 
-    private TreeMap<Integer, Integer> levels;
+    private TreeMap<Integer, BigInteger> levels;
 
     public ExperienceLevels() {
         this.levels = new TreeMap<>();
     }
 
-    public ExperienceLevels(TreeMap<Integer, Integer> levels) {
+    public ExperienceLevels(TreeMap<Integer, BigInteger> levels) {
         this.levels = levels;
     }
 
-    public Integer computeStudentLevel(Integer userCoins) {
+    public Integer computeStudentLevel(BigInteger userCoins) {
 
         Integer level;
 
@@ -37,8 +40,8 @@ public class ExperienceLevels {
 
             try {
                 level = this.levels.entrySet().stream()
-                        .filter(entry -> (userCoins >= entry.getValue()))
-                        .map(entry -> entry.getKey())
+                        .filter(entry -> isHigherOrEqual(userCoins, entry.getValue()))
+                        .map(Map.Entry::getKey)
                         .max(Integer::compareTo)
                         .get();
             } catch (NoSuchElementException e) {
@@ -55,13 +58,16 @@ public class ExperienceLevels {
      * @param coins
      * @param level
      */
-    public void addLevel(Integer neededCoins, Integer newLevel) {
-        Integer previousLevelCoins = this.levels.get(newLevel - 1);
-        previousLevelCoins = (previousLevelCoins == null) ? neededCoins - 1 : previousLevelCoins;
+    public boolean addLevel(BigInteger neededCoins, Integer newLevel) {
+        BigInteger previousLevelCoins = this.levels.get(newLevel - 1);
+        previousLevelCoins = (previousLevelCoins == null) ? neededCoins.subtract(new BigInteger("1")) : previousLevelCoins;
 
-        if (!this.levels.containsKey(newLevel) && previousLevelCoins < neededCoins) {
+        if (!this.levels.containsKey(newLevel) && isLower(previousLevelCoins, neededCoins)) {
             this.levels.put(newLevel, neededCoins);
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -70,21 +76,39 @@ public class ExperienceLevels {
      * @param coins
      * @param level
      */
-    public void updateLevel(Integer neededCoins, Integer updatedLevel) {
-        Integer previousLevelCoins = this.levels.get(updatedLevel - 1);
-        previousLevelCoins = (previousLevelCoins == null) ? neededCoins - 1 : previousLevelCoins;
+    public UpdateLevel updateLevel(BigInteger deliveredCoins, Integer chosenLevelToUpdate) {
+        BigInteger previousLevelCoins = this.levels.get(chosenLevelToUpdate - 1);
+        previousLevelCoins = (previousLevelCoins == null) ? deliveredCoins.subtract(new BigInteger("1")) : previousLevelCoins;
 
-        Integer nextLevelCoins = this.levels.get(updatedLevel + 1);
-        nextLevelCoins = (nextLevelCoins == null) ? neededCoins + 1 : nextLevelCoins;
+        BigInteger nextLevelCoins = this.levels.get(chosenLevelToUpdate + 1);
+        nextLevelCoins = (nextLevelCoins == null) ? deliveredCoins.add(new BigInteger("1")) : nextLevelCoins;
 
-        if(this.levels.containsKey(updatedLevel) &&
-                previousLevelCoins < neededCoins &&
-                nextLevelCoins > neededCoins) {
-            this.levels.put(updatedLevel, neededCoins);
+        if(this.levels.containsKey(chosenLevelToUpdate) &&
+                isLower(previousLevelCoins, deliveredCoins) &&
+                isHigher(nextLevelCoins, deliveredCoins)) {
+
+            this.levels.put(chosenLevelToUpdate, deliveredCoins);
+            return UpdateLevel.SUCCESSFULLY;
+
+        } else if (this.levels.containsKey(chosenLevelToUpdate)) {
+            if (isHigherOrEqual(previousLevelCoins, deliveredCoins)) {
+                return UpdateLevel.TOO_LOW;
+            } else if (isLowerOrEqual(nextLevelCoins, deliveredCoins)) {
+                return UpdateLevel.TOO_HIGH;
+            }
         }
+
+        return UpdateLevel.ERROR;
     }
 
-    public TreeMap<Integer, Integer> getLevels() {
+    public enum UpdateLevel {
+        SUCCESSFULLY,
+        TOO_LOW,
+        TOO_HIGH,
+        ERROR
+    }
+
+    public TreeMap<Integer, BigInteger> getLevels() {
         return levels;
     }
 

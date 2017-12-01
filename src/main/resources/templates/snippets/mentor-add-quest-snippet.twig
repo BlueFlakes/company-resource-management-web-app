@@ -1,0 +1,22 @@
+<form method="post">
+    <label for="#mentor-add-quest-quest-category">Choose quest category</label>
+    <select name="category_id" id="#mentor-add-quest-quest-category" required>
+        {% for category in quest_categories %}
+            <option value="{{category.getId()}}">{{category.getName()}}</option>
+        {% endfor %}
+    </select>
+    <label for="#mentor-add-quest-quest-name">Quest name</label>
+    <input type="text" name="quest_name" id="#mentor-add-quest-quest-name" required>
+    <label for="#mentor-add-quest-value">Value</label>
+    <input type="number" name="quest_value" id="#mentor-add-quest-value" required min="1">
+    <label for="#mentor-add-quest-value" id="#max-value-label">Max value</label>
+    <input type="number" name="max_value" id="#mentor-add-quest-maxvalue" required>
+    <label for="#is-ranged-true">Is ranged</label>
+    <div class="inline"><input type="radio" name="is-ranged" id="#is-ranged-true"> Ranged</div>
+    <div class="inline"><input type="radio" name="is-ranged" id="#is-ranged-false" checked> Not ranged</div>
+    <label for="#mentor-add-quest-description">Description</label>
+    <textarea name="description" id="#mentor-add-quest-description" required></textarea>
+    <input type="submit" value="Submit">
+</form>
+
+<script src="/static/js/add_quest.js"></script>
