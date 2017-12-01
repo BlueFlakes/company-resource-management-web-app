@@ -8,7 +8,7 @@ public class AfineEnigma {
         System.out.println(AfineEnigma.getAfineEnigma().encipher("tepes"));
     }
 
-    public static AfineEnigma afineEnigma = null;
+    private static AfineEnigma afineEnigma = null;
 
     private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
     private Integer key1 = 7;
