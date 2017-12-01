@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codecool.krk.lucidmotors.queststore.controllers.AfineEnigma;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Student;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
@@ -89,6 +90,8 @@ public class StudentDao {
         Student student = null;
         String sqlQuery = "SELECT * FROM students WHERE login = ? AND password = ?;";
 
+        password = AfineEnigma.getAfineEnigma().encipher(password);
+
         try {
             stmt = connection.prepareStatement(sqlQuery);
             stmt.setString(1, login);
@@ -113,7 +116,7 @@ public class StudentDao {
 
         String name = student.getName();
         String login = student.getLogin();
-        String password = student.getPassword();
+        String password = AfineEnigma.getAfineEnigma().encipher(student.getPassword());
         String email = student.getEmail();
         Integer classId = student.getClas().getId();
         BigInteger earnedCoins = student.getEarnedCoins();
@@ -146,7 +149,7 @@ public class StudentDao {
         Integer studentId = student.getId();
         String name = student.getName();
         String login = student.getLogin();
-        String password = student.getPassword();
+        String password = AfineEnigma.getAfineEnigma().encipher(student.getPassword());
         String email = student.getEmail();
         Integer classId = student.getClas().getId();
         BigInteger earnedCoins = student.getEarnedCoins();
@@ -177,7 +180,7 @@ public class StudentDao {
 
     private Student getStudentFromResultset(ResultSet result) throws SQLException, DaoException {
         String name = result.getString("name");
-        String password = result.getString("password");
+        String password = AfineEnigma.getAfineEnigma().decipher(result.getString("password"));
         String email = result.getString("email");
         String login = result.getString("login");
         Integer classId = result.getInt("class_id");
