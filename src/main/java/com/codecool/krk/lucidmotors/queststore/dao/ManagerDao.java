@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import com.codecool.krk.lucidmotors.queststore.controllers.AfineEnigma;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Manager;
 
@@ -87,6 +88,8 @@ public class ManagerDao {
         Manager manager = null;
         String sqlQuery = "SELECT * FROM managers WHERE login = ? AND password = ?;";
 
+        password = AfineEnigma.getAfineEnigma().encipher(password);
+
         try {
             stmt = connection.prepareStatement(sqlQuery);
             stmt.setString(1, login);
@@ -110,7 +113,7 @@ public class ManagerDao {
     private Manager createManager(ResultSet result) throws SQLException {
         String name = result.getString("name");
         String login = result.getString("login");
-        String password = result.getString("password");
+        String password = AfineEnigma.getAfineEnigma().decipher(result.getString("password"));
         String email = result.getString("email");
         Integer id = result.getInt("id");
 

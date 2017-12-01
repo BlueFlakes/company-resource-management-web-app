@@ -1,5 +1,6 @@
 package com.codecool.krk.lucidmotors.queststore.dao;
 
+import com.codecool.krk.lucidmotors.queststore.controllers.AfineEnigma;
 import com.codecool.krk.lucidmotors.queststore.exceptions.DaoException;
 import com.codecool.krk.lucidmotors.queststore.models.Mentor;
 import com.codecool.krk.lucidmotors.queststore.models.SchoolClass;
@@ -92,6 +93,8 @@ public class MentorDao {
         Mentor mentor = null;
         String sqlQuery = "SELECT * FROM mentors WHERE login = ? AND password = ?;";
 
+        password = AfineEnigma.getAfineEnigma().encipher(password);
+
         try {
             stmt = connection.prepareStatement(sqlQuery);
             stmt.setString(1, login);
@@ -115,7 +118,7 @@ public class MentorDao {
     private Mentor createMentor(ResultSet result) throws SQLException, DaoException {
         String name = result.getString("name");
         String login = result.getString("login");
-        String password = result.getString("password");
+        String password = AfineEnigma.getAfineEnigma().decipher(result.getString("password"));
         String email = result.getString("email");
         Integer id = result.getInt("id");
         Integer classId = result.getInt("class_id");
@@ -137,7 +140,7 @@ public class MentorDao {
                 Integer id = result.getInt("id");
                 String name = result.getString("name");
                 String login = result.getString("login");
-                String password = result.getString("password");
+                String password = AfineEnigma.getAfineEnigma().decipher(result.getString("password"));
                 String email = result.getString("email");
                 Integer classId = result.getInt("class_id");
                 SchoolClass schoolClass = this.classDao.getSchoolClass(classId);
@@ -159,7 +162,7 @@ public class MentorDao {
 
         String name = mentor.getName();
         String login = mentor.getLogin();
-        String password = mentor.getPassword();
+        String password = AfineEnigma.getAfineEnigma().encipher(mentor.getPassword());
         String email = mentor.getEmail();
         Integer classId = mentor.getClas().getId();
 
@@ -185,7 +188,7 @@ public class MentorDao {
 
         String name = mentor.getName();
         String login = mentor.getLogin();
-        String password = mentor.getPassword();
+        String password = AfineEnigma.getAfineEnigma().encipher(mentor.getPassword());
         String email = mentor.getEmail();
         Integer classId = mentor.getClas().getId();
         Integer mentorId = mentor.getId();
