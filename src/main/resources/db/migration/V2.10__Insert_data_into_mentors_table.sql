@@ -1,5 +1,5 @@
 ﻿INSERT INTO mentors (id,name,login,password,email,class_id) VALUES (
-1,'Mateusz Ostafila','mateuszo','mati','ostafil@codecool.pl',2);
+1,'Mateusz Ostafil','mateuszo','mati','ostafil@codecool.pl',2);
 INSERT INTO mentors (id,name,login,password,email,class_id) VALUES (
 2,'Agnieszka Koszany','kaczuszka','yellow','koszany@codecool.pl',4);
 INSERT INTO mentors (id,name,login,password,email,class_id) VALUES (
