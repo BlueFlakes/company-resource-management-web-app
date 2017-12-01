@@ -4,3 +4,5 @@ INSERT INTO classes (id,name) VALUES (
 2,'codecool-krk-2017-1');
 INSERT INTO classes (id,name) VALUES (
 3,'codecool-krk-2017-2');
+INSERT INTO classes (id,name) VALUES (
+4,'codecool-krk-2017-3');
